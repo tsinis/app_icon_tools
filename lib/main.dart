@@ -1,10 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
-void main() {
-  runApp(MyApp());
-}
+import 'views/app_appearance.dart';
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) => MaterialApp(home: Container());
-}
+void main() => runApp(const MyApp());

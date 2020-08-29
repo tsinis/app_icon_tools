@@ -5,13 +5,17 @@ version: 1.0.0+1
 
 environment:
   sdk: ">2.9.0"
-  flutter: ">1.20.0"
+  flutter: ">1.21.0"
 
 dependencies:
   flutter_localizations:
     sdk: flutter
   flutter:
     sdk: flutter
+
+  flutter_dropzone: ^1.0.9
+  fdottedline: ^1.0.1
+  platform_info: ^2.0.0
 
   cupertino_icons: ^0.1.3
 
