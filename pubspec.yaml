@@ -13,11 +13,14 @@ dependencies:
   flutter:
     sdk: flutter
 
+  cupertino_icons: ^0.1.3
   flutter_dropzone: ^1.0.9
   fdottedline: ^1.0.1
   platform_info: ^2.0.0
-
-  cupertino_icons: ^0.1.3
+  file_picker_web: 1.0.2+1
+  provider: ^4.3.2+1
+  image: ^2.1.14
+  get_it: ^4.0.4
 
 dev_dependencies:
   pedantic: any

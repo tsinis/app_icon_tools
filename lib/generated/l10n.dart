@@ -33,7 +33,25 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
+  /// `Drop your PNG here or`
+  String get dropPNG {
+    return Intl.message(
+      'Drop your PNG here or',
+      name: 'dropPNG',
+      desc: '',
+      args: [],
+    );
+  }
 
+  /// `Browse`
+  String get browse {
+    return Intl.message(
+      'Browse',
+      name: 'browse',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
