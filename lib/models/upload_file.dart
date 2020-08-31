@@ -6,18 +6,18 @@ import 'dart:typed_data' show Uint8List;
 
 import 'package:flutter/material.dart';
 
-import '../locator.dart';
-import '../services/navigation_service.dart';
-import '../ui/router.dart';
+// import '../locator.dart';
+// import '../services/navigation_service.dart';
+// import '../ui/preview_screen.dart';
+// import '../ui/router.dart';
 
-class ImageFile with ChangeNotifier {
+class UploadFile with ChangeNotifier {
   Image recivedImage;
 
-  final NavigationService _navigationService = locator<NavigationService>();
+  // final NavigationService _navigationService = locator<NavigationService>();
 
-  // ignore: avoid_annotating_with_dynamic
   Future<bool> checkImage(dynamic _uploadedFile) async {
-    print(_uploadedFile.toString());
+    print('$_uploadedFile is being checked');
     try {
       // if (_uploadedFile is Image) {
       //   print('Its an Image');
@@ -31,12 +31,18 @@ class ImageFile with ChangeNotifier {
       //   }
       // } else
       if (_uploadedFile is File) {
+        print('Its a File');
         if (_extensionIsPng(_uploadedFile.name)) {
-          recivedImage = await _convertFileToImage(_uploadedFile).whenComplete(() => print('done converting'));
-          await _navigationService.navigateTo(UiRouter.previewRoute);
-          return true;
+          print('Its a PNG');
+          await _convertFileToImage(_uploadedFile)
+              .then((_convertedImage) => recivedImage = _convertedImage)
+              .whenComplete(() {
+            print('Converted');
+            return true;
+          });
+          // await _navigationService.navigateTo(UiRouter.previewRoute);
         } else {
-          // print('not PNG');
+          print('not PNG');
           return false;
         }
       }
@@ -47,7 +53,6 @@ class ImageFile with ChangeNotifier {
     }
   }
 
-  // ignore: avoid_annotating_with_dynamic
   Future<Image> _convertFileToImage(File _file) async =>
       await _convertHtmlFileToBytes(_file).then((_uint8list) => Image.memory(_uint8list));
 
