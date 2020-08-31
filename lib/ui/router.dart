@@ -2,25 +2,23 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../services/platform_detector.dart';
-
-import 'preview_screen.dart';
-import 'views/app_appearance.dart';
 import 'views/inital_upload_screen.dart';
+import 'views/setup_screen.dart';
 
 class UiRouter {
-  static const String initialRoute = 'inital_upload', previewRoute = 'preview';
+  static const String initialScreen = 'inital_upload', setupScreen = 'setup';
   static Route<void> generateRoute(RouteSettings settings) {
     switch (settings.name) {
-      case initialRoute:
+      case initialScreen:
         return _showScreen(const InitialUploadScreen());
-      case previewRoute:
-        return _showScreen(const PreviewScreen());
+      case setupScreen:
+        return _showScreen(const SetupScreen());
       default:
-        return _showScreen(const MyApp());
+        return _showScreen(const InitialUploadScreen());
     }
   }
 
-  static Route _showScreen(Widget _page) => CurrentPlatform.isApple
-      ? CupertinoPageRoute<void>(builder: (_) => _page)
-      : MaterialPageRoute<void>(builder: (_) => _page);
+  static Route _showScreen(Widget _screen) => CurrentPlatform.isApple
+      ? CupertinoPageRoute<void>(builder: (_) => _screen)
+      : MaterialPageRoute<void>(builder: (_) => _screen);
 }

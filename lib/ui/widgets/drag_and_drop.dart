@@ -2,8 +2,6 @@
 import 'dart:html';
 
 import 'package:fdottedline/fdottedline.dart';
-import 'package:file_picker_platform_interface/file_picker_platform_interface.dart';
-import 'package:file_picker_web/file_picker_web.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_dropzone/flutter_dropzone.dart';
 import 'package:provider/provider.dart';
@@ -12,16 +10,8 @@ import '../../generated/l10n.dart';
 import '../../models/upload_file.dart';
 import 'adaptive/browse_button.dart';
 
-// ignore: unused_element
-DropzoneViewController _controller;
-Widget image = const SizedBox(width: 1, height: 1);
-
 class DragAndDrop extends StatelessWidget {
-  // bool _highlighted = false;
-
-  // Future<bool> _checkUpload(dynamic _uploadedImage, BuildContext context) async =>
-  //     await context.read<UploadFile>().checkImage(_uploadedImage);
-
+  // static DropzoneViewController _controller;
   @override
   Widget build(BuildContext context) => FDottedLine(
         corner: FDottedLineCorner.all(20),
@@ -29,17 +19,15 @@ class DragAndDrop extends StatelessWidget {
         child: Container(
           width: 300,
           height: 300,
-          color:
-              //  _highlighted ? const Color(0x0991FF00) :
-              const Color(0x11888888),
+          color: const Color(0x11888888), //TODO: Replace with a Rive animation.
           child: Stack(
             alignment: Alignment.center,
             children: [
               DropzoneView(
                 operation: DragOperation.copy,
                 cursor: CursorType.pointer,
-                onDrop: (dynamic _file) async => await context.read<UploadFile>().checkImage(_file),
-                onCreated: (_assignController) => _controller = _assignController,
+                onDrop: (dynamic _file) async => await context.read<UploadFile>().checkDropped(_file as File),
+                // onCreated: (_assignController) => _controller = _assignController,
                 // onHover: () => setState(() => _highlighted = true),
                 // onLeave: () => setState(() => _highlighted = false),
                 // onLoaded: () => print('Drop zone loaded'),
@@ -50,12 +38,13 @@ class DragAndDrop extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(S.of(context).dropPNG),
+                    Text(context.watch<UploadFile>().isProperFile
+                        ? S.of(context).dragAndDropHere
+                        : S.of(context).wrongFile),
                     BrowseButton(
                         text: S.of(context).browse,
-                        onPressed: () async =>
-                            await FilePicker.getFile(type: FileType.custom, allowedExtensions: ['png'])
-                                .then((dynamic _file) async => await context.read<UploadFile>().checkImage(_file))),
+                        onPressed: () async => await context.read<UploadFile>().checkSelected()),
+                    // TODO: Add info text here.
                   ],
                 ),
               ),

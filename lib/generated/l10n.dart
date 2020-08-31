@@ -34,10 +34,20 @@ class S {
   }
 
   /// `Drop your PNG here or`
-  String get dropPNG {
+  String get dragAndDropHere {
     return Intl.message(
       'Drop your PNG here or',
-      name: 'dropPNG',
+      name: 'dragAndDropHere',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sorry, it's not correct file`
+  String get wrongFile {
+    return Intl.message(
+      'Sorry, it\'s not correct file',
+      name: 'wrongFile',
       desc: '',
       args: [],
     );

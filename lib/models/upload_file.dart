@@ -4,53 +4,65 @@ import 'dart:convert';
 import 'dart:html';
 import 'dart:typed_data' show Uint8List;
 
-import 'package:flutter/material.dart';
+import 'package:file_picker_platform_interface/file_picker_platform_interface.dart' show FileType;
+import 'package:file_picker_web/file_picker_web.dart';
+import 'package:flutter/widgets.dart';
 
-// import '../locator.dart';
-// import '../services/navigation_service.dart';
-// import '../ui/preview_screen.dart';
-// import '../ui/router.dart';
+import '../locator.dart';
+import '../services/navigation_service.dart';
+import '../ui/router.dart';
 
-class UploadFile with ChangeNotifier {
+class UploadFile extends ChangeNotifier {
   Image recivedImage;
 
-  // final NavigationService _navigationService = locator<NavigationService>();
+  static const String _expectedFileExtension = 'png';
 
-  Future<bool> checkImage(dynamic _uploadedFile) async {
-    print('$_uploadedFile is being checked');
+  bool _isProperFile = true;
+
+  final NavigationService _navigationService = locator<NavigationService>();
+
+  bool get isProperFile => _isProperFile;
+
+  Future checkSelected() async =>
+      await FilePicker.getFile(type: FileType.custom, allowedExtensions: [_expectedFileExtension])
+          .then<void>(_checkFile);
+
+  Future checkDropped(File _droppedFile) async => await _checkFile(_droppedFile);
+
+  Future _checkFile(dynamic _file) async {
+    _isProperFile = false;
+    // print('Yupee! ${_file.runtimeType} is being checked.');
     try {
-      // if (_uploadedFile is Image) {
-      //   print('Its an Image');
-      //   if (_extensionIsPng(_uploadedFile.semanticLabel)) {
-      //     recivedImage = _uploadedFile;
-      //     print('Its an Image and converted');
-      //     return true;
-      //   } else {
-      //     print('Its not a PNG Image');
-      //     return false;
+      // if (_file is Image) {
+      //   if (_properExtension(_file.semanticLabel)) {
+      //     _isProperFile = true;
+      //     recivedImage = _file;
       //   }
       // } else
-      if (_uploadedFile is File) {
-        print('Its a File');
-        if (_extensionIsPng(_uploadedFile.name)) {
-          print('Its a PNG');
-          await _convertFileToImage(_uploadedFile)
-              .then((_convertedImage) => recivedImage = _convertedImage)
-              .whenComplete(() {
-            print('Converted');
-            return true;
+      if (_file is File) {
+        if (_properExtension(_file.name)) {
+          await _convertFileToImage(_file).then((_convertedImage) => recivedImage = _convertedImage).whenComplete(() {
+            // print('Converted file to image and moving to the next screen!');
+            _isProperFile = true;
           });
-          // await _navigationService.navigateTo(UiRouter.previewRoute);
-        } else {
-          print('not PNG');
-          return false;
         }
       }
-      return false;
-      // ignore: avoid_catching_errors
-    } on Error catch (_) {
-      return false;
+      // ignore: avoid_catching_errors, unused_catch_clause
+    } on Error catch (_error) {
+      // print('Error was: ${_error.toString()}');
+
+      // ignore: unused_catch_clause
+    } on Exception catch (_exception) {
+      // print('Exception was: ${_exception.toString()}');
     }
+    await _notifyCheckResult();
+  }
+
+  Future<void> _notifyCheckResult() async {
+    if (_isProperFile) {
+      await _navigationService.navigateTo(UiRouter.setupScreen);
+    }
+    notifyListeners();
   }
 
   Future<Image> _convertFileToImage(File _file) async =>
@@ -67,10 +79,11 @@ class UploadFile with ChangeNotifier {
     return _bytesCompleter.future;
   }
 
-  bool _extensionIsPng(String _fileName) {
+  bool _properExtension(String _fileName) {
     if (_fileName.length >= 4) {
-      return _fileName.substring(_fileName.length - 4).toUpperCase() == '.PNG';
+      return _fileName.substring(_fileName.length - 4).toLowerCase() == '.$_expectedFileExtension';
     } else {
+      // print('It is not a $_expectedFileExtension');
       return false;
     }
   }

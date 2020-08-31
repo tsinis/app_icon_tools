@@ -29,3 +29,6 @@ dev_dependencies:
 
 flutter_intl:
   enabled: true
+
+flutter:
+  uses-material-design: true

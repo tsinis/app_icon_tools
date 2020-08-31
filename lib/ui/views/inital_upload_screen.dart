@@ -7,12 +7,13 @@ class InitialUploadScreen extends StatelessWidget {
   const InitialUploadScreen({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) => AdaptiveScaffold(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
+        child:
+            // Column(
+            //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            //   crossAxisAlignment: CrossAxisAlignment.center,
+            //   children: [
             Center(child: DragAndDrop()),
-          ],
-        ),
+        //   ],
+        // ),
       );
 }

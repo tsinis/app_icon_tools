@@ -8,3 +8,5 @@ const Iterable<LocalizationsDelegate<dynamic>> localizationDelgates = [
   GlobalWidgetsLocalizations.delegate,
   GlobalCupertinoLocalizations.delegate
 ];
+
+List<Locale> supportedLocales = S.delegate.supportedLocales;

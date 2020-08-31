@@ -1,4 +1,5 @@
 {
-    "dropPNG": "Drop your PNG here or",
+    "dragAndDropHere": "Drop your PNG here or",
+    "wrongFile": "Sorry, it's not correct file",
     "browse": "Browse"
 }

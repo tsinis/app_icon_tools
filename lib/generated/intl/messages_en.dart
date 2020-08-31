@@ -22,6 +22,7 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
     "browse" : MessageLookupByLibrary.simpleMessage("Browse"),
-    "dropPNG" : MessageLookupByLibrary.simpleMessage("Drop your PNG here or")
+    "dragAndDropHere" : MessageLookupByLibrary.simpleMessage("Drop your PNG here or"),
+    "wrongFile" : MessageLookupByLibrary.simpleMessage("Sorry, it\'s not correct file")
   };
 }

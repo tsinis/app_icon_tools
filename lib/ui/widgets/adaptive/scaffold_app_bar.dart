@@ -8,7 +8,7 @@ class AdaptiveScaffold extends StatelessWidget {
   final Widget child;
 
   @override
-  Widget build(BuildContext context) => CurrentPlatform.isApple
-      ? CupertinoPageScaffold(navigationBar: const CupertinoNavigationBar(), child: child)
-      : Scaffold(appBar: AppBar(), body: child);
+  Widget build(BuildContext context) => CurrentPlatform.isApple //TODO: Add app bar buttons.
+      ? CupertinoPageScaffold(navigationBar: const CupertinoNavigationBar(), child: SafeArea(child: child))
+      : Scaffold(appBar: AppBar(), body: SafeArea(child: child));
 }
