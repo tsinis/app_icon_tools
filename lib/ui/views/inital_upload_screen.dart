@@ -6,7 +6,7 @@ import '../widgets/drag_and_drop.dart';
 class InitialUploadScreen extends StatelessWidget {
   const InitialUploadScreen({Key key}) : super(key: key);
   @override
-  Widget build(BuildContext context) => AdaptiveScaffold(
+  Widget build(BuildContext context) => const AdaptiveScaffold(
         child:
             // Column(
             //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,

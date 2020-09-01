@@ -21,8 +21,18 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
+    "addBackground" : MessageLookupByLibrary.simpleMessage("Background* can be added in the next step."),
     "browse" : MessageLookupByLibrary.simpleMessage("Browse"),
-    "dragAndDropHere" : MessageLookupByLibrary.simpleMessage("Drop your PNG here or"),
-    "wrongFile" : MessageLookupByLibrary.simpleMessage("Sorry, it\'s not correct file")
+    "colorProfile" : MessageLookupByLibrary.simpleMessage("Color profile:"),
+    "dragAndDropHere" : MessageLookupByLibrary.simpleMessage("Drop your icon here or"),
+    "fileFormat" : MessageLookupByLibrary.simpleMessage("File format:"),
+    "iconAttributes" : MessageLookupByLibrary.simpleMessage("Launcher Icon Requirements:"),
+    "imageSize" : MessageLookupByLibrary.simpleMessage("Dimensions:"),
+    "locale" : MessageLookupByLibrary.simpleMessage("en"),
+    "maxKB" : MessageLookupByLibrary.simpleMessage("Max. file size:"),
+    "noInterlacing" : MessageLookupByLibrary.simpleMessage("w/o interlacing."),
+    "storeRequirement" : MessageLookupByLibrary.simpleMessage("Technical requirements. Press for more info."),
+    "transparencyiOS" : MessageLookupByLibrary.simpleMessage("The iOS icons doesn\'t support transparency, alpha channel will be replaced with black color."),
+    "wrongFile" : MessageLookupByLibrary.simpleMessage("File doesn\'t meet the Requirements")
   };
 }

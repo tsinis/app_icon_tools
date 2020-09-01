@@ -16,14 +16,14 @@ class MyApp extends StatelessWidget {
           navigatorKey: locator<NavigationService>().navigatorKey,
           localizationsDelegates: localizationDelgates,
           supportedLocales: supportedLocales,
-          theme: const CupertinoThemeData(brightness: Brightness.dark),
+          theme: const CupertinoThemeData(brightness: Brightness.light),
           onGenerateRoute: UiRouter.generateRoute,
           initialRoute: UiRouter.initialScreen)
       : MaterialApp(
           navigatorKey: locator<NavigationService>().navigatorKey,
           localizationsDelegates: localizationDelgates,
           supportedLocales: supportedLocales,
-          theme: ThemeData(brightness: Brightness.dark),
+          theme: ThemeData(brightness: Brightness.light),
           onGenerateRoute: UiRouter.generateRoute,
           initialRoute: UiRouter.initialScreen);
 }

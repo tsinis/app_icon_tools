@@ -1,5 +1,15 @@
 {
-    "dragAndDropHere": "Drop your PNG here or",
-    "wrongFile": "Sorry, it's not correct file",
-    "browse": "Browse"
+    "locale": "en",
+    "dragAndDropHere": "Drop your icon here or",
+    "wrongFile": "File doesn't meet the Requirements",
+    "browse": "Browse",
+    "iconAttributes": "Launcher Icon Requirements:",
+    "fileFormat": "File format:",
+    "imageSize": "Dimensions:",
+    "maxKB": "Max. file size:",
+    "colorProfile": "Color profile:",
+    "noInterlacing": "w/o interlacing.",
+    "addBackground": "Background* can be added in the next step.",
+    "storeRequirement": "Technical requirements. Press for more info.",
+    "transparencyiOS": "The iOS icons doesn't support transparency, alpha channel will be replaced with black color."
 }

@@ -8,15 +8,18 @@ class BrowseButton extends StatelessWidget {
 
   const BrowseButton({Key key, this.text, this.onPressed}) : super(key: key);
   @override
-  Widget build(BuildContext context) => CurrentPlatform.isApple
-      ? CupertinoButton(color: CupertinoColors.activeBlue, onPressed: onPressed, child: Text(text))
-      : MaterialButton(
-          colorBrightness: Brightness.dark,
-          color: Colors.blue,
-          onPressed: onPressed,
-          child: Text(
-            text.toUpperCase(),
-            style: const TextStyle(letterSpacing: 1.2),
-          ),
-        );
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.all(12),
+        child: CurrentPlatform.isApple
+            ? CupertinoButton(color: CupertinoColors.activeBlue, onPressed: onPressed, child: Text(text))
+            : MaterialButton(
+                colorBrightness: Brightness.dark,
+                color: Colors.blue,
+                onPressed: onPressed,
+                child: Text(
+                  text.toUpperCase(),
+                  style: const TextStyle(letterSpacing: 1.2),
+                ),
+              ),
+      );
 }
