@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '../models/user_interface.dart';
 
-import '../services/platform_detector.dart';
 import 'views/inital_upload_screen.dart';
 import 'views/setup_screen.dart';
 
@@ -18,7 +18,7 @@ class UiRouter {
     }
   }
 
-  static Route _showScreen(Widget _screen) => CurrentPlatform.isApple
+  static Route _showScreen(Widget _screen) => UserInterface.isApple
       ? CupertinoPageRoute<void>(builder: (_) => _screen)
       : MaterialPageRoute<void>(builder: (_) => _screen);
 }

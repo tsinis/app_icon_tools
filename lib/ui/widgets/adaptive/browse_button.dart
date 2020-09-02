@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../../services/platform_detector.dart';
+// import 'package:provider/provider.dart';
+
+import '../../../models/user_interface.dart';
 
 class BrowseButton extends StatelessWidget {
   final String text;
@@ -10,7 +12,7 @@ class BrowseButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Padding(
         padding: const EdgeInsets.all(12),
-        child: CurrentPlatform.isApple
+        child: UserInterface.isApple
             ? CupertinoButton(color: CupertinoColors.activeBlue, onPressed: onPressed, child: Text(text))
             : MaterialButton(
                 colorBrightness: Brightness.dark,

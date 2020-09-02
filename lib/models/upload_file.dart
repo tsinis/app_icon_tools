@@ -7,7 +7,6 @@ import 'dart:typed_data' show Uint8List;
 import 'package:file_picker_platform_interface/file_picker_platform_interface.dart' show FileType;
 import 'package:file_picker_web/file_picker_web.dart';
 import 'package:flutter/widgets.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../locator.dart';
 import '../services/navigation_service.dart';
@@ -15,6 +14,8 @@ import '../ui/router.dart';
 
 class UploadFile extends ChangeNotifier {
   Image recivedImage;
+  // Image get recivedImage => _recivedImage;
+  // set recivedImage(Image newIconImage) => _recivedImage = newIconImage;
 
   static const String _expectedFileExtension = 'png';
 
@@ -24,22 +25,11 @@ class UploadFile extends ChangeNotifier {
 
   bool get isProperFile => _isProperFile;
 
-  Future openGuidelinesURL({bool fromGoogle = false, String locale = 'en'}) async {
-    const String _apple = 'https://developer.apple.com/design/human-interface-guidelines/ios/icons-and-images/app-icon';
-    final String _google = 'https://support.google.com/googleplay/android-developer/answer/1078870?hl=$locale';
-    final String _url = fromGoogle ? _google : _apple;
-    if (await canLaunch(_url)) {
-      await launch(_url);
-    } else {
-      throw ArgumentError('Could not launch $_url');
-    }
-  }
-
   Future checkSelected() async =>
       await FilePicker.getFile(type: FileType.custom, allowedExtensions: [_expectedFileExtension])
           .then<void>(_checkFile);
 
-  Future checkDropped(File _droppedFile) async => await _checkFile(_droppedFile);
+  Future checkDropped(dynamic _droppedFile) async => await _checkFile(_droppedFile);
 
   Future _checkFile(dynamic _file) async {
     _isProperFile = false;
