@@ -7,10 +7,10 @@ import 'views/setup_screen.dart';
 
 class UiRouter {
   static const String initialScreen = 'inital_upload', setupScreen = 'setup';
-  static Route<void> generateRoute(RouteSettings settings) {
-    switch (settings.name) {
-      case initialScreen:
-        return _showScreen(const InitialUploadScreen());
+  static Route<void> generateRoute(RouteSettings screen) {
+    switch (screen.name) {
+      // case initialScreen:
+      //   return _showScreen(const InitialUploadScreen());
       case setupScreen:
         return _showScreen(const SetupScreen());
       default:

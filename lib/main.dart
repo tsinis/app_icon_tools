@@ -14,7 +14,7 @@ void main() {
     ChangeNotifierProvider<UploadFile>(create: (_) => UploadFile()),
     ChangeNotifierProxyProvider<UploadFile, SetupIcon>(
       create: (_) => SetupIcon(),
-      update: (_, uploadFile, setupIcon) => setupIcon..icon = (uploadFile.recivedImage),
+      update: (_, uploadFile, setupIcon) => setupIcon..icon = uploadFile.recivedImage,
     ),
   ], child: const MyApp()));
 }

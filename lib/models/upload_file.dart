@@ -14,14 +14,12 @@ import '../ui/router.dart';
 
 class UploadFile extends ChangeNotifier {
   Image recivedImage;
-  // Image get recivedImage => _recivedImage;
-  // set recivedImage(Image newIconImage) => _recivedImage = newIconImage;
 
   static const String _expectedFileExtension = 'png';
 
-  bool _isProperFile = true;
-
   final NavigationService _navigationService = locator<NavigationService>();
+
+  bool _isProperFile = true;
 
   bool get isProperFile => _isProperFile;
 

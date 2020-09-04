@@ -13,7 +13,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  cupertino_icons: ^0.1.3
+  cupertino_icons: ^1.0.0
   flutter_dropzone: ^1.0.9
   fdottedline: ^1.0.1
   platform_info: ^2.0.0
