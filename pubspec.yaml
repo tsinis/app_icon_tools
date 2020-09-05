@@ -18,7 +18,7 @@ dependencies:
   fdottedline: ^1.0.1
   platform_info: ^2.0.0
   file_picker_web: 1.0.2+1
-  provider: ^4.3.2+1
+  provider: ^4.3.2+2
   image: ^2.1.14
   get_it: ^4.0.4
   auto_size_text: ^2.1.0
@@ -26,6 +26,7 @@ dependencies:
   url_launcher: ^5.5.2
   shared_preferences: ^0.5.10
   shared_preferences_web: ^0.1.2+7
+  snapclip_pageview: ^0.0.1
 
 dev_dependencies:
   pedantic: any

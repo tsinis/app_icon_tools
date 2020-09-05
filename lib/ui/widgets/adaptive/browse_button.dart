@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 
 import '../../../models/user_interface.dart';
 
-class BrowseButton extends StatelessWidget {
+class AdaptiveButton extends StatelessWidget {
   final String text;
   final Function() onPressed;
 
-  const BrowseButton({Key key, this.text, this.onPressed}) : super(key: key);
+  const AdaptiveButton({Key key, this.text, this.onPressed}) : super(key: key);
   @override
   Widget build(BuildContext context) => Padding(
         padding: const EdgeInsets.all(12),

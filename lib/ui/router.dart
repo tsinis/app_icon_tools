@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../models/user_interface.dart';
 
-import 'views/inital_upload_screen.dart';
-import 'views/setup_screen.dart';
+import '../models/user_interface.dart';
+import 'views/setup_icon_screen.dart';
+import 'views/upload_file_screen.dart';
 
 class UiRouter {
   static const String initialScreen = 'inital_upload', setupScreen = 'setup';

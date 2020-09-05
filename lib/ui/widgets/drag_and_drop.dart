@@ -50,7 +50,7 @@ class DragAndDrop extends StatelessWidget {
                 children: [
                   AutoSizeText(_isProperFile ? S.of(context).dragAndDropHere : S.of(context).wrongFile,
                       maxLines: 1, minFontSize: 17),
-                  BrowseButton(
+                  AdaptiveButton(
                       text: S.of(context).browse,
                       onPressed: () async => await context.read<UploadFile>().checkSelected()),
                   if (showIconReq) ...[
