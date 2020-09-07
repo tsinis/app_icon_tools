@@ -7,6 +7,7 @@ class UserInterface extends ChangeNotifier {
   static bool _thisIsAppleDevice = false;
 
   Brightness _brightness = Brightness.dark;
+  bool _isWeb = false;
   String _locale = 'en';
 
   Future openGuidelinesURL({bool fromGoogle = false}) async {
@@ -22,12 +23,15 @@ class UserInterface extends ChangeNotifier {
 
   void detectUISettings() {
     _thisIsAppleDevice = platform.isCupertino;
+    _isWeb = platform.isWeb;
     _locale = platform.locale;
   }
 
   String get locale => _locale ?? 'en';
 
-  // ignore: avoid_setters_without_getters
+  bool get isWeb => _isWeb ?? false;
+
+  // ignore: avoid_setters_without_getters, beacause I do have a getter (getTheme)...
   set setTheme(bool _isDark) => _brightness = _isDark ? Brightness.dark : Brightness.light;
 
   Brightness get getTheme => _brightness;

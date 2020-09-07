@@ -34,12 +34,11 @@ BackgroundWidget _buildBackground(BuildContext context, int index) =>
     BackgroundWidget(index: index, child: FittedBox(fit: BoxFit.cover, child: context.watch<SetupIcon>().icon));
 
 PageViewItem _buildChild(BuildContext context, int index) => PageViewItem(
-      buildDecoration: _decoration,
-      padding: const EdgeInsets.all(0),
-      margin: const EdgeInsets.all(40),
-      height: 200,
-      index: index,
-      child: const BaseIconPreview(),
-    );
+    buildDecoration: _decoration,
+    padding: const EdgeInsets.all(0),
+    margin: const EdgeInsets.all(40),
+    height: 300,
+    index: index,
+    child: const BaseIconPreview());
 
 Decoration _decoration(double _) => const BoxDecoration(color: Colors.transparent);

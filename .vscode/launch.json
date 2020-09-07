@@ -1,6 +1,7 @@
 {
     "version": "0.2.0",
     "configurations": [
+
         {
             "name": "Debug Web",
             "type": "dart",
@@ -13,8 +14,8 @@
             "type": "dart",
             "flutterMode": "release",
             "args": [
-                "--dart-define=FLUTTER_WEB_USE_SKIA=true",
-                "--dart-define=FLUTTER_WEB_USE_EXPERIMENTAL_CANVAS_TEXT=true"
+                // "--dart-define=FLUTTER_WEB_USE_SKIA=true",
+                // "--dart-define=FLUTTER_WEB_USE_EXPERIMENTAL_CANVAS_TEXT=true"
             ]
         }
     ]

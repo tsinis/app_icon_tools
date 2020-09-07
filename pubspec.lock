@@ -104,6 +104,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_colorpicker:
+    dependency: "direct main"
+    description:
+      name: flutter_colorpicker
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.4"
   flutter_dropzone:
     dependency: "direct main"
     description:
@@ -232,7 +239,7 @@ packages:
       name: platform_info
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.0"
+    version: "2.0.1"
   plugin_platform_interface:
     dependency: transitive
     description:
