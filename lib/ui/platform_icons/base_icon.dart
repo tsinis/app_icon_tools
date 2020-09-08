@@ -7,84 +7,116 @@ import '../../models/setup_icon.dart';
 import '../../models/user_interface.dart';
 import '../widgets/adaptive/alert_dialog.dart';
 import '../widgets/adaptive/button.dart';
-import 'chess_grid.dart';
+import '../widgets/adaptive/slider.dart';
+import 'transparency_grid.dart';
 
-class BaseIconPreview extends StatelessWidget {
-  final bool supportTransparancy, canChangeShape, isAdaptive;
+class IconPreview extends StatelessWidget {
+  final int cornerRadius, platformID;
 
-  const BaseIconPreview({
-    Key key,
-    this.supportTransparancy = true,
-    this.canChangeShape = false,
-    this.isAdaptive = false,
-  }) : super(key: key);
-  static const _topRadius = Radius.circular(42);
-  static const _bottomRadius = Radius.circular(10);
+  const IconPreview({Key key, this.cornerRadius, this.platformID}) : super(key: key);
+
+  const IconPreview.newAndroid({this.cornerRadius}) : platformID = 0;
+
+  const IconPreview.oldAndroid({this.cornerRadius}) : platformID = 1;
+
+  const IconPreview.iOS()
+      : cornerRadius = 39,
+        platformID = 2;
+
+  const IconPreview.web()
+      : cornerRadius = 0,
+        platformID = 3;
+
+  const IconPreview.windows()
+      : cornerRadius = 0,
+        platformID = 4;
+
+  const IconPreview.linux()
+      : cornerRadius = 0,
+        platformID = 5;
+
+  const IconPreview.macOS()
+      : cornerRadius = 0,
+        platformID = 6;
+
+  // const IconPreview.fuchsiaOS()
+  //     : cornerRadius = 20,
+  //       platformID = 7;
+
+  double get _staticCornerRadius => cornerRadius.toDouble();
+
+  bool get _canChangeShape => cornerRadius == null;
+
+  bool get _isAdaptive => platformID == 0;
+
+  bool get _supportTransparency => platformID != 2;
 
   @override
-  Widget build(BuildContext context) => Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            clipBehavior: Clip.hardEdge,
-            height: 240,
+  Widget build(BuildContext context) {
+    // ignore: avoid_types_on_closure_parameters
+    final double _cornerRadius = context.select((SetupIcon icon) => icon.cornerRadius);
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        if (_canChangeShape)
+          SizedBox(
             width: 240,
-            decoration: const BoxDecoration(color: Colors.grey, borderRadius: BorderRadius.all(_topRadius)),
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                const ChessGrid(),
-                // Container(height: 220, width: 220, color: Colors.amber),
-                Container(
-                    clipBehavior: Clip.antiAlias,
-                    height: 220,
-                    width: 220,
-                    decoration: BoxDecoration(
-                      color: supportTransparancy ? Colors.transparent : Colors.black,
-                      borderRadius: BorderRadius.all(Radius.circular(canChangeShape ? 11 : 39)),
-                      // boxShadow: [
-                      //   BoxShadow(
-                      //       color: canChangeShape ? Colors.transparent : Colors.black12,
-                      //       blurRadius: 4,
-                      //       offset: const Offset(0, 2))
-                      // ],
-                    ),
-                    child: context.watch<SetupIcon>().icon)
-              ],
-            ),
-          ),
-          Container(
-            // clipBehavior: Clip.hardEdge,
-            height: 60,
-            width: 240,
-            decoration: const BoxDecoration(
-                color: Colors.transparent,
-                borderRadius: BorderRadius.only(bottomLeft: _bottomRadius, bottomRight: _bottomRadius)),
-            child: AdaptiveButton(
-              text: 'Background',
-              onPressed: () => showDialog<void>(
-                barrierDismissible: true,
-                context: context,
-                builder: (context) => SingleChildScrollView(
-                  child: AdaptiveDialog(
-                    title: 'Icon Background Color',
-                    leftButton: 'Remove',
-                    rightButton: 'Add Background',
-                    onPressedLeft: () => print('Pressed Left Button'),
-                    onPressedRight: () => print('Pressed Right Button'),
-                    content: ColorPicker(
-                        pickerColor: const Color(0xFF418581),
-                        onColorChanged: (_newColor) => print(_newColor.toString()),
-                        pickerAreaHeightPercent: 0.8,
-                        displayThumbColor: true,
-                        portraitOnly: UserInterface.isApple,
-                        enableAlpha: supportTransparancy,
-                        showLabel: !UserInterface.isApple),
-                  ),
-                ),
-              ),
-            ),
+            child: AdaptiveSlider(
+                value: _cornerRadius,
+                label: _cornerRadius.round().toString(),
+                onChanged: (_newRadius) => context.read<SetupIcon>().setRadius(_newRadius)),
           )
-        ],
-      );
+        else
+          const SizedBox(height: 42),
+        Container(
+          clipBehavior: Clip.hardEdge,
+          height: 220,
+          width: 220,
+          decoration: BoxDecoration(
+              color: Colors.grey,
+              borderRadius: BorderRadius.all(Radius.circular(_canChangeShape ? _cornerRadius : _staticCornerRadius))),
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              const TransparencyGrid(),
+              Container(
+                  color: _supportTransparency ? Colors.transparent : Colors.black,
+                  child: context.watch<SetupIcon>().icon)
+            ],
+          ),
+        ),
+        Container(
+          height: 72,
+          width: 240,
+          color: Colors.transparent,
+          child: AdaptiveButton(
+            text: 'Background',
+            onPressed: () => _isAdaptive
+                ? print('Upload Adaptive Background')
+                : showDialog<void>(
+                    barrierDismissible: true,
+                    context: context,
+                    builder: (context) => SingleChildScrollView(
+                      child: AdaptiveDialog(
+                        title: 'Icon Background Color',
+                        leftButton: 'Remove',
+                        rightButton: 'Add Background',
+                        onPressedLeft: () => print('Pressed Left Button'),
+                        onPressedRight: () => print('Pressed Right Button'),
+                        content: ColorPicker(
+                            pickerColor: const Color(0xFF418581),
+                            onColorChanged: (_newColor) => print(_newColor.toString()),
+                            pickerAreaHeightPercent: 0.8,
+                            displayThumbColor: true,
+                            portraitOnly: UserInterface.isApple,
+                            enableAlpha: _supportTransparency,
+                            showLabel: !UserInterface.isApple),
+                      ),
+                    ),
+                  ),
+          ),
+        ),
+      ],
+    );
+  }
 }

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class ChessGrid extends StatelessWidget {
-  const ChessGrid({Key key}) : super(key: key);
+class TransparencyGrid extends StatelessWidget {
+  const TransparencyGrid({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) => Opacity(
-        opacity: 0.1,
+        opacity: 0.2,
         child: GridView.builder(
             shrinkWrap: true,
             reverse: true,

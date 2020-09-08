@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:snapclip_pageview/snapclip_pageview.dart';
 
 import '../../models/setup_icon.dart';
-import '../platform_icons/base_icon.dart';
+import '../platform_icons/platforms_list.dart';
 import '../widgets/adaptive/scaffold_app_bar.dart';
 
 class SetupScreen extends StatelessWidget {
@@ -17,7 +17,7 @@ class SetupScreen extends StatelessWidget {
       child: SnapClipPageView(
         backgroundBuilder: _buildBackground,
         itemBuilder: _buildChild,
-        length: 2,
+        length: platformList.length,
         backgroundDecoration: BoxDecoration(
           gradient: LinearGradient(
               colors: [Colors.grey[600], Colors.transparent],
@@ -37,8 +37,8 @@ PageViewItem _buildChild(BuildContext context, int index) => PageViewItem(
     buildDecoration: _decoration,
     padding: const EdgeInsets.all(0),
     margin: const EdgeInsets.all(40),
-    height: 300,
+    height: 340,
     index: index,
-    child: const BaseIconPreview());
+    child: platformList[index]);
 
 Decoration _decoration(double _) => const BoxDecoration(color: Colors.transparent);
