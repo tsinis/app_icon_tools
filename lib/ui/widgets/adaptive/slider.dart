@@ -6,11 +6,11 @@ import '../../../models/user_interface.dart';
 class AdaptiveSlider extends StatelessWidget {
   final double value;
   final Function(double) onChanged;
-  final String label;
+  // final String label;
 
-  const AdaptiveSlider({Key key, this.value, this.onChanged, this.label}) : super(key: key);
+  const AdaptiveSlider({Key key, this.value, this.onChanged}) : super(key: key);
   @override
   Widget build(BuildContext context) => UserInterface.isApple
       ? CupertinoSlider(value: value, onChanged: onChanged, min: 0, max: 110, divisions: 11)
-      : Slider(label: label, value: value, onChanged: onChanged, min: 0, max: 110, divisions: 11);
+      : Slider(value: value, onChanged: onChanged, min: 0, max: 110, divisions: 11);
 }

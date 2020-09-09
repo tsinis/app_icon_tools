@@ -19,4 +19,16 @@ class SetupIcon extends ChangeNotifier {
   }
 
   double get cornerRadius => _iconShapeRadius;
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  PageController _pageController;
+  PageController get pageController => _pageController;
+  void initState() => _pageController = PageController(viewportFraction: 0.75);
+  void goTo(int platformID) =>
+      _pageController.animateToPage(platformID, duration: const Duration(seconds: 1), curve: Curves.linearToEaseOut);
 }

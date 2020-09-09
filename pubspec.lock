@@ -308,13 +308,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
-  snapclip_pageview:
-    dependency: "direct main"
-    description:
-      name: snapclip_pageview
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.1"
   typed_data:
     dependency: transitive
     description:

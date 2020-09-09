@@ -63,7 +63,7 @@ class IconPreview extends StatelessWidget {
             width: 240,
             child: AdaptiveSlider(
                 value: _cornerRadius,
-                label: _cornerRadius.round().toString(),
+                // label: _cornerRadius.round().toString(),
                 onChanged: (_newRadius) => context.read<SetupIcon>().setRadius(_newRadius)),
           )
         else
@@ -92,7 +92,7 @@ class IconPreview extends StatelessWidget {
           child: AdaptiveButton(
             text: 'Background',
             onPressed: () => _isAdaptive
-                ? print('Upload Adaptive Background')
+                ? context.read<SetupIcon>().goTo(3)
                 : showDialog<void>(
                     barrierDismissible: true,
                     context: context,
