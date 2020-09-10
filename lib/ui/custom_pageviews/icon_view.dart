@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/setup_icon.dart';
@@ -12,8 +13,6 @@ class SnapClipPageView extends StatefulWidget {
     @required this.itemBuilder,
     @required this.length,
     Key key,
-    this.onPageChanged,
-    this.initialIndex = 1,
     this.backgroundDecoration = const BoxDecoration(
       gradient: LinearGradient(
           colors: [Colors.white, Colors.transparent],
@@ -24,7 +23,6 @@ class SnapClipPageView extends StatefulWidget {
   }) : super(key: key);
 
   final Decoration backgroundDecoration;
-  final int initialIndex;
   final int length;
 
   @override
@@ -33,8 +31,6 @@ class SnapClipPageView extends StatefulWidget {
   final BackgroundWidget Function(BuildContext context, int index) backgroundBuilder;
 
   final PageViewItem Function(BuildContext context, int index) itemBuilder;
-
-  final void Function(int index) onPageChanged;
 }
 
 class _SnapClipPageViewState extends State<SnapClipPageView> {
@@ -48,7 +44,7 @@ class _SnapClipPageViewState extends State<SnapClipPageView> {
 
   @override
   void dispose() {
-    iconProvider.pageController.dispose();
+    iconProvider.disposeController();
     super.dispose();
   }
 
@@ -64,10 +60,32 @@ class _SnapClipPageViewState extends State<SnapClipPageView> {
           Stack(children: List.generate(widget.length, (index) => widget.backgroundBuilder(context, index))),
           Positioned.fill(child: Container(decoration: widget.backgroundDecoration)),
           PageView.builder(
-              onPageChanged: widget.onPageChanged,
+              onPageChanged: iconProvider.setPlatform,
               controller: iconProvider.pageController,
               itemCount: widget.length,
               itemBuilder: widget.itemBuilder),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: GNav(
+                gap: 8,
+                activeColor: Colors.white,
+                iconSize: 24,
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                tabBackgroundColor: Colors.grey[800],
+                tabs: [
+                  GButton(icon: Icons.home, text: 'Android'),
+                  GButton(icon: Icons.star, text: 'Android 8+'),
+                  GButton(icon: Icons.search, text: 'iOS'),
+                  GButton(icon: Icons.supervised_user_circle, text: 'Web'),
+                  GButton(icon: Icons.star, text: 'Windows'),
+                  GButton(icon: Icons.search, text: 'Linux'),
+                  GButton(icon: Icons.supervised_user_circle, text: 'macOS'),
+                  // GButton(icon: Icons.supervised_user_circle, text: 'Fuchsia OS'),
+                ],
+                selectedIndex: iconProvider.platformID,
+                // ignore: avoid_types_on_closure_parameters
+                onTabChange: iconProvider.goTo),
+          ),
         ],
       );
 }

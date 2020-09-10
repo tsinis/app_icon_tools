@@ -20,15 +20,28 @@ class SetupIcon extends ChangeNotifier {
 
   double get cornerRadius => _iconShapeRadius;
 
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
-
   PageController _pageController;
   PageController get pageController => _pageController;
   void initState() => _pageController = PageController(viewportFraction: 0.75);
-  void goTo(int platformID) =>
-      _pageController.animateToPage(platformID, duration: const Duration(seconds: 1), curve: Curves.linearToEaseOut);
+  int _platformID = 0;
+  int get platformID => _platformID;
+  void disposeController() {
+    _platformID = 0;
+    _pageController.dispose();
+  }
+
+  void setPlatform(int _draggedPlatformID) {
+    if (_draggedPlatformID != _platformID) {
+      _platformID = _draggedPlatformID;
+      notifyListeners();
+    }
+  }
+
+  void goTo(int _selectedPlatformID) {
+    if (_selectedPlatformID != _platformID) {
+      _platformID = _selectedPlatformID;
+      notifyListeners();
+      _pageController.animateToPage(_platformID, duration: const Duration(milliseconds: 600), curve: Curves.ease);
+    }
+  }
 }

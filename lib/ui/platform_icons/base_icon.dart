@@ -54,7 +54,7 @@ class IconPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // ignore: avoid_types_on_closure_parameters
-    final double _cornerRadius = context.select((SetupIcon icon) => icon.cornerRadius);
+    final double _androidCornerRadius = context.select((SetupIcon icon) => icon.cornerRadius);
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -62,8 +62,8 @@ class IconPreview extends StatelessWidget {
           SizedBox(
             width: 240,
             child: AdaptiveSlider(
-                value: _cornerRadius,
-                // label: _cornerRadius.round().toString(),
+                value: _androidCornerRadius,
+                // label: _androidCornerRadius.round().toString(),
                 onChanged: (_newRadius) => context.read<SetupIcon>().setRadius(_newRadius)),
           )
         else
@@ -74,7 +74,8 @@ class IconPreview extends StatelessWidget {
           width: 220,
           decoration: BoxDecoration(
               color: Colors.grey,
-              borderRadius: BorderRadius.all(Radius.circular(_canChangeShape ? _cornerRadius : _staticCornerRadius))),
+              borderRadius:
+                  BorderRadius.all(Radius.circular(_canChangeShape ? _androidCornerRadius : _staticCornerRadius))),
           child: Stack(
             alignment: Alignment.center,
             children: [

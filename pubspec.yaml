@@ -26,8 +26,9 @@ dependencies:
   url_launcher: ^5.5.2
   shared_preferences: ^0.5.10
   shared_preferences_web: ^0.1.2+7
-  # snapclip_pageview: ^0.0.1
+  snapclip_pageview: ^0.0.1
   flutter_colorpicker: ^0.3.4
+  google_nav_bar: ^3.0.0
 
 dev_dependencies:
   pedantic: any
