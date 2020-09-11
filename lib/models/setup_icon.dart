@@ -22,13 +22,13 @@ class SetupIcon extends ChangeNotifier {
 
   PageController _pageController;
   PageController get pageController => _pageController;
-  void initState() => _pageController = PageController(viewportFraction: 0.75);
+  void initState() {
+    _platformID = 0;
+    _pageController = PageController(viewportFraction: 0.75);
+  }
+
   int _platformID = 0;
   int get platformID => _platformID;
-  void disposeController() {
-    _platformID = 0;
-    _pageController.dispose();
-  }
 
   void setPlatform(int _draggedPlatformID) {
     if (_draggedPlatformID != _platformID) {

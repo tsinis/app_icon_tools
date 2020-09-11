@@ -51,6 +51,7 @@ linter:
     avoid_as: false
     avoid_annotating_with_dynamic: false
     avoid_redundant_argument_values: false
+    avoid_types_on_closure_parameters: false
     comment_references: false
     diagnostic_describe_all_properties: false
     flutter_style_todos: false
@@ -212,7 +213,6 @@ linter:
     avoid_returning_null: true
     avoid_returning_this: true
     type_annotate_public_apis: true
-    avoid_types_on_closure_parameters: true
     avoid_private_typedef_functions: true
     avoid_positional_boolean_parameters: true
     hash_and_equals: true

@@ -1,10 +1,11 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/setup_icon.dart';
+import '../widgets/adaptive/platform_navigation_bar.dart';
 import 'background_view.dart';
 
 class SnapClipPageView extends StatefulWidget {
@@ -44,7 +45,7 @@ class _SnapClipPageViewState extends State<SnapClipPageView> {
 
   @override
   void dispose() {
-    iconProvider.disposeController();
+    iconProvider.pageController.dispose();
     super.dispose();
   }
 
@@ -64,28 +65,7 @@ class _SnapClipPageViewState extends State<SnapClipPageView> {
               controller: iconProvider.pageController,
               itemCount: widget.length,
               itemBuilder: widget.itemBuilder),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: GNav(
-                gap: 8,
-                activeColor: Colors.white,
-                iconSize: 24,
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                tabBackgroundColor: Colors.grey[800],
-                tabs: [
-                  GButton(icon: Icons.home, text: 'Android'),
-                  GButton(icon: Icons.star, text: 'Android 8+'),
-                  GButton(icon: Icons.search, text: 'iOS'),
-                  GButton(icon: Icons.supervised_user_circle, text: 'Web'),
-                  GButton(icon: Icons.star, text: 'Windows'),
-                  GButton(icon: Icons.search, text: 'Linux'),
-                  GButton(icon: Icons.supervised_user_circle, text: 'macOS'),
-                  // GButton(icon: Icons.supervised_user_circle, text: 'Fuchsia OS'),
-                ],
-                selectedIndex: iconProvider.platformID,
-                // ignore: avoid_types_on_closure_parameters
-                onTabChange: iconProvider.goTo),
-          ),
+          const AdaptiveNavgationBar(),
         ],
       );
 }

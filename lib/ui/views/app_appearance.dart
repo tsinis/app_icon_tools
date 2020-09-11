@@ -14,9 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     context.watch<UserInterface>().detectUISettings();
     //TODO: Add night/day theme switch.
-    // ignore: avoid_types_on_closure_parameters
     final Brightness _brightness = context.select((UserInterface ui) => ui.getTheme);
-    // ignore: avoid_types_on_closure_parameters
     final Locale _locale = Locale(context.select((UserInterface ui) => ui.locale));
 
     return UserInterface.isApple

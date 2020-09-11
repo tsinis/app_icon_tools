@@ -19,9 +19,7 @@ class DragAndDrop extends StatelessWidget {
   // static DropzoneViewController _controller;
   @override
   Widget build(BuildContext context) {
-    // ignore: avoid_types_on_closure_parameters
     final bool _isProperFile = context.select((UploadFile upload) => upload.isProperFile);
-    // ignore: avoid_types_on_closure_parameters
     final Brightness _brightness = context.select((UserInterface ui) => ui.getTheme);
     return FDottedLine(
       corner: FDottedLineCorner.all(20),
