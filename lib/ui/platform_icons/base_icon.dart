@@ -74,6 +74,7 @@ class IconPreview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double _androidCornerRadius = context.select((SetupIcon icon) => icon.cornerRadius);
+    final Color _backgroundColor = context.select((SetupIcon icon) => icon.backgroundColor);
     return Wrap(
         direction: Axis.vertical,
         crossAxisAlignment: WrapCrossAlignment.center,
@@ -105,7 +106,11 @@ class IconPreview extends StatelessWidget {
                   children: [
                     const TransparencyGrid(),
                     Container(
-                        color: _supportTransparency ? Colors.transparent : Colors.black,
+                        color: (_backgroundColor == null)
+                            ? _supportTransparency
+                                ? Colors.transparent
+                                : Colors.black
+                            : _backgroundColor,
                         child: context.watch<SetupIcon>().icon)
                   ],
                 ),
@@ -113,6 +118,7 @@ class IconPreview extends StatelessWidget {
             ],
           ),
           Container(
+            padding: const EdgeInsets.only(bottom: 10),
             height: 72,
             width: 240,
             color: Colors.transparent,
@@ -127,16 +133,16 @@ class IconPreview extends StatelessWidget {
                         child: AdaptiveDialog(
                           title: 'Icon Background Color',
                           leftButton: 'Remove',
-                          rightButton: 'Add Background',
-                          onPressedLeft: () => print('Pressed Left Button'),
-                          onPressedRight: () => print('Pressed Right Button'),
+                          // rightButton: 'Add Background',
+                          onPressedLeft: () => context.read<SetupIcon>().removeColor(),
+                          // onPressedRight: () => print('Pressed Right Button'),
                           content: ColorPicker(
-                              pickerColor: const Color(0xFF418581),
-                              onColorChanged: (_newColor) => print(_newColor.toString()),
+                              pickerColor: const Color(0xFF000000),
+                              onColorChanged: (_newColor) => context.read<SetupIcon>().setBackgroundColor(_newColor),
                               pickerAreaHeightPercent: 0.8,
                               displayThumbColor: true,
                               portraitOnly: UserInterface.isApple,
-                              enableAlpha: _supportTransparency,
+                              enableAlpha: false, //TODO: Change to _supportTransparency sometime later.
                               showLabel: !UserInterface.isApple),
                         ),
                       ),

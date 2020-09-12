@@ -16,27 +16,43 @@ class AdaptiveNavgationBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final int _selectedPlatform = context.select((SetupIcon icon) => icon.platformID);
     final bool _isSmallScreen = MediaQuery.of(context).size.width < 600;
-    return UserInterface.isApple
-        ? CupertinoSlidingSegmentedControl<int>(
-            onValueChanged: context.watch<SetupIcon>().goTo,
-            children: {},
-          )
-        : OverflowBox(
-            alignment: Alignment.bottomCenter,
-            maxWidth: 500,
-            child: GNav(
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: ConstrainedBox(
+        constraints: BoxConstraints(maxWidth: UserInterface.isApple ? 860 : 500),
+        child: UserInterface.isApple
+            ? Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: CupertinoSlidingSegmentedControl<int>(
+                  onValueChanged: context.watch<SetupIcon>().goTo,
+                  groupValue: _selectedPlatform,
+                  backgroundColor: Colors.amber,
+                  padding: const EdgeInsets.all(5),
+                  children: {
+                    for (IconPreview platform in platformList)
+                      platformList.indexOf(platform): _isSmallScreen
+                          ? Icon(platform.icon)
+                          : Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [Icon(platform.icon), const SizedBox(width: 5), Text(platform.name)])
+                  },
+                ),
+              )
+            : GNav(
                 onTabChange: context.watch<SetupIcon>().goTo,
                 gap: 4,
-                tabMargin: const EdgeInsets.only(bottom: 10),
+                tabMargin: const EdgeInsets.only(bottom: 20),
                 activeColor: Colors.white,
                 iconSize: 24,
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 tabBackgroundColor: Colors.grey[800],
                 selectedIndex: _selectedPlatform,
                 tabs: [
-                  for (IconPreview platform in platformList)
-                    GButton(icon: platform.icon, text: _isSmallScreen ? '' : platform.name),
-                ]),
-          );
+                    for (IconPreview platform in platformList)
+                      GButton(icon: platform.icon, text: _isSmallScreen ? '' : platform.name),
+                  ]),
+      ),
+    );
   }
 }

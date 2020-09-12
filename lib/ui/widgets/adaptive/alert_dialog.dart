@@ -11,7 +11,7 @@ class AdaptiveDialog extends StatelessWidget {
   final Widget content;
   @required
   final String title, leftButton, rightButton;
-  final Function() onPressedLeft, onPressedRight;
+  final void Function() onPressedLeft, onPressedRight;
   @override
   Widget build(BuildContext context) => UserInterface.isApple
       ? CupertinoAlertDialog(
@@ -20,7 +20,7 @@ class AdaptiveDialog extends StatelessWidget {
           content: content,
           actions: <CupertinoDialogAction>[
             CupertinoDialogAction(isDestructiveAction: true, onPressed: onPressedLeft, child: Text(leftButton)),
-            CupertinoDialogAction(isDefaultAction: true, onPressed: onPressedRight, child: Text(rightButton)),
+            // CupertinoDialogAction(isDefaultAction: true, onPressed: onPressedRight, child: Text(rightButton)),
           ],
         )
       : AlertDialog(
@@ -31,7 +31,7 @@ class AdaptiveDialog extends StatelessWidget {
             TextButton(
                 onPressed: onPressedLeft,
                 child: Text(leftButton.toUpperCase(), style: const TextStyle(color: Colors.red))),
-            TextButton(onPressed: onPressedRight, child: Text(rightButton.toUpperCase()))
+            // TextButton(onPressed: onPressedRight, child: Text(rightButton.toUpperCase()))
           ],
           content: content);
 }
