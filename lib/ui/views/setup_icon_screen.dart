@@ -37,7 +37,7 @@ class SetupScreen extends StatelessWidget {
       buildDecoration: _decoration,
       padding: const EdgeInsets.all(0),
       margin: const EdgeInsets.all(40),
-      height: 350,
+      height: 340,
       index: index,
       child: platformList[index]);
 

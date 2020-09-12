@@ -71,10 +71,13 @@ class IconPreview extends StatelessWidget {
 
   bool get _supportTransparency => platformID != 2;
 
+  static const Color _pickColor = Color(0xFF418183);
+
   @override
   Widget build(BuildContext context) {
     final double _androidCornerRadius = context.select((SetupIcon icon) => icon.cornerRadius);
     final Color _backgroundColor = context.select((SetupIcon icon) => icon.backgroundColor);
+    final bool _colorNotSet = _backgroundColor == null;
     return Wrap(
         direction: Axis.vertical,
         crossAxisAlignment: WrapCrossAlignment.center,
@@ -106,7 +109,7 @@ class IconPreview extends StatelessWidget {
                   children: [
                     const TransparencyGrid(),
                     Container(
-                        color: (_backgroundColor == null)
+                        color: _colorNotSet
                             ? _supportTransparency
                                 ? Colors.transparent
                                 : Colors.black
@@ -118,26 +121,32 @@ class IconPreview extends StatelessWidget {
             ],
           ),
           Container(
-            padding: const EdgeInsets.only(bottom: 10),
+            // padding: const EdgeInsets.only(bottom: 10),
             height: 72,
             width: 240,
             color: Colors.transparent,
             child: AdaptiveButton(
               text: 'Background',
-              onPressed: () => _isAdaptive
-                  ? context.read<SetupIcon>().goTo(3)
-                  : showDialog<void>(
-                      barrierDismissible: true,
-                      context: context,
-                      builder: (context) => SingleChildScrollView(
+              onPressed: () {
+                if (_isAdaptive) {
+                  print('Adaptive Background Pressed'); //TODO Add Adaptive Background func.
+                } else {
+                  if (_colorNotSet) {
+                    context.read<SetupIcon>().setBackgroundColor(_pickColor);
+                  }
+                  showDialog<void>(
+                    barrierDismissible: true,
+                    context: context,
+                    builder: (context) {
+                      return SingleChildScrollView(
                         child: AdaptiveDialog(
                           title: 'Icon Background Color',
                           leftButton: 'Remove',
-                          // rightButton: 'Add Background',
+                          rightButton: 'OK',
                           onPressedLeft: () => context.read<SetupIcon>().removeColor(),
-                          // onPressedRight: () => print('Pressed Right Button'),
+                          onPressedRight: () => Navigator.pop(context),
                           content: ColorPicker(
-                              pickerColor: const Color(0xFF000000),
+                              pickerColor: _colorNotSet ? _pickColor : _backgroundColor,
                               onColorChanged: (_newColor) => context.read<SetupIcon>().setBackgroundColor(_newColor),
                               pickerAreaHeightPercent: 0.8,
                               displayThumbColor: true,
@@ -145,8 +154,11 @@ class IconPreview extends StatelessWidget {
                               enableAlpha: false, //TODO: Change to _supportTransparency sometime later.
                               showLabel: !UserInterface.isApple),
                         ),
-                      ),
-                    ),
+                      );
+                    },
+                  );
+                }
+              },
             ),
           ),
         ]);

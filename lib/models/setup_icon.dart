@@ -12,13 +12,13 @@ class SetupIcon extends ChangeNotifier {
     if (_backgroundColor != _newColor) {
       _backgroundColor = _newColor;
       notifyListeners();
-      _navigationService.goBack();
     }
   }
 
   void removeColor() {
     _backgroundColor = null;
     notifyListeners();
+    _navigationService.goBack();
   }
 
   Image _icon;
@@ -44,7 +44,8 @@ class SetupIcon extends ChangeNotifier {
   void initState() {
     _platformID = 0;
     _pageController = PageController(viewportFraction: 0.75);
-    // _pageController.jumpTo(2);
+    //TODO Check this workaround fix.
+    WidgetsBinding.instance.addPostFrameCallback((_) => _pageController.jumpTo(1));
   }
 
   int _platformID = 0;

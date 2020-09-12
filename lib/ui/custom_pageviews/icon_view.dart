@@ -53,8 +53,6 @@ class _SnapClipPageViewState extends State<SnapClipPageView> {
   void initState() {
     context.read<SetupIcon>().initState();
     super.initState();
-    //TODO Check this workaround fix.
-    WidgetsBinding.instance.addPostFrameCallback((_) => iconProvider.pageController.jumpTo(1));
   }
 
   @override
