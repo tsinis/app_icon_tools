@@ -9,59 +9,69 @@ import '../../models/user_interface.dart';
 import '../widgets/adaptive/alert_dialog.dart';
 import '../widgets/adaptive/button.dart';
 import '../widgets/adaptive/slider.dart';
-import 'transparency_grid.dart';
+import 'icon.dart';
 
 class IconPreview extends StatelessWidget {
   final int cornerRadius, platformID;
-  final String name;
+  final String name, devicePicture;
   final IconData icon;
 
-  const IconPreview(this.platformID, this.name, this.icon, {Key key, this.cornerRadius}) : super(key: key);
+  const IconPreview(this.platformID, this.name, this.icon, this.devicePicture, {Key key, this.cornerRadius})
+      : super(key: key);
 
   const IconPreview.newAndroid({this.cornerRadius})
       : platformID = 0,
         name = 'Android',
-        icon = Icons.android_outlined;
+        icon = Icons.android_outlined,
+        devicePicture = 'platform_svgs/nexus.svg';
 
   const IconPreview.oldAndroid({this.cornerRadius})
       : platformID = 1,
         name = 'Android 8+',
-        icon = CommunityMaterialIcons.android;
+        icon = CommunityMaterialIcons.android,
+        devicePicture = 'platform_svgs/pixel.svg';
 
   const IconPreview.iOS()
       : cornerRadius = 39,
         platformID = 2,
         name = 'iOS',
-        icon = CommunityMaterialIcons.apple_ios;
+        icon = CommunityMaterialIcons.apple_ios,
+        devicePicture = 'platform_svgs/iphonex.svg';
 
   const IconPreview.web()
       : cornerRadius = 0,
         platformID = 3,
         name = 'Web',
-        icon = CommunityMaterialIcons.google_chrome;
+        icon = CommunityMaterialIcons.google_chrome,
+        devicePicture = 'platform_svgs/nexus.svg';
 
   const IconPreview.windows()
       : cornerRadius = 0,
         platformID = 4,
         name = 'Windows',
-        icon = CommunityMaterialIcons.microsoft_windows;
-
-  const IconPreview.linux()
-      : cornerRadius = 0,
-        platformID = 5,
-        name = 'Linux',
-        icon = CommunityMaterialIcons.linux;
+        icon = CommunityMaterialIcons.microsoft_windows,
+        devicePicture = 'platform_svgs/pixel.svg';
 
   const IconPreview.macOS()
       : cornerRadius = 0,
-        platformID = 6,
+        platformID = 5,
         name = 'macOS',
-        icon = CommunityMaterialIcons.apple;
+        icon = CommunityMaterialIcons.apple,
+        devicePicture = 'platform_svgs/iphonex.svg';
+
+  const IconPreview.linux()
+      : cornerRadius = 0,
+        platformID = 6,
+        name = 'Linux',
+        icon = CommunityMaterialIcons.linux,
+        devicePicture = 'platform_svgs/iphonex.svg';
 
   // const IconPreview.fuchsiaOS()
   //     : cornerRadius = 20,
   //       platformID = 7,
-  //       name = 'Fuchsia';
+  //       name = 'Fuchsia',
+  //       icon = CommunityMaterialIcons.linux,
+  //       devicePicture = 'platform_svgs/iphonex.svg';
 
   double get _staticCornerRadius => cornerRadius.toDouble();
 
@@ -104,19 +114,7 @@ class IconPreview extends StatelessWidget {
                     color: Colors.grey,
                     borderRadius: BorderRadius.all(
                         Radius.circular(_canChangeShape ? _androidCornerRadius : _staticCornerRadius))),
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    const TransparencyGrid(),
-                    Container(
-                        color: _colorNotSet
-                            ? _supportTransparency
-                                ? Colors.transparent
-                                : Colors.black
-                            : _backgroundColor,
-                        child: context.watch<SetupIcon>().icon)
-                  ],
-                ),
+                child: IconWithShape(supportTransparency: _supportTransparency),
               )
             ],
           ),

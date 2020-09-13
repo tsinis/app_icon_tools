@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:provider/provider.dart';
+import 'package:launcher_icons_gui/ui/platform_icons/icon.dart';
+import 'package:websafe_svg/websafe_svg.dart';
 
-import '../../models/setup_icon.dart';
 import '../custom_pageviews/background_view.dart';
 import '../custom_pageviews/icon_view.dart';
 import '../platform_icons/platforms_list.dart';
@@ -30,8 +30,26 @@ class SetupScreen extends StatelessWidget {
     );
   }
 
-  BackgroundWidget _buildBackground(BuildContext context, int index) =>
-      BackgroundWidget(index: index, child: FittedBox(fit: BoxFit.cover, child: context.watch<SetupIcon>().icon));
+  BackgroundWidget _buildBackground(BuildContext context, int index) => BackgroundWidget(
+        index: index,
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            WebsafeSvg.asset(
+              platformList[index].devicePicture,
+              fit: BoxFit.contain,
+              height: MediaQuery.of(context).size.height * 0.7,
+              width: MediaQuery.of(context).size.width * 0.7,
+            ),
+            Container(
+                height: MediaQuery.of(context).size.height * 0.06,
+                width: MediaQuery.of(context).size.width * 0.06,
+                clipBehavior: Clip.hardEdge,
+                decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(11))),
+                child: IconWithShape(onDevice: true, supportTransparency: platformList[index].platformID != 2)),
+          ],
+        ),
+      );
 
   PageViewItem _buildChild(BuildContext context, int index) => PageViewItem(
       buildDecoration: _decoration,

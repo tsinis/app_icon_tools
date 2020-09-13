@@ -1,4 +1,4 @@
-import 'base_icon.dart';
+import 'icon_preview.dart';
 
 const List<IconPreview> platformList = [
   IconPreview.newAndroid(),
@@ -6,7 +6,7 @@ const List<IconPreview> platformList = [
   IconPreview.iOS(),
   IconPreview.web(),
   IconPreview.windows(),
-  IconPreview.linux(),
   IconPreview.macOS(),
+  IconPreview.linux(),
 // IconPreview.fuchsiaOS()
 ];

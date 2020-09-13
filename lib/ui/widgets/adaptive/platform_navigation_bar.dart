@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 
 import '../../../models/setup_icon.dart';
 import '../../../models/user_interface.dart';
-import '../../platform_icons/base_icon.dart';
+import '../../platform_icons/icon_preview.dart';
 import '../../platform_icons/platforms_list.dart';
 
 class AdaptiveNavgationBar extends StatelessWidget {
