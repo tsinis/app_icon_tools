@@ -36,7 +36,7 @@ class IconPreview extends StatelessWidget {
         platformID = 2,
         name = 'iOS',
         icon = CommunityMaterialIcons.apple_ios,
-        devicePicture = 'platform_svgs/iphonex.svg';
+        devicePicture = 'platform_svgs/iphone.svg';
 
   const IconPreview.web()
       : cornerRadius = 0,
@@ -57,21 +57,21 @@ class IconPreview extends StatelessWidget {
         platformID = 5,
         name = 'macOS',
         icon = CommunityMaterialIcons.apple,
-        devicePicture = 'platform_svgs/iphonex.svg';
+        devicePicture = 'platform_svgs/macbook.svg';
 
   const IconPreview.linux()
       : cornerRadius = 0,
         platformID = 6,
         name = 'Linux',
         icon = CommunityMaterialIcons.linux,
-        devicePicture = 'platform_svgs/iphonex.svg';
+        devicePicture = 'platform_svgs/iphone.svg';
 
   // const IconPreview.fuchsiaOS()
   //     : cornerRadius = 20,
   //       platformID = 7,
   //       name = 'Fuchsia',
   //       icon = CommunityMaterialIcons.linux,
-  //       devicePicture = 'platform_svgs/iphonex.svg';
+  //       devicePicture = 'platform_svgs/iphone.svg';
 
   double get _staticCornerRadius => cornerRadius.toDouble();
 

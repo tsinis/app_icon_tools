@@ -32,22 +32,22 @@ class SetupScreen extends StatelessWidget {
 
   BackgroundWidget _buildBackground(BuildContext context, int index) => BackgroundWidget(
         index: index,
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            WebsafeSvg.asset(
-              platformList[index].devicePicture,
-              fit: BoxFit.contain,
-              height: MediaQuery.of(context).size.height * 0.7,
-              width: MediaQuery.of(context).size.width * 0.7,
+        child: Transform.scale(
+          alignment: const Alignment(0, -0.7),
+          scale: 0.7,
+          child: FittedBox(
+            fit: BoxFit.contain,
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                WebsafeSvg.asset(platformList[index].devicePicture, fit: BoxFit.contain, height: 640),
+                SizedBox(
+                    height: 40,
+                    width: 40,
+                    child: IconWithShape(onDevice: true, supportTransparency: platformList[index].platformID != 2)),
+              ],
             ),
-            Container(
-                height: MediaQuery.of(context).size.height * 0.06,
-                width: MediaQuery.of(context).size.width * 0.06,
-                clipBehavior: Clip.hardEdge,
-                decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(11))),
-                child: IconWithShape(onDevice: true, supportTransparency: platformList[index].platformID != 2)),
-          ],
+          ),
         ),
       );
 

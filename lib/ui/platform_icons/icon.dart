@@ -21,11 +21,14 @@ class IconWithShape extends StatelessWidget {
       children: [
         if (!_onDevice) const TransparencyGrid(),
         Container(
-            color: _colorNotSet
-                ? _supportTransparency
-                    ? Colors.transparent
-                    : Colors.black
-                : _backgroundColor,
+            clipBehavior: Clip.hardEdge,
+            decoration: BoxDecoration(
+                color: _colorNotSet
+                    ? _supportTransparency
+                        ? Colors.transparent
+                        : Colors.black
+                    : _backgroundColor,
+                borderRadius: BorderRadius.all(Radius.circular(_onDevice ? 7 : 0))),
             child: context.watch<SetupIcon>().icon)
       ],
     );
