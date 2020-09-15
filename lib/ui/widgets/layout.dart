@@ -20,7 +20,7 @@ class PreviewLayout extends StatelessWidget {
           heightFactor: 0.9,
           child: Row(
               mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.baseline,
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: children),
         );

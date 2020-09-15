@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:local_hero/local_hero.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/setup_icon.dart';
@@ -21,15 +22,19 @@ class IconWithShape extends StatelessWidget {
       children: [
         if (!_onDevice) const TransparencyGrid(),
         Container(
-            clipBehavior: Clip.hardEdge,
-            decoration: BoxDecoration(
-                color: _colorNotSet
-                    ? _supportTransparency
-                        ? Colors.transparent
-                        : Colors.black
-                    : _backgroundColor,
-                borderRadius: BorderRadius.all(Radius.circular(_onDevice ? 7 : 0))),
-            child: context.watch<SetupIcon>().icon)
+          clipBehavior: Clip.hardEdge,
+          decoration: BoxDecoration(
+              color: _colorNotSet
+                  ? _supportTransparency
+                      ? Colors.transparent
+                      : Colors.black
+                  : _backgroundColor,
+              borderRadius: BorderRadius.all(Radius.circular(_onDevice ? 7 : 0))),
+          child: LocalHero(
+            tag: 'tag',
+            child: context.watch<SetupIcon>().icon,
+          ),
+        )
       ],
     );
   }

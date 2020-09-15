@@ -23,6 +23,7 @@ dependencies:
   get_it: ^4.0.4
   google_nav_bar: ^3.0.0
   image: ^2.1.14
+  local_hero: ^0.1.0
   shared_preferences: ^0.5.10
   shared_preferences_web: ^0.1.2+7
   platform_info: ^2.0.1

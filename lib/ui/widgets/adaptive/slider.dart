@@ -11,6 +11,6 @@ class AdaptiveSlider extends StatelessWidget {
   const AdaptiveSlider({Key key, this.value, this.onChanged}) : super(key: key);
   @override
   Widget build(BuildContext context) => UserInterface.isApple
-      ? CupertinoSlider(value: value, onChanged: onChanged, min: 0, max: 110, divisions: 11)
-      : Slider(value: value, onChanged: onChanged, min: 0, max: 110, divisions: 11);
+      ? CupertinoSlider(value: value, onChanged: onChanged, min: 0, max: 150, divisions: 11)
+      : Slider(value: value, onChanged: onChanged, min: 0, max: 150, divisions: 11);
 }

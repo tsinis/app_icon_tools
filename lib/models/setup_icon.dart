@@ -30,7 +30,7 @@ class SetupIcon extends ChangeNotifier {
     }
   }
 
-  double _iconShapeRadius = 18.326;
+  double _iconShapeRadius = 25;
   double get cornerRadius => _iconShapeRadius;
   void setRadius(double _newRadius) {
     if (_newRadius != _iconShapeRadius) {
@@ -39,29 +39,19 @@ class SetupIcon extends ChangeNotifier {
     }
   }
 
-  PageController _pageController;
-  PageController get pageController => _pageController;
-  void initState() {
-    _platformID = 0;
-    _pageController = PageController(viewportFraction: 0.75);
-    //TODO Check this workaround fix.
-    WidgetsBinding.instance.addPostFrameCallback((_) => _pageController.jumpTo(1));
+  bool _devicePreview = false;
+  bool get devicePreview => _devicePreview;
+  void changePreview() {
+    _devicePreview = !_devicePreview;
+    notifyListeners();
   }
 
   int _platformID = 0;
   int get platformID => _platformID;
-  void setPlatform(int _draggedPlatformID) {
-    if (_draggedPlatformID != _platformID) {
-      _platformID = _draggedPlatformID;
+  void setPlatform(int _selectedPlatform) {
+    if (_selectedPlatform != _platformID) {
+      _platformID = _selectedPlatform;
       notifyListeners();
-    }
-  }
-
-  void goTo(int _selectedPlatformID) {
-    if (_selectedPlatformID != _platformID) {
-      _platformID = _selectedPlatformID;
-      notifyListeners();
-      _pageController.animateToPage(_platformID, duration: const Duration(milliseconds: 600), curve: Curves.ease);
     }
   }
 }

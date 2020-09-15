@@ -24,7 +24,7 @@ class AdaptiveNavgationBar extends StatelessWidget {
             ? Padding(
                 padding: const EdgeInsets.only(bottom: 10),
                 child: CupertinoSlidingSegmentedControl<int>(
-                  onValueChanged: context.watch<SetupIcon>().goTo,
+                  onValueChanged: (_) => print('Change Platform'),
                   groupValue: _selectedPlatform,
                   backgroundColor: Colors.amber,
                   padding: const EdgeInsets.all(5),
@@ -40,7 +40,7 @@ class AdaptiveNavgationBar extends StatelessWidget {
                 ),
               )
             : GNav(
-                onTabChange: context.watch<SetupIcon>().goTo,
+                onTabChange: () => print('Change Platform'),
                 gap: 4,
                 tabMargin: const EdgeInsets.only(bottom: 20),
                 activeColor: Colors.white,

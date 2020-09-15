@@ -1,44 +1,53 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:local_hero/local_hero.dart';
+import 'package:provider/provider.dart';
 import 'package:websafe_svg/websafe_svg.dart';
 
+import '../../models/setup_icon.dart';
 import '../platform_icons/icon.dart';
 import '../platform_icons/platforms_list.dart';
 import '../widgets/adaptive/scaffold_app_bar.dart';
-import '../widgets/layout.dart';
 
 class SetupScreen extends StatelessWidget {
-  const SetupScreen({Key key}) : super(key: key);
+  const SetupScreen({this.deviceID = 1, Key key}) : super(key: key);
+  @required
+  final int deviceID;
   @override
   Widget build(BuildContext context) {
-    final bool _portrait = MediaQuery.of(context).size.height > MediaQuery.of(context).size.width;
+    final bool _devicePreview = context.select((SetupIcon icon) => icon.devicePreview);
     // print('Second Screen build');
     return AdaptiveScaffold(
+        child: GestureDetector(
+      onTap: context.watch<SetupIcon>().changePreview,
+      child: LocalHeroScope(
+        duration: const Duration(seconds: 1),
+        // createRectTween: (begin, end) => CustomRectTween(a: begin, b: end),
+        curve: Curves.elasticOut,
         child: Center(
-      child: PreviewLayout(
-        portraitOrientation: _portrait,
-        children: [
-          platformList[1],
-          FittedBox(
-            fit: BoxFit.contain,
-            child: Row(
-              children: [
-                // const SizedBox(width: 60),
-                Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    WebsafeSvg.asset(platformList[0].devicePicture, fit: BoxFit.contain, height: 640),
-                    SizedBox(
-                        height: 40,
-                        width: 40,
-                        child: IconWithShape(onDevice: true, supportTransparency: platformList[1].platformID != 2)),
-                  ],
-                ),
-              ],
-            ),
-          )
-        ],
+          child: _devicePreview
+              ? FittedBox(
+                  fit: BoxFit.contain,
+                  child: Row(
+                    children: [
+                      // const SizedBox(width: 60),
+                      Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          WebsafeSvg.asset(platformList[deviceID].devicePicture, fit: BoxFit.contain, height: 640),
+                          SizedBox(
+                              height: 40,
+                              width: 40,
+                              child: IconWithShape(
+                                  onDevice: true, supportTransparency: platformList[deviceID].platformID != 2)),
+                        ],
+                      ),
+                    ],
+                  ),
+                )
+              : platformList[deviceID],
+        ),
       ),
     )
 
