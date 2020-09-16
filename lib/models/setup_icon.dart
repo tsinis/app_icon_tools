@@ -1,10 +1,10 @@
 import 'package:flutter/widgets.dart';
 
-import '../locator.dart';
-import '../services/navigation_service.dart';
+// import '../locator.dart';
+// import '../services/navigation_service.dart';
 
 class SetupIcon extends ChangeNotifier {
-  final NavigationService _navigationService = locator<NavigationService>();
+  // final NavigationService _navigationService = locator<NavigationService>();
 
   Color _backgroundColor;
   Color get backgroundColor => _backgroundColor;
@@ -18,7 +18,6 @@ class SetupIcon extends ChangeNotifier {
   void removeColor() {
     _backgroundColor = null;
     notifyListeners();
-    _navigationService.goBack();
   }
 
   Image _icon;

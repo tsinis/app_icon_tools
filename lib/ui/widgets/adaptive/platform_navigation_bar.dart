@@ -15,16 +15,16 @@ class AdaptiveNavgationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final int _selectedPlatform = context.select((SetupIcon icon) => icon.platformID);
-    final bool _isSmallScreen = MediaQuery.of(context).size.width < 600;
+    final bool _isSmallScreen = MediaQuery.of(context).size.width < (UserInterface.isApple ? 800 : 600);
     return Align(
       alignment: Alignment.bottomCenter,
       child: ConstrainedBox(
         constraints: BoxConstraints(maxWidth: UserInterface.isApple ? 860 : 500),
-        child: UserInterface.isApple
-            ? Padding(
-                padding: const EdgeInsets.only(bottom: 10),
-                child: CupertinoSlidingSegmentedControl<int>(
-                  onValueChanged: (_) => print('Change Platform'),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20),
+          child: UserInterface.isApple
+              ? CupertinoSlidingSegmentedControl<int>(
+                  onValueChanged: context.watch<SetupIcon>().setPlatform,
                   groupValue: _selectedPlatform,
                   backgroundColor: Colors.amber,
                   padding: const EdgeInsets.all(5),
@@ -37,21 +37,21 @@ class AdaptiveNavgationBar extends StatelessWidget {
                               mainAxisSize: MainAxisSize.min,
                               children: [Icon(platform.icon), const SizedBox(width: 5), Text(platform.name)])
                   },
-                ),
-              )
-            : GNav(
-                onTabChange: () => print('Change Platform'),
-                gap: 4,
-                tabMargin: const EdgeInsets.only(bottom: 20),
-                activeColor: Colors.white,
-                iconSize: 24,
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                tabBackgroundColor: Colors.grey[800],
-                selectedIndex: _selectedPlatform,
-                tabs: [
-                    for (IconPreview platform in platformList)
-                      GButton(icon: platform.icon, text: _isSmallScreen ? '' : platform.name),
-                  ]),
+                )
+              : GNav(
+                  onTabChange: context.watch<SetupIcon>().setPlatform,
+                  gap: 4,
+                  // tabMargin: const EdgeInsets.only(bottom: 20),
+                  activeColor: Colors.white,
+                  iconSize: 24,
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  tabBackgroundColor: Colors.grey[800],
+                  selectedIndex: _selectedPlatform,
+                  tabs: [
+                      for (IconPreview platform in platformList)
+                        GButton(icon: platform.icon, text: _isSmallScreen ? '' : platform.name),
+                    ]),
+        ),
       ),
     );
   }

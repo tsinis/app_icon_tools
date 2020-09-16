@@ -14,7 +14,7 @@ class InitialUploadScreen extends StatelessWidget {
           //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           //   crossAxisAlignment: CrossAxisAlignment.center,
           //   children: [
-          Center(child: DragAndDrop()),
+          Center(child: Hero(tag: 'global', child: DragAndDrop())),
       //   ],
       // ),
     );

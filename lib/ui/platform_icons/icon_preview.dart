@@ -6,9 +6,9 @@ import 'package:provider/provider.dart';
 
 import '../../models/setup_icon.dart';
 import '../../models/user_interface.dart';
-import '../widgets/adaptive/alert_dialog.dart';
 import '../widgets/adaptive/button.dart';
 import '../widgets/adaptive/slider.dart';
+import '../widgets/drag_and_drop.dart';
 import '../widgets/layout.dart';
 import 'icon.dart';
 
@@ -91,89 +91,71 @@ class IconPreview extends StatelessWidget {
     final bool _colorNotSet = _backgroundColor == null;
     final bool _portrait = MediaQuery.of(context).size.height > MediaQuery.of(context).size.width;
 
-    return PreviewLayout(portraitOrientation: _portrait, children: [
-      Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          if (_canChangeShape) const Text('Preview possible shapes') else const SizedBox(height: 20),
-          Container(
-            clipBehavior: Clip.hardEdge,
-            height: 300,
-            width: 300,
-            decoration: BoxDecoration(
-                color: Colors.grey,
-                borderRadius:
-                    BorderRadius.all(Radius.circular(_canChangeShape ? _androidCornerRadius : _staticCornerRadius))),
-            child: IconWithShape(supportTransparency: _supportTransparency),
-          ),
-          if (_canChangeShape)
-            SizedBox(
-              width: 240,
-              child: AdaptiveSlider(
-                  value: _androidCornerRadius,
-                  // label: _androidCornerRadius.round().toString(),
-                  onChanged: (_newRadius) => context.read<SetupIcon>().setRadius(_newRadius)),
-            )
-          else
-            const SizedBox(height: 42),
-          ...[
-            AdaptiveButton(
-                text: 'Remove Color', color: _backgroundColor, onPressed: () => context.read<SetupIcon>().removeColor())
-          ]
-        ],
-      ),
-      // if (!_portrait) ...[
-      Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Text('Icon Background Color'),
-          SizedBox(
+    return PreviewLayout(
+      portraitOrientation: _portrait,
+      children: [
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(_canChangeShape ? 'Preview possible shapes' : 'Icon Preview'),
+            Container(
+              clipBehavior: Clip.hardEdge,
+              height: 300,
               width: 300,
-              child: ColorPicker(
-                  pickerColor: _colorNotSet ? _pickColor : _backgroundColor,
-                  onColorChanged: (_newColor) => context.read<SetupIcon>().setBackgroundColor(_newColor),
-                  displayThumbColor: true,
-                  portraitOnly: true,
-                  enableAlpha: false, //TODO: Change to _supportTransparency sometime later.
-                  showLabel: !UserInterface.isApple)),
-        ],
-      )
-    ]
-        // else
-        //   Container(
-        //     // padding: const EdgeInsets.only(bottom: 10),
-        //     height: 72,
-        //     width: 240,
-        //     color: Colors.transparent,
-        //     child: AdaptiveButton(
-        //       text: 'Background',
-        //       onPressed: () {
-        //         if (_isAdaptive) {
-        //           print('Adaptive Background Pressed'); //TODO Add Adaptive Background func.
-        //         } else {
-        //           if (_colorNotSet) {
-        //             context.read<SetupIcon>().setBackgroundColor(_pickColor);
-        //           }
-        //           showDialog<void>(
-        //             barrierDismissible: true,
-        //             context: context,
-        //             builder: (context) => SingleChildScrollView(
-        //               child: AdaptiveDialog(
-        //                 title: 'Icon Background Color',
-        //                 leftButton: 'Remove',
-        //                 rightButton: 'OK',
-        //                 onPressedLeft: () => context.read<SetupIcon>().removeColor(),
-        //                 onPressedRight: () => Navigator.pop(context),
-        //                 content: _PickColor(
-        //                     colorNotSet: _colorNotSet, pickColor: _pickColor, backgroundColor: _backgroundColor),
-        //               ),
-        //             ),
-        //           );
-        //         }
-        //       },
-        //     ),
-        //   ),
-        // ]
-        );
+              decoration: BoxDecoration(
+                  color: Colors.grey,
+                  borderRadius:
+                      BorderRadius.all(Radius.circular(_canChangeShape ? _androidCornerRadius : _staticCornerRadius))),
+              child: IconWithShape(supportTransparency: _supportTransparency),
+            ),
+            if (_canChangeShape)
+              SizedBox(
+                width: 292,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Icon(CommunityMaterialIcons.square_outline),
+                    AdaptiveSlider(
+                        value: _androidCornerRadius,
+                        // label: _androidCornerRadius.round().toString(),
+                        onChanged: (_newRadius) => context.read<SetupIcon>().setRadius(_newRadius)),
+                    const Icon(CommunityMaterialIcons.circle_outline),
+                  ],
+                ),
+              )
+            else
+              const SizedBox(height: 48),
+            ...[
+              if (!_colorNotSet)
+                AdaptiveButton(
+                    text: 'Remove Color',
+                    color: _backgroundColor,
+                    onPressed: () => context.read<SetupIcon>().removeColor())
+              else
+                const SizedBox(height: 72)
+            ]
+          ],
+        ),
+        if (_isAdaptive)
+          const Hero(tag: 'global', child: DragAndDrop())
+        else
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text('Icon Background Color'),
+              SizedBox(
+                width: 300,
+                child: ColorPicker(
+                    pickerColor: _colorNotSet ? _pickColor : _backgroundColor,
+                    onColorChanged: (_newColor) => context.read<SetupIcon>().setBackgroundColor(_newColor),
+                    displayThumbColor: true,
+                    portraitOnly: true,
+                    enableAlpha: false, //TODO: Change to _supportTransparency sometime later.
+                    showLabel: !UserInterface.isApple),
+              ),
+            ],
+          ),
+      ],
+    );
   }
 }

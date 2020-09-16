@@ -31,7 +31,7 @@ class IconWithShape extends StatelessWidget {
                   : _backgroundColor,
               borderRadius: BorderRadius.all(Radius.circular(_onDevice ? 7 : 0))),
           child: LocalHero(
-            tag: 'tag',
+            tag: 'local',
             child: context.watch<SetupIcon>().icon,
           ),
         )
