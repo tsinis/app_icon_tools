@@ -24,9 +24,17 @@ class SetupIcon extends ChangeNotifier {
   Image get icon => _icon;
   set icon(Image _uploadedImage) {
     if (_uploadedImage != _icon) {
+      _background = null;
       _icon = _uploadedImage;
-      // notifyListeners();
+      notifyListeners();
     }
+  }
+
+  Image _background;
+  Image get background => _background;
+  set background(Image _uploadedImage) {
+    _background = _uploadedImage;
+    notifyListeners();
   }
 
   double _iconShapeRadius = 25;

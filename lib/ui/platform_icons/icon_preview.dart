@@ -78,7 +78,7 @@ class IconPreview extends StatelessWidget {
 
   bool get _canChangeShape => cornerRadius == null;
 
-  bool get _isAdaptive => platformID == 0;
+  bool get _isAdaptive => platformID == 1;
 
   bool get _supportTransparency => platformID != 2;
 
@@ -106,7 +106,7 @@ class IconPreview extends StatelessWidget {
                   color: Colors.grey,
                   borderRadius:
                       BorderRadius.all(Radius.circular(_canChangeShape ? _androidCornerRadius : _staticCornerRadius))),
-              child: IconWithShape(supportTransparency: _supportTransparency),
+              child: IconWithShape(supportTransparency: _supportTransparency, adaptiveBackground: platformID == 1),
             ),
             if (_canChangeShape)
               SizedBox(
@@ -137,7 +137,7 @@ class IconPreview extends StatelessWidget {
           ],
         ),
         if (_isAdaptive)
-          const Hero(tag: 'global', child: DragAndDrop())
+          Column(children: const [Text(''), Hero(tag: 'global', child: DragAndDrop(background: true))])
         else
           Column(
             mainAxisAlignment: MainAxisAlignment.center,

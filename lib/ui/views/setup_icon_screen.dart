@@ -18,6 +18,7 @@ class SetupScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final bool _devicePreview = context.select((SetupIcon icon) => icon.devicePreview);
     final int _selectedPlatform = context.select((SetupIcon icon) => icon.platformID);
+    final int id = platformList[_selectedPlatform].platformID;
 
     return AdaptiveScaffold(
         child: GestureDetector(
@@ -36,14 +37,14 @@ class SetupScreen extends StatelessWidget {
                         WebsafeSvg.asset(platformList[_selectedPlatform].devicePicture, height: 640),
                         SizedBox(
                           height: 40,
-                          width: (platformList[_selectedPlatform].platformID == 1 ||
-                                  platformList[_selectedPlatform].platformID == 2)
-                              ? 105
-                              : 40,
+                          width: (id == 1 || id == 2) ? 105 : 40,
                           child: Align(
                             alignment: Alignment.centerRight,
                             child: IconWithShape(
-                                onDevice: true, supportTransparency: platformList[_selectedPlatform].platformID != 2),
+                              onDevice: true,
+                              supportTransparency: id != 2,
+                              adaptiveBackground: id == 1,
+                            ),
                           ),
                         ),
                       ],

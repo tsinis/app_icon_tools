@@ -14,6 +14,7 @@ import '../ui/router.dart';
 
 class UploadFile extends ChangeNotifier {
   Image recivedImage;
+  Image recivedBackground;
 
   static const String _expectedFileExtension = 'png';
 
@@ -23,13 +24,14 @@ class UploadFile extends ChangeNotifier {
 
   bool get isProperFile => _isProperFile;
 
-  Future checkSelected() async =>
+  Future checkSelected({bool background = false}) async =>
       await FilePicker.getFile(type: FileType.custom, allowedExtensions: [_expectedFileExtension])
-          .then<void>(_checkFile);
+          .then<void>((_selectedFile) => _checkFile(_selectedFile, background));
 
-  Future checkDropped(dynamic _droppedFile) async => await _checkFile(_droppedFile);
+  Future checkDropped(dynamic _droppedFile, {bool background = false}) async =>
+      await _checkFile(_droppedFile, background);
 
-  Future _checkFile(dynamic _file) async {
+  Future _checkFile(dynamic _file, bool _background) async {
     _isProperFile = false;
     // print('Yupee! ${_file.runtimeType} is being checked.');
     try {
@@ -41,7 +43,10 @@ class UploadFile extends ChangeNotifier {
       // } else
       if (_file is File) {
         if (_properExtension(_file.name)) {
-          await _convertFileToImage(_file).then((_convertedImage) => recivedImage = _convertedImage).whenComplete(() {
+          await _convertFileToImage(_file)
+              .then((_convertedImage) =>
+                  _background ? recivedBackground = _convertedImage : recivedImage = _convertedImage)
+              .whenComplete(() {
             // print('Converted file to image and moving to the next screen!');
             _isProperFile = true;
           });
@@ -55,7 +60,11 @@ class UploadFile extends ChangeNotifier {
     } on Exception catch (_exception) {
       // print('Exception was: ${_exception.toString()}');
     }
-    await _notifyCheckResult();
+    if (_background) {
+      notifyListeners();
+    } else {
+      await _notifyCheckResult();
+    }
   }
 
   Future<void> _notifyCheckResult() async {
