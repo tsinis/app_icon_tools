@@ -24,16 +24,22 @@ class SetupIcon extends ChangeNotifier {
   Image get icon => _icon;
   set icon(Image _uploadedImage) {
     if (_uploadedImage != _icon) {
-      _background = null;
+      _adaptiveBackground = null;
       _icon = _uploadedImage;
       notifyListeners();
     }
   }
 
-  Image _background;
-  Image get background => _background;
-  set background(Image _uploadedImage) {
-    _background = _uploadedImage;
+  Image _adaptiveBackground;
+  Image get adaptiveBackground => _adaptiveBackground;
+  set adaptiveBackground(Image _uploadedImage) {
+    _adaptiveBackground = _uploadedImage;
+    notifyListeners();
+  }
+
+  bool haveAdaptiveBackground() => _adaptiveBackground != null;
+  void removeAdaptiveBackground() {
+    _adaptiveBackground = null;
     notifyListeners();
   }
 

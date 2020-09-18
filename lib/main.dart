@@ -15,7 +15,7 @@ void main() {
     ChangeNotifierProxyProvider<UploadFile, SetupIcon>(
       create: (_) => SetupIcon(),
       update: (_, uploadFile, setupIcon) {
-        setupIcon.background = uploadFile.recivedBackground;
+        setupIcon.adaptiveBackground = uploadFile.recivedBackground;
         return setupIcon..icon = uploadFile.recivedImage;
       },
     ),

@@ -43,7 +43,7 @@ class SetupScreen extends StatelessWidget {
                             child: IconWithShape(
                               onDevice: true,
                               supportTransparency: id != 2,
-                              adaptiveBackground: id == 1,
+                              adaptiveIcon: id == 1,
                             ),
                           ),
                         ),

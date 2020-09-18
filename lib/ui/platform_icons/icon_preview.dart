@@ -6,7 +6,8 @@ import 'package:provider/provider.dart';
 
 import '../../models/setup_icon.dart';
 import '../../models/user_interface.dart';
-import '../widgets/adaptive/button.dart';
+import '../widgets/adaptive/buttons/button.dart';
+import '../widgets/adaptive/buttons/icon_button.dart';
 import '../widgets/adaptive/slider.dart';
 import '../widgets/drag_and_drop.dart';
 import '../widgets/layout.dart';
@@ -88,6 +89,7 @@ class IconPreview extends StatelessWidget {
   Widget build(BuildContext context) {
     final double _androidCornerRadius = context.select((SetupIcon icon) => icon.cornerRadius);
     final Color _backgroundColor = context.select((SetupIcon icon) => icon.backgroundColor);
+    final bool _haveAdaptiveBackground = context.select((SetupIcon icon) => icon.haveAdaptiveBackground());
     final bool _colorNotSet = _backgroundColor == null;
     final bool _portrait = MediaQuery.of(context).size.height > MediaQuery.of(context).size.width;
 
@@ -106,7 +108,7 @@ class IconPreview extends StatelessWidget {
                   color: Colors.grey,
                   borderRadius:
                       BorderRadius.all(Radius.circular(_canChangeShape ? _androidCornerRadius : _staticCornerRadius))),
-              child: IconWithShape(supportTransparency: _supportTransparency, adaptiveBackground: platformID == 1),
+              child: IconWithShape(supportTransparency: _supportTransparency, adaptiveIcon: platformID == 1),
             ),
             if (_canChangeShape)
               SizedBox(
@@ -126,11 +128,26 @@ class IconPreview extends StatelessWidget {
             else
               const SizedBox(height: 48),
             ...[
-              if (!_colorNotSet)
+              if (!_colorNotSet && !_isAdaptive)
                 AdaptiveButton(
                     text: 'Remove Color',
                     color: _backgroundColor,
                     onPressed: () => context.read<SetupIcon>().removeColor())
+              else if (_isAdaptive)
+                ButtonBar(
+                  buttonAlignedDropdown: false,
+                  alignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    if (_haveAdaptiveBackground)
+                      AdaptiveButton(
+                          text: 'Remove Background',
+                          destructive: true,
+                          onPressed: () => context.read<SetupIcon>().removeAdaptiveBackground()),
+                    AdaptiveIconButton(
+                        withAdaptiveBackground: _haveAdaptiveBackground,
+                        onPressed: () => print('Testing Adaptive Background')), //TODO Add Adaptive animation.
+                  ],
+                )
               else
                 const SizedBox(height: 72)
             ]

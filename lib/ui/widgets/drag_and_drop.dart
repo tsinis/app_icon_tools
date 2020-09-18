@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 import '../../generated/l10n.dart';
 import '../../models/upload_file.dart';
 import '../../models/user_interface.dart';
-import 'adaptive/button.dart';
+import 'adaptive/buttons/button.dart';
 
 class DragAndDrop extends StatelessWidget {
   const DragAndDrop({
