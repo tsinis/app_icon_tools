@@ -45,14 +45,14 @@ class IconPreview extends StatelessWidget {
         platformID = 3,
         name = 'Web',
         icon = CommunityMaterialIcons.google_chrome,
-        devicePicture = 'platform_svgs/nexus.svg';
+        devicePicture = 'platform_svgs/chrome.svg';
 
   const IconPreview.windows()
       : cornerRadius = 0,
         platformID = 4,
         name = 'Windows',
         icon = CommunityMaterialIcons.microsoft_windows,
-        devicePicture = 'platform_svgs/pixel.svg';
+        devicePicture = 'platform_svgs/windows.svg';
 
   const IconPreview.macOS()
       : cornerRadius = 0,
