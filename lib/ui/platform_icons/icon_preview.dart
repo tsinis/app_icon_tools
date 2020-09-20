@@ -52,7 +52,7 @@ class IconPreview extends StatelessWidget {
         platformID = 4,
         name = 'Windows',
         icon = CommunityMaterialIcons.microsoft_windows,
-        devicePicture = 'platform_svgs/windows.svg';
+        devicePicture = 'platform_svgs/surface.svg';
 
   const IconPreview.macOS()
       : cornerRadius = 0,
@@ -66,7 +66,7 @@ class IconPreview extends StatelessWidget {
         platformID = 6,
         name = 'Linux',
         icon = CommunityMaterialIcons.linux,
-        devicePicture = 'platform_svgs/iphone.svg';
+        devicePicture = 'platform_svgs/ubuntu.svg';
 
   // const IconPreview.fuchsiaOS()
   //     : cornerRadius = 20,

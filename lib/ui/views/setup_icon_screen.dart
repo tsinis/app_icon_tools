@@ -31,27 +31,30 @@ class SetupScreen extends StatelessWidget {
             const SizedBox(height: 20),
             Expanded(
               child: _devicePreview
-                  ? Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        WebsafeSvg.asset(platformList[_selectedPlatform].devicePicture, height: 640),
-                        SizedBox(
-                          height: (id > 2) ? 21 : 40,
-                          width: (id == 1 || id == 2)
-                              ? 105
-                              : (id > 2)
-                                  ? 21
-                                  : 40,
-                          child: Align(
-                            alignment: Alignment.centerRight,
-                            child: IconWithShape(
-                              onDevice: true,
-                              supportTransparency: id != 2,
-                              adaptiveIcon: id == 1,
+                  ? FittedBox(
+                      fit: BoxFit.contain,
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          WebsafeSvg.asset(platformList[_selectedPlatform].devicePicture, height: 640),
+                          SizedBox(
+                            height: (id > 2) ? 21 : 40,
+                            width: (id == 1 || id == 2)
+                                ? 105
+                                : (id > 2)
+                                    ? 21
+                                    : 40,
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: IconWithShape(
+                                onDevice: true,
+                                supportTransparency: id != 2,
+                                adaptiveIcon: id == 1,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     )
                   : platformList[_selectedPlatform],
             ),
