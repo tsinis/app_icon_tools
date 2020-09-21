@@ -25,7 +25,7 @@ class IconPreview extends StatelessWidget {
       : platformID = 0,
         name = 'Android',
         icon = Icons.android_outlined,
-        devicePicture = 'platform_svgs/nexus.svg';
+        devicePicture = 'platform_svgs/nokia.svg';
 
   const IconPreview.oldAndroid({this.cornerRadius})
       : platformID = 1,
