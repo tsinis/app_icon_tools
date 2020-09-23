@@ -21,14 +21,16 @@ class IconPreview extends StatelessWidget {
   const IconPreview(this.platformID, this.name, this.icon, this.devicePicture, {Key key, this.cornerRadius})
       : super(key: key);
 
-  const IconPreview.newAndroid({this.cornerRadius})
-      : platformID = 0,
+  const IconPreview.oldAndroid()
+      : cornerRadius = 0,
+        platformID = 0,
         name = 'Android',
         icon = Icons.android_outlined,
         devicePicture = 'platform_svgs/nokia.svg';
 
-  const IconPreview.oldAndroid({this.cornerRadius})
-      : platformID = 1,
+  const IconPreview.newAndroid()
+      : cornerRadius = 800,
+        platformID = 1,
         name = 'Android 8+',
         icon = CommunityMaterialIcons.android,
         devicePicture = 'platform_svgs/pixel.svg';
@@ -77,7 +79,7 @@ class IconPreview extends StatelessWidget {
 
   double get _staticCornerRadius => cornerRadius.toDouble();
 
-  bool get _canChangeShape => cornerRadius == null;
+  bool get _canChangeShape => platformID == 0 || platformID == 1;
 
   bool get _isAdaptive => platformID == 1;
 

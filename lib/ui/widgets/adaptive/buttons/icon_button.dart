@@ -23,10 +23,10 @@ class AdaptiveIconButton extends StatelessWidget {
           color: Colors.blue,
           onPressed: onPressed,
           child: withAdaptiveBackground
-              ? const Icon(Icons.play_arrow)
-              : Text(
-                  text.toUpperCase(),
-                  style: const TextStyle(letterSpacing: 1.2),
+              ? const Padding(padding: EdgeInsets.symmetric(vertical: 7), child: Icon(Icons.play_arrow))
+              : Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+                  child: Text(text.toUpperCase(), style: const TextStyle(letterSpacing: 1.2)),
                 ),
         );
 }

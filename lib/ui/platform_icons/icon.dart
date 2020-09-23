@@ -6,13 +6,16 @@ import '../../models/setup_icon.dart';
 import 'transparency_grid.dart';
 
 class IconWithShape extends StatelessWidget {
-  const IconWithShape({@required bool supportTransparency, bool onDevice = false, bool adaptiveIcon = false, Key key})
+  const IconWithShape({@required bool supportTransparency, int cornerRadius, bool adaptiveIcon = false, Key key})
       : _supportTransparency = supportTransparency,
-        _onDevice = onDevice,
+        _cornerRadius = cornerRadius,
         _adaptiveIcon = adaptiveIcon,
         super(key: key);
 
-  final bool _supportTransparency, _onDevice, _adaptiveIcon;
+  final bool _supportTransparency, _adaptiveIcon;
+  final int _cornerRadius;
+
+  bool get _onDevice => _cornerRadius != null;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +38,7 @@ class IconWithShape extends StatelessWidget {
                   : _adaptiveIcon && _haveAdaptiveBackground
                       ? Colors.transparent
                       : _backgroundColor,
-              borderRadius: BorderRadius.all(Radius.circular(_onDevice ? 7 : 0))),
+              borderRadius: BorderRadius.all(Radius.circular(_onDevice ? _cornerRadius / 8 ?? 0 : 0))),
           child: LocalHero(
             tag: 'local',
             child: context.watch<SetupIcon>().icon,

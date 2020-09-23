@@ -24,9 +24,9 @@ class AdaptiveButton extends StatelessWidget {
                 colorBrightness: Brightness.dark,
                 color: destructive ? Colors.red : (color ?? Colors.blue),
                 onPressed: onPressed,
-                child: Text(
-                  text.toUpperCase(),
-                  style: const TextStyle(letterSpacing: 1.2),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+                  child: Text(text.toUpperCase(), style: const TextStyle(letterSpacing: 1.2)),
                 ),
               ),
       );

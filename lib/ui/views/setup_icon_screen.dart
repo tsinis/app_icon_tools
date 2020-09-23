@@ -38,16 +38,16 @@ class SetupScreen extends StatelessWidget {
                         children: [
                           WebsafeSvg.asset(platformList[_selectedPlatform].devicePicture, height: 640),
                           SizedBox(
-                            height: (id > 2) ? 21 : 40,
                             width: (id == 1 || id == 2)
                                 ? 105
                                 : (id > 2)
-                                    ? 21
+                                    ? 22
                                     : 40,
+                            height: (id > 2) ? 22 : 40,
                             child: Align(
                               alignment: Alignment.centerRight,
                               child: IconWithShape(
-                                onDevice: true,
+                                cornerRadius: platformList[_selectedPlatform].cornerRadius,
                                 supportTransparency: id != 2,
                                 adaptiveIcon: id == 1,
                               ),

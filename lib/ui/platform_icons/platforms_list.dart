@@ -1,8 +1,8 @@
 import 'icon_preview.dart';
 
 const List<IconPreview> platformList = [
-  IconPreview.newAndroid(),
   IconPreview.oldAndroid(),
+  IconPreview.newAndroid(),
   IconPreview.iOS(),
   IconPreview.web(),
   IconPreview.windows(),
