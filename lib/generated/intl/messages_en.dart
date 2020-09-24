@@ -27,11 +27,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "dragAndDropHere" : MessageLookupByLibrary.simpleMessage("Drop your icon here or"),
     "fileFormat" : MessageLookupByLibrary.simpleMessage("File format:"),
     "iconAttributes" : MessageLookupByLibrary.simpleMessage("Launcher Icon Requirements:"),
+    "iconBgColor" : MessageLookupByLibrary.simpleMessage("Icon Background Color"),
+    "iconPreview" : MessageLookupByLibrary.simpleMessage("Icon Preview"),
     "imageSize" : MessageLookupByLibrary.simpleMessage("Dimensions:"),
     "locale" : MessageLookupByLibrary.simpleMessage("en"),
     "maxKB" : MessageLookupByLibrary.simpleMessage("Max. file size:"),
     "noInterlacing" : MessageLookupByLibrary.simpleMessage("w/o interlacing."),
+    "previewShapes" : MessageLookupByLibrary.simpleMessage("Preview possible shapes"),
+    "removeBackground" : MessageLookupByLibrary.simpleMessage("Remove Background"),
+    "removeColor" : MessageLookupByLibrary.simpleMessage("Remove Color"),
     "storeRequirement" : MessageLookupByLibrary.simpleMessage("Technical requirements. Press for more info."),
+    "testAdaptive" : MessageLookupByLibrary.simpleMessage("Test Adaptive Background"),
     "transparencyiOS" : MessageLookupByLibrary.simpleMessage("The iOS icons doesn\'t support transparency, alpha channel will be replaced with black color."),
     "wrongFile" : MessageLookupByLibrary.simpleMessage("File doesn\'t meet the Requirements")
   };

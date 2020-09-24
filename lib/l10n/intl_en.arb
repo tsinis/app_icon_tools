@@ -11,5 +11,11 @@
     "noInterlacing": "w/o interlacing.",
     "addBackground": "Background* can be added in the next step.",
     "storeRequirement": "Technical requirements. Press for more info.",
-    "transparencyiOS": "The iOS icons doesn't support transparency, alpha channel will be replaced with black color."
+    "transparencyiOS": "The iOS icons doesn't support transparency, alpha channel will be replaced with black color.",
+    "previewShapes": "Preview possible shapes",
+    "iconPreview": "Icon Preview",
+    "removeColor": "Remove Color",
+    "removeBackground": "Remove Background",
+    "iconBgColor": "Icon Background Color",
+    "testAdaptive": "Test Adaptive Background"
 }

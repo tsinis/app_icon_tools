@@ -162,6 +162,66 @@ class S {
       args: [],
     );
   }
+
+  /// `Preview possible shapes`
+  String get previewShapes {
+    return Intl.message(
+      'Preview possible shapes',
+      name: 'previewShapes',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Icon Preview`
+  String get iconPreview {
+    return Intl.message(
+      'Icon Preview',
+      name: 'iconPreview',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Remove Color`
+  String get removeColor {
+    return Intl.message(
+      'Remove Color',
+      name: 'removeColor',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Remove Background`
+  String get removeBackground {
+    return Intl.message(
+      'Remove Background',
+      name: 'removeBackground',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Icon Background Color`
+  String get iconBgColor {
+    return Intl.message(
+      'Icon Background Color',
+      name: 'iconBgColor',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Test Adaptive Background`
+  String get testAdaptive {
+    return Intl.message(
+      'Test Adaptive Background',
+      name: 'testAdaptive',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

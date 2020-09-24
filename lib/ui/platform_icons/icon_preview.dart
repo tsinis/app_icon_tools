@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:provider/provider.dart';
 
+import '../../generated/l10n.dart';
 import '../../models/setup_icon.dart';
 import '../../models/user_interface.dart';
 import '../widgets/adaptive/buttons/button.dart';
@@ -101,7 +102,7 @@ class IconPreview extends StatelessWidget {
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(_canChangeShape ? 'Preview possible shapes' : 'Icon Preview'),
+            Text(_canChangeShape ? S.of(context).previewShapes : S.of(context).iconPreview),
             Container(
               clipBehavior: Clip.hardEdge,
               height: 300,
@@ -132,7 +133,7 @@ class IconPreview extends StatelessWidget {
             ...[
               if (!_colorNotSet && !_isAdaptive)
                 AdaptiveButton(
-                    text: 'Remove Color',
+                    text: S.of(context).removeColor,
                     color: _backgroundColor,
                     onPressed: () => context.read<SetupIcon>().removeColor())
               else if (_isAdaptive)
@@ -142,7 +143,7 @@ class IconPreview extends StatelessWidget {
                   children: [
                     if (_haveAdaptiveBackground)
                       AdaptiveButton(
-                          text: 'Remove Background',
+                          text: S.of(context).removeBackground,
                           destructive: true,
                           onPressed: () => context.read<SetupIcon>().removeAdaptiveBackground()),
                     AdaptiveIconButton(
@@ -161,7 +162,7 @@ class IconPreview extends StatelessWidget {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text('Icon Background Color'),
+              Text(S.of(context).iconBgColor),
               SizedBox(
                 width: 300,
                 child: ColorPicker(
