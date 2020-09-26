@@ -27,7 +27,8 @@ class IconWithShape extends StatelessWidget {
       alignment: Alignment.center,
       children: [
         if (!_onDevice) const TransparencyGrid(),
-        if (_haveAdaptiveBackground && _adaptiveIcon) _backgroundImage,
+        if (_haveAdaptiveBackground && _adaptiveIcon)
+          ClipRRect(borderRadius: BorderRadius.all(Radius.circular(_onDevice ? 40 : 0)), child: _backgroundImage),
         Container(
           clipBehavior: Clip.hardEdge,
           decoration: BoxDecoration(
@@ -39,10 +40,7 @@ class IconWithShape extends StatelessWidget {
                       ? Colors.transparent
                       : _backgroundColor,
               borderRadius: BorderRadius.all(Radius.circular(_onDevice ? _cornerRadius / 8 ?? 0 : 0))),
-          child: LocalHero(
-            tag: 'local',
-            child: context.watch<SetupIcon>().icon,
-          ),
+          child: LocalHero(tag: 'local', child: context.watch<SetupIcon>().icon),
         )
       ],
     );

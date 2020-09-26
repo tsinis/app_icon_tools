@@ -1,6 +1,6 @@
 {
     "locale": "en",
-    "dragAndDropHere": "Drop your icon here or",
+    "dragAndDropHere": "Drop your image here or",
     "wrongFile": "File doesn't meet the Requirements",
     "browse": "Browse",
     "iconAttributes": "Launcher Icon Requirements:",
@@ -14,8 +14,10 @@
     "transparencyiOS": "The iOS icons doesn't support transparency, alpha channel will be replaced with black color.",
     "previewShapes": "Preview possible shapes",
     "iconPreview": "Icon Preview",
+    "uploadAdaptive": "Upload Adaptive Background",
     "removeColor": "Remove Color",
     "removeBackground": "Remove Background",
     "iconBgColor": "Icon Background Color",
-    "testAdaptive": "Test Adaptive Background"
+    "testAdaptive": "Test Adaptive Background",
+    "devicePreview": "Device Preview"
 }

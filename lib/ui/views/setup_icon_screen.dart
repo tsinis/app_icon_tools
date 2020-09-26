@@ -18,42 +18,43 @@ class SetupScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final bool _devicePreview = context.select((SetupIcon icon) => icon.devicePreview);
     final int _selectedPlatform = context.select((SetupIcon icon) => icon.platformID);
-    final int id = platformList[_selectedPlatform].platformID;
+    final int _id = platformList[_selectedPlatform].platformID;
 
     return AdaptiveScaffold(
-        child: GestureDetector(
-      onTap: context.watch<SetupIcon>().changePreview,
       child: LocalHeroScope(
         duration: const Duration(seconds: 1),
         curve: Curves.elasticOut,
         child: Column(
           children: [
-            const SizedBox(height: 20),
+            SizedBox(height: _devicePreview ? 20 : 0),
             Expanded(
               child: _devicePreview
                   ? FittedBox(
                       fit: BoxFit.contain,
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          WebsafeSvg.asset(platformList[_selectedPlatform].devicePicture, height: 640),
-                          SizedBox(
-                            width: (id == 1 || id == 2)
-                                ? 105
-                                : (id > 2)
-                                    ? 22
-                                    : 40,
-                            height: (id > 2) ? 22 : 40,
-                            child: Align(
-                              alignment: Alignment.centerRight,
-                              child: IconWithShape(
-                                cornerRadius: platformList[_selectedPlatform].cornerRadius,
-                                supportTransparency: id != 2,
-                                adaptiveIcon: id == 1,
+                      child: GestureDetector(
+                        onTap: context.watch<SetupIcon>().changePreview,
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            WebsafeSvg.asset(platformList[_selectedPlatform].devicePicture, height: 640),
+                            SizedBox(
+                              width: (_id == 1 || _id == 2)
+                                  ? 105
+                                  : (_id > 2)
+                                      ? 22
+                                      : 40,
+                              height: (_id > 2) ? 22 : 40,
+                              child: Align(
+                                alignment: Alignment.centerRight,
+                                child: IconWithShape(
+                                  cornerRadius: platformList[_selectedPlatform].cornerRadius,
+                                  supportTransparency: _id != 2,
+                                  adaptiveIcon: _id == 1,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     )
                   : platformList[_selectedPlatform],
@@ -62,6 +63,6 @@ class SetupScreen extends StatelessWidget {
           ],
         ),
       ),
-    ));
+    );
   }
 }

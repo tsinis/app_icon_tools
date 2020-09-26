@@ -9,6 +9,7 @@ class InitialUploadScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // print('First Screen build');
     return const AdaptiveScaffold(
+      uploadScreen: true,
       child:
           // Column(
           //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,

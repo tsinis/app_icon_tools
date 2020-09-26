@@ -1,10 +1,19 @@
 import 'package:flutter/widgets.dart';
 
-// import '../locator.dart';
-// import '../services/navigation_service.dart';
+import '../locator.dart';
+import '../services/navigation_service.dart';
 
 class SetupIcon extends ChangeNotifier {
-  // final NavigationService _navigationService = locator<NavigationService>();
+  final NavigationService _navigationService = locator<NavigationService>();
+  void backButton() {
+    if (_devicePreview) {
+      _devicePreview = false;
+    } else {
+      _navigationService.goBack();
+      _icon = _adaptiveBackground = null;
+    }
+    notifyListeners();
+  }
 
   Color _backgroundColor;
   Color get backgroundColor => _backgroundColor;
@@ -37,7 +46,7 @@ class SetupIcon extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool haveAdaptiveBackground() => _adaptiveBackground != null;
+  bool get haveAdaptiveBackground => _adaptiveBackground != null;
   void removeAdaptiveBackground() {
     _adaptiveBackground = null;
     notifyListeners();

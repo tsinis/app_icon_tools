@@ -24,7 +24,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "addBackground" : MessageLookupByLibrary.simpleMessage("Background* can be added in the next step."),
     "browse" : MessageLookupByLibrary.simpleMessage("Browse"),
     "colorProfile" : MessageLookupByLibrary.simpleMessage("Color profile:"),
-    "dragAndDropHere" : MessageLookupByLibrary.simpleMessage("Drop your icon here or"),
+    "devicePreview" : MessageLookupByLibrary.simpleMessage("Device Preview"),
+    "dragAndDropHere" : MessageLookupByLibrary.simpleMessage("Drop your image here or"),
     "fileFormat" : MessageLookupByLibrary.simpleMessage("File format:"),
     "iconAttributes" : MessageLookupByLibrary.simpleMessage("Launcher Icon Requirements:"),
     "iconBgColor" : MessageLookupByLibrary.simpleMessage("Icon Background Color"),
@@ -39,6 +40,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "storeRequirement" : MessageLookupByLibrary.simpleMessage("Technical requirements. Press for more info."),
     "testAdaptive" : MessageLookupByLibrary.simpleMessage("Test Adaptive Background"),
     "transparencyiOS" : MessageLookupByLibrary.simpleMessage("The iOS icons doesn\'t support transparency, alpha channel will be replaced with black color."),
+    "uploadAdaptive" : MessageLookupByLibrary.simpleMessage("Upload Adaptive Background"),
     "wrongFile" : MessageLookupByLibrary.simpleMessage("File doesn\'t meet the Requirements")
   };
 }

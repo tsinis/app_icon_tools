@@ -28,7 +28,7 @@ dependencies:
   shared_preferences_web: ^0.1.2+7
   platform_info: ^2.0.1
   provider: ^4.3.2+2
-  url_launcher: ^5.7.1
+  url_launcher: ^5.7.2
   url_launcher_web: ^0.1.4+1
   websafe_svg: ^1.1.4
 

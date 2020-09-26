@@ -43,10 +43,10 @@ class S {
     );
   }
 
-  /// `Drop your icon here or`
+  /// `Drop your image here or`
   String get dragAndDropHere {
     return Intl.message(
-      'Drop your icon here or',
+      'Drop your image here or',
       name: 'dragAndDropHere',
       desc: '',
       args: [],
@@ -183,6 +183,16 @@ class S {
     );
   }
 
+  /// `Upload Adaptive Background`
+  String get uploadAdaptive {
+    return Intl.message(
+      'Upload Adaptive Background',
+      name: 'uploadAdaptive',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Remove Color`
   String get removeColor {
     return Intl.message(
@@ -218,6 +228,16 @@ class S {
     return Intl.message(
       'Test Adaptive Background',
       name: 'testAdaptive',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Device Preview`
+  String get devicePreview {
+    return Intl.message(
+      'Device Preview',
+      name: 'devicePreview',
       desc: '',
       args: [],
     );

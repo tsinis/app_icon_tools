@@ -13,11 +13,9 @@ void main() {
     ChangeNotifierProvider<UserInterface>(create: (_) => UserInterface()),
     ChangeNotifierProvider<UploadFile>(create: (_) => UploadFile()),
     ChangeNotifierProxyProvider<UploadFile, SetupIcon>(
-      create: (_) => SetupIcon(),
-      update: (_, uploadFile, setupIcon) {
-        setupIcon.adaptiveBackground = uploadFile.recivedBackground;
-        return setupIcon..icon = uploadFile.recivedImage;
-      },
-    ),
+        create: (_) => SetupIcon(),
+        update: (_, uploadFile, setupIcon) => setupIcon
+          ..adaptiveBackground = uploadFile.recivedBackground
+          ..icon = uploadFile.recivedImage),
   ], child: const MyApp()));
 }

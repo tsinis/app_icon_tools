@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-// import 'package:provider/provider.dart';
 
 import '../../../../models/user_interface.dart';
 
@@ -13,7 +12,11 @@ class AdaptiveButton extends StatelessWidget {
   const AdaptiveButton({Key key, this.text, this.color, this.onPressed, this.destructive = false}) : super(key: key);
   @override
   Widget build(BuildContext context) => Padding(
-        padding: destructive ? const EdgeInsets.symmetric(horizontal: 12) : const EdgeInsets.all(12),
+        padding: destructive
+            ? const EdgeInsets.symmetric(horizontal: 3)
+            : UserInterface.isApple
+                ? const EdgeInsets.all(8)
+                : const EdgeInsets.all(12),
         child: UserInterface.isApple
             ? CupertinoButton(
                 padding: EdgeInsets.symmetric(vertical: 14, horizontal: destructive ? 37 : 64),
@@ -21,11 +24,12 @@ class AdaptiveButton extends StatelessWidget {
                 onPressed: onPressed,
                 child: Text(text))
             : MaterialButton(
+                minWidth: 190,
                 colorBrightness: Brightness.dark,
                 color: destructive ? Colors.red : (color ?? Colors.blue),
                 onPressed: onPressed,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   child: Text(text.toUpperCase(), style: const TextStyle(letterSpacing: 1.2)),
                 ),
               ),

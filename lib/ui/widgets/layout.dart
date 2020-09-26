@@ -12,14 +12,15 @@ class PreviewLayout extends StatelessWidget {
           widthFactor: 0.9,
           child: SingleChildScrollView(
             child: Column(
-                mainAxisSize: MainAxisSize.max, mainAxisAlignment: MainAxisAlignment.spaceAround, children: children),
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [const SizedBox(height: 20), ...children]),
           ),
         )
       : FractionallySizedBox(
           widthFactor: 0.9,
           heightFactor: 0.9,
           child: Row(
-              mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.baseline,
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: children),

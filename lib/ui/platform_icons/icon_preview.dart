@@ -92,7 +92,7 @@ class IconPreview extends StatelessWidget {
   Widget build(BuildContext context) {
     final double _androidCornerRadius = context.select((SetupIcon icon) => icon.cornerRadius);
     final Color _backgroundColor = context.select((SetupIcon icon) => icon.backgroundColor);
-    final bool _haveAdaptiveBackground = context.select((SetupIcon icon) => icon.haveAdaptiveBackground());
+    final bool _haveAdaptiveBackground = context.select((SetupIcon icon) => icon.haveAdaptiveBackground);
     final bool _colorNotSet = _backgroundColor == null;
     final bool _portrait = MediaQuery.of(context).size.height > MediaQuery.of(context).size.width;
 
@@ -102,16 +102,22 @@ class IconPreview extends StatelessWidget {
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(_canChangeShape ? S.of(context).previewShapes : S.of(context).iconPreview),
-            Container(
-              clipBehavior: Clip.hardEdge,
-              height: 300,
-              width: 300,
-              decoration: BoxDecoration(
-                  color: Colors.grey,
-                  borderRadius:
-                      BorderRadius.all(Radius.circular(_canChangeShape ? _androidCornerRadius : _staticCornerRadius))),
-              child: IconWithShape(supportTransparency: _supportTransparency, adaptiveIcon: platformID == 1),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              child: Text(_canChangeShape ? S.of(context).previewShapes : S.of(context).iconPreview),
+            ),
+            GestureDetector(
+              onTap: context.watch<SetupIcon>().changePreview,
+              child: Container(
+                clipBehavior: Clip.hardEdge,
+                height: 300,
+                width: 300,
+                decoration: BoxDecoration(
+                    color: Colors.grey,
+                    borderRadius: BorderRadius.all(
+                        Radius.circular(_canChangeShape ? _androidCornerRadius : _staticCornerRadius))),
+                child: IconWithShape(supportTransparency: _supportTransparency, adaptiveIcon: platformID == 1),
+              ),
             ),
             if (_canChangeShape)
               SizedBox(
@@ -131,38 +137,24 @@ class IconPreview extends StatelessWidget {
             else
               const SizedBox(height: 48),
             ...[
+              AdaptiveButton(text: S.of(context).devicePreview, onPressed: context.watch<SetupIcon>().changePreview),
               if (!_colorNotSet && !_isAdaptive)
                 AdaptiveButton(
                     text: S.of(context).removeColor,
                     color: _backgroundColor,
                     onPressed: () => context.read<SetupIcon>().removeColor())
-              else if (_isAdaptive)
-                ButtonBar(
-                  buttonAlignedDropdown: false,
-                  alignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    if (_haveAdaptiveBackground)
-                      AdaptiveButton(
-                          text: S.of(context).removeBackground,
-                          destructive: true,
-                          onPressed: () => context.read<SetupIcon>().removeAdaptiveBackground()),
-                    AdaptiveIconButton(
-                        withAdaptiveBackground: _haveAdaptiveBackground,
-                        onPressed: () => print('Testing Adaptive Background')), //TODO Add Adaptive animation.
-                  ],
-                )
               else
-                const SizedBox(height: 72)
+                (_isAdaptive && _portrait) ? const SizedBox.shrink() : const SizedBox(height: 64),
             ]
           ],
         ),
-        if (_isAdaptive)
-          Column(children: const [Text(''), Hero(tag: 'global', child: DragAndDrop(background: true))])
-        else
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(S.of(context).iconBgColor),
+        Column(
+          children: [
+            if (_isAdaptive) ...[
+              Padding(padding: const EdgeInsets.symmetric(vertical: 20), child: Text(S.of(context).uploadAdaptive)),
+              const Hero(tag: 'global', child: DragAndDrop(background: true))
+            ] else ...[
+              Padding(padding: const EdgeInsets.symmetric(vertical: 20), child: Text(S.of(context).iconBgColor)),
               SizedBox(
                 width: 300,
                 child: ColorPicker(
@@ -174,7 +166,23 @@ class IconPreview extends StatelessWidget {
                     showLabel: !UserInterface.isApple),
               ),
             ],
-          ),
+            const SizedBox(height: 48),
+            if (_isAdaptive)
+              ButtonBar(
+                alignment: MainAxisAlignment.center,
+                children: [
+                  if (_haveAdaptiveBackground)
+                    AdaptiveButton(
+                        text: S.of(context).removeBackground,
+                        destructive: true,
+                        onPressed: () => context.read<SetupIcon>().removeAdaptiveBackground()),
+                  AdaptiveIconButton(
+                      withAdaptiveBackground: _haveAdaptiveBackground,
+                      onPressed: () => print('Testing Adaptive Background')), //TODO Add Adaptive animation.
+                ],
+              ),
+          ],
+        ),
       ],
     );
   }
