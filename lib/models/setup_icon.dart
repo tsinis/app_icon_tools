@@ -8,11 +8,10 @@ class SetupIcon extends ChangeNotifier {
   void backButton() {
     if (_devicePreview) {
       _devicePreview = false;
+      notifyListeners();
     } else {
       _navigationService.goBack();
-      _icon = _adaptiveBackground = null;
     }
-    notifyListeners();
   }
 
   Color _backgroundColor;

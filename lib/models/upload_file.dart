@@ -69,9 +69,11 @@ class UploadFile extends ChangeNotifier {
 
   Future<void> _notifyCheckResult() async {
     if (_isProperFile) {
+      notifyListeners();
       await _navigationService.navigateTo(UiRouter.setupScreen);
+    } else {
+      notifyListeners();
     }
-    notifyListeners();
   }
 
   Future<Image> _convertFileToImage(File _file) async =>

@@ -28,7 +28,9 @@ class IconWithShape extends StatelessWidget {
       children: [
         if (!_onDevice) const TransparencyGrid(),
         if (_haveAdaptiveBackground && _adaptiveIcon)
-          ClipRRect(borderRadius: BorderRadius.all(Radius.circular(_onDevice ? 40 : 0)), child: _backgroundImage),
+          ClipRRect(
+              borderRadius: BorderRadius.all(Radius.circular(_onDevice ? 40 : 0)),
+              child: Transform.scale(scale: 1.42, child: _backgroundImage)),
         Container(
           clipBehavior: Clip.hardEdge,
           decoration: BoxDecoration(

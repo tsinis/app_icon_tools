@@ -20,7 +20,8 @@ dependencies:
   file_picker_web: 1.0.2+1
   flutter_colorpicker: ^0.3.4
   flutter_dropzone: ^1.0.9
-  get_it: ^5.0.0
+  flutter_sequence_animation: ^3.0.1
+  get_it: ^5.0.1
   google_nav_bar: ^3.0.1
   image: ^2.1.17
   local_hero: ^0.1.0
