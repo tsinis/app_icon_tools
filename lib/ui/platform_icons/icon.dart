@@ -1,3 +1,4 @@
+import 'package:animator/animator.dart';
 import 'package:flutter/material.dart';
 
 import 'package:local_hero/local_hero.dart';
@@ -6,51 +7,7 @@ import 'package:provider/provider.dart';
 import '../../models/setup_icon.dart';
 import 'transparency_grid.dart';
 
-// class IconWithShape extends StatelessWidget {
-//   const IconWithShape({@required bool supportTransparency, int cornerRadius, bool adaptiveIcon = false, Key key})
-//       : _supportTransparency = supportTransparency,
-//         _cornerRadius = cornerRadius,
-//         _adaptiveIcon = adaptiveIcon,
-//         super(key: key);
-
-//   final bool _supportTransparency, _adaptiveIcon;
-//   final int _cornerRadius;
-
-//   bool get _onDevice => _cornerRadius != null;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final Color _backgroundColor = context.select((SetupIcon icon) => icon.backgroundColor);
-//     final Image _backgroundImage = context.select((SetupIcon icon) => icon.adaptiveBackground);
-//     final bool _colorNotSet = _backgroundColor == null;
-//     final bool _haveAdaptiveBackground = _backgroundImage != null;
-//     return ClipRRect(
-//       borderRadius: BorderRadius.all(Radius.circular(_onDevice ? _cornerRadius / 8 ?? 0 : 0)),
-//       child: Stack(
-//         alignment: Alignment.center,
-//         children: [
-//           if (!_onDevice) const TransparencyGrid(),
-//           if (_haveAdaptiveBackground && _adaptiveIcon)
-//             ClipRRect(
-//                 borderRadius: BorderRadius.all(Radius.circular(_onDevice ? 40 : 0)),
-//                 child: Transform.scale(scale: 1.42, child: _backgroundImage)),
-//           Container(
-//             clipBehavior: Clip.hardEdge,
-//             decoration: BoxDecoration(
-//                 color: _colorNotSet
-//                     ? _supportTransparency
-//                         ? Colors.transparent
-//                         : Colors.black
-//                     : _adaptiveIcon && _haveAdaptiveBackground
-//                         ? Colors.transparent
-//                         : _backgroundColor),
-//             child: LocalHero(tag: 'local', child: context.watch<SetupIcon>().icon),
-//           )
-//         ],
-//       ),
-//     );
-//   }
-// }
+final animatorKey = AnimatorKey<Offset>();
 
 class IconWithShape extends StatefulWidget {
   const IconWithShape({@required bool supportTransparency, int cornerRadius, bool adaptiveIcon = false, Key key})
@@ -67,68 +24,113 @@ class IconWithShape extends StatefulWidget {
   _IconWithShapeState createState() => _IconWithShapeState();
 }
 
-AnimationController _controller;
-
-Future<Null> playAnimation() async {
-  try {
-    await _controller.forward().orCancel;
-    await _controller.reverse().orCancel;
-    // ignore: empty_catches
-  } on TickerCanceled {}
-}
-
 class _IconWithShapeState extends State<IconWithShape> with SingleTickerProviderStateMixin {
-  bool _haveAdaptiveBackground, _colorNotSet;
+  bool _haveAdaptiveBackground = false, _colorNotSet = true;
   Color _backgroundColor;
-  Image _backgroundImage;
-  Animation<Offset> _animation;
+  Image _iconImage, _backgroundImage;
 
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(vsync: this, duration: const Duration(seconds: 1));
-    _animation = Tween<Offset>(begin: const Offset(0, 0), end: const Offset(0, -0.4)).animate(_controller);
+  Widget get _icon => Stack(
+        alignment: Alignment.center,
+        children: [
+          if (!widget._onDevice) const TransparencyGrid(),
+          if (_haveAdaptiveBackground && widget._adaptiveIcon)
+            ClipRRect(
+                borderRadius: BorderRadius.all(Radius.circular(widget._onDevice ? 40 : 0)),
+                child: Transform.scale(scale: 1.42, child: _backgroundImage)),
+          Container(
+              clipBehavior: Clip.hardEdge,
+              decoration: BoxDecoration(
+                  color: _colorNotSet
+                      ? widget._supportTransparency
+                          ? Colors.transparent
+                          : Colors.black
+                      : widget._adaptiveIcon && _haveAdaptiveBackground
+                          ? Colors.transparent
+                          : _backgroundColor),
+              child: widget._adaptiveIcon ? _iconImage : LocalHero(tag: 'local', child: _iconImage)),
+        ],
+      );
+
+  String animationSwitcher = 'right';
+
+  void changeAnimation(String _switcher) {
+    setState(() => animationSwitcher = _switcher);
   }
 
   @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  Widget _buildAnimation(BuildContext context, Widget child) {
+  Widget build(BuildContext context) {
+    Widget _child;
+// TODO:! Fix this performance (Provider model called 4x during animation).
+    _iconImage = context.select((SetupIcon icon) => icon.icon);
     _backgroundColor = context.select((SetupIcon icon) => icon.backgroundColor);
     _backgroundImage = context.select((SetupIcon icon) => icon.adaptiveBackground);
     _colorNotSet = _backgroundColor == null;
     _haveAdaptiveBackground = _backgroundImage != null;
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        if (!widget._onDevice || !_haveAdaptiveBackground) const TransparencyGrid(),
-        if (_haveAdaptiveBackground && widget._adaptiveIcon)
-          ClipRRect(
-              borderRadius: BorderRadius.all(Radius.circular(widget._onDevice ? 40 : 0)),
-              child: Transform.scale(scale: 1.42, child: _backgroundImage)),
-        Container(
-            clipBehavior: Clip.hardEdge,
-            decoration: BoxDecoration(
-                color: _colorNotSet
-                    ? widget._supportTransparency
-                        ? Colors.transparent
-                        : Colors.black
-                    : widget._adaptiveIcon && _haveAdaptiveBackground
-                        ? Colors.transparent
-                        : _backgroundColor)),
-        LocalHero(
-          tag: 'local',
-          child: SlideTransition(position: _animation, child: context.watch<SetupIcon>().icon),
-        ),
-      ],
-    );
-  }
 
-  @override
-  Widget build(BuildContext context) => ClipRRect(
-      borderRadius: BorderRadius.all(Radius.circular(widget._onDevice ? widget._cornerRadius / 8 ?? 0 : 0)),
-      child: AnimatedBuilder(animation: _controller, builder: _buildAnimation));
+    switch (animationSwitcher) {
+      case 'right':
+        _child = Animator<Offset>(
+            animatorKey: animatorKey,
+            key: const Key('right'),
+            tween: Tween<Offset>(begin: const Offset(0, 0), end: const Offset(0.5, 0)),
+            curve: Curves.linear,
+            cycles: 1,
+            endAnimationListener: (_) => changeAnimation('left'),
+            builder: (_, animatorState, __) => SlideTransition(position: animatorState.animation, child: _icon));
+        break;
+      case 'left':
+        _child = Animator<Offset>(
+            key: const Key('left'),
+            tween: Tween<Offset>(begin: const Offset(0.5, 0), end: const Offset(-0.5, 0)),
+            duration: const Duration(seconds: 1),
+            curve: Curves.linear,
+            cycles: 1,
+            endAnimationListener: (_) => changeAnimation('center'),
+            builder: (_, animatorState, __) => SlideTransition(position: animatorState.animation, child: _icon));
+        break;
+      case 'center':
+        _child = Animator<Offset>(
+            key: const Key('center'),
+            tween: Tween<Offset>(begin: const Offset(-0.5, 0), end: const Offset(0, 0)),
+            curve: Curves.linear,
+            cycles: 1,
+            endAnimationListener: (_) => changeAnimation('top'),
+            builder: (_, animatorState, __) => SlideTransition(position: animatorState.animation, child: _icon));
+        break;
+      case 'top':
+        _child = Animator<Offset>(
+            key: const Key('top'),
+            tween: Tween<Offset>(begin: const Offset(0, 0), end: const Offset(0, 0.5)),
+            curve: Curves.linear,
+            cycles: 1,
+            endAnimationListener: (_) => changeAnimation('bottom'),
+            builder: (_, animatorState, __) => SlideTransition(position: animatorState.animation, child: _icon));
+        break;
+      case 'bottom':
+        _child = Animator<Offset>(
+            key: const Key('bottom'),
+            tween: Tween<Offset>(begin: const Offset(0, 0.5), end: const Offset(0, -0.5)),
+            duration: const Duration(seconds: 1),
+            curve: Curves.linear,
+            cycles: 1,
+            endAnimationListener: (_) => changeAnimation('middle'),
+            builder: (_, animatorState, __) => SlideTransition(position: animatorState.animation, child: _icon));
+        break;
+      case 'middle':
+        _child = Animator<Offset>(
+            key: const Key('middle'),
+            tween: Tween<Offset>(begin: const Offset(0, -0.5), end: const Offset(0, 0)),
+            curve: Curves.linear,
+            cycles: 1,
+            endAnimationListener: (_) => changeAnimation('right'),
+            builder: (_, animatorState, __) => SlideTransition(position: animatorState.animation, child: _icon));
+        continue end;
+      end:
+      default:
+        _child = _icon;
+    }
+    return ClipRRect(
+        borderRadius: BorderRadius.all(Radius.circular(widget._onDevice ? widget._cornerRadius / 8 ?? 0 : 0)),
+        child: _child);
+  }
 }
