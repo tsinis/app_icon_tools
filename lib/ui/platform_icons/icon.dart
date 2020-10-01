@@ -7,8 +7,6 @@ import 'package:provider/provider.dart';
 import '../../models/setup_icon.dart';
 import 'transparency_grid.dart';
 
-final animatorKey = AnimatorKey<Offset>();
-
 class IconWithShape extends StatefulWidget {
   const IconWithShape({@required bool supportTransparency, int cornerRadius, bool adaptiveIcon = false, Key key})
       : _supportTransparency = supportTransparency,
@@ -16,6 +14,7 @@ class IconWithShape extends StatefulWidget {
         _adaptiveIcon = adaptiveIcon,
         super(key: key);
 
+  static final animatorKey = AnimatorKey<Offset>();
   final bool _supportTransparency, _adaptiveIcon;
   final int _cornerRadius;
   bool get _onDevice => _cornerRadius != null;
@@ -34,9 +33,11 @@ class _IconWithShapeState extends State<IconWithShape> with SingleTickerProvider
         children: [
           if (!widget._onDevice) const TransparencyGrid(),
           if (_haveAdaptiveBackground && widget._adaptiveIcon)
-            ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(widget._onDevice ? 40 : 0)),
-                child: Transform.scale(scale: 1.42, child: _backgroundImage)),
+            widget._onDevice
+                ? ClipRRect(
+                    borderRadius: const BorderRadius.all(Radius.circular(40)),
+                    child: Transform.scale(scale: 1.42, child: _backgroundImage))
+                : Transform.scale(scale: 1.42, child: _backgroundImage),
           Container(
               clipBehavior: Clip.hardEdge,
               decoration: BoxDecoration(
@@ -51,9 +52,9 @@ class _IconWithShapeState extends State<IconWithShape> with SingleTickerProvider
         ],
       );
 
-  String animationSwitcher = 'right';
+  String _animationSwitcher = 'left';
 
-  void changeAnimation(String _switcher) => setState(() => animationSwitcher = _switcher);
+  void changeAnimation(String _switcher) => setState(() => _animationSwitcher = _switcher);
 
   @override
   Widget build(BuildContext context) {
@@ -65,56 +66,51 @@ class _IconWithShapeState extends State<IconWithShape> with SingleTickerProvider
     _colorNotSet = _backgroundColor == null;
     _haveAdaptiveBackground = _backgroundImage != null;
 
-    switch (animationSwitcher) {
-      case 'right':
+    switch (_animationSwitcher) {
+      case 'left':
         _adaptive = Animator<Offset>(
-            animatorKey: animatorKey,
-            key: const Key('right'),
-            tween: Tween<Offset>(begin: const Offset(0, 0), end: const Offset(0.3, 0)),
-            curve: Curves.linear,
-            duration: const Duration(milliseconds: 250),
-            cycles: 1,
+            animatorKey: IconWithShape.animatorKey,
+            key: const Key('left'),
+            tween: Tween<Offset>(begin: const Offset(0, 0), end: const Offset(-0.12, 0)),
+            curve: Curves.elasticIn,
+            duration: const Duration(milliseconds: 300),
             endAnimationListener: (_) {
-              animatorKey.refreshAnimation();
-              changeAnimation('left');
+              IconWithShape.animatorKey.refreshAnimation();
+              changeAnimation('right');
             },
             builder: (_, animatorState, __) => SlideTransition(position: animatorState.animation, child: _icon));
         break;
-      case 'left':
+      case 'right':
         _adaptive = Animator<Offset>(
-            key: const Key('left'),
-            tween: Tween<Offset>(begin: const Offset(0.3, 0), end: const Offset(-0.3, 0)),
-            curve: Curves.linear,
-            cycles: 1,
+            key: const Key('right'),
+            tween: Tween<Offset>(begin: const Offset(-0.12, 0), end: const Offset(0.12, 0)),
+            curve: Curves.easeInOutBack,
             endAnimationListener: (_) => changeAnimation('center'),
             builder: (_, animatorState, __) => SlideTransition(position: animatorState.animation, child: _icon));
         break;
       case 'center':
         _adaptive = Animator<Offset>(
             key: const Key('center'),
-            tween: Tween<Offset>(begin: const Offset(-0.3, 0), end: const Offset(0, 0)),
-            curve: Curves.linear,
-            duration: const Duration(milliseconds: 250),
-            cycles: 1,
+            tween: Tween<Offset>(begin: const Offset(0.12, 0), end: const Offset(0, 0)),
+            curve: Curves.elasticOut,
+            duration: const Duration(milliseconds: 800),
             endAnimationListener: (_) => changeAnimation('top'),
             builder: (_, animatorState, __) => SlideTransition(position: animatorState.animation, child: _icon));
         break;
       case 'top':
         _adaptive = Animator<Offset>(
             key: const Key('top'),
-            tween: Tween<Offset>(begin: const Offset(0, 0), end: const Offset(0, 0.3)),
-            curve: Curves.linear,
-            duration: const Duration(milliseconds: 250),
-            cycles: 1,
+            tween: Tween<Offset>(begin: const Offset(0, 0), end: const Offset(0, -0.12)),
+            curve: Curves.elasticIn,
+            duration: const Duration(milliseconds: 400),
             endAnimationListener: (_) => changeAnimation('bottom'),
             builder: (_, animatorState, __) => SlideTransition(position: animatorState.animation, child: _icon));
         break;
       case 'bottom':
         _adaptive = Animator<Offset>(
             key: const Key('bottom'),
-            tween: Tween<Offset>(begin: const Offset(0, 0.3), end: const Offset(0, -0.3)),
-            curve: Curves.linear,
-            cycles: 1,
+            tween: Tween<Offset>(begin: const Offset(0, -0.12), end: const Offset(0, 0.12)),
+            curve: Curves.easeInOutBack,
             endAnimationListener: (_) => changeAnimation('middle'),
             builder: (_, animatorState, __) => SlideTransition(position: animatorState.animation, child: _icon));
         break;
@@ -122,11 +118,10 @@ class _IconWithShapeState extends State<IconWithShape> with SingleTickerProvider
         _adaptive = Animator<Offset>(
             resetAnimationOnRebuild: true,
             key: const Key('middle'),
-            tween: Tween<Offset>(begin: const Offset(0, -0.3), end: const Offset(0, 0)),
-            curve: Curves.linear,
-            duration: const Duration(milliseconds: 250),
-            cycles: 1,
-            endAnimationListener: (_) => changeAnimation('right'),
+            tween: Tween<Offset>(begin: const Offset(0, 0.12), end: const Offset(0, 0)),
+            curve: Curves.elasticOut,
+            duration: const Duration(milliseconds: 800),
+            endAnimationListener: (_) => changeAnimation('left'),
             builder: (_, animatorState, __) => SlideTransition(position: animatorState.animation, child: _icon));
         break;
       default:

@@ -178,7 +178,7 @@ class IconPreview extends StatelessWidget {
                         onPressed: () => context.read<SetupIcon>().removeAdaptiveBackground()),
                   AdaptiveIconButton(
                       withAdaptiveBackground: _haveAdaptiveBackground,
-                      onPressed: animatorKey.triggerAnimation), //TODO Fix Adaptive animation dispose.
+                      onPressed: IconWithShape.animatorKey.triggerAnimation), //TODO Fix Adaptive animation dispose.
                 ],
               ),
           ],
