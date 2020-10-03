@@ -4,8 +4,8 @@ description: Simple GUI for launcher icons preview.
 version: 1.0.0+1
 
 environment:
-  sdk: ">2.9.0"
-  flutter: ">1.21.0"
+  sdk: ">2.10.0"
+  flutter: ">1.22.0"
 
 dependencies:
   flutter_localizations:
