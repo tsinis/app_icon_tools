@@ -116,7 +116,9 @@ class IconPreview extends StatelessWidget {
                     color: Colors.grey,
                     borderRadius: BorderRadius.all(
                         Radius.circular(_canChangeShape ? _androidCornerRadius : _staticCornerRadius))),
-                child: IconWithShape(supportTransparency: _supportTransparency, adaptiveIcon: platformID == 1),
+                child: IconWithShape(
+                    supportTransparency: _supportTransparency,
+                    adaptiveIcon: platformID == 1), //TODO! Separate Adaptive and regular Icons.
               ),
             ),
             if (_canChangeShape)
@@ -144,7 +146,10 @@ class IconPreview extends StatelessWidget {
                     color: _backgroundColor,
                     onPressed: () => context.read<SetupIcon>().removeColor())
               else
-                (_isAdaptive && _portrait) ? const SizedBox.shrink() : const SizedBox(height: 64),
+                _isAdaptive
+                    ? AdaptiveIconButtons(withAdaptiveBackground: _haveAdaptiveBackground)
+                    : SizedBox(height: _portrait ? 0 : 56),
+              // if (_isAdaptive) const SizedBox(height: 44) else const SizedBox(height: 64),
             ]
           ],
         ),
@@ -167,20 +172,11 @@ class IconPreview extends StatelessWidget {
               ),
             ],
             const SizedBox(height: 48),
-            if (_isAdaptive)
-              ButtonBar(
-                alignment: MainAxisAlignment.center,
-                children: [
-                  if (_haveAdaptiveBackground)
-                    AdaptiveButton(
-                        text: S.of(context).removeBackground,
-                        destructive: true,
-                        onPressed: () => context.read<SetupIcon>().removeAdaptiveBackground()),
-                  AdaptiveIconButton(
-                      withAdaptiveBackground: _haveAdaptiveBackground,
-                      onPressed: IconWithShape.animatorKey.triggerAnimation), //TODO Fix Adaptive animation dispose.
-                ],
-              ),
+            if (_haveAdaptiveBackground)
+              AdaptiveButton(
+                  text: S.of(context).removeBackground,
+                  destructive: true,
+                  onPressed: () => context.read<SetupIcon>().removeAdaptiveBackground()),
           ],
         ),
       ],
