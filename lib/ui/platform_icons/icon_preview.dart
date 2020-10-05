@@ -12,7 +12,8 @@ import '../widgets/adaptive/buttons/icon_button.dart';
 import '../widgets/adaptive/slider.dart';
 import '../widgets/drag_and_drop.dart';
 import '../widgets/layout.dart';
-import 'icon.dart';
+import 'apdative_icon.dart';
+import 'regular_icon.dart';
 
 class IconPreview extends StatelessWidget {
   final int cornerRadius, platformID;
@@ -116,9 +117,9 @@ class IconPreview extends StatelessWidget {
                     color: Colors.grey,
                     borderRadius: BorderRadius.all(
                         Radius.circular(_canChangeShape ? _androidCornerRadius : _staticCornerRadius))),
-                child: IconWithShape(
-                    supportTransparency: _supportTransparency,
-                    adaptiveIcon: platformID == 1), //TODO! Separate Adaptive and regular Icons.
+                child: (platformID == 1)
+                    ? const AdaptiveIcon()
+                    : RegularIcon(supportTransparency: _supportTransparency, adaptiveIcon: platformID == 1),
               ),
             ),
             if (_canChangeShape)

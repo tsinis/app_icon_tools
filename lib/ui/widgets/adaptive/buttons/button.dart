@@ -12,11 +12,7 @@ class AdaptiveButton extends StatelessWidget {
   const AdaptiveButton({Key key, this.text, this.color, this.onPressed, this.destructive = false}) : super(key: key);
   @override
   Widget build(BuildContext context) => Padding(
-        padding: destructive
-            ? const EdgeInsets.symmetric(horizontal: 3)
-            : UserInterface.isApple
-                ? const EdgeInsets.all(8)
-                : const EdgeInsets.all(12),
+        padding: destructive ? const EdgeInsets.symmetric(horizontal: 3) : const EdgeInsets.all(8.5),
         child: UserInterface.isApple
             ? CupertinoButton(
                 padding: EdgeInsets.symmetric(vertical: 14, horizontal: destructive ? 37 : 64),
