@@ -6,21 +6,29 @@ import '../../../../models/user_interface.dart';
 import '../../../platform_icons/apdative_icon.dart';
 
 class AdaptiveIconButtons extends StatelessWidget {
-  final Function() onPressed;
   final bool withAdaptiveBackground;
 
-  const AdaptiveIconButtons({Key key, this.onPressed, this.withAdaptiveBackground = false}) : super(key: key);
+  const AdaptiveIconButtons({Key key, this.withAdaptiveBackground = false}) : super(key: key);
   @override
   Widget build(BuildContext context) => UserInterface.isApple
-      ? CupertinoButton(
-          padding: EdgeInsets.symmetric(vertical: 14, horizontal: withAdaptiveBackground ? 14 : 48),
-          color: CupertinoColors.activeBlue,
-          onPressed: onPressed,
-          child: withAdaptiveBackground
-              ? const Center(child: Icon(CupertinoIcons.play_fill, size: 18))
-              : Text(S.of(context).testAdaptive))
-      : Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 0),
+      ? Tooltip(
+          message: withAdaptiveBackground ? S.of(context).noBackground : S.of(context).parallax,
+          child: ButtonBar(
+            alignment: MainAxisAlignment.center,
+            children: <_CupertinoIconButton>[
+              _CupertinoIconButton(
+                  direction: 'left', icon: CupertinoIcons.arrow_left, withAdaptiveBackground: withAdaptiveBackground),
+              _CupertinoIconButton(
+                  direction: 'right', icon: CupertinoIcons.arrow_right, withAdaptiveBackground: withAdaptiveBackground),
+              _CupertinoIconButton(
+                  direction: 'down', icon: CupertinoIcons.arrow_down, withAdaptiveBackground: withAdaptiveBackground),
+              _CupertinoIconButton(
+                  direction: 'up', icon: CupertinoIcons.arrow_up, withAdaptiveBackground: withAdaptiveBackground),
+            ],
+          ),
+        )
+      : Tooltip(
+          message: withAdaptiveBackground ? S.of(context).noBackground : S.of(context).parallax,
           child: ButtonBar(
             alignment: MainAxisAlignment.center,
             children: <IconButton>[
@@ -35,10 +43,26 @@ class AdaptiveIconButtons extends StatelessWidget {
                   onPressed: withAdaptiveBackground ? () => _onPressed(direction: 'down') : null),
               IconButton(
                   icon: const Icon(Icons.arrow_upward),
-                  onPressed: withAdaptiveBackground ? () => _onPressed(direction: 'top') : null),
+                  onPressed: withAdaptiveBackground ? () => _onPressed(direction: 'up') : null),
             ],
           ),
         );
+}
 
-  void _onPressed({@required String direction}) => AdaptiveIcon.preview(direction);
+void _onPressed({@required String direction}) => AdaptiveIcon.preview(direction);
+
+class _CupertinoIconButton extends StatelessWidget {
+  const _CupertinoIconButton({@required this.withAdaptiveBackground, this.direction, this.icon, Key key})
+      : super(key: key);
+
+  final bool withAdaptiveBackground;
+  final String direction;
+  final IconData icon;
+
+  @override
+  Widget build(BuildContext context) => CupertinoButton(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      // color: CupertinoColors.activeBlue,
+      onPressed: withAdaptiveBackground ? () => _onPressed(direction: direction) : null,
+      child: Center(child: Icon(icon)));
 }

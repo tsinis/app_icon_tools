@@ -18,6 +18,7 @@
     "removeColor": "Remove Color",
     "removeBackground": "Remove Background",
     "iconBgColor": "Icon Background Color",
-    "testAdaptive": "Test Adaptive Background",
+    "noBackground": "Please select adaptive background first.",
+    "parallax": "Preview Adaptive Icon parallax effect.",
     "devicePreview": "Device Preview"
 }

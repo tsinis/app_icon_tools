@@ -223,11 +223,21 @@ class S {
     );
   }
 
-  /// `Test Adaptive Background`
-  String get testAdaptive {
+  /// `Please select adaptive background first.`
+  String get noBackground {
     return Intl.message(
-      'Test Adaptive Background',
-      name: 'testAdaptive',
+      'Please select adaptive background first.',
+      name: 'noBackground',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Preview Adaptive Icon parallax effect.`
+  String get parallax {
+    return Intl.message(
+      'Preview Adaptive Icon parallax effect.',
+      name: 'parallax',
       desc: '',
       args: [],
     );

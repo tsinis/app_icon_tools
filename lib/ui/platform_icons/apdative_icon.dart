@@ -19,7 +19,7 @@ class AdaptiveIcon extends StatefulWidget {
       case 'down':
         _end = const Offset(0, _offset);
         break;
-      case 'top':
+      case 'up':
         _end = const Offset(0, -_offset);
         break;
       case 'right':
@@ -43,9 +43,6 @@ AnimationController _controller;
 Animation<Offset> _animation;
 
 class _AdaptiveIconState extends State<AdaptiveIcon> with SingleTickerProviderStateMixin {
-  Image _backgroundImage;
-  bool _haveAdaptiveBackground;
-
   @override
   void dispose() {
     super.dispose();
@@ -57,20 +54,19 @@ class _AdaptiveIconState extends State<AdaptiveIcon> with SingleTickerProviderSt
     super.initState();
     _controller = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 500), reverseDuration: const Duration(milliseconds: 300));
-    _animation = Tween<Offset>(begin: Offset.zero, end: const Offset(0, -0.4)).animate(_controller);
+    _animation = Tween<Offset>(begin: Offset.zero, end: const Offset(0, 0.1)).animate(_controller);
   }
 
   @override
   Widget build(BuildContext context) {
-    _backgroundImage = context.select((SetupIcon icon) => icon.adaptiveBackground);
-    _haveAdaptiveBackground = _backgroundImage != null;
+    final Image _backgroundImage = context.select((SetupIcon icon) => icon.adaptiveBackground);
     return AnimatedBuilder(
       animation: _controller,
       builder: (BuildContext context, Widget _) => Stack(
         alignment: Alignment.center,
         children: [
           const TransparencyGrid(),
-          if (_haveAdaptiveBackground)
+          if (_backgroundImage != null)
             FractionallySizedBox(
               widthFactor: 0.7,
               heightFactor: 0.7,
