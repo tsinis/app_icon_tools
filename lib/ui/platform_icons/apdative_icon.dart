@@ -30,7 +30,7 @@ class AdaptiveIcon extends StatefulWidget {
         break;
     }
     _animation = Tween<Offset>(begin: Offset.zero, end: _end)
-        .animate(CurvedAnimation(parent: _controller, curve: Curves.elasticIn, reverseCurve: Curves.elasticOut));
+        .animate(CurvedAnimation(parent: _controller, curve: Curves.elasticIn));
     try {
       await _controller.forward().orCancel;
       await _controller.reverse().orCancel;
@@ -53,7 +53,7 @@ class _AdaptiveIconState extends State<AdaptiveIcon> with SingleTickerProviderSt
   void initState() {
     super.initState();
     _controller = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 500), reverseDuration: const Duration(milliseconds: 300));
+        vsync: this, duration: const Duration(milliseconds: 800), reverseDuration: const Duration(milliseconds: 1000));
     _animation = Tween<Offset>(begin: Offset.zero, end: const Offset(0, 0.1)).animate(_controller);
   }
 

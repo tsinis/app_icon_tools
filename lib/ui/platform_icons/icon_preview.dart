@@ -173,7 +173,7 @@ class IconPreview extends StatelessWidget {
               ),
             ],
             const SizedBox(height: 48),
-            if (_haveAdaptiveBackground)
+            if (_isAdaptive && _haveAdaptiveBackground)
               AdaptiveButton(
                   text: S.of(context).removeBackground,
                   destructive: true,

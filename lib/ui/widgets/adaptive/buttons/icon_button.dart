@@ -10,43 +10,43 @@ class AdaptiveIconButtons extends StatelessWidget {
 
   const AdaptiveIconButtons({Key key, this.withAdaptiveBackground = false}) : super(key: key);
   @override
-  Widget build(BuildContext context) => UserInterface.isApple
-      ? Tooltip(
-          message: withAdaptiveBackground ? S.of(context).noBackground : S.of(context).parallax,
-          child: ButtonBar(
-            alignment: MainAxisAlignment.center,
-            children: <_CupertinoIconButton>[
-              _CupertinoIconButton(
-                  direction: 'left', icon: CupertinoIcons.arrow_left, withAdaptiveBackground: withAdaptiveBackground),
-              _CupertinoIconButton(
-                  direction: 'right', icon: CupertinoIcons.arrow_right, withAdaptiveBackground: withAdaptiveBackground),
-              _CupertinoIconButton(
-                  direction: 'down', icon: CupertinoIcons.arrow_down, withAdaptiveBackground: withAdaptiveBackground),
-              _CupertinoIconButton(
-                  direction: 'up', icon: CupertinoIcons.arrow_up, withAdaptiveBackground: withAdaptiveBackground),
-            ],
-          ),
-        )
-      : Tooltip(
-          message: withAdaptiveBackground ? S.of(context).noBackground : S.of(context).parallax,
-          child: ButtonBar(
-            alignment: MainAxisAlignment.center,
-            children: <IconButton>[
-              IconButton(
-                  icon: const Icon(Icons.arrow_back),
-                  onPressed: withAdaptiveBackground ? () => _onPressed(direction: 'left') : null),
-              IconButton(
-                  icon: const Icon(Icons.arrow_forward),
-                  onPressed: withAdaptiveBackground ? () => _onPressed(direction: 'right') : null),
-              IconButton(
-                  icon: const Icon(Icons.arrow_downward),
-                  onPressed: withAdaptiveBackground ? () => _onPressed(direction: 'down') : null),
-              IconButton(
-                  icon: const Icon(Icons.arrow_upward),
-                  onPressed: withAdaptiveBackground ? () => _onPressed(direction: 'up') : null),
-            ],
-          ),
-        );
+  Widget build(BuildContext context) => Tooltip(
+        message: withAdaptiveBackground ? S.of(context).parallax : S.of(context).noBackground,
+        child: ButtonBar(
+          alignment: MainAxisAlignment.center,
+          children: UserInterface.isApple
+              ? <_CupertinoIconButton>[
+                  _CupertinoIconButton(
+                      direction: 'left',
+                      icon: CupertinoIcons.arrow_left,
+                      withAdaptiveBackground: withAdaptiveBackground),
+                  _CupertinoIconButton(
+                      direction: 'right',
+                      icon: CupertinoIcons.arrow_right,
+                      withAdaptiveBackground: withAdaptiveBackground),
+                  _CupertinoIconButton(
+                      direction: 'down',
+                      icon: CupertinoIcons.arrow_down,
+                      withAdaptiveBackground: withAdaptiveBackground),
+                  _CupertinoIconButton(
+                      direction: 'up', icon: CupertinoIcons.arrow_up, withAdaptiveBackground: withAdaptiveBackground),
+                ]
+              : <IconButton>[
+                  IconButton(
+                      icon: const Icon(Icons.arrow_back),
+                      onPressed: withAdaptiveBackground ? () => _onPressed(direction: 'left') : null),
+                  IconButton(
+                      icon: const Icon(Icons.arrow_forward),
+                      onPressed: withAdaptiveBackground ? () => _onPressed(direction: 'right') : null),
+                  IconButton(
+                      icon: const Icon(Icons.arrow_downward),
+                      onPressed: withAdaptiveBackground ? () => _onPressed(direction: 'down') : null),
+                  IconButton(
+                      icon: const Icon(Icons.arrow_upward),
+                      onPressed: withAdaptiveBackground ? () => _onPressed(direction: 'up') : null),
+                ],
+        ),
+      );
 }
 
 void _onPressed({@required String direction}) => AdaptiveIcon.preview(direction);
