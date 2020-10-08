@@ -4,8 +4,8 @@ import '../locator.dart';
 import '../services/navigation_service.dart';
 
 class SetupIcon extends ChangeNotifier {
-  final NavigationService _navigationService = locator<NavigationService>();
   void backButton() {
+    final NavigationService _navigationService = locator<NavigationService>();
     if (_devicePreview) {
       _devicePreview = false;
       notifyListeners();
@@ -32,7 +32,6 @@ class SetupIcon extends ChangeNotifier {
   Image get icon => _icon;
   set icon(Image _uploadedImage) {
     if (_uploadedImage != _icon) {
-      _adaptiveBackground = null;
       _icon = _uploadedImage;
       notifyListeners();
     }
@@ -48,6 +47,19 @@ class SetupIcon extends ChangeNotifier {
   bool get haveAdaptiveBackground => _adaptiveBackground != null;
   void removeAdaptiveBackground() {
     _adaptiveBackground = null;
+    notifyListeners();
+  }
+
+  Image _adaptiveForeground;
+  Image get adaptiveForeground => _adaptiveForeground;
+  set adaptiveForeground(Image _uploadedImage) {
+    _adaptiveForeground = _uploadedImage;
+    notifyListeners();
+  }
+
+  bool get haveadaptiveForeground => _adaptiveForeground != null;
+  void removeadaptiveForeground() {
+    _adaptiveForeground = null;
     notifyListeners();
   }
 
@@ -70,9 +82,12 @@ class SetupIcon extends ChangeNotifier {
   int _platformID = 0;
   int get platformID => _platformID;
   void setPlatform(int _selectedPlatform) {
-    if (_selectedPlatform != _platformID) {
-      _platformID = _selectedPlatform;
-      notifyListeners();
+    if (_devicePreview && _selectedPlatform == 1 && _adaptiveBackground == null && _adaptiveForeground == null) {
+    } else if (_selectedPlatform != _platformID) {
+      {
+        _platformID = _selectedPlatform;
+        notifyListeners();
+      }
     }
   }
 }

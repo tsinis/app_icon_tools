@@ -81,7 +81,7 @@ class IconPreview extends StatelessWidget {
 
   double get _staticCornerRadius => cornerRadius.toDouble();
 
-  bool get _canChangeShape => platformID == 0 || platformID == 1;
+  bool get _canChangeShape => platformID <= 1;
 
   bool get _isAdaptive => platformID == 1;
 
@@ -94,6 +94,7 @@ class IconPreview extends StatelessWidget {
     final double _androidCornerRadius = context.select((SetupIcon icon) => icon.cornerRadius);
     final Color _backgroundColor = context.select((SetupIcon icon) => icon.backgroundColor);
     final bool _haveAdaptiveBackground = context.select((SetupIcon icon) => icon.haveAdaptiveBackground);
+    final bool _haveadaptiveForeground = context.select((SetupIcon icon) => icon.haveadaptiveForeground);
     final bool _colorNotSet = _backgroundColor == null;
     final bool _portrait = MediaQuery.of(context).size.height > MediaQuery.of(context).size.width;
 
@@ -104,24 +105,27 @@ class IconPreview extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20),
-              child: Text(_canChangeShape ? S.of(context).previewShapes : S.of(context).iconPreview),
-            ),
-            GestureDetector(
-              onTap: context.watch<SetupIcon>().changePreview,
-              child: Container(
-                clipBehavior: Clip.hardEdge,
-                height: 300,
-                width: 300,
-                decoration: BoxDecoration(
-                    color: Colors.grey,
-                    borderRadius: BorderRadius.all(
-                        Radius.circular(_canChangeShape ? _androidCornerRadius : _staticCornerRadius))),
-                child: (platformID == 1)
-                    ? const AdaptiveIcon()
-                    : RegularIcon(supportTransparency: _supportTransparency, adaptiveIcon: platformID == 1),
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                child: Text(_canChangeShape
+                    ? (_haveadaptiveForeground ? S.of(context).previewShapes : S.of(context).uploadAdaptiveFg)
+                    : S.of(context).iconPreview)),
+            if (!_haveadaptiveForeground && _isAdaptive)
+              const DragAndDrop(foreground: true)
+            else
+              GestureDetector(
+                onTap: context.watch<SetupIcon>().changePreview,
+                child: Container(
+                  clipBehavior: Clip.hardEdge,
+                  height: 300,
+                  width: 300,
+                  decoration: BoxDecoration(
+                      color: Colors.grey,
+                      borderRadius: BorderRadius.all(
+                          Radius.circular(_canChangeShape ? _androidCornerRadius : _staticCornerRadius))),
+                  child:
+                      (platformID == 1) ? const AdaptiveIcon() : RegularIcon(supportTransparency: _supportTransparency),
+                ),
               ),
-            ),
             if (_canChangeShape)
               SizedBox(
                 width: 292,
@@ -140,7 +144,11 @@ class IconPreview extends StatelessWidget {
             else
               const SizedBox(height: 48),
             ...[
-              AdaptiveButton(text: S.of(context).devicePreview, onPressed: context.watch<SetupIcon>().changePreview),
+              AdaptiveButton(
+                  text: S.of(context).devicePreview,
+                  onPressed: (_isAdaptive && !_haveadaptiveForeground && !_haveAdaptiveBackground)
+                      ? null
+                      : context.watch<SetupIcon>().changePreview),
               if (!_colorNotSet && !_isAdaptive)
                 AdaptiveButton(
                     text: S.of(context).removeColor,
@@ -148,7 +156,7 @@ class IconPreview extends StatelessWidget {
                     onPressed: () => context.read<SetupIcon>().removeColor())
               else
                 _isAdaptive
-                    ? AdaptiveIconButtons(withAdaptiveBackground: _haveAdaptiveBackground)
+                    ? AdaptiveIconButtons(withAdaptives: _haveAdaptiveBackground && _haveadaptiveForeground)
                     : SizedBox(height: _portrait ? 0 : 56),
               // if (_isAdaptive) const SizedBox(height: 44) else const SizedBox(height: 64),
             ]
@@ -157,7 +165,7 @@ class IconPreview extends StatelessWidget {
         Column(
           children: [
             if (_isAdaptive) ...[
-              Padding(padding: const EdgeInsets.symmetric(vertical: 20), child: Text(S.of(context).uploadAdaptive)),
+              Padding(padding: const EdgeInsets.symmetric(vertical: 20), child: Text(S.of(context).uploadAdaptiveBg)),
               const Hero(tag: 'global', child: DragAndDrop(background: true))
             ] else ...[
               Padding(padding: const EdgeInsets.symmetric(vertical: 20), child: Text(S.of(context).iconBgColor)),
@@ -173,11 +181,13 @@ class IconPreview extends StatelessWidget {
               ),
             ],
             const SizedBox(height: 48),
-            if (_isAdaptive && _haveAdaptiveBackground)
+            if (_isAdaptive && _haveAdaptiveBackground || _haveadaptiveForeground)
               AdaptiveButton(
-                  text: S.of(context).removeBackground,
+                  text: _haveAdaptiveBackground ? S.of(context).removeBackground : S.of(context).removeForeground,
                   destructive: true,
-                  onPressed: () => context.read<SetupIcon>().removeAdaptiveBackground()),
+                  onPressed: () => _haveAdaptiveBackground
+                      ? context.read<SetupIcon>().removeAdaptiveBackground()
+                      : context.read<SetupIcon>().removeadaptiveForeground()),
           ],
         ),
       ],

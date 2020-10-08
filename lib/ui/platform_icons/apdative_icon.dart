@@ -7,8 +7,8 @@ import '../../models/setup_icon.dart';
 import 'transparency_grid.dart';
 
 class AdaptiveIcon extends StatefulWidget {
-  const AdaptiveIcon({Key key}) : super(key: key);
-
+  const AdaptiveIcon({Key key, this.onDevice = false}) : super(key: key);
+  final bool onDevice;
   @override
   _AdaptiveIconState createState() => _AdaptiveIconState();
 
@@ -59,23 +59,23 @@ class _AdaptiveIconState extends State<AdaptiveIcon> with SingleTickerProviderSt
 
   @override
   Widget build(BuildContext context) {
-    final Image _backgroundImage = context.select((SetupIcon icon) => icon.adaptiveBackground);
+    final Image _background = context.select((SetupIcon icon) => icon.adaptiveBackground);
+    final Image _foreground = context.select((SetupIcon icon) => icon.adaptiveForeground);
     return AnimatedBuilder(
       animation: _controller,
       builder: (BuildContext context, Widget _) => Stack(
         alignment: Alignment.center,
         children: [
-          const TransparencyGrid(),
-          if (_backgroundImage != null)
+          if (!widget.onDevice) const TransparencyGrid(),
+          if (_background != null)
             FractionallySizedBox(
               widthFactor: 0.7,
               heightFactor: 0.7,
-              child: SlideTransition(position: _animation, child: Transform.scale(scale: 2, child: _backgroundImage)),
+              child: SlideTransition(position: _animation, child: Transform.scale(scale: 2, child: _background)),
             ),
           LocalHero(
-            tag: 'local',
-            child: SlideTransition(
-                position: _animation, child: Transform.scale(scale: 1.42, child: context.watch<SetupIcon>().icon)),
+            tag: 'adaptive',
+            child: SlideTransition(position: _animation, child: Transform.scale(scale: 1.42, child: _foreground)),
           ),
         ],
       ),

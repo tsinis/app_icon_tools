@@ -21,7 +21,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
-    "addBackground" : MessageLookupByLibrary.simpleMessage("Background* can be added in the next step."),
+    "addBackground" : MessageLookupByLibrary.simpleMessage("Adaptive icon can be set up in the next step."),
     "browse" : MessageLookupByLibrary.simpleMessage("Browse"),
     "colorProfile" : MessageLookupByLibrary.simpleMessage("Color profile:"),
     "devicePreview" : MessageLookupByLibrary.simpleMessage("Device Preview"),
@@ -39,9 +39,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "previewShapes" : MessageLookupByLibrary.simpleMessage("Preview possible shapes"),
     "removeBackground" : MessageLookupByLibrary.simpleMessage("Remove Background"),
     "removeColor" : MessageLookupByLibrary.simpleMessage("Remove Color"),
+    "removeForeground" : MessageLookupByLibrary.simpleMessage("Remove Foreround"),
     "storeRequirement" : MessageLookupByLibrary.simpleMessage("Technical requirements. Press for more info."),
     "transparencyiOS" : MessageLookupByLibrary.simpleMessage("The iOS icons doesn\'t support transparency, alpha channel will be replaced with black color."),
-    "uploadAdaptive" : MessageLookupByLibrary.simpleMessage("Upload Adaptive Background"),
+    "uploadAdaptiveBg" : MessageLookupByLibrary.simpleMessage("Upload Adaptive Background"),
+    "uploadAdaptiveFg" : MessageLookupByLibrary.simpleMessage("Upload Adaptive Foreground"),
     "wrongFile" : MessageLookupByLibrary.simpleMessage("File doesn\'t meet the Requirements")
   };
 }

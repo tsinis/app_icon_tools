@@ -133,10 +133,10 @@ class S {
     );
   }
 
-  /// `Background* can be added in the next step.`
+  /// `Adaptive icon can be set up in the next step.`
   String get addBackground {
     return Intl.message(
-      'Background* can be added in the next step.',
+      'Adaptive icon can be set up in the next step.',
       name: 'addBackground',
       desc: '',
       args: [],
@@ -184,10 +184,20 @@ class S {
   }
 
   /// `Upload Adaptive Background`
-  String get uploadAdaptive {
+  String get uploadAdaptiveBg {
     return Intl.message(
       'Upload Adaptive Background',
-      name: 'uploadAdaptive',
+      name: 'uploadAdaptiveBg',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Upload Adaptive Foreground`
+  String get uploadAdaptiveFg {
+    return Intl.message(
+      'Upload Adaptive Foreground',
+      name: 'uploadAdaptiveFg',
       desc: '',
       args: [],
     );
@@ -208,6 +218,16 @@ class S {
     return Intl.message(
       'Remove Background',
       name: 'removeBackground',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Remove Foreround`
+  String get removeForeground {
+    return Intl.message(
+      'Remove Foreround',
+      name: 'removeForeground',
       desc: '',
       args: [],
     );

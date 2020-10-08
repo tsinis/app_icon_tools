@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:websafe_svg/websafe_svg.dart';
 
 import '../../models/setup_icon.dart';
+import '../platform_icons/apdative_icon.dart';
 import '../platform_icons/platforms_list.dart';
 import '../platform_icons/regular_icon.dart';
 import '../widgets/adaptive/platform_navigation_bar.dart';
@@ -46,10 +47,12 @@ class SetupScreen extends StatelessWidget {
                               height: (_id > 2) ? 22 : 40,
                               child: Align(
                                 alignment: Alignment.centerRight,
-                                child: RegularIcon(
-                                    cornerRadius: platformList[_selectedPlatform].cornerRadius,
-                                    supportTransparency: _id != 2,
-                                    adaptiveIcon: _id == 1),
+                                child: (_id == 1)
+                                    ? const AspectRatio(
+                                        aspectRatio: 1, child: ClipOval(child: AdaptiveIcon(onDevice: true)))
+                                    : RegularIcon(
+                                        cornerRadius: platformList[_selectedPlatform].cornerRadius,
+                                        supportTransparency: _id != 2),
                               ),
                             ),
                           ],

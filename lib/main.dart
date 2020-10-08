@@ -15,6 +15,7 @@ void main() {
     ChangeNotifierProxyProvider<UploadFile, SetupIcon>(
         create: (_) => SetupIcon(),
         update: (_, uploadFile, setupIcon) => setupIcon
+          ..adaptiveForeground = uploadFile.recivedForeground
           ..adaptiveBackground = uploadFile.recivedBackground
           ..icon = uploadFile.recivedImage),
   ], child: const MyApp()));

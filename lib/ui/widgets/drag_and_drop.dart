@@ -14,11 +14,8 @@ import '../../models/user_interface.dart';
 import 'adaptive/buttons/button.dart';
 
 class DragAndDrop extends StatelessWidget {
-  const DragAndDrop({
-    this.background = false,
-    Key key,
-  }) : super(key: key);
-  final bool background;
+  const DragAndDrop({this.background = false, this.foreground = false, Key key}) : super(key: key);
+  final bool background, foreground;
   // static DropzoneViewController _controller;
   @override
   Widget build(BuildContext context) {
@@ -38,7 +35,7 @@ class DragAndDrop extends StatelessWidget {
               operation: DragOperation.copy,
               cursor: CursorType.pointer,
               onDrop: (dynamic _file) async =>
-                  await context.read<UploadFile>().checkDropped(_file, background: background),
+                  await context.read<UploadFile>().checkDropped(_file, background: background, foreground: foreground),
               // onCreated: (_assignController) => _controller = _assignController,
               // onHover: () => setState(() => _highlighted = true),
               // onLeave: () => setState(() => _highlighted = false),
@@ -54,7 +51,9 @@ class DragAndDrop extends StatelessWidget {
                       maxLines: 1, minFontSize: 17),
                   AdaptiveButton(
                       text: S.of(context).browse,
-                      onPressed: () async => await context.read<UploadFile>().checkSelected(background: background)),
+                      onPressed: () async => await context
+                          .read<UploadFile>()
+                          .checkSelected(background: background, foreground: foreground)),
                   Opacity(
                       opacity: 0.66, child: Text(S.of(context).iconAttributes, style: const TextStyle(fontSize: 14))),
                   Material(

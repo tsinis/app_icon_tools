@@ -13,8 +13,7 @@ import '../services/navigation_service.dart';
 import '../ui/router.dart';
 
 class UploadFile extends ChangeNotifier {
-  Image recivedImage;
-  Image recivedBackground;
+  Image recivedImage, recivedForeground, recivedBackground;
 
   static const String _expectedFileExtension = 'png';
 
@@ -24,14 +23,14 @@ class UploadFile extends ChangeNotifier {
 
   bool get isProperFile => _isProperFile;
 
-  Future checkSelected({bool background = false}) async =>
+  Future checkSelected({bool background = false, bool foreground = false}) async =>
       await FilePicker.getFile(type: FileType.custom, allowedExtensions: [_expectedFileExtension])
-          .then<void>((_selectedFile) => _checkFile(_selectedFile, background));
+          .then<void>((_selectedFile) => _checkFile(_selectedFile, background: background, foreground: foreground));
 
-  Future checkDropped(dynamic _droppedFile, {bool background = false}) async =>
-      await _checkFile(_droppedFile, background);
+  Future checkDropped(dynamic _droppedFile, {bool background = false, bool foreground = false}) async =>
+      await _checkFile(_droppedFile, background: background, foreground: foreground);
 
-  Future _checkFile(dynamic _file, bool _background) async {
+  Future _checkFile(dynamic _file, {bool background, bool foreground}) async {
     _isProperFile = false;
     // print('Yupee! ${_file.runtimeType} is being checked.');
     try {
@@ -43,10 +42,16 @@ class UploadFile extends ChangeNotifier {
       // } else
       if (_file is File) {
         if (_properExtension(_file.name)) {
-          await _convertFileToImage(_file)
-              .then((_convertedImage) =>
-                  _background ? recivedBackground = _convertedImage : recivedImage = _convertedImage)
-              .whenComplete(() {
+          await _convertFileToImage(_file).then((_convertedImage) {
+            if (background) {
+              recivedBackground = _convertedImage;
+            } else if (foreground) {
+              recivedForeground = _convertedImage;
+            } else {
+              recivedForeground = recivedBackground = null;
+              recivedImage = _convertedImage;
+            }
+          }).whenComplete(() {
             // print('Converted file to image and moving to the next screen!');
             _isProperFile = true;
           });
@@ -60,7 +65,7 @@ class UploadFile extends ChangeNotifier {
     } on Exception catch (_exception) {
       // print('Exception was: ${_exception.toString()}');
     }
-    if (_background) {
+    if (background || foreground) {
       notifyListeners();
     } else {
       await _notifyCheckResult();
