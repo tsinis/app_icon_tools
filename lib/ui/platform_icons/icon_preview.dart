@@ -122,8 +122,7 @@ class IconPreview extends StatelessWidget {
                       color: Colors.grey,
                       borderRadius: BorderRadius.all(
                           Radius.circular(_canChangeShape ? _androidCornerRadius : _staticCornerRadius))),
-                  child:
-                      (platformID == 1) ? const AdaptiveIcon() : RegularIcon(supportTransparency: _supportTransparency),
+                  child: _isAdaptive ? const AdaptiveIcon() : RegularIcon(supportTransparency: _supportTransparency),
                 ),
               ),
             if (_canChangeShape)

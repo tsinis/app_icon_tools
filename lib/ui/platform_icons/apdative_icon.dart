@@ -45,8 +45,12 @@ Animation<Offset> _animation;
 class _AdaptiveIconState extends State<AdaptiveIcon> with SingleTickerProviderStateMixin {
   @override
   void dispose() {
+    final bool _previewMode = context.read<SetupIcon>().devicePreview;
+    if (!_previewMode) {
+      //TODO Fix this!
+      _controller.dispose();
+    }
     super.dispose();
-    _controller.dispose();
   }
 
   @override

@@ -21,7 +21,7 @@ dependencies:
   flutter_colorpicker: ^0.3.4
   flutter_dropzone: ^1.0.9
   get_it: ^5.0.1
-  google_nav_bar: ^3.0.1
+  google_nav_bar: ^3.0.2
   image: ^2.1.18
   local_hero: ^0.1.0
   shared_preferences: ^0.5.12
