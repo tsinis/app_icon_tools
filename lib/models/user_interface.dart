@@ -31,9 +31,12 @@ class UserInterface extends ChangeNotifier {
 
   bool get isWeb => _isWeb ?? false;
 
-  // ignore: avoid_setters_without_getters, beacause I do have a getter (getTheme)...
-  set setTheme(bool _isDark) => _brightness = _isDark ? Brightness.dark : Brightness.light;
+  void changeMode() {
+    _brightness = isDark ? Brightness.light : Brightness.dark;
+    notifyListeners();
+  }
 
+  bool get isDark => _brightness == Brightness.dark;
   Brightness get getTheme => _brightness;
 
   static bool get isApple => _thisIsAppleDevice ?? false;
