@@ -12,9 +12,7 @@ class MyApp extends StatelessWidget {
   const MyApp({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    // print('Whole app rebuild');
     context.watch<UserInterface>().detectUISettings();
-    //TODO: Add night/day theme switch.
     final Brightness _brightness = context.select((UserInterface ui) => ui.getTheme);
     final Locale _locale = Locale(context.select((UserInterface ui) => ui.locale));
 
