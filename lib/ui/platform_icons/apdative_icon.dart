@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 
 import 'package:local_hero/local_hero.dart';
@@ -63,8 +65,8 @@ class _AdaptiveIconState extends State<AdaptiveIcon> with SingleTickerProviderSt
 
   @override
   Widget build(BuildContext context) {
-    final Image _background = context.select((SetupIcon icon) => icon.adaptiveBackground);
-    final Image _foreground = context.select((SetupIcon icon) => icon.adaptiveForeground);
+    final Uint8List _background = context.select((SetupIcon icon) => icon.adaptiveBackground);
+    final Uint8List _foreground = context.select((SetupIcon icon) => icon.adaptiveForeground);
     return AnimatedBuilder(
       animation: _controller,
       builder: (BuildContext context, Widget _) => Stack(
@@ -75,11 +77,13 @@ class _AdaptiveIconState extends State<AdaptiveIcon> with SingleTickerProviderSt
             FractionallySizedBox(
               widthFactor: 0.7,
               heightFactor: 0.7,
-              child: SlideTransition(position: _animation, child: Transform.scale(scale: 2, child: _background)),
+              child: SlideTransition(
+                  position: _animation, child: Transform.scale(scale: 2, child: Image.memory(_background))),
             ),
           LocalHero(
             tag: 'adaptive',
-            child: SlideTransition(position: _animation, child: Transform.scale(scale: 1.42, child: _foreground)),
+            child: SlideTransition(
+                position: _animation, child: Transform.scale(scale: 1.42, child: Image.memory(_foreground))),
           ),
         ],
       ),

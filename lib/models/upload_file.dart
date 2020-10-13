@@ -2,10 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:html';
+// import 'dart:io' as io;
 import 'dart:typed_data' show Uint8List;
 
-import 'package:file_picker_platform_interface/file_picker_platform_interface.dart' show FileType;
-import 'package:file_picker_web/file_picker_web.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/widgets.dart';
 
 import '../locator.dart';
@@ -13,7 +13,7 @@ import '../services/navigation_service.dart';
 import '../ui/router.dart';
 
 class UploadFile extends ChangeNotifier {
-  Image recivedImage, recivedForeground, recivedBackground;
+  Uint8List recivedIcon, recivedForeground, recivedBackground;
 
   static const String _expectedFileExtension = 'png';
 
@@ -23,9 +23,9 @@ class UploadFile extends ChangeNotifier {
 
   bool get isProperFile => _isProperFile;
 
-  Future checkSelected({bool background = false, bool foreground = false}) async =>
-      await FilePicker.getFile(type: FileType.custom, allowedExtensions: [_expectedFileExtension])
-          .then<void>((_selectedFile) => _checkFile(_selectedFile, background: background, foreground: foreground));
+  Future checkSelected({bool background = false, bool foreground = false}) async => await FilePicker.platform
+      .pickFiles(type: FileType.custom, allowedExtensions: [_expectedFileExtension]).then<void>(
+          (_selectedFile) => _checkFile(_selectedFile, background: background, foreground: foreground));
 
   Future checkDropped(dynamic _droppedFile, {bool background = false, bool foreground = false}) async =>
       await _checkFile(_droppedFile, background: background, foreground: foreground);
@@ -34,27 +34,32 @@ class UploadFile extends ChangeNotifier {
     _isProperFile = false;
     // print('Yupee! ${_file.runtimeType} is being checked.');
     try {
-      // if (_file is Image) {
-      //   if (_properExtension(_file.semanticLabel)) {
-      //     _isProperFile = true;
-      //     recivedImage = _file;
-      //   }
-      // } else
       if (_file is File) {
         if (_properExtension(_file.name)) {
-          await _convertFileToImage(_file).then((_convertedImage) {
+          await _convertHtmlFileToBytes(_file).then((_bytes) {
             if (background) {
-              recivedBackground = _convertedImage;
+              recivedBackground = _bytes;
             } else if (foreground) {
-              recivedForeground = _convertedImage;
+              recivedForeground = _bytes;
             } else {
               recivedForeground = recivedBackground = null;
-              recivedImage = _convertedImage;
+              recivedIcon = _bytes;
             }
-          }).whenComplete(() {
-            // print('Converted file to image and moving to the next screen!');
             _isProperFile = true;
           });
+        }
+      }
+      if (_file is FilePickerResult) {
+        if (_properExtension(_file.names.first)) {
+          if (background) {
+            recivedBackground = _file.files.first.bytes;
+          } else if (foreground) {
+            recivedForeground = _file.files.first.bytes;
+          } else {
+            recivedForeground = recivedBackground = null;
+            recivedIcon = _file.files.first.bytes;
+          }
+          _isProperFile = true;
         }
       }
       // ignore: avoid_catching_errors, unused_catch_clause
@@ -81,8 +86,8 @@ class UploadFile extends ChangeNotifier {
     }
   }
 
-  Future<Image> _convertFileToImage(File _file) async =>
-      await _convertHtmlFileToBytes(_file).then((_uint8list) => Image.memory(_uint8list));
+  // Future<Image> _convertFileToImage(File _file) async =>
+  //     await _convertHtmlFileToBytes(_file).then((_uint8list) => Image.memory(_uint8list));
 
   Future<Uint8List> _convertHtmlFileToBytes(File _htmlFile) async {
     final Completer<Uint8List> _bytesCompleter = Completer<Uint8List>();

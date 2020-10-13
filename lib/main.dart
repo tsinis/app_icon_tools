@@ -1,3 +1,5 @@
+// import 'dart:io' as io;
+
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -17,6 +19,6 @@ void main() {
         update: (_, uploadFile, setupIcon) => setupIcon
           ..adaptiveForeground = uploadFile.recivedForeground
           ..adaptiveBackground = uploadFile.recivedBackground
-          ..icon = uploadFile.recivedImage),
+          ..icon = uploadFile.recivedIcon),
   ], child: const MyApp()));
 }

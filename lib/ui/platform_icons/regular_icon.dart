@@ -27,15 +27,14 @@ class RegularIcon extends StatelessWidget {
         children: [
           if (!_onDevice) const TransparencyGrid(),
           Container(
-            clipBehavior: Clip.hardEdge,
-            decoration: BoxDecoration(
-                color: _colorNotSet
-                    ? _supportTransparency
-                        ? Colors.transparent
-                        : Colors.black
-                    : _backgroundColor),
-            child: LocalHero(tag: 'regular', child: context.watch<SetupIcon>().icon),
-          ),
+              clipBehavior: Clip.hardEdge,
+              decoration: BoxDecoration(
+                  color: _colorNotSet
+                      ? _supportTransparency
+                          ? Colors.transparent
+                          : Colors.black
+                      : _backgroundColor),
+              child: LocalHero(tag: 'regular', child: context.watch<SetupIcon>().iconImage)),
         ],
       ),
     );

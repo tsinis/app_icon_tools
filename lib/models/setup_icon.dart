@@ -1,3 +1,7 @@
+import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:archive/archive_io.dart';
 import 'package:flutter/widgets.dart';
 
 import '../locator.dart';
@@ -28,18 +32,19 @@ class SetupIcon extends ChangeNotifier {
     notifyListeners();
   }
 
-  Image _icon;
-  Image get icon => _icon;
-  set icon(Image _uploadedImage) {
+  Uint8List _icon;
+  Image get iconImage => Image.memory(_icon);
+  Uint8List get icon => _icon;
+  set icon(Uint8List _uploadedImage) {
     if (_uploadedImage != _icon) {
       _icon = _uploadedImage;
       notifyListeners();
     }
   }
 
-  Image _adaptiveBackground;
-  Image get adaptiveBackground => _adaptiveBackground;
-  set adaptiveBackground(Image _uploadedImage) {
+  Uint8List _adaptiveBackground;
+  Uint8List get adaptiveBackground => _adaptiveBackground;
+  set adaptiveBackground(Uint8List _uploadedImage) {
     _adaptiveBackground = _uploadedImage;
     notifyListeners();
   }
@@ -50,9 +55,9 @@ class SetupIcon extends ChangeNotifier {
     notifyListeners();
   }
 
-  Image _adaptiveForeground;
-  Image get adaptiveForeground => _adaptiveForeground;
-  set adaptiveForeground(Image _uploadedImage) {
+  Uint8List _adaptiveForeground;
+  Uint8List get adaptiveForeground => _adaptiveForeground;
+  set adaptiveForeground(Uint8List _uploadedImage) {
     _adaptiveForeground = _uploadedImage;
     notifyListeners();
   }
@@ -89,5 +94,14 @@ class SetupIcon extends ChangeNotifier {
         notifyListeners();
       }
     }
+  }
+
+  void archive() {
+    final ZipFileEncoder _encoder = ZipFileEncoder()
+      ..zipDirectory(Directory('out'), filename: 'out.zip')
+      ..create('out2.zip')
+      ..addDirectory(Directory('out'))
+      ..addFile(File.fromRawPath(_icon))
+      ..close();
   }
 }

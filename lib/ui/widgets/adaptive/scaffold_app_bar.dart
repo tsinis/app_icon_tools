@@ -51,7 +51,7 @@ class AdaptiveScaffold extends StatelessWidget {
                   ? const Text('Launcher Icon GUI')
                   : MaterialButton(
                       colorBrightness: Brightness.light,
-                      onPressed: () => print('Export pressed'),
+                      onPressed: () => context.read<SetupIcon>().archive(),
                       color: Colors.amber,
                       child: const Padding(padding: EdgeInsets.all(10), child: Text('Export Icons'))),
               actions: <Widget>[
