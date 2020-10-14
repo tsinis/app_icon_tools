@@ -114,10 +114,12 @@ packages:
   flutter_colorpicker:
     dependency: "direct main"
     description:
-      name: flutter_colorpicker
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.3.4"
+      path: "."
+      ref: HEAD
+      resolved-ref: "54574546b28b24fc4f1a0cca918a83bede2d7101"
+      url: "git://github.com/mchome/flutter_colorpicker.git"
+    source: git
+    version: "0.3.5"
   flutter_dropzone:
     dependency: "direct main"
     description:
@@ -176,7 +178,7 @@ packages:
       name: google_nav_bar
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.2"
+    version: "3.1.0"
   http:
     dependency: transitive
     description:

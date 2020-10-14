@@ -18,10 +18,13 @@ dependencies:
   cupertino_icons: ^1.0.0
   fdottedline: ^1.0.1
   file_picker: ^2.0.7
-  flutter_colorpicker: ^0.3.4
+  # TODO: check colorpicker version update (v.1.1+)
+  flutter_colorpicker:
+    git:
+      url: git://github.com/mchome/flutter_colorpicker.git
   flutter_dropzone: ^1.0.9
   get_it: ^5.0.1
-  google_nav_bar: ^3.0.2
+  google_nav_bar: ^3.1.0
   image: ^2.1.18
   local_hero: ^0.1.0
   platform_info: ^2.0.1

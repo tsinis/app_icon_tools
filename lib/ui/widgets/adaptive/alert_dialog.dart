@@ -15,7 +15,6 @@ class AdaptiveDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) => UserInterface.isApple
       ? CupertinoAlertDialog(
-          //TODO: Check PR fix on Color Picker.
           title: Padding(padding: const EdgeInsets.only(bottom: 10), child: Text(title)),
           content: content,
           actions: <CupertinoDialogAction>[

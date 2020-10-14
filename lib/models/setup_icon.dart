@@ -1,7 +1,11 @@
-import 'dart:io';
+import 'dart:convert' as convert;
+// ignore: avoid_web_libraries_in_flutter
+import 'dart:html';
 import 'dart:typed_data';
 
-import 'package:archive/archive_io.dart';
+import 'package:archive/archive.dart' as web;
+// import 'package:archive/archive_io.dart' as io;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
 import '../locator.dart';
@@ -97,11 +101,24 @@ class SetupIcon extends ChangeNotifier {
   }
 
   void archive() {
-    final ZipFileEncoder _encoder = ZipFileEncoder()
-      ..zipDirectory(Directory('out'), filename: 'out.zip')
-      ..create('out2.zip')
-      ..addDirectory(Directory('out'))
-      ..addFile(File.fromRawPath(_icon))
-      ..close();
+    if (kIsWeb) {
+      final web.Archive _archive = web.Archive();
+      final web.ArchiveFile _arcfile = web.ArchiveFile('icon.png', _icon.length, _icon);
+      _archive.addFile(_arcfile);
+      final List<int> _zipData = web.ZipEncoder().encode(_archive);
+      final String base64text = convert.base64.encode(_zipData);
+      querySelector('#zip') as AnchorElement
+        ..href = 'data:application/zip;base64,$base64text'
+        ..click();
+    } else {
+      //TODO! Implement mobile and desktop part of archive creation.
+      // final io.Archive _archive = io.Archive();
+      // final ZipFileEncoder _encoder = ZipFileEncoder()
+      //   ..zipDirectory(Directory('out'), filename: 'out.zip')
+      //   ..create('out2.zip')
+      //   ..addDirectory(Directory('out'))
+      //   ..addFile(File.fromRawPath(_icon))
+      //   ..close();
+    }
   }
 }
