@@ -7,6 +7,7 @@ const List<IconPreview> platformList = [
   IconPreview.web(),
   IconPreview.windows(),
   IconPreview.macOS(),
-  IconPreview.linux(),
-// IconPreview.fuchsiaOS()
+  //TODO: Check when https://github.com/flutter/flutter/issues/53229 is closed.
+  // IconPreview.linux(),
+  // IconPreview.fuchsiaOS()
 ];

@@ -10,6 +10,7 @@ import 'package:flutter/widgets.dart';
 
 import '../locator.dart';
 import '../services/navigation_service.dart';
+import 'constants.dart';
 
 class SetupIcon extends ChangeNotifier {
   void backButton() {
@@ -100,10 +101,17 @@ class SetupIcon extends ChangeNotifier {
     }
   }
 
+  // void addWebArchiveDirectory(web.Archive arc, String name) => arc.addFile(web.ArchiveFile(name, 0, <int>[])
+  //   ..isFile = false
+  //   ..compress = false
+  //   ..mode = 0x41FD
+  //   ..crc32 = 0);
+
   void archive() {
     if (kIsWeb) {
       final web.Archive _archive = web.Archive();
-      final web.ArchiveFile _arcfile = web.ArchiveFile('icon.png', _icon.length, _icon);
+      // addWebArchiveDirectory(_archive, '/folder/');
+      final web.ArchiveFile _arcfile = web.ArchiveFile(macOS[1024], _icon.length, _icon);
       _archive.addFile(_arcfile);
       final List<int> _zipData = web.ZipEncoder().encode(_archive);
       final String base64text = convert.base64.encode(_zipData);

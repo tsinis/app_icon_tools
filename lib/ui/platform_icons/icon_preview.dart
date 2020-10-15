@@ -65,19 +65,19 @@ class IconPreview extends StatelessWidget {
         icon = CommunityMaterialIcons.apple,
         devicePicture = 'platform_svgs/macbook.svg';
 
-  const IconPreview.linux()
-      : cornerRadius = 0,
-        platformID = 6,
-        name = 'Linux',
-        icon = CommunityMaterialIcons.linux,
-        devicePicture = 'platform_svgs/ubuntu.svg';
+  // const IconPreview.linux()
+  //     : cornerRadius = 0,
+  //       platformID = 6,
+  //       name = 'Linux',
+  //       icon = CommunityMaterialIcons.linux,
+  //       devicePicture = 'platform_svgs/ubuntu.svg';
 
   // const IconPreview.fuchsiaOS()
-  //     : cornerRadius = 20,
+  //     : cornerRadius = 0,
   //       platformID = 7,
   //       name = 'Fuchsia',
   //       icon = CommunityMaterialIcons.linux,
-  //       devicePicture = 'platform_svgs/iphone.svg';
+  //       devicePicture = 'platform_svgs/ubuntu.svg';
 
   double get _staticCornerRadius => cornerRadius.toDouble();
 
