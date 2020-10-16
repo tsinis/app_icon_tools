@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../locator.dart';
-import '../../models/constants.dart';
+import '../../models/constants/locale.dart';
 import '../../models/user_interface.dart';
 import '../../services/navigation_service.dart';
 import '../router.dart';

@@ -5,7 +5,7 @@ import 'dart:html';
 // import 'dart:io' as io;
 import 'dart:typed_data' show Uint8List;
 
-import 'package:file_picker/file_picker.dart';
+import 'package:file_picker_cross/file_picker_cross.dart';
 import 'package:flutter/widgets.dart';
 
 import '../locator.dart';
@@ -23,9 +23,9 @@ class UploadFile extends ChangeNotifier {
 
   bool get isProperFile => _isProperFile;
 
-  Future checkSelected({bool background = false, bool foreground = false}) async => await FilePicker.platform
-      .pickFiles(type: FileType.custom, allowedExtensions: [_expectedFileExtension]).then<void>(
-          (_selectedFile) => _checkFile(_selectedFile, background: background, foreground: foreground));
+  Future checkSelected({bool background = false, bool foreground = false}) async =>
+      await FilePickerCross.importFromStorage(type: FileTypeCross.image, fileExtension: _expectedFileExtension)
+          .then<void>((_selectedFile) => _checkFile(_selectedFile, background: background, foreground: foreground));
 
   Future checkDropped(dynamic _droppedFile, {bool background = false, bool foreground = false}) async =>
       await _checkFile(_droppedFile, background: background, foreground: foreground);
@@ -49,19 +49,32 @@ class UploadFile extends ChangeNotifier {
           });
         }
       }
-      if (_file is FilePickerResult) {
-        if (_properExtension(_file.names.first)) {
+      if (_file is FilePickerCross) {
+        if (_properExtension(_file.fileName)) {
           if (background) {
-            recivedBackground = _file.files.first.bytes;
+            recivedBackground = _file.toUint8List();
           } else if (foreground) {
-            recivedForeground = _file.files.first.bytes;
+            recivedForeground = _file.toUint8List();
           } else {
             recivedForeground = recivedBackground = null;
-            recivedIcon = _file.files.first.bytes;
+            recivedIcon = _file.toUint8List();
           }
           _isProperFile = true;
         }
       }
+      // if (_file is FilePickerResult) {
+      //   if (_properExtension(_file.names.first)) {
+      //     if (background) {
+      //       recivedBackground = _file.files.first.bytes;
+      //     } else if (foreground) {
+      //       recivedForeground = _file.files.first.bytes;
+      //     } else {
+      //       recivedForeground = recivedBackground = null;
+      //       recivedIcon = _file.files.first.bytes;
+      //     }
+      //     _isProperFile = true;
+      //   }
+      // }
       // ignore: avoid_catching_errors, unused_catch_clause
     } on Error catch (_error) {
       // print('Error was: ${_error.toString()}');

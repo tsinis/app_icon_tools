@@ -1,16 +1,16 @@
-import 'dart:convert' as convert;
-// ignore: avoid_web_libraries_in_flutter
-import 'dart:html';
+import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:archive/archive.dart' as web;
-// import 'package:archive/archive_io.dart' as io;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:image_resizer/image_resizer.dart';
+import 'package:image/image.dart' as img;
+import 'package:universal_html/html.dart' as html;
 
 import '../locator.dart';
 import '../services/navigation_service.dart';
-import 'constants.dart';
+import 'constants/icon_paths.dart';
+import 'constants/locale.dart';
 
 class SetupIcon extends ChangeNotifier {
   void backButton() {
@@ -101,32 +101,77 @@ class SetupIcon extends ChangeNotifier {
     }
   }
 
-  // void addWebArchiveDirectory(web.Archive arc, String name) => arc.addFile(web.ArchiveFile(name, 0, <int>[])
-  //   ..isFile = false
-  //   ..compress = false
-  //   ..mode = 0x41FD
-  //   ..crc32 = 0);
+  Map<String, List<FileData>> _files;
 
-  void archive() {
-    if (kIsWeb) {
-      final web.Archive _archive = web.Archive();
-      // addWebArchiveDirectory(_archive, '/folder/');
-      final web.ArchiveFile _arcfile = web.ArchiveFile(macOS[1024], _icon.length, _icon);
-      _archive.addFile(_arcfile);
-      final List<int> _zipData = web.ZipEncoder().encode(_archive);
-      final String base64text = convert.base64.encode(_zipData);
-      querySelector('#zip') as AnchorElement
-        ..href = 'data:application/zip;base64,$base64text'
-        ..click();
-    } else {
-      //TODO! Implement mobile and desktop part of archive creation.
-      // final io.Archive _archive = io.Archive();
-      // final ZipFileEncoder _encoder = ZipFileEncoder()
-      //   ..zipDirectory(Directory('out'), filename: 'out.zip')
-      //   ..create('out2.zip')
-      //   ..addDirectory(Directory('out'))
-      //   ..addFile(File.fromRawPath(_icon))
-      //   ..close();
-    }
+  // final bool _exportIos = true, _exportWeb = true, _exportMacos = true, _exportAndroid = true;
+
+  Future archive() async {
+    _setLoading(true);
+    final IconGenerator _gen = IconGenerator();
+    final List<FileData> _images = [];
+    await _resizeIcons().whenComplete(() async {
+      for (final key in _files.keys) {
+        final _folder = _files[key];
+        _images.addAll(_folder.toList());
+      }
+      // print('Images: ${_images.length}');
+      final List<int> _data = _gen.generateArchive(_images);
+      await _saveFile('icons.zip', binaryData: _data).whenComplete(() => _setLoading(false));
+    });
   }
+
+  Future<bool> _saveFile(
+    String fileName, {
+    // String initialDirectoryDesktop,
+    List<int> binaryData,
+    bool silentErrors = false,
+  }) async {
+    if (kIsWeb) {
+      Uri dataUrl;
+      try {
+        if (binaryData != null) {
+          dataUrl = Uri.dataFromBytes(binaryData);
+        }
+        // ignore: avoid_catches_without_on_clauses
+      } catch (e) {
+        if (!silentErrors) {
+          throw Exception('Error Creating File Data: $e');
+        }
+        return false;
+      }
+      html.AnchorElement()
+        // ignore: unsafe_html
+        ..href = dataUrl.toString()
+        ..setAttribute('download', fileName)
+        ..click();
+      return true;
+    }
+    File(fileName)
+      ..createSync()
+      ..writeAsBytesSync(binaryData);
+    return true;
+  }
+
+  Future _resizeIcons() async {
+    _files = {};
+    // await _generateIcons('iOS', IosIconsFolder(icons: iosIcons, path: iosPath));
+    await _generateIcons('web', WebIconsFolder(icons: webIcons, favicion: webFavicon, path: webPath));
+    // await _generateIcons('macOS', MacOSIconsFolder(icons: macIcons, path: macOSPath));
+    // await _generateIcons('android', AndroidIconsFolder(icons: androidIcons, path: androidPath));
+  }
+
+  Future _generateIcons(String key, ImageFolder folder) async {
+    final img.Image _image = img.decodePng(_icon);
+    final IconGenerator _gen = IconGenerator();
+    final List<FileData> _archive = await _gen.generateIcons(_image, folder, writeToDiskIO: !kIsWeb);
+    _files[key] = _archive;
+  }
+
+  void _setLoading(bool value) {
+    _loading = value;
+    notifyListeners();
+  }
+
+  bool _loading = false;
+  bool get loading => _loading;
 }
