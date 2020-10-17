@@ -516,7 +516,7 @@ packages:
     source: hosted
     version: "0.1.4"
   path_provider:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: path_provider
       url: "https://pub.dartlang.org"
@@ -530,7 +530,7 @@ packages:
     source: hosted
     version: "0.0.1+2"
   path_provider_macos:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: path_provider_macos
       url: "https://pub.dartlang.org"
@@ -743,7 +743,7 @@ packages:
       name: url_launcher
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.7.4"
+    version: "5.7.5"
   url_launcher_linux:
     dependency: transitive
     description:
@@ -843,5 +843,5 @@ packages:
     source: hosted
     version: "0.1.2"
 sdks:
-  dart: ">2.10.0 <=2.11.0-228.0.dev"
+  dart: ">2.10.0 <=2.11.0-222.0.dev"
   flutter: ">1.22.0 <2.0.0"

@@ -1,8 +1,6 @@
-// ignore: avoid_web_libraries_in_flutter
-import 'dart:html';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:fdottedline/fdottedline.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_dropzone/flutter_dropzone.dart';
@@ -31,17 +29,19 @@ class DragAndDrop extends StatelessWidget {
         child: Stack(
           alignment: Alignment.center,
           children: [
-            DropzoneView(
-              operation: DragOperation.copy,
-              cursor: CursorType.pointer,
-              onDrop: (dynamic _file) async =>
-                  await context.read<UploadFile>().checkDropped(_file, background: background, foreground: foreground),
-              // onCreated: (_assignController) => _controller = _assignController,
-              // onHover: () => setState(() => _highlighted = true),
-              // onLeave: () => setState(() => _highlighted = false),
-              // onLoaded: () => print('Drop zone loaded'),
-              // onError: (_image) => print('Drop zone error: $_image'),
-            ),
+            if (kIsWeb)
+              DropzoneView(
+                operation: DragOperation.copy,
+                cursor: CursorType.pointer,
+                onDrop: (dynamic _file) async => await context
+                    .read<UploadFile>()
+                    .checkDropped(_file, background: background, foreground: foreground),
+                // onCreated: (_assignController) => _controller = _assignController,
+                // onHover: () => setState(() => _highlighted = true),
+                // onLeave: () => setState(() => _highlighted = false),
+                // onLoaded: () => print('Drop zone loaded'),
+                // onError: (_image) => print('Drop zone error: $_image'),
+              ),
             SizedBox(
               height: 250,
               child: Column(

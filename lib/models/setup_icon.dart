@@ -1,16 +1,16 @@
-import 'dart:io';
+import 'dart:io' as io;
+// import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_resizer/image_resizer.dart';
 import 'package:image/image.dart' as img;
+// import 'package:path_provider/path_provider.dart';
 import 'package:universal_html/html.dart' as html;
 
 import '../locator.dart';
 import '../services/navigation_service.dart';
-import 'constants/icon_paths.dart';
-import 'constants/locale.dart';
 
 class SetupIcon extends ChangeNotifier {
   void backButton() {
@@ -146,21 +146,24 @@ class SetupIcon extends ChangeNotifier {
         ..click();
       return true;
     }
-    File(fileName)
+    // final Directory _appDocDir = await getApplicationDocumentsDirectory();
+    // final String _appDocPath = _appDocDir.path;
+    io.File(fileName)
       ..createSync()
       ..writeAsBytesSync(binaryData);
+    // ..writeAsStringSync('$_appDocPath/$fileName');
     return true;
   }
 
   Future _resizeIcons() async {
     _files = {};
-    // await _generateIcons('iOS', IosIconsFolder(icons: iosIcons, path: iosPath));
-    await _generateIcons('web', WebIconsFolder(icons: webIcons, favicion: webFavicon, path: webPath));
-    // await _generateIcons('macOS', MacOSIconsFolder(icons: macIcons, path: macOSPath));
-    // await _generateIcons('android', AndroidIconsFolder(icons: androidIcons, path: androidPath));
+    await _generatePngIcons('web', WebIconsFolder());
+    // await _generatePngIcons('iOS', IosIconsFolder());
+    // await _generatePngIcons('macOS', MacOSIconsFolder());
+    // await _generatePngIcons('android', AndroidIconsFolder());
   }
 
-  Future _generateIcons(String key, ImageFolder folder) async {
+  Future _generatePngIcons(String key, ImageFolder folder) async {
     final img.Image _image = img.decodePng(_icon);
     final IconGenerator _gen = IconGenerator();
     final List<FileData> _archive = await _gen.generateIcons(_image, folder, writeToDiskIO: !kIsWeb);

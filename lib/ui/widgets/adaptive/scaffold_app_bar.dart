@@ -13,7 +13,7 @@ class AdaptiveScaffold extends StatelessWidget {
   final Widget child;
 
   @override
-  Widget build(BuildContext context) => UserInterface.isApple //TODO: Add app bar buttons.
+  Widget build(BuildContext context) => UserInterface.isApple
       ? CupertinoPageScaffold(
           navigationBar: CupertinoNavigationBar(
             middle: uploadScreen
@@ -22,7 +22,7 @@ class AdaptiveScaffold extends StatelessWidget {
                     padding: const EdgeInsets.all(4),
                     child: CupertinoButton(
                         padding: const EdgeInsets.symmetric(horizontal: 64),
-                        onPressed: () => print('Export pressed'),
+                        onPressed: () => context.read<SetupIcon>().archive(),
                         color: CupertinoColors.systemYellow,
                         child: const Text('Export Icons')),
                   ),

@@ -27,10 +27,12 @@ dependencies:
   hive_flutter: ^0.3.1
   image_resizer: ^1.0.2
   local_hero: ^0.1.0
+  path_provider: ^1.6.21
+  path_provider_macos: ^0.0.1
   platform_info: ^2.0.1
   provider: ^4.3.2+2
   universal_html: ^1.2.3
-  url_launcher: ^5.7.4
+  url_launcher: ^5.7.5
   url_launcher_web: ^0.1.4+1
   websafe_svg: ^1.1.4
 
