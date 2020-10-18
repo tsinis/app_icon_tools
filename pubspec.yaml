@@ -1,4 +1,4 @@
-name: launcher_icons_gui
+name: launcher_icons_preview
 description: Simple GUI for launcher icons preview.
 
 version: 1.0.0+1
@@ -19,7 +19,7 @@ dependencies:
   community_material_icon: ^5.4.55
   cupertino_icons: ^1.0.0
   fdottedline: ^1.0.1
-  file_picker_cross: ^4.2.4
+  file_picker_cross: ^4.2.5
   flutter_dropzone: ^1.0.9
   get_it: ^5.0.1
   google_nav_bar: ^3.1.0
@@ -28,8 +28,8 @@ dependencies:
   image_resizer: ^1.0.2
   local_hero: ^0.1.0
   path_provider: ^1.6.21
-  path_provider_macos: ^0.0.1
-  platform_info: ^2.0.1
+  path_provider_macos: ^0.0.4+4
+  platform_info: ^2.1.0
   provider: ^4.3.2+2
   universal_html: ^1.2.3
   url_launcher: ^5.7.5
@@ -37,8 +37,8 @@ dependencies:
   websafe_svg: ^1.1.4
 
 dev_dependencies:
-  build_runner: ^1.10.3
-  hive_generator: ^0.8.1
+  build_runner: any
+  hive_generator: any
   pedantic: any
 
 flutter_intl:

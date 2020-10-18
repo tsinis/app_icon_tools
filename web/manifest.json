@@ -1,6 +1,6 @@
 {
-    "name": "launcher_icons_gui",
-    "short_name": "launcher_icons_gui",
+    "name": "launcher_icons_preview",
+    "short_name": "launcher_icons_preview",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

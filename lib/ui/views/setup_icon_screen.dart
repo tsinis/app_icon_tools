@@ -20,7 +20,6 @@ class SetupScreen extends StatelessWidget {
     final bool _devicePreview = context.select((SetupIcon icon) => icon.devicePreview);
     final int _selectedPlatform = context.select((SetupIcon icon) => icon.platformID);
     final int _id = platformList[_selectedPlatform].platformID;
-
     return AdaptiveScaffold(
       child: LocalHeroScope(
         duration: const Duration(seconds: 1),

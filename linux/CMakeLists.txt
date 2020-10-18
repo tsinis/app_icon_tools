@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
 project(runner LANGUAGES CXX)
 
-set(BINARY_NAME "launcher_icons_gui")
-set(APPLICATION_ID "is.tsin.launcher_icons_gui.launcher_icons_gui")
+set(BINARY_NAME "launcher_icons_preview")
+set(APPLICATION_ID "is.tsin.launcher_icons_preview.launcher_icons_preview")
 
 cmake_policy(SET CMP0063 NEW)
 

@@ -3,12 +3,13 @@ import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
-import 'package:image_resizer/image_resizer.dart';
 import 'package:image/image.dart' as img;
+import 'package:image_resizer/image_resizer.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:universal_html/html.dart' as html;
 
 import '../locator.dart';
+import '../services/image_resizer_windows.dart';
 import '../services/navigation_service.dart';
 
 class SetupIcon extends ChangeNotifier {
@@ -109,15 +110,17 @@ class SetupIcon extends ChangeNotifier {
     _setLoading(true);
     final IconGenerator _gen = IconGenerator();
     final List<FileData> _images = [];
-    await _resizeIcons().whenComplete(() async {
-      for (final key in _iconFiles.keys) {
-        final _folder = _iconFiles[key];
-        _images.addAll(_folder.toList());
-      }
-      // print('Images: ${_images.length}');
-      final List<int> _data = _gen.generateArchive(_images);
-      await _saveFile('icons.zip', binaryData: _data).whenComplete(() => _setLoading(false));
-    });
+    Future<void>.delayed(
+        const Duration(milliseconds: 300),
+        () async => await _resizeIcons().whenComplete(() async {
+              for (final key in _iconFiles.keys) {
+                final _folder = _iconFiles[key];
+                _images.addAll(_folder.toList());
+              }
+              // print('Images: ${_images.length}');
+              final List<int> _data = _gen.generateArchive(_images);
+              await _saveFile('icons.zip', binaryData: _data).whenComplete(() => _setLoading(false));
+            }));
   }
 
   Future<bool> _saveFile(String fileName, {List<int> binaryData, bool silentErrors = false}) async {
@@ -152,6 +155,7 @@ class SetupIcon extends ChangeNotifier {
       // await _generatePngIcons('iOS', IosIconsFolder());
       // await _generatePngIcons('macOS', MacOSIconsFolder());
       // await _generatePngIcons('android', AndroidIconsFolder());
+      await _generateIcoIcon('win', WindowsIconsFolder());
     }
   }
 
@@ -159,6 +163,12 @@ class SetupIcon extends ChangeNotifier {
     final img.Image _image = img.decodePng(_icon);
     final IconGenerator _gen = IconGenerator();
     final List<FileData> _archive = await _gen.generateIcons(_image, folder, writeToDiskIO: !kIsWeb);
+    _iconFiles[key] = _archive;
+  }
+
+  Future _generateIcoIcon(String key, ImageFolder folder) async {
+    final img.Image _image = img.decodePng(_icon);
+    final List<FileData> _archive = await generateWinIcos(_image, folder, writeToDiskIO: !kIsWeb);
     _iconFiles[key] = _archive;
   }
 

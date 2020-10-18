@@ -43,6 +43,56 @@ class S {
     );
   }
 
+  /// `Launcher Icons Preview`
+  String get appName {
+    return Intl.message(
+      'Launcher Icons Preview',
+      name: 'appName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save`
+  String get save {
+    return Intl.message(
+      'Save',
+      name: 'save',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel`
+  String get cancel {
+    return Intl.message(
+      'Cancel',
+      name: 'cancel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Settings`
+  String get settings {
+    return Intl.message(
+      'Settings',
+      name: 'settings',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Dark Mode`
+  String get dark {
+    return Intl.message(
+      'Dark Mode',
+      name: 'dark',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Drop your image here or`
   String get dragAndDropHere {
     return Intl.message(
@@ -268,6 +318,26 @@ class S {
     return Intl.message(
       'Device Preview',
       name: 'devicePreview',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Export Icons`
+  String get export {
+    return Intl.message(
+      'Export Icons',
+      name: 'export',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please wait a moment`
+  String get wait {
+    return Intl.message(
+      'Please wait a moment',
+      name: 'wait',
       desc: '',
       args: [],
     );

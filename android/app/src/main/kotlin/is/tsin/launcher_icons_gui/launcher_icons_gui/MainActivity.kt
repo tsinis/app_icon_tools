@@ -1,4 +1,4 @@
-package is.tsin.launcher_icons_gui.launcher_icons_gui
+package is.tsin.launcher_icons_preview.launcher_icons_preview
 
 import io.flutter.embedding.android.FlutterActivity
 

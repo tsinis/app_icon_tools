@@ -1,5 +1,10 @@
 {
     "locale": "en",
+    "appName": "Launcher Icons Preview",
+    "save": "Save",
+    "cancel": "Cancel",
+    "settings": "Settings",
+    "dark": "Dark Mode",
     "dragAndDropHere": "Drop your image here or",
     "wrongFile": "File doesn't meet the Requirements",
     "browse": "Browse",
@@ -22,5 +27,7 @@
     "iconBgColor": "Icon Background Color",
     "noBackground": "Please select adaptive background first.",
     "parallax": "Preview Adaptive Icon parallax effect.",
-    "devicePreview": "Device Preview"
-}
+    "devicePreview": "Device Preview",
+    "export": "Export Icons",
+    "wait": "Please wait a moment"
+    }
