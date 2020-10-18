@@ -1,5 +1,3 @@
-// import 'dart:io' as io;
-
 import 'package:flutter/widgets.dart';
 import 'package:platform_info/platform_info.dart';
 import 'package:provider/provider.dart';

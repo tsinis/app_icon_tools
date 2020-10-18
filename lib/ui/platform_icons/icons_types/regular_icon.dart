@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-
 import 'package:local_hero/local_hero.dart';
 import 'package:provider/provider.dart';
 
-import '../../models/setup_icon.dart';
-import 'transparency_grid.dart';
+import '../../../models/setup_icon.dart';
+import '../../widgets/transparency_grid.dart';
 
 class RegularIcon extends StatelessWidget {
   const RegularIcon({@required bool supportTransparency, int cornerRadius, Key key})

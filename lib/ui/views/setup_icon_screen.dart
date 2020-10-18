@@ -6,9 +6,9 @@ import 'package:provider/provider.dart';
 import 'package:websafe_svg/websafe_svg.dart';
 
 import '../../models/setup_icon.dart';
-import '../platform_icons/apdative_icon.dart';
+import '../platform_icons/icons_types/apdative_icon.dart';
+import '../platform_icons/icons_types/regular_icon.dart';
 import '../platform_icons/platforms_list.dart';
-import '../platform_icons/regular_icon.dart';
 import '../widgets/adaptive/platform_navigation_bar.dart';
 import '../widgets/adaptive/scaffold_app_bar.dart';
 

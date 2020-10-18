@@ -273,10 +273,10 @@ class S {
     );
   }
 
-  /// `Remove Foreround`
+  /// `Remove Foreground`
   String get removeForeground {
     return Intl.message(
-      'Remove Foreround',
+      'Remove Foreground',
       name: 'removeForeground',
       desc: '',
       args: [],

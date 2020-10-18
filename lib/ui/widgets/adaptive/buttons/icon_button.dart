@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../generated/l10n.dart';
 import '../../../../models/user_interface.dart';
-import '../../../platform_icons/apdative_icon.dart';
+import '../../../platform_icons/icons_types/apdative_icon.dart';
 
 class AdaptiveIconButtons extends StatelessWidget {
   final bool withAdaptives;

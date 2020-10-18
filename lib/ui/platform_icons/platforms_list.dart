@@ -1,4 +1,4 @@
-import 'icon_preview.dart';
+import 'icons_screen.dart';
 
 const List<IconPreview> platformList = [
   IconPreview.oldAndroid(),

@@ -1,12 +1,11 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-
 import 'package:local_hero/local_hero.dart';
 import 'package:provider/provider.dart';
 
-import '../../models/setup_icon.dart';
-import 'transparency_grid.dart';
+import '../../../models/setup_icon.dart';
+import '../../widgets/transparency_grid.dart';
 
 class AdaptiveIcon extends StatefulWidget {
   const AdaptiveIcon({Key key, this.onDevice = false}) : super(key: key);

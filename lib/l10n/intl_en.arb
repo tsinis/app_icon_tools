@@ -23,7 +23,7 @@
     "uploadAdaptiveFg": "Upload Adaptive Foreground",
     "removeColor": "Remove Color",
     "removeBackground": "Remove Background",
-    "removeForeground": "Remove Foreround",
+    "removeForeground": "Remove Foreground",
     "iconBgColor": "Icon Background Color",
     "noBackground": "Please select adaptive background first.",
     "parallax": "Preview Adaptive Icon parallax effect.",

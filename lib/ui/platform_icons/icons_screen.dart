@@ -12,8 +12,8 @@ import '../widgets/adaptive/buttons/icon_button.dart';
 import '../widgets/adaptive/slider.dart';
 import '../widgets/drag_and_drop.dart';
 import '../widgets/layout.dart';
-import 'apdative_icon.dart';
-import 'regular_icon.dart';
+import 'icons_types/apdative_icon.dart';
+import 'icons_types/regular_icon.dart';
 
 class IconPreview extends StatelessWidget {
   final int cornerRadius, platformID;
@@ -180,7 +180,7 @@ class IconPreview extends StatelessWidget {
               ),
             ],
             const SizedBox(height: 48),
-            if (_isAdaptive && _haveAdaptiveBackground || _haveadaptiveForeground)
+            if (_isAdaptive && (_haveAdaptiveBackground || _haveadaptiveForeground))
               AdaptiveButton(
                   text: _haveAdaptiveBackground ? S.of(context).removeBackground : S.of(context).removeForeground,
                   destructive: true,

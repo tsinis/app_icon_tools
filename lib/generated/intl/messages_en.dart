@@ -43,7 +43,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "previewShapes" : MessageLookupByLibrary.simpleMessage("Preview possible shapes"),
     "removeBackground" : MessageLookupByLibrary.simpleMessage("Remove Background"),
     "removeColor" : MessageLookupByLibrary.simpleMessage("Remove Color"),
-    "removeForeground" : MessageLookupByLibrary.simpleMessage("Remove Foreround"),
+    "removeForeground" : MessageLookupByLibrary.simpleMessage("Remove Foreground"),
     "save" : MessageLookupByLibrary.simpleMessage("Save"),
     "settings" : MessageLookupByLibrary.simpleMessage("Settings"),
     "storeRequirement" : MessageLookupByLibrary.simpleMessage("Technical requirements. Press for more info."),

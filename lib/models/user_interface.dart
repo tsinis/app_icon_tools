@@ -22,7 +22,7 @@ class UserInterface extends ChangeNotifier {
   }
 
   void detectUISettings() {
-    _thisIsAppleDevice = platform.isWindows;
+    _thisIsAppleDevice = platform.isCupertino;
     _isWeb = platform.isWeb;
     _locale = platform.locale;
   }
