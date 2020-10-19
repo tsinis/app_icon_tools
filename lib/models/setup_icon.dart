@@ -8,8 +8,9 @@ import 'package:image_resizer/image_resizer.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:universal_html/html.dart' as html;
 
+import '../extensions/image_resizer_adaptive.dart';
+import '../extensions/image_resizer_windows.dart';
 import '../locator.dart';
-import '../services/image_resizer_windows.dart';
 import '../services/navigation_service.dart';
 
 class SetupIcon extends ChangeNotifier {
@@ -39,8 +40,8 @@ class SetupIcon extends ChangeNotifier {
 
   Uint8List _icon;
   Image get iconImage => Image.memory(_icon);
-  Uint8List get icon => _icon;
-  set icon(Uint8List _uploadedImage) {
+  Uint8List get regularIcon => _icon;
+  set regularIcon(Uint8List _uploadedImage) {
     if (_uploadedImage != _icon) {
       _icon = _uploadedImage;
       _iconFiles = {};
@@ -52,6 +53,7 @@ class SetupIcon extends ChangeNotifier {
   Uint8List get adaptiveBackground => _adaptiveBackground;
   set adaptiveBackground(Uint8List _uploadedImage) {
     _adaptiveBackground = _uploadedImage;
+    _iconFiles = {};
     notifyListeners();
   }
 
@@ -65,10 +67,11 @@ class SetupIcon extends ChangeNotifier {
   Uint8List get adaptiveForeground => _adaptiveForeground;
   set adaptiveForeground(Uint8List _uploadedImage) {
     _adaptiveForeground = _uploadedImage;
+    _iconFiles = {};
     notifyListeners();
   }
 
-  bool get haveadaptiveForeground => _adaptiveForeground != null;
+  bool get haveAdaptiveForeground => _adaptiveForeground != null;
   void removeadaptiveForeground() {
     _adaptiveForeground = null;
     notifyListeners();
@@ -111,6 +114,7 @@ class SetupIcon extends ChangeNotifier {
     final IconGenerator _gen = IconGenerator();
     final List<FileData> _images = [];
     Future<void>.delayed(
+        //TODO! Fix workaround! Try to run this in Isolate if !kIsWeb...
         const Duration(milliseconds: 300),
         () async => await _resizeIcons().whenComplete(() async {
               for (final key in _iconFiles.keys) {
@@ -151,11 +155,15 @@ class SetupIcon extends ChangeNotifier {
 
   Future _resizeIcons() async {
     if (_iconFiles.isEmpty) {
-      await _generatePngIcons('web', WebIconsFolder());
+      // await _generatePngIcons('web', WebIconsFolder());
       // await _generatePngIcons('iOS', IosIconsFolder());
       // await _generatePngIcons('macOS', MacOSIconsFolder());
-      // await _generatePngIcons('android', AndroidIconsFolder());
+      // await _generatePngIcons('droid', AndroidIconsFolder());
       await _generateIcoIcon('win', WindowsIconsFolder());
+      if (haveAdaptiveForeground && haveAdaptiveBackground) {
+        await _generateAdaptiveIcons(ForegroundIconsFolder());
+        await _generateAdaptiveIcons(BackgroundIconsFolder());
+      }
     }
   }
 
@@ -164,6 +172,15 @@ class SetupIcon extends ChangeNotifier {
     final IconGenerator _gen = IconGenerator();
     final List<FileData> _archive = await _gen.generateIcons(_image, folder, writeToDiskIO: !kIsWeb);
     _iconFiles[key] = _archive;
+  }
+
+  Future _generateAdaptiveIcons(ImageFolder folder, {String key}) async {
+    final bool _background = folder is BackgroundIconsFolder;
+    final String _key = key ?? (_background ? 'bg' : 'fg');
+    final img.Image _image = img.decodePng(_background ? _adaptiveBackground : _adaptiveForeground);
+    final IconGenerator _gen = IconGenerator();
+    final List<FileData> _archive = await _gen.generateIcons(_image, folder, writeToDiskIO: !kIsWeb);
+    _iconFiles[_key] = _archive;
   }
 
   Future _generateIcoIcon(String key, ImageFolder folder) async {

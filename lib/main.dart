@@ -11,7 +11,7 @@ import 'ui/views/app_appearance.dart';
 
 void main() {
   print('This is desktop app: ${platform.isDesktop}');
-  if (platform.isDesktop) {
+  if (!platform.isWeb && platform.isDesktop) {
     WidgetsFlutterBinding.ensureInitialized();
     setWindowTitle('Flutter Launcher Icon Preview');
     setWindowMinSize(const Size(320, 800));
@@ -25,6 +25,6 @@ void main() {
         update: (_, uploadFile, setupIcon) => setupIcon
           ..adaptiveForeground = uploadFile.recivedForeground
           ..adaptiveBackground = uploadFile.recivedBackground
-          ..icon = uploadFile.recivedIcon),
+          ..regularIcon = uploadFile.recivedIcon),
   ], child: const MyApp()));
 }
