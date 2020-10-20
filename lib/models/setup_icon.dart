@@ -49,6 +49,32 @@ class SetupIcon extends ChangeNotifier {
     }
   }
 
+  // Adaptive Icon Background as COLOR.
+  Color _adaptiveColor;
+  Color get adaptiveColor => _adaptiveColor;
+  void setAdaptiveColor(Color _newColor) {
+    if (_backgroundColor != _newColor) {
+      _backgroundColor = _newColor;
+      notifyListeners();
+    }
+  }
+
+  void removeAdaptiveColor() {
+    _adaptiveColor = null;
+    notifyListeners();
+  }
+
+  bool get haveAdaptiveColor => _adaptiveColor != null;
+
+  bool _preferColorBg = false;
+  bool get preferColorBg => _preferColorBg;
+  void switchBg() {
+    //TODO! Implement and change to switching by value.
+    _preferColorBg = !_preferColorBg;
+    notifyListeners();
+  }
+
+  // Adaptive Icon Background as IMAGE.
   Uint8List _adaptiveBackground;
   Uint8List get adaptiveBackground => _adaptiveBackground;
   set adaptiveBackground(Uint8List _uploadedImage) {
@@ -159,12 +185,21 @@ class SetupIcon extends ChangeNotifier {
       // await _generatePngIcons('iOS', IosIconsFolder());
       // await _generatePngIcons('macOS', MacOSIconsFolder());
       // await _generatePngIcons('droid', AndroidIconsFolder());
-      await _generateIcoIcon('win', WindowsIconsFolder());
-      if (haveAdaptiveForeground && haveAdaptiveBackground) {
+      await _generateIcoIcon(WindowsIconsFolder());
+      if (haveAdaptiveForeground && (haveAdaptiveBackground || haveAdaptiveColor)) {
+        if (!preferColorBg) {
+          await _generateAdaptiveIcons(BackgroundIconsFolder());
+        }
+        _generateXmlConfigs();
         await _generateAdaptiveIcons(ForegroundIconsFolder());
-        await _generateAdaptiveIcons(BackgroundIconsFolder());
       }
     }
+  }
+
+  void _generateXmlConfigs({String key = 'xml'}) {
+    final XmlGenerator _gen = XmlGenerator(bgAsColor: preferColorBg);
+    final List<FileData> _archive = _gen.generateXmls();
+    _iconFiles[key] = _archive;
   }
 
   Future _generatePngIcons(String key, ImageFolder folder) async {
@@ -174,16 +209,16 @@ class SetupIcon extends ChangeNotifier {
     _iconFiles[key] = _archive;
   }
 
-  Future _generateAdaptiveIcons(ImageFolder folder, {String key}) async {
+  Future _generateAdaptiveIcons(ImageFolder folder) async {
     final bool _background = folder is BackgroundIconsFolder;
-    final String _key = key ?? (_background ? 'bg' : 'fg');
+    final String _key = _background ? 'bg' : 'fg';
     final img.Image _image = img.decodePng(_background ? _adaptiveBackground : _adaptiveForeground);
     final IconGenerator _gen = IconGenerator();
     final List<FileData> _archive = await _gen.generateIcons(_image, folder, writeToDiskIO: !kIsWeb);
     _iconFiles[_key] = _archive;
   }
 
-  Future _generateIcoIcon(String key, ImageFolder folder) async {
+  Future _generateIcoIcon(ImageFolder folder, {String key = 'win'}) async {
     final img.Image _image = img.decodePng(_icon);
     final List<FileData> _archive = await generateWinIcos(_image, folder, writeToDiskIO: !kIsWeb);
     _iconFiles[key] = _archive;
