@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:local_hero/local_hero.dart';
 import 'package:provider/provider.dart';
 
 import '../../../models/setup_icon.dart';
@@ -33,7 +32,7 @@ class RegularIcon extends StatelessWidget {
                           ? Colors.transparent
                           : Colors.black
                       : _backgroundColor),
-              child: LocalHero(tag: 'regular', child: context.watch<SetupIcon>().iconImage)),
+              child: context.watch<SetupIcon>().iconImage),
         ],
       ),
     );

@@ -7,10 +7,10 @@ import 'locator.dart';
 import 'models/setup_icon.dart';
 import 'models/upload_file.dart';
 import 'models/user_interface.dart';
-import 'ui/views/app_appearance.dart';
+import 'ui/app_appearance.dart';
 
 void main() {
-  print('This is desktop app: ${platform.isDesktop}');
+  // print('This is desktop app: ${platform.isDesktop}');
   if (!platform.isWeb && platform.isDesktop) {
     WidgetsFlutterBinding.ensureInitialized();
     setWindowTitle('Flutter Launcher Icon Preview');

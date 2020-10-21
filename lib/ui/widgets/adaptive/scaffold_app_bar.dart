@@ -41,33 +41,34 @@ class AdaptiveScaffold extends StatelessWidget {
                       onTap: () => _showSettingsDialog(context), child: const Icon(CupertinoIcons.gear, size: 26))
                 ],
               ),
-              leading: uploadScreen
-                  ? const SizedBox.shrink()
-                  : GestureDetector(
-                      onTap: () => context.read<SetupIcon>().backButton(),
-                      child: const Icon(CupertinoIcons.back, size: 26)),
+              // leading: uploadScreen
+              //     ? const SizedBox.shrink()
+              //     : GestureDetector(
+              //         onTap: () => context.read<SetupIcon>().backButton(),
+              //         child: const Icon(CupertinoIcons.back, size: 26)),
             ),
             child: SafeArea(child: child))
         : Scaffold(
             appBar: AppBar(
-                centerTitle: true,
-                title: uploadScreen
-                    ? Text(S.of(context).appName)
-                    : MaterialButton(
-                        colorBrightness: Brightness.light,
-                        onPressed: _loading ? null : () => context.read<SetupIcon>().archive(),
-                        color: Colors.amber,
-                        child: Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: Text(_loading ? S.of(context).wait : S.of(context).export))),
-                actions: <Widget>[
-                  IconButton(icon: const Icon(Icons.info_outline), onPressed: () => _showAboutDialog(context)),
-                  IconButton(icon: const Icon(Icons.settings), onPressed: () => _showSettingsDialog(context))
-                ],
-                leading: uploadScreen
-                    ? const SizedBox.shrink()
-                    : IconButton(
-                        icon: const Icon(Icons.arrow_back), onPressed: () => context.read<SetupIcon>().backButton())),
+              centerTitle: true,
+              title: uploadScreen
+                  ? Text(S.of(context).appName)
+                  : MaterialButton(
+                      colorBrightness: Brightness.light,
+                      onPressed: _loading ? null : () => context.read<SetupIcon>().archive(),
+                      color: Colors.amber,
+                      child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Text(_loading ? S.of(context).wait : S.of(context).export))),
+              actions: <Widget>[
+                IconButton(icon: const Icon(Icons.info_outline), onPressed: () => _showAboutDialog(context)),
+                IconButton(icon: const Icon(Icons.settings), onPressed: () => _showSettingsDialog(context))
+              ],
+              // leading: uploadScreen
+              //     ? const SizedBox.shrink()
+              //     : IconButton(
+              //         icon: const Icon(Icons.arrow_back), onPressed: () => context.read<SetupIcon>().backButton()))
+            ),
             body: SafeArea(child: child));
   }
 

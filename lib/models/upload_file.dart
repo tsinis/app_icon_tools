@@ -11,7 +11,7 @@ import 'package:universal_html/prefer_universal/html.dart';
 
 import '../locator.dart';
 import '../services/navigation_service.dart';
-import '../ui/router.dart';
+import '../services/router.dart';
 
 class UploadFile extends ChangeNotifier {
   Uint8List recivedIcon, recivedForeground, recivedBackground;

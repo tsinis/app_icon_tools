@@ -7,42 +7,42 @@ import 'xmls.dart';
 const String _path = 'android/app/src/main/res';
 
 class ForegroundIconsFolder extends AndroidIconsFolder {
-  ForegroundIconsFolder({List<AdaptiveIcon> foregrounds = _defaultIcons, String adaptivePath = _path})
+  ForegroundIconsFolder({List<AndroidAdaptiveIcon> foregrounds = _defaultIcons, String adaptivePath = _path})
       : super(icons: foregrounds, path: adaptivePath);
 
   static const _defaultIcons = [
-    AdaptiveIcon(adaptSize: 81, adaptSuffix: 'ldpi'),
-    AdaptiveIcon(adaptSize: 162, adaptSuffix: 'hdpi'),
-    AdaptiveIcon(adaptSize: 108, adaptSuffix: 'mdpi'),
-    AdaptiveIcon(adaptSize: 216, adaptSuffix: 'xhdpi'),
-    AdaptiveIcon(adaptSize: 324, adaptSuffix: 'xxhdpi'),
-    AdaptiveIcon(adaptSize: 432, adaptSuffix: 'xxxhdpi')
+    AndroidAdaptiveIcon(adaptSize: 81, adaptSuffix: 'ldpi'),
+    AndroidAdaptiveIcon(adaptSize: 162, adaptSuffix: 'hdpi'),
+    AndroidAdaptiveIcon(adaptSize: 108, adaptSuffix: 'mdpi'),
+    AndroidAdaptiveIcon(adaptSize: 216, adaptSuffix: 'xhdpi'),
+    AndroidAdaptiveIcon(adaptSize: 324, adaptSuffix: 'xxhdpi'),
+    AndroidAdaptiveIcon(adaptSize: 432, adaptSuffix: 'xxxhdpi')
   ];
 }
 
 class BackgroundIconsFolder extends AndroidIconsFolder {
-  BackgroundIconsFolder({List<AdaptiveIcon> backgrounds = _defaultIcons, String adaptivePath = _path})
+  BackgroundIconsFolder({List<AndroidAdaptiveIcon> backgrounds = _defaultIcons, String adaptivePath = _path})
       : super(icons: backgrounds, path: adaptivePath);
 
   static const _defaultIcons = [
-    AdaptiveIcon(adaptSize: 81, adaptSuffix: 'ldpi', background: true),
-    AdaptiveIcon(adaptSize: 162, adaptSuffix: 'hdpi', background: true),
-    AdaptiveIcon(adaptSize: 108, adaptSuffix: 'mdpi', background: true),
-    AdaptiveIcon(adaptSize: 216, adaptSuffix: 'xhdpi', background: true),
-    AdaptiveIcon(adaptSize: 324, adaptSuffix: 'xxhdpi', background: true),
-    AdaptiveIcon(adaptSize: 432, adaptSuffix: 'xxxhdpi', background: true)
+    AndroidAdaptiveIcon(adaptSize: 81, adaptSuffix: 'ldpi', background: true),
+    AndroidAdaptiveIcon(adaptSize: 162, adaptSuffix: 'hdpi', background: true),
+    AndroidAdaptiveIcon(adaptSize: 108, adaptSuffix: 'mdpi', background: true),
+    AndroidAdaptiveIcon(adaptSize: 216, adaptSuffix: 'xhdpi', background: true),
+    AndroidAdaptiveIcon(adaptSize: 324, adaptSuffix: 'xxhdpi', background: true),
+    AndroidAdaptiveIcon(adaptSize: 432, adaptSuffix: 'xxxhdpi', background: true)
   ];
 }
 
-class AdaptiveIcon extends AndroidIcon {
-  const AdaptiveIcon({this.adaptSize, this.adaptFolder = 'drawable', this.adaptSuffix, this.background = false})
+class AndroidAdaptiveIcon extends AndroidIcon {
+  const AndroidAdaptiveIcon({this.adaptSize, this.adaptFolder = 'drawable', this.adaptSuffix, this.background = false})
       : super(size: adaptSize, folder: adaptFolder, folderSuffix: adaptSuffix);
   final bool background;
   final int adaptSize;
   final String adaptFolder, adaptSuffix;
 
   @override
-  AdaptiveIcon copyWith({
+  AndroidAdaptiveIcon copyWith({
     String name,
     String folder,
     String folderSuffix,
@@ -50,7 +50,7 @@ class AdaptiveIcon extends AndroidIcon {
     int size,
     bool background,
   }) =>
-      AdaptiveIcon(background: background ?? false, adaptSize: size ?? this.size);
+      AndroidAdaptiveIcon(background: background ?? false, adaptSize: size ?? this.size);
 
   @override
   String get filename => name + (background ? '_background.' : '_foreground.') + ext;

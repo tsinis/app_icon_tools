@@ -12,17 +12,11 @@ import '../extensions/image_resizer_adaptive.dart';
 import '../extensions/image_resizer_windows.dart';
 import '../locator.dart';
 import '../services/navigation_service.dart';
+import '../services/router.dart';
 
 class SetupIcon extends ChangeNotifier {
-  void backButton() {
-    final NavigationService _navigationService = locator<NavigationService>();
-    if (_devicePreview) {
-      _devicePreview = false;
-      notifyListeners();
-    } else {
-      _navigationService.goBack();
-    }
-  }
+  void devicePreview() => locator<NavigationService>().navigateTo(UiRouter.deviceScreen);
+  void setupScreen() => locator<NavigationService>().navigateTo(UiRouter.setupScreen);
 
   Color _backgroundColor;
   Color get backgroundColor => _backgroundColor;
@@ -68,9 +62,8 @@ class SetupIcon extends ChangeNotifier {
 
   bool _preferColorBg = false;
   bool get preferColorBg => _preferColorBg;
-  void switchBg() {
-    //TODO! Implement and change to switching by value.
-    _preferColorBg = !_preferColorBg;
+  void switchBg({bool newValue}) {
+    _preferColorBg = newValue;
     notifyListeners();
   }
 
@@ -112,18 +105,19 @@ class SetupIcon extends ChangeNotifier {
     }
   }
 
-  bool _devicePreview = false;
-  bool get devicePreview => _devicePreview;
-  void changePreview() {
-    _devicePreview = !_devicePreview;
-    notifyListeners();
-  }
+  // bool _devicePreview = false;
+  // bool get devicePreview => _devicePreview;
+  // void changePreview() {
+  //   _devicePreview = !_devicePreview;
+  //   notifyListeners();
+  // }
 
   int _platformID = 0;
   int get platformID => _platformID;
   void setPlatform(int _selectedPlatform) {
-    if (_devicePreview && _selectedPlatform == 1 && _adaptiveBackground == null && _adaptiveForeground == null) {
-    } else if (_selectedPlatform != _platformID) {
+    // if (_selectedPlatform == 1 && _adaptiveBackground == null && _adaptiveForeground == null) {
+    // } else
+    if (_selectedPlatform != _platformID) {
       {
         _platformID = _selectedPlatform;
         notifyListeners();
@@ -140,7 +134,7 @@ class SetupIcon extends ChangeNotifier {
     final IconGenerator _gen = IconGenerator();
     final List<FileData> _images = [];
     Future<void>.delayed(
-        //TODO! Fix workaround! Try to run this in Isolate if !kIsWeb...
+        //TODO! Fix workaround! Run in Isolate if !kIsWeb...
         const Duration(milliseconds: 300),
         () async => await _resizeIcons().whenComplete(() async {
               for (final key in _iconFiles.keys) {

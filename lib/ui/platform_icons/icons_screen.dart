@@ -108,15 +108,24 @@ class IconPreview extends StatelessWidget {
             Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20),
                 child: Text(_canChangeShape
-                    ? (_haveAdaptiveForeground
-                        ? S.of(context).previewShapes
-                        : S.of(context).uploadAdaptiveFg) //TODO: UX is not perfect! Add transparent background.
+                    ? (_haveAdaptiveForeground ? S.of(context).previewShapes : S.of(context).uploadAdaptiveFg)
                     : S.of(context).iconPreview)),
             if (!_haveAdaptiveForeground && _isAdaptive)
-              const DragAndDrop(foreground: true)
+              _haveAdaptiveBackground
+                  ? Stack(children: [
+                      Container(
+                          clipBehavior: Clip.hardEdge,
+                          height: 300,
+                          width: 300,
+                          decoration: const BoxDecoration(
+                              color: Colors.grey, borderRadius: BorderRadius.all(Radius.circular(25))),
+                          child: const Opacity(opacity: 0.5, child: AdaptiveIcon())),
+                      const DragAndDrop(foreground: true)
+                    ])
+                  : const DragAndDrop(foreground: true)
             else
               GestureDetector(
-                onTap: context.watch<SetupIcon>().changePreview,
+                onTap: context.watch<SetupIcon>().devicePreview,
                 child: Container(
                   clipBehavior: Clip.hardEdge,
                   height: 300,
@@ -125,7 +134,9 @@ class IconPreview extends StatelessWidget {
                       color: Colors.grey,
                       borderRadius: BorderRadius.all(
                           Radius.circular(_canChangeShape ? _androidCornerRadius : _staticCornerRadius))),
-                  child: _isAdaptive ? const AdaptiveIcon() : RegularIcon(supportTransparency: _supportTransparency),
+                  child: _isAdaptive
+                      ? const Hero(tag: 'adaptive', child: AdaptiveIcon())
+                      : Hero(tag: 'regular', child: RegularIcon(supportTransparency: _supportTransparency)),
                 ),
               ),
             if (_canChangeShape)
@@ -148,7 +159,7 @@ class IconPreview extends StatelessWidget {
             ...[
               AdaptiveButton(
                   text: S.of(context).devicePreview,
-                  onPressed: (_isAdaptive && _haveAdaptiveAssets) ? context.watch<SetupIcon>().changePreview : null),
+                  onPressed: (_isAdaptive && !_haveAdaptiveAssets) ? null : context.watch<SetupIcon>().devicePreview),
               if (!_colorNotSet && !_isAdaptive)
                 AdaptiveButton(
                     text: S.of(context).removeColor,

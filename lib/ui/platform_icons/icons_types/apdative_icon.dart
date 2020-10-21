@@ -1,7 +1,5 @@
 import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
-import 'package:local_hero/local_hero.dart';
 import 'package:provider/provider.dart';
 
 import '../../../models/setup_icon.dart';
@@ -45,16 +43,6 @@ Animation<Offset> _animation;
 
 class _AdaptiveIconState extends State<AdaptiveIcon> with SingleTickerProviderStateMixin {
   @override
-  void dispose() {
-    final bool _previewMode = context.read<SetupIcon>().devicePreview;
-    if (!_previewMode) {
-      //TODO Fix this!
-      _controller.dispose();
-    }
-    super.dispose();
-  }
-
-  @override
   void initState() {
     super.initState();
     _controller = AnimationController(
@@ -66,6 +54,7 @@ class _AdaptiveIconState extends State<AdaptiveIcon> with SingleTickerProviderSt
   Widget build(BuildContext context) {
     final Uint8List _background = context.select((SetupIcon icon) => icon.adaptiveBackground);
     final Uint8List _foreground = context.select((SetupIcon icon) => icon.adaptiveForeground);
+
     return AnimatedBuilder(
       animation: _controller,
       builder: (BuildContext context, Widget _) => Stack(
@@ -79,11 +68,10 @@ class _AdaptiveIconState extends State<AdaptiveIcon> with SingleTickerProviderSt
               child: SlideTransition(
                   position: _animation, child: Transform.scale(scale: 2, child: Image.memory(_background))),
             ),
-          LocalHero(
-            tag: 'adaptive',
-            child: SlideTransition(
-                position: _animation, child: Transform.scale(scale: 1.42, child: Image.memory(_foreground))),
-          ),
+          SlideTransition(
+              position: _animation,
+              child: Transform.scale(
+                  scale: 1.42, child: (_foreground == null) ? const SizedBox.shrink() : Image.memory(_foreground))),
         ],
       ),
     );
