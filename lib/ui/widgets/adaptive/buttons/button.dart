@@ -8,7 +8,7 @@ class AdaptiveButton extends StatelessWidget {
   final Function() onPressed;
   final Color color;
   final bool destructive;
-
+  //TODO Add TextButton as destructive button.
   const AdaptiveButton({Key key, this.text, this.color, this.onPressed, this.destructive = false}) : super(key: key);
   @override
   Widget build(BuildContext context) => Padding(

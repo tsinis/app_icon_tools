@@ -9,6 +9,7 @@ import '../../models/setup_icon.dart';
 import '../../models/user_interface.dart';
 import '../widgets/adaptive/buttons/button.dart';
 import '../widgets/adaptive/buttons/icon_button.dart';
+import '../widgets/adaptive/buttons/switch_button.dart';
 import '../widgets/adaptive/slider.dart';
 import '../widgets/drag_and_drop.dart';
 import '../widgets/layout.dart';
@@ -28,56 +29,56 @@ class IconPreview extends StatelessWidget {
         platformID = 0,
         name = 'Android',
         icon = Icons.android_outlined,
-        devicePicture = 'platform_svgs/nokia.svg';
+        devicePicture = 'svg/nokia.svg';
 
   const IconPreview.newAndroid()
       : cornerRadius = 800,
         platformID = 1,
         name = 'Android 8+',
         icon = CommunityMaterialIcons.android,
-        devicePicture = 'platform_svgs/pixel.svg';
+        devicePicture = 'svg/pixel.svg';
 
   const IconPreview.iOS()
       : cornerRadius = 53,
         platformID = 2,
         name = 'iOS',
         icon = CommunityMaterialIcons.apple_ios,
-        devicePicture = 'platform_svgs/iphone.svg';
+        devicePicture = 'svg/iphone.svg';
 
   const IconPreview.web()
       : cornerRadius = 0,
         platformID = 3,
         name = 'Web',
         icon = CommunityMaterialIcons.google_chrome,
-        devicePicture = 'platform_svgs/chrome.svg';
+        devicePicture = 'svg/chrome.svg';
 
   const IconPreview.windows()
       : cornerRadius = 0,
         platformID = 4,
         name = 'Windows',
         icon = CommunityMaterialIcons.microsoft_windows,
-        devicePicture = 'platform_svgs/surface.svg';
+        devicePicture = 'svg/surface.svg';
 
   const IconPreview.macOS()
       : cornerRadius = 0,
         platformID = 5,
         name = 'macOS',
         icon = CommunityMaterialIcons.apple,
-        devicePicture = 'platform_svgs/macbook.svg';
+        devicePicture = 'svg/macbook.svg';
 
   // const IconPreview.linux()
   //     : cornerRadius = 0,
   //       platformID = 6,
   //       name = 'Linux',
   //       icon = CommunityMaterialIcons.linux,
-  //       devicePicture = 'platform_svgs/ubuntu.svg';
+  //       devicePicture = 'svg/ubuntu.svg';
 
   // const IconPreview.fuchsiaOS()
   //     : cornerRadius = 0,
   //       platformID = 7,
   //       name = 'Fuchsia',
   //       icon = CommunityMaterialIcons.linux,
-  //       devicePicture = 'platform_svgs/ubuntu.svg';
+  //       devicePicture = 'svg/ubuntu.svg';
 
   double get _staticCornerRadius => cornerRadius.toDouble();
 
@@ -93,9 +94,12 @@ class IconPreview extends StatelessWidget {
   Widget build(BuildContext context) {
     final double _androidCornerRadius = context.select((SetupIcon icon) => icon.cornerRadius);
     final Color _backgroundColor = context.select((SetupIcon icon) => icon.backgroundColor);
+    final Color _adpativeColor = context.select((SetupIcon icon) => icon.adaptiveColor);
     final bool _haveAdaptiveBackground = context.select((SetupIcon icon) => icon.haveAdaptiveBackground);
     final bool _haveAdaptiveForeground = context.select((SetupIcon icon) => icon.haveAdaptiveForeground);
+    final bool _preferColorBg = context.select((SetupIcon icon) => icon.preferColorBg);
     final bool _colorNotSet = _backgroundColor == null;
+    final bool _adaptiveColorNotSet = _adpativeColor == null;
     final bool _portrait = MediaQuery.of(context).size.height > MediaQuery.of(context).size.width;
     final bool _haveAdaptiveAssets = _haveAdaptiveBackground && _haveAdaptiveForeground;
 
@@ -159,7 +163,9 @@ class IconPreview extends StatelessWidget {
             ...[
               AdaptiveButton(
                   text: S.of(context).devicePreview,
-                  onPressed: (_isAdaptive && !_haveAdaptiveAssets) ? null : context.watch<SetupIcon>().devicePreview),
+                  onPressed: (_isAdaptive && (!_haveAdaptiveAssets && _adaptiveColorNotSet))
+                      ? null
+                      : context.watch<SetupIcon>().devicePreview),
               if (!_colorNotSet && !_isAdaptive)
                 AdaptiveButton(
                     text: S.of(context).removeColor,
@@ -170,36 +176,55 @@ class IconPreview extends StatelessWidget {
                     ? AdaptiveIconButtons(withAdaptives: _haveAdaptiveAssets)
                     : SizedBox(height: _portrait ? 0 : 56),
               // if (_isAdaptive) const SizedBox(height: 44) else const SizedBox(height: 64),
+              if (_isAdaptive && _haveAdaptiveForeground)
+                AdaptiveButton(
+                    text: S.of(context).removeForeground,
+                    destructive: true,
+                    onPressed: () => context.read<SetupIcon>().removeadaptiveForeground()),
             ]
           ],
         ),
-        Column(
-          children: [
-            if (_isAdaptive) ...[
-              Padding(padding: const EdgeInsets.symmetric(vertical: 20), child: Text(S.of(context).uploadAdaptiveBg)),
-              const Hero(tag: 'global', child: DragAndDrop(background: true))
-            ] else ...[
-              Padding(padding: const EdgeInsets.symmetric(vertical: 20), child: Text(S.of(context).iconBgColor)),
-              SizedBox(
-                width: 300,
-                child: ColorPicker(
+        SizedBox(
+          width: 300,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (_isAdaptive) ...[
+                Padding(padding: const EdgeInsets.symmetric(vertical: 20), child: Text(S.of(context).uploadAdaptiveBg)),
+                if (_preferColorBg)
+                  ColorPicker(
+                      pickerAreaHeightPercent: 0.86,
+                      pickerColor: _adpativeColor ?? (_backgroundColor ?? _pickColor),
+                      onColorChanged: (_newColor) => context.read<SetupIcon>().setAdaptiveColor(_newColor),
+                      displayThumbColor: true,
+                      portraitOnly: true,
+                      enableAlpha: true,
+                      showLabel: !UserInterface.isApple)
+                else
+                  const Hero(tag: 'global', child: DragAndDrop(background: true)),
+                SizedBox(height: _preferColorBg ? 0 : 16),
+                AdaptiveSwitch(
+                    text: S.of(context).colorAsBg,
+                    value: _preferColorBg,
+                    onChanged: (_value) => context.read<SetupIcon>().switchBg(newValue: _value))
+              ] else ...[
+                Padding(padding: const EdgeInsets.symmetric(vertical: 20), child: Text(S.of(context).iconBgColor)),
+                ColorPicker(
                     pickerColor: _colorNotSet ? _pickColor : _backgroundColor,
                     onColorChanged: (_newColor) => context.read<SetupIcon>().setBackgroundColor(_newColor),
                     displayThumbColor: true,
                     portraitOnly: true,
                     enableAlpha: false, //TODO: Change to _supportTransparency sometime later.
                     showLabel: !UserInterface.isApple),
-              ),
+              ],
+              const SizedBox(height: 48),
+              if (!_preferColorBg && _isAdaptive && _haveAdaptiveBackground)
+                AdaptiveButton(
+                    text: S.of(context).removeBackground,
+                    destructive: true,
+                    onPressed: () => context.read<SetupIcon>().removeAdaptiveBackground()),
             ],
-            const SizedBox(height: 48),
-            if (_isAdaptive && (_haveAdaptiveBackground || _haveAdaptiveForeground))
-              AdaptiveButton(
-                  text: _haveAdaptiveBackground ? S.of(context).removeBackground : S.of(context).removeForeground,
-                  destructive: true,
-                  onPressed: () => _haveAdaptiveBackground
-                      ? context.read<SetupIcon>().removeAdaptiveBackground()
-                      : context.read<SetupIcon>().removeadaptiveForeground()),
-          ],
+          ),
         ),
       ],
     );

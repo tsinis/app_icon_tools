@@ -23,6 +23,7 @@ class SetupIcon extends ChangeNotifier {
   void setBackgroundColor(Color _newColor) {
     if (_backgroundColor != _newColor) {
       _backgroundColor = _newColor;
+      _adaptiveColor ??= _newColor;
       notifyListeners();
     }
   }
@@ -47,8 +48,9 @@ class SetupIcon extends ChangeNotifier {
   Color _adaptiveColor;
   Color get adaptiveColor => _adaptiveColor;
   void setAdaptiveColor(Color _newColor) {
-    if (_backgroundColor != _newColor) {
-      _backgroundColor = _newColor;
+    if (_adaptiveColor != _newColor) {
+      _adaptiveColor = _newColor;
+      _backgroundColor ??= _newColor.withAlpha(255);
       notifyListeners();
     }
   }
@@ -105,18 +107,9 @@ class SetupIcon extends ChangeNotifier {
     }
   }
 
-  // bool _devicePreview = false;
-  // bool get devicePreview => _devicePreview;
-  // void changePreview() {
-  //   _devicePreview = !_devicePreview;
-  //   notifyListeners();
-  // }
-
   int _platformID = 0;
   int get platformID => _platformID;
   void setPlatform(int _selectedPlatform) {
-    // if (_selectedPlatform == 1 && _adaptiveBackground == null && _adaptiveForeground == null) {
-    // } else
     if (_selectedPlatform != _platformID) {
       {
         _platformID = _selectedPlatform;
@@ -126,6 +119,8 @@ class SetupIcon extends ChangeNotifier {
   }
 
   Map<String, List<FileData>> _iconFiles;
+
+  // TODO! Add checks: Foreground/Background, Alphas, etc. exists!
 
   // final bool _exportIos = true, _exportWeb = true, _exportMacos = true, _exportAndroid = true;
 
@@ -191,7 +186,7 @@ class SetupIcon extends ChangeNotifier {
   }
 
   void _generateXmlConfigs({String key = 'xml'}) {
-    final XmlGenerator _gen = XmlGenerator(bgAsColor: preferColorBg);
+    final XmlGenerator _gen = XmlGenerator(bgAsColor: preferColorBg, color: adaptiveColor ?? const Color(0xFF000000));
     final List<FileData> _archive = _gen.generateXmls();
     _iconFiles[key] = _archive;
   }

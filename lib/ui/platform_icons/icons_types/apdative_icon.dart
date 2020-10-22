@@ -54,6 +54,8 @@ class _AdaptiveIconState extends State<AdaptiveIcon> with SingleTickerProviderSt
   Widget build(BuildContext context) {
     final Uint8List _background = context.select((SetupIcon icon) => icon.adaptiveBackground);
     final Uint8List _foreground = context.select((SetupIcon icon) => icon.adaptiveForeground);
+    final Color _adpativeColor = context.select((SetupIcon icon) => icon.adaptiveColor);
+    final bool _preferColor = context.select((SetupIcon icon) => icon.preferColorBg);
 
     return AnimatedBuilder(
       animation: _controller,
@@ -61,12 +63,19 @@ class _AdaptiveIconState extends State<AdaptiveIcon> with SingleTickerProviderSt
         alignment: Alignment.center,
         children: [
           if (!widget.onDevice) const TransparencyGrid(),
-          if (_background != null)
+          if (_background != null || _adpativeColor != null)
             FractionallySizedBox(
               widthFactor: 0.7,
               heightFactor: 0.7,
               child: SlideTransition(
-                  position: _animation, child: Transform.scale(scale: 2, child: Image.memory(_background))),
+                  position: _animation,
+                  child: Transform.scale(
+                      scale: 2,
+                      child: _preferColor
+                          ? Container(color: _adpativeColor ?? Colors.transparent)
+                          : (_background != null)
+                              ? Image.memory(_background)
+                              : const SizedBox.shrink())),
             ),
           SlideTransition(
               position: _animation,

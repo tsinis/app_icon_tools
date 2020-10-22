@@ -29,5 +29,6 @@
     "parallax": "Preview Adaptive Icon parallax effect.",
     "devicePreview": "Device Preview",
     "export": "Export Icons",
-    "wait": "Please wait a moment"
+    "wait": "Please wait a moment",
+    "colorAsBg": "Background as color"
     }

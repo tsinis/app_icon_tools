@@ -1,8 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-// ignore: avoid_web_libraries_in_flutter
-// import 'dart:html';
-// import 'dart:io' as io;
 import 'dart:typed_data' show Uint8List;
 
 import 'package:file_picker_cross/file_picker_cross.dart';

@@ -344,6 +344,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Background as color`
+  String get colorAsBg {
+    return Intl.message(
+      'Background as color',
+      name: 'colorAsBg',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

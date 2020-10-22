@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:image_resizer/image_resizer.dart';
+
+import 'hex_color.dart';
 import 'xmls.dart';
 
 const String _path = 'android/app/src/main/res';
@@ -59,7 +61,7 @@ class AndroidAdaptiveIcon extends AndroidIcon {
 class XmlGenerator {
   XmlGenerator({
     @required this.bgAsColor,
-    this.color, //TODO! Add @required here.
+    @required this.color,
     this.ext = 'xml',
     this.colorsName = 'colors',
     this.iconsNames = 'ic_launcher',
@@ -82,16 +84,15 @@ class XmlGenerator {
     return _xmls;
   }
 
-  String _convertColor(Color _color) {} //TODO! Add Color to String Converter.
-
   FileData _generateIconsXML() {
     final String xmlText = iconsXml(bgAsColor);
     final List<int> xmlAsBytes = utf8.encode(xmlText);
     return FileData(xmlAsBytes, xmlAsBytes.length, '', '$path/$iconsFolder/$iconsNames.$ext');
   }
 
-  FileData _generateColorsXML({String color = '#FF000000'}) {
-    final List<int> xmlAsBytes = utf8.encode(colorsXml(color));
+  FileData _generateColorsXML() {
+    final String _colorAsString = color.toHex();
+    final List<int> xmlAsBytes = utf8.encode(colorsXml(_colorAsString));
     return FileData(xmlAsBytes, xmlAsBytes.length, '', '$path/$colorsFolder/$colorsName.$ext');
   }
 }

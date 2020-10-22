@@ -25,6 +25,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "appName" : MessageLookupByLibrary.simpleMessage("Launcher Icons Preview"),
     "browse" : MessageLookupByLibrary.simpleMessage("Browse"),
     "cancel" : MessageLookupByLibrary.simpleMessage("Cancel"),
+    "colorAsBg" : MessageLookupByLibrary.simpleMessage("Background as color"),
     "colorProfile" : MessageLookupByLibrary.simpleMessage("Color profile:"),
     "dark" : MessageLookupByLibrary.simpleMessage("Dark Mode"),
     "devicePreview" : MessageLookupByLibrary.simpleMessage("Device Preview"),
