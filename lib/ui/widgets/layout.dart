@@ -13,7 +13,7 @@ class PreviewLayout extends StatelessWidget {
           child: SingleChildScrollView(
             child: Column(
                 mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [const SizedBox(height: 20), ...children]),
           ),
         )
@@ -21,7 +21,7 @@ class PreviewLayout extends StatelessWidget {
           widthFactor: 0.9,
           heightFactor: 0.9,
           child: Row(
-              crossAxisAlignment: CrossAxisAlignment.baseline,
+              // crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: children),
         );

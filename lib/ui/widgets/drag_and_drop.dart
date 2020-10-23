@@ -70,6 +70,7 @@ class DragAndDrop extends StatelessWidget {
                         columns: const [DataColumn(label: SizedBox.shrink()), DataColumn(label: SizedBox.shrink())],
                         rows: <DataRow>[
                           DataRow(
+                            //TODO Add Adaptive Icon Req.
                             onSelectChanged: (_) async => await context.read<UserInterface>().openGuidelinesURL(),
                             cells: <DataCell>[
                               DataCell(InfoCellText(S.of(context).fileFormat)),

@@ -19,7 +19,7 @@ class AdaptiveScaffold extends StatelessWidget {
     return UserInterface.isApple
         ? CupertinoPageScaffold(
             navigationBar: CupertinoNavigationBar(
-              middle: uploadScreen
+              middle: uploadScreen //TODO Add dropdown menu and warning icon.
                   ? Text(S.of(context).appName)
                   : Padding(
                       padding: const EdgeInsets.all(4),

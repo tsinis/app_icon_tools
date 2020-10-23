@@ -23,7 +23,7 @@ class SetupIcon extends ChangeNotifier {
   void setBackgroundColor(Color _newColor) {
     if (_backgroundColor != _newColor) {
       _backgroundColor = _newColor;
-      _adaptiveColor ??= _newColor;
+      _adaptiveColor ??= _newColor.withAlpha(255);
       notifyListeners();
     }
   }
@@ -39,7 +39,7 @@ class SetupIcon extends ChangeNotifier {
   set regularIcon(Uint8List _uploadedImage) {
     if (_uploadedImage != _icon) {
       _icon = _uploadedImage;
-      _iconFiles = {};
+      _archiveFiles = {};
       notifyListeners();
     }
   }
@@ -74,7 +74,7 @@ class SetupIcon extends ChangeNotifier {
   Uint8List get adaptiveBackground => _adaptiveBackground;
   set adaptiveBackground(Uint8List _uploadedImage) {
     _adaptiveBackground = _uploadedImage;
-    _iconFiles = {};
+    _archiveFiles = {};
     notifyListeners();
   }
 
@@ -88,7 +88,7 @@ class SetupIcon extends ChangeNotifier {
   Uint8List get adaptiveForeground => _adaptiveForeground;
   set adaptiveForeground(Uint8List _uploadedImage) {
     _adaptiveForeground = _uploadedImage;
-    _iconFiles = {};
+    _archiveFiles = {};
     notifyListeners();
   }
 
@@ -118,7 +118,7 @@ class SetupIcon extends ChangeNotifier {
     }
   }
 
-  Map<String, List<FileData>> _iconFiles;
+  Map<String, List<FileData>> _archiveFiles;
 
   // TODO! Add checks: Foreground/Background, Alphas, etc. exists!
 
@@ -132,8 +132,8 @@ class SetupIcon extends ChangeNotifier {
         //TODO! Fix workaround! Run in Isolate if !kIsWeb...
         const Duration(milliseconds: 300),
         () async => await _resizeIcons().whenComplete(() async {
-              for (final key in _iconFiles.keys) {
-                final _folder = _iconFiles[key];
+              for (final key in _archiveFiles.keys) {
+                final _folder = _archiveFiles[key];
                 _images.addAll(_folder.toList());
               }
               // print('Images: ${_images.length}');
@@ -169,7 +169,7 @@ class SetupIcon extends ChangeNotifier {
   }
 
   Future _resizeIcons() async {
-    if (_iconFiles.isEmpty) {
+    if (_archiveFiles.isEmpty) {
       // await _generatePngIcons('web', WebIconsFolder());
       // await _generatePngIcons('iOS', IosIconsFolder());
       // await _generatePngIcons('macOS', MacOSIconsFolder());
@@ -188,14 +188,14 @@ class SetupIcon extends ChangeNotifier {
   void _generateXmlConfigs({String key = 'xml'}) {
     final XmlGenerator _gen = XmlGenerator(bgAsColor: preferColorBg, color: adaptiveColor ?? const Color(0xFF000000));
     final List<FileData> _archive = _gen.generateXmls();
-    _iconFiles[key] = _archive;
+    _archiveFiles[key] = _archive;
   }
 
   Future _generatePngIcons(String key, ImageFolder folder) async {
     final img.Image _image = img.decodePng(_icon);
     final IconGenerator _gen = IconGenerator();
     final List<FileData> _archive = await _gen.generateIcons(_image, folder, writeToDiskIO: !kIsWeb);
-    _iconFiles[key] = _archive;
+    _archiveFiles[key] = _archive;
   }
 
   Future _generateAdaptiveIcons(ImageFolder folder) async {
@@ -204,13 +204,13 @@ class SetupIcon extends ChangeNotifier {
     final img.Image _image = img.decodePng(_background ? _adaptiveBackground : _adaptiveForeground);
     final IconGenerator _gen = IconGenerator();
     final List<FileData> _archive = await _gen.generateIcons(_image, folder, writeToDiskIO: !kIsWeb);
-    _iconFiles[_key] = _archive;
+    _archiveFiles[_key] = _archive;
   }
 
   Future _generateIcoIcon(ImageFolder folder, {String key = 'win'}) async {
     final img.Image _image = img.decodePng(_icon);
     final List<FileData> _archive = await generateWinIcos(_image, folder, writeToDiskIO: !kIsWeb);
-    _iconFiles[key] = _archive;
+    _archiveFiles[key] = _archive;
   }
 
   bool _loading = false;

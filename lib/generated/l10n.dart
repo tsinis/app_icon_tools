@@ -235,20 +235,20 @@ class S {
     );
   }
 
-  /// `Upload Adaptive Background`
+  /// `Select Adaptive Background`
   String get uploadAdaptiveBg {
     return Intl.message(
-      'Upload Adaptive Background',
+      'Select Adaptive Background',
       name: 'uploadAdaptiveBg',
       desc: '',
       args: [],
     );
   }
 
-  /// `Upload Adaptive Foreground`
+  /// `Select Adaptive Foreground`
   String get uploadAdaptiveFg {
     return Intl.message(
-      'Upload Adaptive Foreground',
+      'Select Adaptive Foreground',
       name: 'uploadAdaptiveFg',
       desc: '',
       args: [],
@@ -285,20 +285,20 @@ class S {
     );
   }
 
-  /// `Icon Background Color`
+  /// `Preview possible background color`
   String get iconBgColor {
     return Intl.message(
-      'Icon Background Color',
+      'Preview possible background color',
       name: 'iconBgColor',
       desc: '',
       args: [],
     );
   }
 
-  /// `Please select adaptive background first.`
+  /// `Please select background image first.`
   String get noBackground {
     return Intl.message(
-      'Please select adaptive background first.',
+      'Please select background image first.',
       name: 'noBackground',
       desc: '',
       args: [],

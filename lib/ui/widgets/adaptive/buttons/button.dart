@@ -8,26 +8,35 @@ class AdaptiveButton extends StatelessWidget {
   final Function() onPressed;
   final Color color;
   final bool destructive;
-  //TODO Add TextButton as destructive button.
+
   const AdaptiveButton({Key key, this.text, this.color, this.onPressed, this.destructive = false}) : super(key: key);
   @override
   Widget build(BuildContext context) => Padding(
-        padding: destructive ? const EdgeInsets.symmetric(horizontal: 3) : const EdgeInsets.all(8.5),
+        padding: destructive ? const EdgeInsets.all(0) : const EdgeInsets.all(8.5),
         child: UserInterface.isApple
-            ? CupertinoButton(
-                padding: EdgeInsets.symmetric(vertical: 14, horizontal: destructive ? 37 : 64),
-                color: destructive ? CupertinoColors.destructiveRed : (color ?? CupertinoColors.activeBlue),
-                onPressed: onPressed,
-                child: Text(text))
-            : MaterialButton(
-                minWidth: 190,
-                colorBrightness: Brightness.dark,
-                color: destructive ? Colors.red : (color ?? Colors.blue),
-                onPressed: onPressed,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  child: Text(text.toUpperCase(), style: const TextStyle(letterSpacing: 1.2)),
-                ),
-              ),
+            ? destructive
+                ? GestureDetector(
+                    onTap: onPressed, child: Text(text, style: const TextStyle(color: CupertinoColors.destructiveRed)))
+                : CupertinoButton(
+                    padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 64),
+                    color: color ?? CupertinoColors.activeBlue,
+                    onPressed: onPressed,
+                    child: Text(text))
+            : destructive
+                ? Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: TextButton(
+                        onPressed: onPressed,
+                        child: Text(text.toUpperCase(), style: const TextStyle(color: Colors.red))))
+                : MaterialButton(
+                    minWidth: 190,
+                    colorBrightness: Brightness.dark,
+                    color: color ?? Colors.blue,
+                    onPressed: onPressed,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      child: Text(text.toUpperCase(), style: const TextStyle(letterSpacing: 1.2)),
+                    ),
+                  ),
       );
 }
