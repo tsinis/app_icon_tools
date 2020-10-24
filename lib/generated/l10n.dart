@@ -354,6 +354,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Platforms to Export`
+  String get exportPlatforms {
+    return Intl.message(
+      'Platforms to Export',
+      name: 'exportPlatforms',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

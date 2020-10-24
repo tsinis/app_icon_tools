@@ -31,6 +31,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "devicePreview" : MessageLookupByLibrary.simpleMessage("Device Preview"),
     "dragAndDropHere" : MessageLookupByLibrary.simpleMessage("Drop your image here or"),
     "export" : MessageLookupByLibrary.simpleMessage("Export Icons"),
+    "exportPlatforms" : MessageLookupByLibrary.simpleMessage("Platforms to Export"),
     "fileFormat" : MessageLookupByLibrary.simpleMessage("File format:"),
     "iconAttributes" : MessageLookupByLibrary.simpleMessage("Launcher Icon Requirements:"),
     "iconBgColor" : MessageLookupByLibrary.simpleMessage("Preview possible background color"),

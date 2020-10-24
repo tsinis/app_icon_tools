@@ -30,5 +30,6 @@
     "devicePreview": "Device Preview",
     "export": "Export Icons",
     "wait": "Please wait a moment",
-    "colorAsBg": "Background as color"
+    "colorAsBg": "Background as color",
+    "exportPlatforms": "Platforms to Export"
     }

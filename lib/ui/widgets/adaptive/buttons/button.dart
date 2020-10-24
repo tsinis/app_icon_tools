@@ -16,7 +16,10 @@ class AdaptiveButton extends StatelessWidget {
         child: UserInterface.isApple
             ? destructive
                 ? GestureDetector(
-                    onTap: onPressed, child: Text(text, style: const TextStyle(color: CupertinoColors.destructiveRed)))
+                    onTap: onPressed,
+                    child: Padding(
+                        padding: const EdgeInsets.only(top: 7),
+                        child: Text(text, style: const TextStyle(color: CupertinoColors.destructiveRed))))
                 : CupertinoButton(
                     padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 64),
                     color: color ?? CupertinoColors.activeBlue,
@@ -26,7 +29,7 @@ class AdaptiveButton extends StatelessWidget {
                 ? Padding(
                     padding: const EdgeInsets.only(top: 10),
                     child: TextButton(
-                        onPressed: onPressed,
+                        onPressed: onPressed, //TODO Change to long press.
                         child: Text(text.toUpperCase(), style: const TextStyle(color: Colors.red))))
                 : MaterialButton(
                     minWidth: 190,

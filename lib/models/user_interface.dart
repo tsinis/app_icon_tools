@@ -30,8 +30,9 @@ class UserInterface extends ChangeNotifier {
 
   bool get isWeb => _isWeb ?? false;
 
-  void changeMode() {
-    _brightness = isDark ? Brightness.light : Brightness.dark;
+  // ignore: avoid_positional_boolean_parameters
+  void changeMode(bool _isDark) {
+    _brightness = _isDark ? Brightness.dark : Brightness.light;
     notifyListeners();
   }
 

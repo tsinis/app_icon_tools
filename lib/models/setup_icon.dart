@@ -170,17 +170,29 @@ class SetupIcon extends ChangeNotifier {
 
   Future _resizeIcons() async {
     if (_archiveFiles.isEmpty) {
-      // await _generatePngIcons('web', WebIconsFolder());
-      // await _generatePngIcons('iOS', IosIconsFolder());
-      // await _generatePngIcons('macOS', MacOSIconsFolder());
-      // await _generatePngIcons('droid', AndroidIconsFolder());
-      await _generateIcoIcon(WindowsIconsFolder());
-      if (haveAdaptiveForeground && (haveAdaptiveBackground || haveAdaptiveColor)) {
-        if (!preferColorBg) {
-          await _generateAdaptiveIcons(BackgroundIconsFolder());
+      if (_platforms['Web (PWA)']) {
+        await _generatePngIcons('web', WebIconsFolder());
+      }
+      if (_platforms['Apple iOS']) {
+        await _generatePngIcons('iOS', IosIconsFolder());
+      }
+      if (_platforms['Apple macOS']) {
+        await _generatePngIcons('macOS', MacOSIconsFolder());
+      }
+      if (_platforms['MS Windows']) {
+        await _generateIcoIcon(WindowsIconsFolder());
+      }
+      if (_platforms['Android Regular']) {
+        await _generatePngIcons('droid', AndroidIconsFolder());
+      }
+      if (_platforms['Android Adaptive']) {
+        if (haveAdaptiveForeground && (haveAdaptiveBackground || haveAdaptiveColor)) {
+          if (!preferColorBg) {
+            await _generateAdaptiveIcons(BackgroundIconsFolder());
+          }
+          _generateXmlConfigs();
+          await _generateAdaptiveIcons(ForegroundIconsFolder());
         }
-        _generateXmlConfigs();
-        await _generateAdaptiveIcons(ForegroundIconsFolder());
       }
     }
   }
@@ -217,6 +229,22 @@ class SetupIcon extends ChangeNotifier {
   bool get loading => _loading;
   void _setLoading(bool value) {
     _loading = value;
+    notifyListeners();
+  }
+
+  final Map<String, bool> _platforms = {
+    'Android Regular': true,
+    'Android Adaptive': true,
+    'Apple iOS': true,
+    'Web (PWA)': true,
+    'MS Windows': true,
+    'Apple macOS': true,
+    // 'Linux': true,
+    // 'Fuchsia OS': true,
+  };
+  Map<String, bool> get platforms => _platforms;
+  void switchPlatform({@required String key, @required bool value}) {
+    _platforms[key] = value;
     notifyListeners();
   }
 }

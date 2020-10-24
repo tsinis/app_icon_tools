@@ -240,7 +240,7 @@ class _Setup extends StatelessWidget {
               const Hero(tag: 'global', child: DragAndDrop(background: true)),
             SizedBox(height: _preferColorBg ? 0 : 16),
             AdaptiveSwitch(
-                text: S.of(context).colorAsBg,
+                title: S.of(context).colorAsBg,
                 value: _preferColorBg,
                 onChanged: (_value) => context.read<SetupIcon>().switchBg(newValue: _value))
           ] else ...[

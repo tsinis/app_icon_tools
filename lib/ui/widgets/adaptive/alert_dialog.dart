@@ -6,7 +6,7 @@ class AdaptiveDialog extends StatelessWidget {
   const AdaptiveDialog(
       {this.content, this.title, this.leftButton, this.rightButton, this.onPressedLeft, this.onPressedRight, Key key})
       : super(key: key);
-
+  //TODO! Add function to save the Settings
   @required
   final Widget content;
   @required
@@ -23,6 +23,7 @@ class AdaptiveDialog extends StatelessWidget {
           ],
         )
       : AlertDialog(
+          scrollable: true,
           // titlePadding: const EdgeInsets.all(0),
           // contentPadding: const EdgeInsets.all(0),
           title: Text(title, textAlign: TextAlign.center),

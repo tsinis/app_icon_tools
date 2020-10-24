@@ -1,3 +1,4 @@
+import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -19,18 +20,37 @@ class AdaptiveScaffold extends StatelessWidget {
     return UserInterface.isApple
         ? CupertinoPageScaffold(
             navigationBar: CupertinoNavigationBar(
-              middle: uploadScreen //TODO Add dropdown menu and warning icon.
+              middle: uploadScreen
                   ? Text(S.of(context).appName)
-                  : Padding(
-                      padding: const EdgeInsets.all(4),
-                      child: CupertinoButton(
-                          disabledColor: CupertinoColors.systemGrey,
-                          padding: const EdgeInsets.symmetric(horizontal: 64),
-                          onPressed: _loading ? null : () => context.read<SetupIcon>().archive(),
-                          color: CupertinoColors.activeOrange,
-                          child: Text(_loading ? S.of(context).wait : S.of(context).export)),
+                  : Row(
+                      //TODO Change to button bar.
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // const Spacer(),
+                        Tooltip(
+                            message: S.of(context).appName,
+                            child: const Icon(CupertinoIcons.exclamationmark_triangle,
+                                size: 24)), //TODO Change to real warning.
+                        const SizedBox(width: 20),
+
+                        Padding(
+                          padding: const EdgeInsets.all(4),
+                          child: CupertinoButton(
+                              disabledColor: CupertinoColors.systemGrey,
+                              padding: const EdgeInsets.symmetric(horizontal: 64),
+                              onPressed: _loading ? null : () => context.read<SetupIcon>().archive(),
+                              color: CupertinoColors.activeOrange,
+                              child: Text(_loading ? S.of(context).wait : S.of(context).export)),
+                        ),
+                        const SizedBox(width: 16),
+                        GestureDetector(
+                            onTap: () => _showPlatformsDialog(context),
+                            child: const Icon(CupertinoIcons.wrench, size: 24)),
+                        // const Spacer(),
+                      ],
                     ),
               trailing: Row(
+                //TODO Change to button bar.
                 mainAxisAlignment: MainAxisAlignment.end,
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -53,13 +73,26 @@ class AdaptiveScaffold extends StatelessWidget {
               centerTitle: true,
               title: uploadScreen
                   ? Text(S.of(context).appName)
-                  : MaterialButton(
-                      colorBrightness: Brightness.light,
-                      onPressed: _loading ? null : () => context.read<SetupIcon>().archive(),
-                      color: Colors.amber,
-                      child: Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: Text(_loading ? S.of(context).wait : S.of(context).export))),
+                  : ButtonBar(
+                      alignment: MainAxisAlignment.center,
+                      children: [
+                        Tooltip(
+                            message: S.of(context).appName, //TODO Change to real warning.
+                            child: const Icon(CommunityMaterialIcons.alert_outline, size: 24)),
+                        const SizedBox(width: 10),
+                        MaterialButton(
+                            colorBrightness: Brightness.light,
+                            onPressed: _loading ? null : () => context.read<SetupIcon>().archive(),
+                            color: Colors.amber,
+                            child: Padding(
+                                padding: const EdgeInsets.all(10),
+                                child: Text(_loading ? S.of(context).wait : S.of(context).export))),
+                        const SizedBox(width: 1),
+                        IconButton(
+                            icon: const Icon(CommunityMaterialIcons.wrench_outline, size: 24),
+                            onPressed: () => _showPlatformsDialog(context))
+                      ],
+                    ),
               actions: <Widget>[
                 IconButton(icon: const Icon(Icons.info_outline), onPressed: () => _showAboutDialog(context)),
                 IconButton(icon: const Icon(Icons.settings), onPressed: () => _showSettingsDialog(context))
@@ -88,11 +121,41 @@ class AdaptiveScaffold extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               AdaptiveSwitch(
-                  text: S.of(context).dark,
+                  title: S.of(context).dark,
                   value: _dialogContext.watch<UserInterface>().isDark,
-                  onChanged: (_) => _dialogContext.read<UserInterface>().changeMode())
+                  onChanged: (_isDark) => _dialogContext.read<UserInterface>().changeMode(_isDark))
             ],
           ),
         ),
+      );
+
+  Future<void> _showPlatformsDialog(BuildContext context) => showDialog<void>(
+        context: context,
+        builder: (_dialogContext) {
+          final Map<String, bool> _platforms = _dialogContext.watch<SetupIcon>().platforms;
+          return AdaptiveDialog(
+            title: S.of(context).exportPlatforms,
+            leftButton: S.of(context).cancel,
+            rightButton: S.of(context).save,
+            onPressedLeft: () => Navigator.of(_dialogContext).pop(),
+            onPressedRight: () => Navigator.of(_dialogContext).pop(),
+            content: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: _platforms.keys
+                  .map((String platformName) => Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: AdaptiveSwitch(
+                            title: platformName,
+                            value: _platforms[platformName],
+                            onChanged: (_newValue) => _dialogContext.read<SetupIcon>().switchPlatform(
+                                  key: platformName,
+                                  value: _newValue,
+                                )),
+                      ))
+                  .toList(),
+            ),
+          );
+        },
       );
 }
