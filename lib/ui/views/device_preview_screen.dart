@@ -77,7 +77,7 @@ class _SVG extends StatelessWidget {
   const _SVG(this._selectedPlatform, {Key key}) : super(key: key);
 
   final int _selectedPlatform;
-  String get _svgPath => platformList[_selectedPlatform].devicePicture;
+  String get _svgPath => 'svg/${platformList[_selectedPlatform].name}.svg'.replaceAll(' ', '');
 
   @override
   Widget build(BuildContext context) =>

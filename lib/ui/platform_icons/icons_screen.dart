@@ -20,67 +20,58 @@ const Color _defaultPickerColor = Color(0xFF418183);
 
 class IconPreview extends StatelessWidget {
   final int cornerRadius, platformID;
-  final String name, devicePicture;
+  final String name;
   final IconData icon;
 
-  const IconPreview(this.platformID, this.name, this.icon, this.devicePicture, {Key key, this.cornerRadius})
-      : super(key: key);
+  const IconPreview(this.platformID, this.name, this.icon, {Key key, this.cornerRadius}) : super(key: key);
 
   const IconPreview.oldAndroid()
       : cornerRadius = 0,
         platformID = 0,
         name = 'Android',
-        icon = Icons.android_outlined,
-        devicePicture = 'svg/nokia.svg';
+        icon = Icons.android_outlined;
 
   const IconPreview.newAndroid()
       : cornerRadius = 800,
         platformID = 1,
         name = 'Android 8+',
-        icon = CommunityMaterialIcons.android,
-        devicePicture = 'svg/pixel.svg';
+        icon = CommunityMaterialIcons.android;
 
   const IconPreview.iOS()
       : cornerRadius = 53,
         platformID = 2,
         name = 'iOS',
-        icon = CommunityMaterialIcons.apple_ios,
-        devicePicture = 'svg/iphone.svg';
+        icon = CommunityMaterialIcons.apple_ios;
 
   const IconPreview.web()
       : cornerRadius = 0,
         platformID = 3,
         name = 'Web',
-        icon = CommunityMaterialIcons.google_chrome,
-        devicePicture = 'svg/chrome.svg';
+        icon = CommunityMaterialIcons.google_chrome;
 
   const IconPreview.windows()
       : cornerRadius = 0,
         platformID = 4,
         name = 'Windows',
-        icon = CommunityMaterialIcons.microsoft_windows,
-        devicePicture = 'svg/surface.svg';
+        icon = CommunityMaterialIcons.microsoft_windows;
 
   const IconPreview.macOS()
       : cornerRadius = 0,
         platformID = 5,
         name = 'macOS',
-        icon = CommunityMaterialIcons.apple,
-        devicePicture = 'svg/macbook.svg';
+        icon = CommunityMaterialIcons.apple;
 
   // const IconPreview.linux()
   //     : cornerRadius = 0,
   //       platformID = 6,
   //       name = 'Linux',
-  //       icon = CommunityMaterialIcons.linux,
-  //       devicePicture = 'svg/ubuntu.svg';
+  //       icon = CommunityMaterialIcons.linux;
 
   // const IconPreview.fuchsiaOS()
   //     : cornerRadius = 0,
   //       platformID = 7,
   //       name = 'Fuchsia',
-  //       icon = CommunityMaterialIcons.linux,
-  //       devicePicture = 'svg/ubuntu.svg';
+  //       icon = CommunityMaterialIcons.linux;
 
   double get _staticCornerRadius => cornerRadius.toDouble();
 
