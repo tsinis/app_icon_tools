@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:local_hero/local_hero.dart';
 import 'package:provider/provider.dart';
 import 'package:websafe_svg/websafe_svg.dart';
@@ -16,7 +18,6 @@ class DeviceScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final bool _devicePreview = context.select((SetupIcon icon) => icon.devicePreview);
     final int _selectedPlatform = context.select((SetupIcon icon) => icon.platformID);
     final int _id = platformList[_selectedPlatform].platformID;
     return AdaptiveScaffold(
@@ -31,7 +32,7 @@ class DeviceScreen extends StatelessWidget {
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
-                    WebsafeSvg.asset(platformList[_selectedPlatform].devicePicture, height: 640),
+                    _SVG(_selectedPlatform),
                     SizedBox(
                       width: (_id == 1 || _id == 2)
                           ? 105
@@ -70,4 +71,15 @@ class DeviceScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+class _SVG extends StatelessWidget {
+  const _SVG(this._selectedPlatform, {Key key}) : super(key: key);
+
+  final int _selectedPlatform;
+  String get _svgPath => platformList[_selectedPlatform].devicePicture;
+
+  @override
+  Widget build(BuildContext context) =>
+      kIsWeb ? WebsafeSvg.asset(_svgPath, height: 640) : SvgPicture.asset('assets/$_svgPath', height: 640);
 }
