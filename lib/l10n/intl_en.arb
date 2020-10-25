@@ -31,5 +31,6 @@
     "export": "Export Icons",
     "wait": "Please wait a moment",
     "colorAsBg": "Background as color",
-    "exportPlatforms": "Platforms to Export"
+    "exportPlatforms": "Platforms to Export",
+    "longPress": "Long press to remove!"
     }

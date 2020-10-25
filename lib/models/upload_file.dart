@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data' show Uint8List;
+import 'package:image/image.dart' as img;
 
 import 'package:file_picker_cross/file_picker_cross.dart';
 import 'package:flutter/widgets.dart';
@@ -39,9 +40,11 @@ class UploadFile extends ChangeNotifier {
               recivedBackground = _bytes;
             } else if (foreground) {
               recivedForeground = _bytes;
+              _checkTransparency(adaptiveForeground: true);
             } else {
               recivedForeground = recivedBackground = null;
               recivedIcon = _bytes;
+              _checkTransparency();
             }
             _isProperFile = true;
           });
@@ -53,9 +56,11 @@ class UploadFile extends ChangeNotifier {
             recivedBackground = _file.toUint8List();
           } else if (foreground) {
             recivedForeground = _file.toUint8List();
+            _checkTransparency(adaptiveForeground: true);
           } else {
             recivedForeground = recivedBackground = null;
             recivedIcon = _file.toUint8List();
+            _checkTransparency();
           }
           _isProperFile = true;
         }
@@ -80,6 +85,9 @@ class UploadFile extends ChangeNotifier {
       // ignore: unused_catch_clause
     } on Exception catch (_exception) {
       // print('Exception was: ${_exception.toString()}');
+    }
+    if (_isProperFile) {
+      _findIssues(foreground: foreground, background: background);
     }
     if (background || foreground) {
       notifyListeners();
@@ -118,5 +126,28 @@ class UploadFile extends ChangeNotifier {
       // print('It is not a $_expectedFileExtension');
       return false;
     }
+  }
+
+  bool _transparentForeground = true;
+  bool _transparentIcon = false;
+  bool get transparentForeground => _transparentForeground;
+  bool get transparentIcon => _transparentIcon;
+
+  void _checkTransparency({bool adaptiveForeground = false}) {
+    final img.Image _image = img.decodeImage(adaptiveForeground ? recivedForeground : recivedIcon);
+    final bool _haveAlpha = _image.channels == img.Channels.rgba;
+    if (adaptiveForeground) {
+      _transparentForeground = _haveAlpha ?? true;
+    } else {
+      _transparentIcon = _haveAlpha ?? false;
+      _transparentForeground = true;
+    }
+  }
+
+  void _findIssues({@required bool foreground, @required bool background}) {
+    // final bool _tooSmall, tooHeavy, _noTransparancy, _notSquare;
+    final bool _adaptive = foreground || background;
+    final img.Image _image =
+        img.decodeImage(_adaptive ? (foreground ? recivedForeground : recivedBackground) : recivedIcon);
   }
 }

@@ -83,7 +83,8 @@ class IconPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool _portrait = MediaQuery.of(context).size.height > MediaQuery.of(context).size.width;
+    final bool _portrait = (MediaQuery.of(context).size.height > MediaQuery.of(context).size.width) ||
+        (MediaQuery.of(context).size.width <= 640);
 
     return PreviewLayout(
       portraitOrientation: _portrait,

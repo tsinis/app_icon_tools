@@ -9,10 +9,16 @@ class UserInterface extends ChangeNotifier {
   bool _isWeb = false;
   String _locale = 'en';
 
-  Future openGuidelinesURL({bool fromGoogle = false}) async {
+  Future openGuidelinesURL({bool fromGoogle = false, bool isAdaptive = false}) async {
     const String _apple = 'https://developer.apple.com/design/human-interface-guidelines/ios/icons-and-images/app-icon';
     final String _google = 'https://support.google.com/googleplay/android-developer/answer/1078870?hl=$_locale';
-    final String _url = fromGoogle ? _google : _apple;
+    final String _adaptive =
+        'https://developer.android.com/guide/practices/ui_guidelines/icon_design_adaptive?hl=$_locale';
+    final String _url = isAdaptive
+        ? _adaptive
+        : fromGoogle
+            ? _google
+            : _apple;
     if (await canLaunch(_url)) {
       await launch(_url);
     } else {

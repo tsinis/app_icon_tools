@@ -38,6 +38,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "iconPreview" : MessageLookupByLibrary.simpleMessage("Icon Preview"),
     "imageSize" : MessageLookupByLibrary.simpleMessage("Dimensions:"),
     "locale" : MessageLookupByLibrary.simpleMessage("en"),
+    "longPress" : MessageLookupByLibrary.simpleMessage("Long press to remove!"),
     "maxKB" : MessageLookupByLibrary.simpleMessage("Max. file size:"),
     "noBackground" : MessageLookupByLibrary.simpleMessage("Please select background image first."),
     "noInterlacing" : MessageLookupByLibrary.simpleMessage("w/o interlacing."),

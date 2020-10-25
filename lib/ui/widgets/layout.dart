@@ -7,22 +7,16 @@ class PreviewLayout extends StatelessWidget {
   final bool portraitOrientation;
 
   @override
-  Widget build(BuildContext context) => portraitOrientation
-      ? FractionallySizedBox(
-          widthFactor: 0.9,
-          child: SingleChildScrollView(
-            child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [const SizedBox(height: 20), ...children]),
-          ),
-        )
-      : FractionallySizedBox(
-          widthFactor: 0.9,
-          heightFactor: 0.9,
-          child: Row(
-              // crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: children),
-        );
+  Widget build(BuildContext context) => FractionallySizedBox(
+        widthFactor: 0.9,
+        heightFactor: portraitOrientation ? 1 : 0.9,
+        child: SingleChildScrollView(
+          child: portraitOrientation
+              ? Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [const SizedBox(height: 20), ...children])
+              : Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: children),
+        ),
+      );
 }

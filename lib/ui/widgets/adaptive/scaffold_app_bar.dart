@@ -17,46 +17,45 @@ class AdaptiveScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool _loading = context.select((SetupIcon icon) => icon.loading);
+    final bool _isWideScreen = MediaQuery.of(context).size.width > 549;
     return UserInterface.isApple
         ? CupertinoPageScaffold(
             navigationBar: CupertinoNavigationBar(
               middle: uploadScreen
                   ? Text(S.of(context).appName)
-                  : Row(
-                      //TODO Change to button bar.
-                      mainAxisAlignment: MainAxisAlignment.center,
+                  : ButtonBar(
+                      alignment: MainAxisAlignment.center,
                       children: [
-                        // const Spacer(),
+                        SizedBox(width: _isWideScreen ? 44 : 14),
                         Tooltip(
                             message: S.of(context).appName,
-                            child: const Icon(CupertinoIcons.exclamationmark_triangle,
-                                size: 24)), //TODO Change to real warning.
-                        const SizedBox(width: 20),
-
-                        Padding(
-                          padding: const EdgeInsets.all(4),
-                          child: CupertinoButton(
+                            child: const Icon(CupertinoIcons.exclamationmark_triangle)), //TODO Change to real warning.
+                        SizedBox(width: _isWideScreen ? 14 : 4),
+                        if (_isWideScreen)
+                          CupertinoButton(
                               disabledColor: CupertinoColors.systemGrey,
                               padding: const EdgeInsets.symmetric(horizontal: 64),
                               onPressed: _loading ? null : () => context.read<SetupIcon>().archive(),
                               color: CupertinoColors.activeOrange,
-                              child: Text(_loading ? S.of(context).wait : S.of(context).export)),
-                        ),
-                        const SizedBox(width: 16),
+                              child: Text(_loading ? S.of(context).wait : S.of(context).export))
+                        else
+                          GestureDetector(
+                              onTap: () => context.read<SetupIcon>().archive(),
+                              child: _loading
+                                  ? const CupertinoActivityIndicator()
+                                  : const Icon(CupertinoIcons.tray_arrow_down, color: CupertinoColors.activeOrange)),
+                        SizedBox(width: _isWideScreen ? 10 : 3),
                         GestureDetector(
                             onTap: () => _showPlatformsDialog(context),
-                            child: const Icon(CupertinoIcons.wrench, size: 24)),
-                        // const Spacer(),
+                            child: const Icon(CupertinoIcons.ellipsis_circle)),
                       ],
                     ),
-              trailing: Row(
-                //TODO Change to button bar.
-                mainAxisAlignment: MainAxisAlignment.end,
+              trailing: ButtonBar(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   GestureDetector(
                       onTap: () => _showAboutDialog(context), child: const Icon(CupertinoIcons.info_circle, size: 26)),
-                  const SizedBox(width: 14),
+                  // const SizedBox(width: 2),
                   GestureDetector(
                       onTap: () => _showSettingsDialog(context), child: const Icon(CupertinoIcons.gear, size: 26))
                 ],
@@ -78,19 +77,23 @@ class AdaptiveScaffold extends StatelessWidget {
                       children: [
                         Tooltip(
                             message: S.of(context).appName, //TODO Change to real warning.
-                            child: const Icon(CommunityMaterialIcons.alert_outline, size: 24)),
-                        const SizedBox(width: 10),
-                        MaterialButton(
-                            colorBrightness: Brightness.light,
-                            onPressed: _loading ? null : () => context.read<SetupIcon>().archive(),
-                            color: Colors.amber,
-                            child: Padding(
-                                padding: const EdgeInsets.all(10),
-                                child: Text(_loading ? S.of(context).wait : S.of(context).export))),
-                        const SizedBox(width: 1),
-                        IconButton(
-                            icon: const Icon(CommunityMaterialIcons.wrench_outline, size: 24),
-                            onPressed: () => _showPlatformsDialog(context))
+                            child: const Icon(CommunityMaterialIcons.alert_outline)),
+                        SizedBox(width: _isWideScreen ? 10 : 1),
+                        if (_isWideScreen)
+                          MaterialButton(
+                              colorBrightness: Brightness.light,
+                              onPressed: _loading ? null : () => context.read<SetupIcon>().archive(),
+                              color: Colors.amber,
+                              child: Padding(
+                                  padding: const EdgeInsets.all(10),
+                                  child: Text(_loading ? S.of(context).wait : S.of(context).export)))
+                        else
+                          _loading
+                              ? const CircularProgressIndicator()
+                              : IconButton(
+                                  icon: const Icon(Icons.download_outlined, color: Colors.amber),
+                                  onPressed: () => context.read<SetupIcon>().archive()),
+                        IconButton(icon: const Icon(Icons.menu), onPressed: () => _showPlatformsDialog(context))
                       ],
                     ),
               actions: <Widget>[
@@ -112,8 +115,6 @@ class AdaptiveScaffold extends StatelessWidget {
         context: context,
         builder: (_dialogContext) => AdaptiveDialog(
           title: S.of(context).settings,
-          leftButton: S.of(context).cancel,
-          rightButton: S.of(context).save,
           onPressedLeft: () => Navigator.of(_dialogContext).pop(),
           onPressedRight: () => Navigator.of(_dialogContext).pop(),
           content: Column(
@@ -135,8 +136,6 @@ class AdaptiveScaffold extends StatelessWidget {
           final Map<String, bool> _platforms = _dialogContext.watch<SetupIcon>().platforms;
           return AdaptiveDialog(
             title: S.of(context).exportPlatforms,
-            leftButton: S.of(context).cancel,
-            rightButton: S.of(context).save,
             onPressedLeft: () => Navigator.of(_dialogContext).pop(),
             onPressedRight: () => Navigator.of(_dialogContext).pop(),
             content: Column(

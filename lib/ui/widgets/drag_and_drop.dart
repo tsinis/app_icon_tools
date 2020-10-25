@@ -16,6 +16,7 @@ class DragAndDrop extends StatelessWidget {
   // static DropzoneViewController _controller;
   @override
   Widget build(BuildContext context) {
+    final bool _isAdaptive = background || foreground;
     final bool _isProperFile = context.select((UploadFile upload) => upload.isProperFile);
     final Brightness _brightness = context.select((UserInterface ui) => ui.getTheme);
     return FDottedLine(
@@ -70,7 +71,6 @@ class DragAndDrop extends StatelessWidget {
                         columns: const [DataColumn(label: SizedBox.shrink()), DataColumn(label: SizedBox.shrink())],
                         rows: <DataRow>[
                           DataRow(
-                            //TODO Add Adaptive Icon Req.
                             onSelectChanged: (_) async => await context.read<UserInterface>().openGuidelinesURL(),
                             cells: <DataCell>[
                               DataCell(InfoCellText(S.of(context).fileFormat)),
@@ -100,12 +100,14 @@ class DragAndDrop extends StatelessWidget {
                                     child: const Text('1024KB')))
                               ]),
                           DataRow(
-                              onSelectChanged: (_) async => await context.read<UserInterface>().openGuidelinesURL(),
+                              onSelectChanged: (_) async =>
+                                  await context.read<UserInterface>().openGuidelinesURL(isAdaptive: _isAdaptive),
                               cells: <DataCell>[
                                 DataCell(InfoCellText(S.of(context).imageSize)),
                                 DataCell(Tooltip(
-                                    message: 'App Store ${S.of(context).storeRequirement}',
-                                    child: const Text('1024×1024 px')))
+                                    message:
+                                        (_isAdaptive ? 'Google Play' : 'App Store') + S.of(context).storeRequirement,
+                                    child: Text(_isAdaptive ? '432×432 px' : '1024×1024 px')))
                               ])
                         ],
                       ),

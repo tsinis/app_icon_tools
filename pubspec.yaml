@@ -31,7 +31,7 @@ dependencies:
   hive_flutter: ^0.3.1
   image_resizer: ^1.0.2
   local_hero: ^0.1.0
-  path_provider: ^1.6.21
+  path_provider: ^1.6.22
   path_provider_macos: ^0.0.4+4
   platform_info: ^2.1.0
   provider: ^4.3.2+2

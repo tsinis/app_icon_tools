@@ -364,6 +364,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Long press to remove!`
+  String get longPress {
+    return Intl.message(
+      'Long press to remove!',
+      name: 'longPress',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

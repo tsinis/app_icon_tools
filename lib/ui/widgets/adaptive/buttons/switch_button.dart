@@ -18,10 +18,9 @@ class AdaptiveSwitch extends StatelessWidget {
             mainAxisSize: MainAxisSize.max,
             children: [
               Text(title, textAlign: TextAlign.center),
-              // const SizedBox(width: 20),
               CupertinoSwitch(value: value, onChanged: onChanged),
             ],
           ),
         )
-      : SwitchListTile(title: Text(title, textAlign: TextAlign.center), value: value, onChanged: onChanged);
+      : SwitchListTile(title: Text(title), value: value, onChanged: onChanged);
 }
