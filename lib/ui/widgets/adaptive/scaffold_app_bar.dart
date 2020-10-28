@@ -147,9 +147,9 @@ class AdaptiveScaffold extends StatelessWidget {
                         child: AdaptiveSwitch(
                             title: platformName,
                             value: _platforms[platformName],
-                            onChanged: (_newValue) => _dialogContext.read<SetupIcon>().switchPlatform(
-                                  key: platformName,
-                                  value: _newValue,
+                            onChanged: (_exported) => _dialogContext.read<SetupIcon>().switchPlatform(
+                                  platformNameKey: platformName,
+                                  isExported: _exported,
                                 )),
                       ))
                   .toList(),

@@ -12,96 +12,78 @@ import '../services/navigation_service.dart';
 import '../services/router.dart';
 
 class UploadFile extends ChangeNotifier {
-  Uint8List recivedIcon, recivedForeground, recivedBackground;
+  static const int minIconSize = 1024;
+  static const int minAdaptiveSize = 432;
+  static const String expectedFileExtension = 'png';
+  Uint8List _recivedIcon, _recivedForeground, _recivedBackground;
 
-  static const String _expectedFileExtension = 'png';
+  Uint8List get recivedIcon => _recivedIcon;
+  Uint8List get recivedForeground => _recivedForeground;
+  Uint8List get recivedBackground => _recivedBackground;
 
   final NavigationService _navigationService = locator<NavigationService>();
 
-  bool _isProperFile = true;
+  bool _isValidFile = true;
 
-  bool get isProperFile => _isProperFile;
+  bool get isValidFile => _isValidFile;
 
   Future checkSelected({bool background = false, bool foreground = false}) async =>
-      await FilePickerCross.importFromStorage(type: FileTypeCross.image, fileExtension: _expectedFileExtension)
+      await FilePickerCross.importFromStorage(type: FileTypeCross.image, fileExtension: expectedFileExtension)
           .then<void>((_selectedFile) => _checkFile(_selectedFile, background: background, foreground: foreground));
 
   Future checkDropped(dynamic _droppedFile, {bool background = false, bool foreground = false}) async =>
       await _checkFile(_droppedFile, background: background, foreground: foreground);
 
   Future _checkFile(dynamic _file, {bool background, bool foreground}) async {
-    _isProperFile = false;
-    // print('Yupee! ${_file.runtimeType} is being checked.');
-    try {
-      if (_file is File) {
-        if (_properExtension(_file.name)) {
-          await _convertHtmlFileToBytes(_file).then((_bytes) {
-            if (background) {
-              recivedBackground = _bytes;
-            } else if (foreground) {
-              recivedForeground = _bytes;
-              _checkTransparency(adaptiveForeground: true);
-            } else {
-              recivedForeground = recivedBackground = null;
-              recivedIcon = _bytes;
-              _checkTransparency();
+    if (background) {
+      _recivedBackground = null;
+    } else if (foreground) {
+      _recivedForeground = null;
+    }
+    _setLoading(true);
+    //TODO! Fix workaround! Run in Isolate if !kIsWeb...
+    Future<void>.delayed(
+      const Duration(milliseconds: 300),
+      () async {
+        Uint8List _bytes;
+        try {
+          if (_file is File) {
+            if (_properExtension(_file.name)) {
+              await _convertHtmlFileToBytes(_file).then((_convertedBytes) => _bytes = _convertedBytes);
             }
-            _isProperFile = true;
-          });
-        }
-      }
-      if (_file is FilePickerCross) {
-        if (_properExtension(_file.fileName)) {
-          if (background) {
-            recivedBackground = _file.toUint8List();
-          } else if (foreground) {
-            recivedForeground = _file.toUint8List();
-            _checkTransparency(adaptiveForeground: true);
-          } else {
-            recivedForeground = recivedBackground = null;
-            recivedIcon = _file.toUint8List();
-            _checkTransparency();
           }
-          _isProperFile = true;
+          if (_file is FilePickerCross) {
+            if (_properExtension(_file.fileName)) {
+              _bytes = _file.toUint8List();
+            }
+          }
+          _isValidFile = _findIssues(_bytes, foreground: foreground, background: background);
+          // ignore: avoid_catches_without_on_clauses
+        } catch (e) {
+          _isValidFile = false;
         }
-      }
-      // if (_file is FilePickerResult) {
-      //   if (_properExtension(_file.names.first)) {
-      //     if (background) {
-      //       recivedBackground = _file.files.first.bytes;
-      //     } else if (foreground) {
-      //       recivedForeground = _file.files.first.bytes;
-      //     } else {
-      //       recivedForeground = recivedBackground = null;
-      //       recivedIcon = _file.files.first.bytes;
-      //     }
-      //     _isProperFile = true;
-      //   }
-      // }
-      // ignore: avoid_catching_errors, unused_catch_clause
-    } on Error catch (_error) {
-      // print('Error was: ${_error.toString()}');
+        if (_isValidFile) {
+          if (background) {
+            _recivedBackground = _bytes;
+          } else if (foreground) {
+            _recivedForeground = _bytes;
+          } else {
+            _recivedForeground = _recivedBackground = null;
+            _recivedIcon = _bytes;
+          }
+        }
 
-      // ignore: unused_catch_clause
-    } on Exception catch (_exception) {
-      // print('Exception was: ${_exception.toString()}');
-    }
-    if (_isProperFile) {
-      _findIssues(foreground: foreground, background: background);
-    }
-    if (background || foreground) {
-      notifyListeners();
-    } else {
-      await _notifyCheckResult();
-    }
+        _setLoading(false);
+        if (!background && !foreground) {
+          await _navigateToSetup();
+        }
+      },
+    );
   }
 
-  Future<void> _notifyCheckResult() async {
-    if (_isProperFile) {
-      notifyListeners();
+  Future<void> _navigateToSetup() async {
+    if (_isValidFile) {
       await _navigationService.navigateTo(UiRouter.setupScreen);
-    } else {
-      notifyListeners();
     }
   }
 
@@ -121,33 +103,50 @@ class UploadFile extends ChangeNotifier {
 
   bool _properExtension(String _fileName) {
     if (_fileName.length >= 4) {
-      return _fileName.substring(_fileName.length - 4).toLowerCase() == '.$_expectedFileExtension';
+      return _fileName.substring(_fileName.length - 4).toLowerCase() == '.$expectedFileExtension';
     } else {
-      // print('It is not a $_expectedFileExtension');
       return false;
     }
   }
 
-  bool _transparentForeground = true;
-  bool _transparentIcon = false;
-  bool get transparentForeground => _transparentForeground;
-  bool get transparentIcon => _transparentIcon;
+  bool _findIssues(Uint8List _file, {@required bool foreground, @required bool background}) {
+    final bool _adaptive = foreground || background;
+    final bool _tooHeavy = _file.buffer.lengthInBytes / 1000 > 1024;
+    final img.Image _image = img.decodePng(_file);
+    final bool _notSquare = _image.width != _image.height;
+    final bool _tooSmall = (_image.width < (_adaptive ? minAdaptiveSize : minIconSize)) ||
+        (_image.height < (_adaptive ? minAdaptiveSize : minIconSize));
+    final bool _notTransparent = _image.channels != img.Channels.rgba;
 
-  void _checkTransparency({bool adaptiveForeground = false}) {
-    final img.Image _image = img.decodeImage(adaptiveForeground ? recivedForeground : recivedIcon);
-    final bool _haveAlpha = _image.channels == img.Channels.rgba;
-    if (adaptiveForeground) {
-      _transparentForeground = _haveAlpha ?? true;
+    final Map<int, bool> _issuesMap = {
+      0: _tooSmall,
+      1: _tooHeavy,
+      2: _notSquare,
+      3: background ? !background : _notTransparent
+    };
+
+    if (foreground) {
+      _foregroundIssues = _issuesMap;
+    } else if (background) {
+      _backgroundIssues = _issuesMap;
     } else {
-      _transparentIcon = _haveAlpha ?? false;
-      _transparentForeground = true;
+      _backgroundIssues = _foregroundIssues = {};
+      _iconIssues = _issuesMap;
     }
+
+    return true;
   }
 
-  void _findIssues({@required bool foreground, @required bool background}) {
-    // final bool _tooSmall, tooHeavy, _noTransparancy, _notSquare;
-    final bool _adaptive = foreground || background;
-    final img.Image _image =
-        img.decodeImage(_adaptive ? (foreground ? recivedForeground : recivedBackground) : recivedIcon);
+  Map<int, bool> _iconIssues, _foregroundIssues, _backgroundIssues;
+
+  Map<int, bool> get iconIssues => _iconIssues;
+  Map<int, bool> get foregroundIssues => _foregroundIssues;
+  Map<int, bool> get backgroundIssues => _backgroundIssues;
+
+  bool _loading = false;
+  bool get loading => _loading;
+  void _setLoading(bool newValue) {
+    _loading = newValue;
+    notifyListeners();
   }
 }

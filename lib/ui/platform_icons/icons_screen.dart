@@ -174,7 +174,7 @@ class _Preview extends StatelessWidget {
                 children: [
                   const Icon(CommunityMaterialIcons.square_outline),
                   AdaptiveSlider(
-                      value: _androidCornerRadius,
+                      radius: _androidCornerRadius,
                       // label: _androidCornerRadius.round().toString(),
                       onChanged: (_newRadius) => context.read<SetupIcon>().setRadius(_newRadius)),
                   const Icon(CommunityMaterialIcons.circle_outline),
@@ -243,7 +243,7 @@ class _Setup extends StatelessWidget {
             AdaptiveSwitch(
                 title: S.of(context).colorAsBg,
                 value: _preferColorBg,
-                onChanged: (_value) => context.read<SetupIcon>().switchBg(newValue: _value))
+                onChanged: (_preferColor) => context.read<SetupIcon>().switchBg(preferColor: _preferColor))
           ] else ...[
             Padding(padding: const EdgeInsets.symmetric(vertical: 20), child: Text(S.of(context).iconBgColor)),
             ColorPicker(

@@ -53,6 +53,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "transparencyiOS" : MessageLookupByLibrary.simpleMessage("The iOS icons doesn\'t support transparency, alpha channel will be replaced with black color."),
     "uploadAdaptiveBg" : MessageLookupByLibrary.simpleMessage("Select Adaptive Background"),
     "uploadAdaptiveFg" : MessageLookupByLibrary.simpleMessage("Select Adaptive Foreground"),
+    "verifying" : MessageLookupByLibrary.simpleMessage("Wait please, the file is being verified"),
     "wait" : MessageLookupByLibrary.simpleMessage("Please wait a moment"),
     "wrongFile" : MessageLookupByLibrary.simpleMessage("File doesn\'t meet the Requirements")
   };

@@ -10,7 +10,6 @@ import 'models/user_interface.dart';
 import 'ui/app_appearance.dart';
 
 void main() {
-  // print('This is desktop app: ${platform.isDesktop}');
   if (!platform.isWeb && platform.isDesktop) {
     WidgetsFlutterBinding.ensureInitialized();
     setWindowTitle('Flutter Launcher Icon Preview');
@@ -21,10 +20,14 @@ void main() {
     ChangeNotifierProvider<UserInterface>(create: (_) => UserInterface()),
     ChangeNotifierProvider<UploadFile>(create: (_) => UploadFile()),
     ChangeNotifierProxyProvider<UploadFile, SetupIcon>(
-        create: (_) => SetupIcon(),
-        update: (_, uploadFile, setupIcon) => setupIcon
-          ..adaptiveForeground = uploadFile.recivedForeground
-          ..adaptiveBackground = uploadFile.recivedBackground
-          ..regularIcon = uploadFile.recivedIcon),
+      create: (_) => SetupIcon(),
+      update: (_, _file, _icon) => _icon
+        ..foregroundErrorCodes = _file.foregroundIssues
+        ..backgroundErrorCodes = _file.backgroundIssues
+        ..iconErrorCodes = _file.iconIssues
+        ..adaptiveForeground = _file.recivedForeground
+        ..adaptiveBackground = _file.recivedBackground
+        ..regularIcon = _file.recivedIcon,
+    ),
   ], child: const MyApp()));
 }

@@ -374,6 +374,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Wait please, the file is being verified`
+  String get verifying {
+    return Intl.message(
+      'Wait please, the file is being verified',
+      name: 'verifying',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

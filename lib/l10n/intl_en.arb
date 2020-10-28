@@ -32,5 +32,6 @@
     "wait": "Please wait a moment",
     "colorAsBg": "Background as color",
     "exportPlatforms": "Platforms to Export",
-    "longPress": "Long press to remove!"
+    "longPress": "Long press to remove!",
+    "verifying": "Wait please, the file is being verified."
     }

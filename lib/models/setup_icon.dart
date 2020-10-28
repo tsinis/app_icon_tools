@@ -64,8 +64,8 @@ class SetupIcon extends ChangeNotifier {
 
   bool _preferColorBg = false;
   bool get preferColorBg => _preferColorBg;
-  void switchBg({bool newValue}) {
-    _preferColorBg = newValue;
+  void switchBg({bool preferColor}) {
+    _preferColorBg = preferColor;
     notifyListeners();
   }
 
@@ -98,6 +98,37 @@ class SetupIcon extends ChangeNotifier {
     notifyListeners();
   }
 
+  Map<int, bool> _fgErrCodes, _bgErrCodes, _iconErrCodes;
+  List<int> listFgErrCodes() => _fgErrCodes.keys.where((key) => _fgErrCodes[key]).toList();
+
+// ignore: avoid_setters_without_getters
+  set foregroundErrorCodes(Map<int, bool> _issuesMap) {
+    if (_fgErrCodes != _issuesMap) {
+      _fgErrCodes = _issuesMap;
+      // notifyListeners();
+    }
+  }
+
+  List<int> listBgErrCodes() => _bgErrCodes.keys.where((key) => _bgErrCodes[key]).toList();
+
+// ignore: avoid_setters_without_getters
+  set backgroundErrorCodes(Map<int, bool> _issuesMap) {
+    if (_bgErrCodes != _issuesMap) {
+      _bgErrCodes = _issuesMap;
+      // notifyListeners();
+    }
+  }
+
+  List<int> listIconErrCodes() => _iconErrCodes.keys.where((key) => _iconErrCodes[key]).toList();
+
+// ignore: avoid_setters_without_getters
+  set iconErrorCodes(Map<int, bool> _issuesMap) {
+    if (_iconErrCodes != _issuesMap) {
+      _iconErrCodes = _issuesMap;
+      // notifyListeners();
+    }
+  }
+
   double _iconShapeRadius = 25;
   double get cornerRadius => _iconShapeRadius;
   void setRadius(double _newRadius) {
@@ -119,10 +150,6 @@ class SetupIcon extends ChangeNotifier {
   }
 
   Map<String, List<FileData>> _archiveFiles;
-
-  // TODO! Add checks: Foreground/Background, Alphas, etc. exists!
-
-  // final bool _exportIos = true, _exportWeb = true, _exportMacos = true, _exportAndroid = true;
 
   Future archive() async {
     _setLoading(true);
@@ -227,12 +254,13 @@ class SetupIcon extends ChangeNotifier {
 
   bool _loading = false;
   bool get loading => _loading;
-  void _setLoading(bool value) {
-    _loading = value;
+  void _setLoading(bool newValue) {
+    _loading = newValue;
     notifyListeners();
   }
 
   final Map<String, bool> _platforms = {
+    //TODO Add const Strings instead of hardcoded.
     'Android Regular': true,
     'Android Adaptive': true,
     'Apple iOS': true,
@@ -243,8 +271,8 @@ class SetupIcon extends ChangeNotifier {
     // 'Fuchsia OS': true,
   };
   Map<String, bool> get platforms => _platforms;
-  void switchPlatform({@required String key, @required bool value}) {
-    _platforms[key] = value;
+  void switchPlatform({@required String platformNameKey, @required bool isExported}) {
+    _platforms[platformNameKey] = isExported;
     notifyListeners();
   }
 }
