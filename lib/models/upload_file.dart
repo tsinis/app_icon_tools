@@ -116,14 +116,9 @@ class UploadFile extends ChangeNotifier {
     final bool _notSquare = _image.width != _image.height;
     final bool _tooSmall = (_image.width < (_adaptive ? minAdaptiveSize : minIconSize)) ||
         (_image.height < (_adaptive ? minAdaptiveSize : minIconSize));
-    final bool _notTransparent = _image.channels != img.Channels.rgba;
+    final bool _isTransparent = _image.channels == img.Channels.rgba;
 
-    final Map<int, bool> _issuesMap = {
-      0: _tooSmall,
-      1: _tooHeavy,
-      2: _notSquare,
-      3: background ? !background : _notTransparent
-    };
+    final Map<int, bool> _issuesMap = {0: _tooSmall, 1: _tooHeavy, 2: _notSquare, 3: _isTransparent};
 
     if (foreground) {
       _foregroundIssues = _issuesMap;

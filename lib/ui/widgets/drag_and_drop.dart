@@ -25,10 +25,8 @@ class DragAndDrop extends StatelessWidget {
     final bool _isAdaptive = background || foreground;
     final bool _isValidFile = context.select((UploadFile upload) => upload.isValidFile);
     final bool _loading = context.select((UploadFile upload) => upload.loading);
-    final int _minIconSize = UploadFile.minIconSize;
-    final int _minAdaptiveSize = UploadFile.minAdaptiveSize;
-    final String _fileExtension = UploadFile.expectedFileExtension;
-
+    const int _minIconSize = UploadFile.minIconSize;
+    const int _minAdaptiveSize = UploadFile.minAdaptiveSize;
     return FDottedLine(
       corner: FDottedLineCorner.all(20),
       color: const Color(0x7C888888),
@@ -94,7 +92,7 @@ class DragAndDrop extends StatelessWidget {
                                     DataCell(
                                       Tooltip(
                                         message: 'Google Play & App Store ${S.of(context).storeRequirement}',
-                                        child: Text(_fileExtension.toUpperCase()),
+                                        child: Text(UploadFile.expectedFileExtension.toUpperCase()),
                                       ),
                                     )
                                   ],

@@ -41,8 +41,8 @@ dependencies:
   websafe_svg: ^1.1.4
 
 dev_dependencies:
-  build_runner: any
-  hive_generator: any
+  # build_runner: any
+  # hive_generator: any
   pedantic: any
 
 flutter_intl:

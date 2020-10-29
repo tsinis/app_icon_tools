@@ -99,7 +99,7 @@ class SetupIcon extends ChangeNotifier {
   }
 
   Map<int, bool> _fgErrCodes, _bgErrCodes, _iconErrCodes;
-  List<int> listFgErrCodes() => _fgErrCodes.keys.where((key) => _fgErrCodes[key]).toList();
+  List<int> get listFgErrCodes => _fgErrCodes.keys.where((key) => _fgErrCodes[key]).toList() ?? [];
 
 // ignore: avoid_setters_without_getters
   set foregroundErrorCodes(Map<int, bool> _issuesMap) {
@@ -109,7 +109,7 @@ class SetupIcon extends ChangeNotifier {
     }
   }
 
-  List<int> listBgErrCodes() => _bgErrCodes.keys.where((key) => _bgErrCodes[key]).toList();
+  List<int> get listBgErrCodes => _bgErrCodes.keys.where((key) => _bgErrCodes[key]).toList() ?? [];
 
 // ignore: avoid_setters_without_getters
   set backgroundErrorCodes(Map<int, bool> _issuesMap) {
@@ -119,7 +119,7 @@ class SetupIcon extends ChangeNotifier {
     }
   }
 
-  List<int> listIconErrCodes() => _iconErrCodes.keys.where((key) => _iconErrCodes[key]).toList();
+  List<int> get listIconErrCodes => _iconErrCodes.keys.where((key) => _iconErrCodes[key]).toList() ?? [];
 
 // ignore: avoid_setters_without_getters
   set iconErrorCodes(Map<int, bool> _issuesMap) {
@@ -195,24 +195,26 @@ class SetupIcon extends ChangeNotifier {
     return true;
   }
 
+  bool get exportIOS => _platforms[_ios];
+
   Future _resizeIcons() async {
     if (_archiveFiles.isEmpty) {
-      if (_platforms['Web (PWA)']) {
+      if (_platforms[_web]) {
         await _generatePngIcons('web', WebIconsFolder());
       }
-      if (_platforms['Apple iOS']) {
+      if (_platforms[_ios]) {
         await _generatePngIcons('iOS', IosIconsFolder());
       }
-      if (_platforms['Apple macOS']) {
+      if (_platforms[_macOS]) {
         await _generatePngIcons('macOS', MacOSIconsFolder());
       }
-      if (_platforms['MS Windows']) {
+      if (_platforms[_windows]) {
         await _generateIcoIcon(WindowsIconsFolder());
       }
-      if (_platforms['Android Regular']) {
+      if (_platforms[_androidReg]) {
         await _generatePngIcons('droid', AndroidIconsFolder());
       }
-      if (_platforms['Android Adaptive']) {
+      if (_platforms[_androidAdapt]) {
         if (haveAdaptiveForeground && (haveAdaptiveBackground || haveAdaptiveColor)) {
           if (!preferColorBg) {
             await _generateAdaptiveIcons(BackgroundIconsFolder());
@@ -221,6 +223,12 @@ class SetupIcon extends ChangeNotifier {
           await _generateAdaptiveIcons(ForegroundIconsFolder());
         }
       }
+      // if (_platforms[_linux]) {
+      //   await _generatePngIcons('linux', WebIconsFolder());
+      // }
+      // if (_platforms[_fuchsiaOS]) {
+      //   await _generatePngIcons('fos', WebIconsFolder());
+      // }
     }
   }
 
@@ -259,16 +267,24 @@ class SetupIcon extends ChangeNotifier {
     notifyListeners();
   }
 
+  static const String _androidReg = 'Android Regular',
+      _androidAdapt = 'Android Adaptive',
+      _ios = 'Apple iOS',
+      _web = 'Web (PWA)',
+      _windows = 'MS Windows',
+      _macOS = 'Apple macOS'
+      // _linux = 'Linux', _fuchsiaOS = 'Fuchsia OS'
+      ;
+
   final Map<String, bool> _platforms = {
-    //TODO Add const Strings instead of hardcoded.
-    'Android Regular': true,
-    'Android Adaptive': true,
-    'Apple iOS': true,
-    'Web (PWA)': true,
-    'MS Windows': true,
-    'Apple macOS': true,
-    // 'Linux': true,
-    // 'Fuchsia OS': true,
+    _androidReg: true,
+    _androidAdapt: true,
+    _ios: true,
+    _web: true,
+    _windows: true,
+    _macOS: true,
+    // _linux: true,
+    // _fuchsiaOS: true,
   };
   Map<String, bool> get platforms => _platforms;
   void switchPlatform({@required String platformNameKey, @required bool isExported}) {

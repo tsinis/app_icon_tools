@@ -1,4 +1,3 @@
-import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -6,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../../../generated/l10n.dart';
 import '../../../models/setup_icon.dart';
 import '../../../models/user_interface.dart';
+import '../issues_info.dart';
 import 'alert_dialog.dart';
 import 'buttons/switch_button.dart';
 
@@ -27,9 +27,7 @@ class AdaptiveScaffold extends StatelessWidget {
                       alignment: MainAxisAlignment.center,
                       children: [
                         SizedBox(width: _isWideScreen ? 44 : 14),
-                        Tooltip(
-                            message: S.of(context).appName,
-                            child: const Icon(CupertinoIcons.exclamationmark_triangle)), //TODO Change to real warning.
+                        const IssuesInfo(),
                         SizedBox(width: _isWideScreen ? 14 : 4),
                         if (_isWideScreen)
                           CupertinoButton(
@@ -75,9 +73,7 @@ class AdaptiveScaffold extends StatelessWidget {
                   : ButtonBar(
                       alignment: MainAxisAlignment.center,
                       children: [
-                        Tooltip(
-                            message: S.of(context).appName, //TODO Change to real warning.
-                            child: const Icon(CommunityMaterialIcons.alert_outline)),
+                        const IssuesInfo(),
                         SizedBox(width: _isWideScreen ? 10 : 1),
                         if (_isWideScreen)
                           MaterialButton(

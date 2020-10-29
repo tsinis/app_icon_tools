@@ -375,11 +375,91 @@ class S {
     );
   }
 
-  /// `Wait please, the file is being verified`
+  /// `Wait please, the file is being verified.`
   String get verifying {
     return Intl.message(
-      'Wait please, the file is being verified',
+      'Wait please, the file is being verified.',
       name: 'verifying',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `\n\nRegular Icon:`
+  String get regularIcon {
+    return Intl.message(
+      '\n\nRegular Icon:',
+      name: 'regularIcon',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `\n\nAdaptive Foreground:`
+  String get adaptiveForeground {
+    return Intl.message(
+      '\n\nAdaptive Foreground:',
+      name: 'adaptiveForeground',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `\n\nAdaptive Background:`
+  String get adaptiveBackground {
+    return Intl.message(
+      '\n\nAdaptive Background:',
+      name: 'adaptiveBackground',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `\n!!! The image is smaller than required, the result Icon can be pixelized during upscaling.`
+  String get tooSmall {
+    return Intl.message(
+      '\n!!! The image is smaller than required, the result Icon can be pixelized during upscaling.',
+      name: 'tooSmall',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `\n!! The file size is bigger than the limit. You may have trouble publishing it to app stores.`
+  String get tooHeavy {
+    return Intl.message(
+      '\n!! The file size is bigger than the limit. You may have trouble publishing it to app stores.',
+      name: 'tooHeavy',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `\n! The image is not square. Icon can be deformed, or the edges of the trim can be visible.`
+  String get notSqaure {
+    return Intl.message(
+      '\n! The image is not square. Icon can be deformed, or the edges of the trim can be visible.',
+      name: 'notSqaure',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `\n🛈 The image have Alpha Channel (transparency). `
+  String get isTransparent {
+    return Intl.message(
+      '\n🛈 The image have Alpha Channel (transparency). ',
+      name: 'isTransparent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `iOS icon dоn't support transparency (the Alpha channel will be replaced with black).`
+  String get transparencyIOS {
+    return Intl.message(
+      'iOS icon dоn\'t support transparency (the Alpha channel will be replaced with black).',
+      name: 'transparencyIOS',
       desc: '',
       args: [],
     );
