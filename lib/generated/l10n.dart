@@ -455,10 +455,10 @@ class S {
     );
   }
 
-  /// `iOS icon dоn't support transparency (the Alpha channel will be replaced with black).`
+  /// `\n*iOS icon dоn't support transparency (the Alpha channel will be replaced with black).`
   String get transparencyIOS {
     return Intl.message(
-      'iOS icon dоn\'t support transparency (the Alpha channel will be replaced with black).',
+      '\n*iOS icon dоn\'t support transparency (the Alpha channel will be replaced with black).',
       name: 'transparencyIOS',
       desc: '',
       args: [],

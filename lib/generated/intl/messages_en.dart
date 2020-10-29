@@ -57,7 +57,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "storeRequirement" : MessageLookupByLibrary.simpleMessage("Technical requirements. Press for more info."),
     "tooHeavy" : MessageLookupByLibrary.simpleMessage("\n!! The file size is bigger than the limit. You may have trouble publishing it to app stores."),
     "tooSmall" : MessageLookupByLibrary.simpleMessage("\n!!! The image is smaller than required, the result Icon can be pixelized during upscaling."),
-    "transparencyIOS" : MessageLookupByLibrary.simpleMessage("iOS icon dоn\'t support transparency (the Alpha channel will be replaced with black)."),
+    "transparencyIOS" : MessageLookupByLibrary.simpleMessage("\n*iOS icon dоn\'t support transparency (the Alpha channel will be replaced with black)."),
     "transparencyiOS" : MessageLookupByLibrary.simpleMessage("The iOS icons doesn\'t support transparency, alpha channel will be replaced with black color."),
     "uploadAdaptiveBg" : MessageLookupByLibrary.simpleMessage("Select Adaptive Background"),
     "uploadAdaptiveFg" : MessageLookupByLibrary.simpleMessage("Select Adaptive Foreground"),

@@ -1,3 +1,5 @@
+import 'dart:math' show max;
+
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +23,16 @@ class _IssuesInfo extends State<IssuesInfo> with SingleTickerProviderStateMixin 
   AnimationController _animationController;
   List<int> _bgErrCodes, _fgErrCodes, _iconErrCodes;
   bool _exportIOS = true;
+//70
+
+  static const int _infoCode = 3;
+
+  double get _hue {
+    final int _iconIssuesCount = _iconErrCodes.length - (_iconErrCodes.contains(_infoCode) ? 1 : 0);
+    final int _fgIssuesCount = _fgErrCodes.length - (_fgErrCodes.contains(_infoCode) ? 1 : 0);
+    final int _bgIssuesCount = _bgErrCodes.length - (_bgErrCodes.contains(_infoCode) ? 1 : 0);
+    return max(0, 70 - (17.5 * _iconIssuesCount) - (17.5 * _fgIssuesCount) - (17.5 * _bgIssuesCount));
+  }
 
   @override
   void dispose() {
@@ -92,7 +104,7 @@ class _IssuesInfo extends State<IssuesInfo> with SingleTickerProviderStateMixin 
           for (final int _errorCode in _iconErrCodes) {
             _msgBuffer.write(_errorMessages[_errorCode]);
           }
-          if (_iconErrCodes.contains(3) && _exportIOS) {
+          if (_iconErrCodes.contains(_infoCode) && _exportIOS) {
             _msgBuffer.write(S.of(context).transparencyIOS);
           }
           break;
@@ -111,14 +123,20 @@ class _IssuesInfo extends State<IssuesInfo> with SingleTickerProviderStateMixin 
     return (_message.isEmpty)
         ? const SizedBox(width: 24)
         : Tooltip(
-            textStyle: Theme.of(context).textTheme.button, //TODO Fix text color.
-            padding: const EdgeInsets.fromLTRB(24, 0, 24, 30),
+            decoration: BoxDecoration(
+              color: Theme.of(context).bottomAppBarColor.withOpacity(0.84),
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
+            ),
+            textStyle: Theme.of(context).textTheme.button,
+            padding: const EdgeInsets.fromLTRB(24, 0, 24, 32),
             message: _message,
             child: FadeTransition(
               opacity: _animation,
-              child: Icon(UserInterface.isApple
-                  ? CupertinoIcons.exclamationmark_triangle
-                  : CommunityMaterialIcons.alert_outline),
+              child: Icon(
+                  UserInterface.isApple
+                      ? CupertinoIcons.exclamationmark_triangle
+                      : CommunityMaterialIcons.alert_outline,
+                  color: HSLColor.fromAHSL(1, _hue, 1, 0.5).toColor()),
             ),
           );
   }

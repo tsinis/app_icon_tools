@@ -81,6 +81,7 @@ class SetupIcon extends ChangeNotifier {
   bool get haveAdaptiveBackground => _adaptiveBackground != null;
   void removeAdaptiveBackground() {
     _adaptiveBackground = null;
+    _bgErrCodes = {};
     notifyListeners();
   }
 
@@ -95,6 +96,7 @@ class SetupIcon extends ChangeNotifier {
   bool get haveAdaptiveForeground => _adaptiveForeground != null;
   void removeadaptiveForeground() {
     _adaptiveForeground = null;
+    _fgErrCodes = {};
     notifyListeners();
   }
 

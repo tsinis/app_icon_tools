@@ -11,6 +11,7 @@ class UserInterface extends ChangeNotifier {
 
   Future openGuidelinesURL({bool fromGoogle = false, bool isAdaptive = false}) async {
     const String _apple = 'https://developer.apple.com/design/human-interface-guidelines/ios/icons-and-images/app-icon';
+    //TODO! Filter locales.
     final String _google = 'https://support.google.com/googleplay/android-developer/answer/1078870?hl=$_locale';
     final String _adaptive =
         'https://developer.android.com/guide/practices/ui_guidelines/icon_design_adaptive?hl=$_locale';
@@ -27,7 +28,7 @@ class UserInterface extends ChangeNotifier {
   }
 
   void detectUISettings() {
-    _thisIsAppleDevice = platform.isWindows;
+    _thisIsAppleDevice = platform.isCupertino;
     _isWeb = platform.isWeb;
     _locale = platform.locale;
   }
