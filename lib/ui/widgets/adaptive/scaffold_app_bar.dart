@@ -109,21 +109,31 @@ class AdaptiveScaffold extends StatelessWidget {
 
   Future<void> _showSettingsDialog(BuildContext context) => showDialog<void>(
         context: context,
-        builder: (_dialogContext) => AdaptiveDialog(
-          title: S.of(context).settings,
-          onPressedLeft: () => Navigator.of(_dialogContext).pop(),
-          onPressedRight: () => Navigator.of(_dialogContext).pop(),
-          content: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              AdaptiveSwitch(
-                  title: S.of(context).dark,
-                  value: _dialogContext.watch<UserInterface>().isDark,
-                  onChanged: (_isDark) => _dialogContext.read<UserInterface>().changeMode(_isDark))
-            ],
-          ),
-        ),
+        builder: (_dialogContext) {
+          final List<String> _langList = _dialogContext.select((UserInterface ui) => ui.langList);
+          print('_LANGLIST: ${_langList}');
+          return AdaptiveDialog(
+            title: S.of(context).settings,
+            onPressedLeft: () => Navigator.of(_dialogContext).pop(),
+            onPressedRight: () => Navigator.of(_dialogContext).pop(),
+            content: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(
+                    width: 270,
+                    height: 400,
+                    child: ListView.builder(
+                        itemCount: _langList.length, itemBuilder: (_, int i) => ListTile(title: Text(_langList[i])))),
+                const Divider(),
+                AdaptiveSwitch(
+                    title: S.of(context).dark,
+                    value: _dialogContext.watch<UserInterface>().isDark,
+                    onChanged: (_isDark) => _dialogContext.read<UserInterface>().changeMode(_isDark))
+              ],
+            ),
+          );
+        },
       );
 
   Future<void> _showPlatformsDialog(BuildContext context) => showDialog<void>(

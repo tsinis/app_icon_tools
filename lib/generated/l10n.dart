@@ -385,81 +385,91 @@ class S {
     );
   }
 
-  /// `\n\nRegular Icon:`
+  /// `Regular Icon:`
   String get regularIcon {
     return Intl.message(
-      '\n\nRegular Icon:',
+      'Regular Icon:',
       name: 'regularIcon',
       desc: '',
       args: [],
     );
   }
 
-  /// `\n\nAdaptive Foreground:`
+  /// `Adaptive Foreground:`
   String get adaptiveForeground {
     return Intl.message(
-      '\n\nAdaptive Foreground:',
+      'Adaptive Foreground:',
       name: 'adaptiveForeground',
       desc: '',
       args: [],
     );
   }
 
-  /// `\n\nAdaptive Background:`
+  /// `Adaptive Background:`
   String get adaptiveBackground {
     return Intl.message(
-      '\n\nAdaptive Background:',
+      'Adaptive Background:',
       name: 'adaptiveBackground',
       desc: '',
       args: [],
     );
   }
 
-  /// `\n!!! The image is smaller than required, the result Icon can be pixelized during upscaling.`
+  /// `!!! The image is smaller than required, the result Icon can be pixelized during upscaling.`
   String get tooSmall {
     return Intl.message(
-      '\n!!! The image is smaller than required, the result Icon can be pixelized during upscaling.',
+      '!!! The image is smaller than required, the result Icon can be pixelized during upscaling.',
       name: 'tooSmall',
       desc: '',
       args: [],
     );
   }
 
-  /// `\n!! The file size is bigger than the limit. You may have trouble publishing it to app stores.`
+  /// `!! The file size is bigger than the limit. You may have trouble publishing it to app stores.`
   String get tooHeavy {
     return Intl.message(
-      '\n!! The file size is bigger than the limit. You may have trouble publishing it to app stores.',
+      '!! The file size is bigger than the limit. You may have trouble publishing it to app stores.',
       name: 'tooHeavy',
       desc: '',
       args: [],
     );
   }
 
-  /// `\n! The image is not square. Icon can be deformed, or the edges of the trim can be visible.`
+  /// `! The image is not square. Icon can be deformed, or the edges of the trim can be visible.`
   String get notSqaure {
     return Intl.message(
-      '\n! The image is not square. Icon can be deformed, or the edges of the trim can be visible.',
+      '! The image is not square. Icon can be deformed, or the edges of the trim can be visible.',
       name: 'notSqaure',
       desc: '',
       args: [],
     );
   }
 
-  /// `\n🛈 The image have Alpha Channel (transparency). `
+  /// `🛈 The image have Alpha Channel (transparency). `
   String get isTransparent {
     return Intl.message(
-      '\n🛈 The image have Alpha Channel (transparency). ',
+      '🛈 The image have Alpha Channel (transparency). ',
       name: 'isTransparent',
       desc: '',
       args: [],
     );
   }
 
-  /// `\n*iOS icon dоn't support transparency (the Alpha channel will be replaced with black).`
+  /// `*iOS icon dоn't support transparency (the Alpha channel will be replaced with black).`
   String get transparencyIOS {
     return Intl.message(
-      '\n*iOS icon dоn\'t support transparency (the Alpha channel will be replaced with black).',
+      '*iOS icon dоn\'t support transparency (the Alpha channel will be replaced with black).',
       name: 'transparencyIOS',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `🛈 The Foreground have no Alpha Channel (transparency). In this case, the background image will not be visible at all.`
+  String get transparencyAdaptive {
+    return Intl.message(
+      '🛈 The Foreground have no Alpha Channel (transparency). In this case, the background image will not be visible at all.',
+      name: 'transparencyAdaptive',
       desc: '',
       args: [],
     );
@@ -472,6 +482,7 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
   List<Locale> get supportedLocales {
     return const <Locale>[
       Locale.fromSubtags(languageCode: 'en'),
+      Locale.fromSubtags(languageCode: 'ru'),
     ];
   }
 

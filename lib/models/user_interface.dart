@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:platform_info/platform_info.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'constants/locale.dart';
+
 class UserInterface extends ChangeNotifier {
   static bool _thisIsAppleDevice = false;
 
@@ -31,6 +33,8 @@ class UserInterface extends ChangeNotifier {
     _thisIsAppleDevice = platform.isCupertino;
     _isWeb = platform.isWeb;
     _locale = platform.locale;
+    _generateLanguageList();
+    // print(_langList);
   }
 
   String get locale => _locale ?? 'en';
@@ -47,4 +51,16 @@ class UserInterface extends ChangeNotifier {
   Brightness get getTheme => _brightness;
 
   static bool get isApple => _thisIsAppleDevice ?? false;
+
+  final List<String> _langList = [];
+  List<String> get langList => _langList;
+
+  List<String> _generateLanguageList() {
+    // if (_langList.isEmpty) {
+    for (final Locale _locale in supportedLocales) {
+      _langList.add('${_locale.languageCode.toUpperCase()}: ${languageNames[_locale]}');
+    }
+    // }
+    return _langList;
+  }
 }

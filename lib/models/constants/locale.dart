@@ -10,3 +10,8 @@ const Iterable<LocalizationsDelegate<dynamic>> localizationDelgates = [
 ];
 
 List<Locale> supportedLocales = S.delegate.supportedLocales;
+
+Map<Locale, String> languageNames = {
+  const Locale('en'): 'English',
+  const Locale('ru'): 'Русский',
+};

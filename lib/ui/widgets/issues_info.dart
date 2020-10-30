@@ -16,14 +16,12 @@ class IssuesInfo extends StatefulWidget {
   _IssuesInfo createState() => _IssuesInfo();
 }
 
-const String _foreground = 'foreground', _background = 'background';
-
 class _IssuesInfo extends State<IssuesInfo> with SingleTickerProviderStateMixin {
+  static const String _foreground = 'foreground', _background = 'background';
   Animation<double> _animation;
   AnimationController _animationController;
   List<int> _bgErrCodes, _fgErrCodes, _iconErrCodes;
-  bool _exportIOS = true;
-//70
+  bool _exportIOS = true, _exportAdaptive = true;
 
   static const int _infoCode = 3;
 
@@ -84,28 +82,31 @@ class _IssuesInfo extends State<IssuesInfo> with SingleTickerProviderStateMixin 
     switch (where) {
       case _background:
         {
-          _msgBuffer.write(S.of(context).adaptiveBackground);
+          _msgBuffer..write('\n\n')..write(S.of(context).adaptiveBackground);
           for (final int _errorCode in _bgErrCodes) {
-            _msgBuffer.write(_errorMessages[_errorCode]);
+            _msgBuffer..write('\n')..write(_errorMessages[_errorCode]);
           }
           break;
         }
       case _foreground:
         {
-          _msgBuffer.write(S.of(context).adaptiveForeground);
+          _msgBuffer..write('\n\n')..write(S.of(context).adaptiveForeground);
           for (final int _errorCode in _fgErrCodes) {
-            _msgBuffer.write(_errorMessages[_errorCode]);
+            _msgBuffer..write('\n')..write(_errorMessages[_errorCode]);
+          }
+          if (!_fgErrCodes.contains(_infoCode) && _exportAdaptive) {
+            _msgBuffer..write('\n')..write(S.of(context).transparencyAdaptive);
           }
           break;
         }
       default:
         {
-          _msgBuffer.write(S.of(context).regularIcon);
+          _msgBuffer..write('\n\n')..write(S.of(context).regularIcon);
           for (final int _errorCode in _iconErrCodes) {
-            _msgBuffer.write(_errorMessages[_errorCode]);
+            _msgBuffer..write('\n')..write(_errorMessages[_errorCode]);
           }
           if (_iconErrCodes.contains(_infoCode) && _exportIOS) {
-            _msgBuffer.write(S.of(context).transparencyIOS);
+            _msgBuffer..write('\n')..write(S.of(context).transparencyIOS);
           }
           break;
         }
@@ -119,6 +120,7 @@ class _IssuesInfo extends State<IssuesInfo> with SingleTickerProviderStateMixin 
     _fgErrCodes = context.select((SetupIcon icon) => icon.listFgErrCodes);
     _bgErrCodes = context.select((SetupIcon icon) => icon.listBgErrCodes);
     _exportIOS = context.select((SetupIcon icon) => icon.exportIOS);
+    _exportAdaptive = context.select((SetupIcon icon) => icon.exportAdaptive);
     final String _message = _issues;
     return (_message.isEmpty)
         ? const SizedBox(width: 24)

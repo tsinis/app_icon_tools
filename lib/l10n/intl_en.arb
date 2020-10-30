@@ -34,12 +34,13 @@
     "exportPlatforms": "Platforms to Export",
     "longPress": "Long press to remove!",
     "verifying": "Wait please, the file is being verified.",
-    "regularIcon": "\n\nRegular Icon:",
-    "adaptiveForeground": "\n\nAdaptive Foreground:",
-    "adaptiveBackground": "\n\nAdaptive Background:",
-    "tooSmall": "\n!!! The image is smaller than required, the result Icon can be pixelized during upscaling.",
-    "tooHeavy": "\n!! The file size is bigger than the limit. You may have trouble publishing it to app stores.",
-    "notSqaure": "\n! The image is not square. Icon can be deformed, or the edges of the trim can be visible.",
-    "isTransparent": "\n🛈 The image have Alpha Channel (transparency). ",
-    "transparencyIOS": "\n*iOS icon dоn't support transparency (the Alpha channel will be replaced with black)."
+    "regularIcon": "Regular Icon:",
+    "adaptiveForeground": "Adaptive Foreground:",
+    "adaptiveBackground": "Adaptive Background:",
+    "tooSmall": "!!! The image is smaller than required, the result Icon can be pixelized during upscaling.",
+    "tooHeavy": "!! The file size is bigger than the limit. You may have trouble publishing it to app stores.",
+    "notSqaure": "! The image is not square. Icon can be deformed, or the edges of the trim can be visible.",
+    "isTransparent": "🛈 The image have Alpha Channel (transparency). ",
+    "transparencyIOS": "*iOS icon dоn't support transparency (the Alpha channel will be replaced with black).",
+    "transparencyAdaptive": "🛈 The Foreground have no Alpha Channel (transparency). In this case, the background image will not be visible at all."
     }

@@ -198,6 +198,7 @@ class SetupIcon extends ChangeNotifier {
   }
 
   bool get exportIOS => _platforms[_ios];
+  bool get exportAdaptive => _platforms[_androidAdapt];
 
   Future _resizeIcons() async {
     if (_archiveFiles.isEmpty) {

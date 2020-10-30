@@ -22,6 +22,7 @@ dependencies:
   auto_size_text: ^2.1.0
   community_material_icon: ^5.4.55
   cupertino_icons: ^1.0.0
+  cupertino_list_tile: ^0.1.4
   fdottedline: ^1.0.1
   file_picker_cross: ^4.2.6
   flutter_dropzone: ^1.0.9
@@ -41,8 +42,6 @@ dependencies:
   websafe_svg: ^1.1.4
 
 dev_dependencies:
-  # build_runner: any
-  # hive_generator: any
   pedantic: any
 
 flutter_intl:
