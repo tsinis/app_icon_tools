@@ -12,10 +12,8 @@ class MyApp extends StatelessWidget {
   const MyApp({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    context.watch<UserInterface>().detectUISettings();
     final Brightness _brightness = context.select((UserInterface ui) => ui.getTheme);
     final Locale _locale = Locale(context.select((UserInterface ui) => ui.locale));
-
     return UserInterface.isApple
         ? CupertinoApp(
             //TODO: Add Scaffold background color according to theme.

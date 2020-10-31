@@ -15,6 +15,7 @@ void main() {
     setWindowTitle('Flutter Launcher Icon Preview');
     setWindowMinSize(const Size(320, 800));
   }
+  UserInterface.setupUI();
   setupLocator();
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider<UserInterface>(create: (_) => UserInterface()),

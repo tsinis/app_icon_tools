@@ -17,6 +17,7 @@ import '../services/router.dart';
 class SetupIcon extends ChangeNotifier {
   void devicePreview() => locator<NavigationService>().navigateTo(UiRouter.deviceScreen);
   void setupScreen() => locator<NavigationService>().navigateTo(UiRouter.setupScreen);
+  void goBack() => locator<NavigationService>().goBack();
 
   Color _backgroundColor;
   Color get backgroundColor => _backgroundColor;

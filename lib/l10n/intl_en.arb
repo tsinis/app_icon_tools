@@ -3,6 +3,7 @@
     "appName": "Launcher Icons Preview",
     "save": "Save",
     "cancel": "Cancel",
+    "done": "Done",
     "settings": "Settings",
     "dark": "Dark Mode",
     "dragAndDropHere": "Drop your image here or",
@@ -42,5 +43,7 @@
     "notSqaure": "! The image is not square. Icon can be deformed, or the edges of the trim can be visible.",
     "isTransparent": "🛈 The image have Alpha Channel (transparency). ",
     "transparencyIOS": "*iOS icon dоn't support transparency (the Alpha channel will be replaced with black).",
-    "transparencyAdaptive": "🛈 The Foreground have no Alpha Channel (transparency). In this case, the background image will not be visible at all."
+    "transparencyAdaptive": "🛈 The Foreground have no Alpha Channel (transparency). In this case, the background image will not be visible at all.",
+    "search": "Search",
+    "findLang": "Find your language here…"
     }

@@ -20,7 +20,6 @@ class DragAndDrop extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool _isWeb = context.select((UserInterface ui) => ui.isWeb);
     final Brightness _brightness = context.select((UserInterface ui) => ui.getTheme);
     final bool _isAdaptive = background || foreground;
     final bool _isValidFile = context.select((UploadFile upload) => upload.isValidFile);
@@ -30,7 +29,7 @@ class DragAndDrop extends StatelessWidget {
     return FDottedLine(
       corner: FDottedLineCorner.all(20),
       color: const Color(0x7C888888),
-      space: _isWeb ? 3 : 0,
+      space: kIsWeb ? 3 : 0,
       child: Container(
         width: 300,
         height: 300,
@@ -40,7 +39,7 @@ class DragAndDrop extends StatelessWidget {
             : Stack(
                 alignment: Alignment.center,
                 children: [
-                  if (_isWeb)
+                  if (kIsWeb)
                     DropzoneView(
                       operation: DragOperation.copy,
                       cursor: CursorType.pointer,

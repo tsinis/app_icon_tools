@@ -75,6 +75,16 @@ class S {
     );
   }
 
+  /// `Done`
+  String get done {
+    return Intl.message(
+      'Done',
+      name: 'done',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Settings`
   String get settings {
     return Intl.message(
@@ -470,6 +480,26 @@ class S {
     return Intl.message(
       '🛈 The Foreground have no Alpha Channel (transparency). In this case, the background image will not be visible at all.',
       name: 'transparencyAdaptive',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search`
+  String get search {
+    return Intl.message(
+      'Search',
+      name: 'search',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Find your language here…`
+  String get findLang {
+    return Intl.message(
+      'Find your language here…',
+      name: 'findLang',
       desc: '',
       args: [],
     );
