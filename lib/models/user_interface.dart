@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:platform_info/platform_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -8,7 +9,8 @@ import '../services/navigation_service.dart';
 import 'constants/locale.dart';
 
 class UserInterface extends ChangeNotifier {
-  static Brightness _brightness = Brightness.dark;
+  static const double previewIconSize = 300;
+  static bool _isDark = true;
   static bool _isAppleDevice = false;
   static final List<String> _langList = [], _langFilterList = [];
   static String _locale;
@@ -47,14 +49,12 @@ class UserInterface extends ChangeNotifier {
   }
 
   // ignore: avoid_positional_boolean_parameters
-  void changeMode(bool _isDark) {
-    _brightness = _isDark ? Brightness.dark : Brightness.light;
+  void changeMode(bool isDark) {
+    _isDark = isDark;
     notifyListeners();
   }
 
-  bool get isDark => _brightness == Brightness.dark;
-
-  Brightness get getTheme => _brightness;
+  bool get isDark => _isDark;
 
   static bool get isApple => _isAppleDevice ?? false;
 
@@ -80,16 +80,14 @@ class UserInterface extends ChangeNotifier {
   static Future<void> loadSettings() async {
     final SharedPreferences _prefs = await SharedPreferences.getInstance();
     _locale = _prefs.getString(_storedLocale) ?? platform.locale;
-    final bool _isLoadedDark = _prefs.getBool(_storedTheme) ?? true;
-    _brightness = _isLoadedDark ? Brightness.dark : Brightness.light;
+    _isDark = _prefs.getBool(_storedTheme) ?? true;
   }
 
   Future<void> saveSettings() async {
     locator<NavigationService>().goBack();
-    final bool _isSavedDark = _brightness == Brightness.dark;
     final SharedPreferences _prefs = await SharedPreferences.getInstance();
     await _prefs.setString(_storedLocale, _locale);
-    await _prefs.setBool(_storedTheme, _isSavedDark);
+    await _prefs.setBool(_storedTheme, _isDark);
     // print('Saved Settings!');
   }
 
@@ -114,4 +112,50 @@ class UserInterface extends ChangeNotifier {
     }
     notifyListeners();
   }
+
+  ThemeData get materialTheme => _isDark ? _materialDark : _materialLight;
+
+  static final ThemeData _materialDark = ThemeData(
+    brightness: Brightness.dark,
+    primarySwatch: Colors.grey,
+    appBarTheme: AppBarTheme(color: Colors.grey[800]),
+    primaryColor: Colors.grey[900],
+    primaryColorLight: Colors.greenAccent[100],
+    sliderTheme: SliderThemeData(thumbColor: Colors.grey[100]),
+    accentColor: Colors.pink[300],
+    errorColor: const Color(0xFFBB5B68),
+    buttonColor: Colors.grey[800],
+    selectedRowColor: Colors.pink[300],
+    textButtonTheme: TextButtonThemeData(style: TextButton.styleFrom(primary: Colors.white)),
+  );
+
+  static final ThemeData _materialLight = ThemeData(
+    brightness: Brightness.light,
+    primarySwatch: Colors.grey,
+    appBarTheme: AppBarTheme(color: Colors.white, iconTheme: IconThemeData(color: Colors.grey[700])),
+    primaryColor: Colors.grey[200],
+    primaryColorLight: Colors.greenAccent,
+    sliderTheme: SliderThemeData(thumbColor: Colors.grey[600]),
+    accentColor: Colors.greenAccent,
+    errorColor: const Color(0xFFBB5B93),
+    buttonColor: Colors.grey[350],
+    selectedRowColor: const Color(0xFF51BB96),
+    textButtonTheme: TextButtonThemeData(style: TextButton.styleFrom(primary: Colors.grey[800])),
+  );
+
+  CupertinoThemeData get cupertinoTheme => _isDark ? _cupertinoDark : _cupertinoLight;
+
+  static const CupertinoThemeData _cupertinoDark = CupertinoThemeData(
+      brightness: Brightness.dark,
+      primaryColor: CupertinoColors.systemGrey,
+      primaryContrastingColor: CupertinoColors.systemGrey2,
+      barBackgroundColor: CupertinoColors.systemGrey5,
+      scaffoldBackgroundColor: CupertinoColors.systemGrey6);
+
+  static const CupertinoThemeData _cupertinoLight = CupertinoThemeData(
+      brightness: Brightness.light,
+      primaryColor: CupertinoColors.systemGrey,
+      primaryContrastingColor: CupertinoColors.systemGrey6,
+      barBackgroundColor: CupertinoColors.systemGrey6,
+      scaffoldBackgroundColor: CupertinoColors.systemGrey5);
 }

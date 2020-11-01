@@ -465,10 +465,10 @@ class S {
     );
   }
 
-  /// `*iOS icon dоn't support transparency (the Alpha channel will be replaced with black).`
+  /// `*iOS Launcher dоn't support transparency in any app Icon (including PWA).\nThe Alpha channel will be replaced with black color.`
   String get transparencyIOS {
     return Intl.message(
-      '*iOS icon dоn\'t support transparency (the Alpha channel will be replaced with black).',
+      '*iOS Launcher dоn\'t support transparency in any app Icon (including PWA).\nThe Alpha channel will be replaced with black color.',
       name: 'transparencyIOS',
       desc: '',
       args: [],

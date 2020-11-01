@@ -13,7 +13,7 @@ class AdaptiveSlider extends StatelessWidget {
   Widget build(BuildContext context) => UserInterface.isApple
       ? Padding(
           padding: const EdgeInsets.symmetric(vertical: 2),
-          child: CupertinoSlider(value: radius, onChanged: onChanged, min: 0, max: 150, divisions: 11),
-        )
-      : Slider(value: radius, onChanged: onChanged, min: 0, max: 150, divisions: 11);
+          child: CupertinoSlider(
+              value: radius, onChanged: onChanged, min: 0, max: UserInterface.previewIconSize / 2, divisions: 11))
+      : Slider(value: radius, onChanged: onChanged, min: 0, max: UserInterface.previewIconSize / 2, divisions: 11);
 }

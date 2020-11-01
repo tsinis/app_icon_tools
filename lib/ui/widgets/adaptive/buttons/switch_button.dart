@@ -22,5 +22,6 @@ class AdaptiveSwitch extends StatelessWidget {
             ],
           ),
         )
-      : SwitchListTile(title: Text(title), value: value, onChanged: onChanged);
+      : SwitchListTile(
+          title: Text(title), value: value, onChanged: onChanged, activeColor: Theme.of(context).primaryColorLight);
 }

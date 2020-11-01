@@ -26,7 +26,7 @@ class AdaptiveNavgationBar extends StatelessWidget {
               ? CupertinoSlidingSegmentedControl<int>(
                   onValueChanged: context.watch<SetupIcon>().setPlatform,
                   groupValue: _selectedPlatform,
-                  backgroundColor: Colors.amber,
+                  backgroundColor: CupertinoTheme.of(context).textTheme.textStyle.color.withOpacity(0.04),
                   padding: const EdgeInsets.all(5),
                   children: {
                     for (IconPreview platform in platformList)
@@ -38,19 +38,26 @@ class AdaptiveNavgationBar extends StatelessWidget {
                               children: [Icon(platform.icon), const SizedBox(width: 5), Text(platform.name)])
                   },
                 )
-              : GNav(
-                  onTabChange: context.watch<SetupIcon>().setPlatform,
-                  gap: 4,
-                  // tabMargin: const EdgeInsets.only(bottom: 20),
-                  activeColor: Colors.white,
-                  iconSize: 24,
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                  tabBackgroundColor: Colors.grey[800],
-                  selectedIndex: _selectedPlatform,
-                  tabs: [
-                      for (IconPreview platform in platformList)
-                        GButton(icon: platform.icon, text: _isSmallScreen ? '' : platform.name),
-                    ]),
+              : ClipRRect(
+                  borderRadius: const BorderRadius.all(Radius.circular(20)),
+                  child: GNav(
+                      onTabChange: context.watch<SetupIcon>().setPlatform,
+                      gap: 4,
+                      activeColor: Theme.of(context).sliderTheme.thumbColor,
+                      iconSize: 24,
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                      tabBackgroundColor: Theme.of(context).buttonColor,
+                      backgroundColor: Theme.of(context).textTheme.bodyText1.color.withOpacity(0.04),
+                      selectedIndex: _selectedPlatform,
+                      tabs: [
+                        for (IconPreview platform in platformList)
+                          GButton(
+                              iconColor: Theme.of(context).sliderTheme.thumbColor.withOpacity(0.6),
+                              // margin: const EdgeInsets.all(6),
+                              icon: platform.icon,
+                              text: _isSmallScreen ? '' : platform.name),
+                      ]),
+                ),
         ),
       ),
     );

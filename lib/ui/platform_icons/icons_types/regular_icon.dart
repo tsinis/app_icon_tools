@@ -25,7 +25,7 @@ class RegularIcon extends StatelessWidget {
         children: [
           if (!_onDevice) const TransparencyGrid(),
           Container(
-              clipBehavior: Clip.hardEdge,
+              clipBehavior: Clip.antiAlias,
               decoration: BoxDecoration(
                   color: _colorNotSet
                       ? _supportTransparency

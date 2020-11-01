@@ -12,16 +12,16 @@ class MyApp extends StatelessWidget {
   const MyApp({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final Brightness _brightness = context.select((UserInterface ui) => ui.getTheme);
+    final ThemeData _materialTheme = context.select((UserInterface ui) => ui.materialTheme);
+    final CupertinoThemeData _cupertinoTheme = context.select((UserInterface ui) => ui.cupertinoTheme);
     final Locale _locale = Locale(context.select((UserInterface ui) => ui.locale));
     return UserInterface.isApple
         ? CupertinoApp(
-            //TODO: Add Scaffold background color according to theme.
             navigatorKey: locator<NavigationService>().navigatorKey,
             localizationsDelegates: localizationDelgates,
             supportedLocales: supportedLocales,
             locale: _locale,
-            theme: CupertinoThemeData(brightness: _brightness),
+            theme: _cupertinoTheme,
             onGenerateRoute: UiRouter.generateRoute,
             initialRoute: UiRouter.initialScreen)
         : MaterialApp(
@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
             localizationsDelegates: localizationDelgates,
             supportedLocales: supportedLocales,
             locale: _locale,
-            theme: ThemeData(brightness: _brightness),
+            theme: _materialTheme,
             onGenerateRoute: UiRouter.generateRoute,
             initialRoute: UiRouter.initialScreen);
   }

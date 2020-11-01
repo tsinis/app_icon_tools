@@ -7,10 +7,10 @@ class AdaptiveDialog extends StatelessWidget {
   const AdaptiveDialog(
       {this.content,
       this.title,
-      this.leftButtonTitle,
-      this.rightButtonTitle,
-      this.onPressedLeft,
-      this.onPressedRight,
+      this.secondaryButtonTitle,
+      this.mainButtonTitle,
+      this.onPressedSecondary,
+      this.onPressedMain,
       Key key})
       : super(key: key);
 
@@ -18,21 +18,24 @@ class AdaptiveDialog extends StatelessWidget {
   final Widget content;
   @required
   final String title;
-  final String leftButtonTitle, rightButtonTitle;
-  final void Function() onPressedLeft, onPressedRight;
+  final String secondaryButtonTitle, mainButtonTitle;
+  final void Function() onPressedSecondary, onPressedMain;
   @override
   Widget build(BuildContext context) => UserInterface.isApple
       ? CupertinoAlertDialog(
           title: Padding(padding: const EdgeInsets.only(bottom: 10), child: Text(title)),
           content: content,
           actions: <CupertinoDialogAction>[
-            if (onPressedLeft != null)
+            if (onPressedSecondary != null)
               CupertinoDialogAction(
                   isDestructiveAction: true,
-                  onPressed: onPressedLeft,
-                  child: Text(leftButtonTitle ?? S.of(context).cancel)),
+                  onPressed: onPressedSecondary,
+                  child: Text(secondaryButtonTitle ?? S.of(context).cancel)),
             CupertinoDialogAction(
-                isDefaultAction: true, onPressed: onPressedRight, child: Text(rightButtonTitle ?? S.of(context).save)),
+                isDefaultAction: true,
+                onPressed: onPressedMain,
+                textStyle: CupertinoTheme.of(context).textTheme.textStyle,
+                child: Text(mainButtonTitle ?? S.of(context).save)),
           ],
         )
       : AlertDialog(
@@ -41,12 +44,12 @@ class AdaptiveDialog extends StatelessWidget {
           // contentPadding: const EdgeInsets.all(0),
           title: Text(title, textAlign: TextAlign.center),
           actions: <TextButton>[
-            if (onPressedLeft != null)
+            if (onPressedSecondary != null)
               TextButton(
-                  onPressed: onPressedLeft,
-                  child: Text((leftButtonTitle ?? S.of(context).cancel).toUpperCase(),
-                      style: const TextStyle(color: Colors.red))),
-            TextButton(onPressed: onPressedRight, child: Text((rightButtonTitle ?? S.of(context).save).toUpperCase()))
+                  onPressed: onPressedSecondary,
+                  child: Text((secondaryButtonTitle ?? S.of(context).cancel).toUpperCase(),
+                      style: TextStyle(color: Theme.of(context).errorColor))),
+            TextButton(onPressed: onPressedMain, child: Text((mainButtonTitle ?? S.of(context).save).toUpperCase()))
           ],
           content: content);
 }

@@ -20,7 +20,6 @@ class DragAndDrop extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Brightness _brightness = context.select((UserInterface ui) => ui.getTheme);
     final bool _isAdaptive = background || foreground;
     final bool _isValidFile = context.select((UploadFile upload) => upload.isValidFile);
     final bool _loading = context.select((UploadFile upload) => upload.loading);
@@ -31,9 +30,9 @@ class DragAndDrop extends StatelessWidget {
       color: const Color(0x7C888888),
       space: kIsWeb ? 3 : 0,
       child: Container(
-        width: 300,
-        height: 300,
-        color: const Color(0x11888888), //TODO: Replace with a Rive animation, maybe.
+        width: UserInterface.previewIconSize,
+        height: UserInterface.previewIconSize,
+        color: const Color(0x11888888),
         child: _loading
             ? Center(child: Text(S.of(context).verifying, textAlign: TextAlign.center))
             : Stack(
@@ -67,67 +66,59 @@ class DragAndDrop extends StatelessWidget {
                         Opacity(
                             opacity: 0.66,
                             child: Text(S.of(context).iconAttributes, style: const TextStyle(fontSize: 14))),
-                        Material(
-                          type: MaterialType.transparency,
-                          child: Theme(
-                            data: ThemeData(brightness: _brightness), //TODO: Check this workaround have been fixed.
-                            child: DataTable(
-                              sortAscending: false,
-                              showCheckboxColumn: false,
-                              headingRowHeight: 0,
-                              dataRowHeight: 22,
-                              dividerThickness: 0.5,
-                              horizontalMargin: 48,
-                              columnSpacing: 40,
-                              columns: const [
-                                DataColumn(label: SizedBox.shrink()),
-                                DataColumn(label: SizedBox.shrink())
-                              ],
-                              rows: <DataRow>[
-                                DataRow(
+                        _DataThemeWorkaround(
+                          child: DataTable(
+                            sortAscending: false,
+                            showCheckboxColumn: false,
+                            headingRowHeight: 0,
+                            dataRowHeight: 22,
+                            dividerThickness: 0.5,
+                            horizontalMargin: 48,
+                            columnSpacing: 40,
+                            columns: const [DataColumn(label: SizedBox.shrink()), DataColumn(label: SizedBox.shrink())],
+                            rows: <DataRow>[
+                              DataRow(
+                                onSelectChanged: (_) async => await context.read<UserInterface>().openGuidelinesURL(),
+                                cells: <DataCell>[
+                                  DataCell(_InfoCellText(S.of(context).fileFormat)),
+                                  DataCell(
+                                    Tooltip(
+                                      message: 'Google Play & App Store ${S.of(context).storeRequirement}',
+                                      child: Text(UploadFile.expectedFileExtension.toUpperCase()),
+                                    ),
+                                  )
+                                ],
+                              ),
+                              DataRow(
                                   onSelectChanged: (_) async => await context.read<UserInterface>().openGuidelinesURL(),
                                   cells: <DataCell>[
-                                    DataCell(InfoCellText(S.of(context).fileFormat)),
-                                    DataCell(
-                                      Tooltip(
+                                    DataCell(_InfoCellText(S.of(context).colorProfile)),
+                                    DataCell(Tooltip(
                                         message: 'Google Play & App Store ${S.of(context).storeRequirement}',
-                                        child: Text(UploadFile.expectedFileExtension.toUpperCase()),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                DataRow(
-                                    onSelectChanged: (_) async =>
-                                        await context.read<UserInterface>().openGuidelinesURL(),
-                                    cells: <DataCell>[
-                                      DataCell(InfoCellText(S.of(context).colorProfile)),
-                                      DataCell(Tooltip(
-                                          message: 'Google Play & App Store ${S.of(context).storeRequirement}',
-                                          child: const Text('sRGB')))
-                                    ]),
-                                DataRow(
-                                    onSelectChanged: (_) async =>
-                                        await context.read<UserInterface>().openGuidelinesURL(fromGoogle: true),
-                                    cells: <DataCell>[
-                                      DataCell(InfoCellText(S.of(context).maxKB)),
-                                      DataCell(Tooltip(
-                                          message: 'Google Play ${S.of(context).storeRequirement}',
-                                          child: const Text('1024KB')))
-                                    ]),
-                                DataRow(
-                                    onSelectChanged: (_) async =>
-                                        await context.read<UserInterface>().openGuidelinesURL(isAdaptive: _isAdaptive),
-                                    cells: <DataCell>[
-                                      DataCell(InfoCellText(S.of(context).imageSize)),
-                                      DataCell(Tooltip(
-                                          message: (_isAdaptive ? 'Google Play' : 'App Store') +
-                                              S.of(context).storeRequirement,
-                                          child: Text(_isAdaptive
-                                              ? '$_minAdaptiveSize×$_minAdaptiveSize px'
-                                              : '$_minIconSize×$_minIconSize px')))
-                                    ])
-                              ],
-                            ),
+                                        child: const Text('sRGB')))
+                                  ]),
+                              DataRow(
+                                  onSelectChanged: (_) async =>
+                                      await context.read<UserInterface>().openGuidelinesURL(fromGoogle: true),
+                                  cells: <DataCell>[
+                                    DataCell(_InfoCellText(S.of(context).maxKB)),
+                                    DataCell(Tooltip(
+                                        message: 'Google Play ${S.of(context).storeRequirement}',
+                                        child: const Text('1024KB')))
+                                  ]),
+                              DataRow(
+                                  onSelectChanged: (_) async =>
+                                      await context.read<UserInterface>().openGuidelinesURL(isAdaptive: _isAdaptive),
+                                  cells: <DataCell>[
+                                    DataCell(_InfoCellText(S.of(context).imageSize)),
+                                    DataCell(Tooltip(
+                                        message: (_isAdaptive ? 'Google Play' : 'App Store') +
+                                            S.of(context).storeRequirement,
+                                        child: Text(_isAdaptive
+                                            ? '$_minAdaptiveSize×$_minAdaptiveSize px'
+                                            : '$_minIconSize×$_minIconSize px')))
+                                  ])
+                            ],
                           ),
                         ),
                         Tooltip(
@@ -154,11 +145,22 @@ class DragAndDrop extends StatelessWidget {
   }
 }
 
-class InfoCellText extends StatelessWidget {
-  const InfoCellText(this._text, {Key key}) : super(key: key);
-
+class _InfoCellText extends StatelessWidget {
+  const _InfoCellText(this._text, {Key key}) : super(key: key);
   final String _text;
-
   @override
   Widget build(BuildContext context) => Opacity(opacity: 0.5, child: Text(_text, maxLines: 1));
+}
+
+//TODO: Check when https://github.com/flutter/flutter/issues/19228 is closed.
+class _DataThemeWorkaround extends StatelessWidget {
+  const _DataThemeWorkaround({Key key, this.child}) : super(key: key);
+  final Widget child;
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData _materialTheme = context.select((UserInterface ui) => ui.materialTheme);
+    return UserInterface.isApple
+        ? Material(type: MaterialType.transparency, child: Theme(data: _materialTheme, child: child))
+        : SizedBox(child: child);
+  }
 }

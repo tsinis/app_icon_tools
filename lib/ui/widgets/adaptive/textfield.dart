@@ -11,28 +11,41 @@ class AdaptiveTextField extends StatelessWidget {
   final Function(String value) onChanged;
 
   @override
-  Widget build(BuildContext context) => UserInterface.isApple
-      ? Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 10),
-          child: CupertinoTextField(
+  Widget build(BuildContext context) {
+    final Color _textColor = Theme.of(context).textTheme.subtitle1.color;
+    return UserInterface.isApple
+        ? Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 10),
+            child: CupertinoTextField(
+                onChanged: onChanged,
+                inputFormatters: [FilteringTextInputFormatter.deny(RegExp('[0-9,.:!]'))],
+                clearButtonMode: OverlayVisibilityMode.editing,
+                keyboardType: TextInputType.text,
+                autofillHints: autofillHints,
+                autofocus: true,
+                placeholder: hint),
+          )
+        : Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: TextField(
               onChanged: onChanged,
               inputFormatters: [FilteringTextInputFormatter.deny(RegExp('[0-9,.:!]'))],
-              clearButtonMode: OverlayVisibilityMode.editing,
               keyboardType: TextInputType.text,
               autofillHints: autofillHints,
               autofocus: true,
-              placeholder: hint),
-        )
-      : TextField(
-          onChanged: onChanged,
-          inputFormatters: [FilteringTextInputFormatter.deny(RegExp('[0-9,.:!]'))],
-          keyboardType: TextInputType.text,
-          autofillHints: autofillHints,
-          autofocus: true,
-          decoration: InputDecoration(
-              labelText: label,
-              hintText: hint,
-              prefixIcon: const Padding(padding: EdgeInsets.only(left: 6), child: Icon(Icons.search)),
-              border: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(8)))),
-        );
+              decoration: InputDecoration(
+                  labelStyle: TextStyle(color: _textColor.withOpacity(0.4)),
+                  labelText: label,
+                  hintText: hint,
+                  hintStyle: TextStyle(color: _textColor.withOpacity(0.25)),
+                  prefixIcon: Padding(
+                      padding: const EdgeInsets.only(left: 6),
+                      child: Icon(Icons.search, color: _textColor.withOpacity(0.4))),
+                  focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(width: 0.4, color: _textColor.withOpacity(0.4)),
+                      borderRadius: const BorderRadius.all(Radius.circular(8))),
+                  border: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(8)))),
+            ),
+          );
+  }
 }

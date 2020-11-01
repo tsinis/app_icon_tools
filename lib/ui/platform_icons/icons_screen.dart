@@ -16,8 +16,6 @@ import '../widgets/layout.dart';
 import 'icons_types/apdative_icon.dart';
 import 'icons_types/regular_icon.dart';
 
-const Color _defaultPickerColor = Color(0xFF418183);
-
 class IconPreview extends StatelessWidget {
   final int cornerRadius, platformID;
   final String name;
@@ -122,11 +120,13 @@ class _Preview extends StatelessWidget {
     final Color _adpativeColor = context.select((SetupIcon icon) => icon.adaptiveColor);
     final bool _haveAdaptiveBackground = context.select((SetupIcon icon) => icon.haveAdaptiveBackground);
     final bool _haveAdaptiveForeground = context.select((SetupIcon icon) => icon.haveAdaptiveForeground);
+    final bool _isDark = context.select((UserInterface ui) => ui.isDark);
+    const double _previewIconSize = UserInterface.previewIconSize;
     final bool _adaptiveColorNotSet = _adpativeColor == null;
     final bool _haveAdaptiveAssets = _haveAdaptiveBackground && _haveAdaptiveForeground;
 
     return SizedBox(
-      width: 300,
+      width: _previewIconSize,
       height: 560,
       child: Column(
         // mainAxisSize: MainAxisSize.max,
@@ -141,9 +141,9 @@ class _Preview extends StatelessWidget {
             _haveAdaptiveBackground
                 ? Stack(children: [
                     Container(
-                        clipBehavior: Clip.hardEdge,
-                        height: 300,
-                        width: 300,
+                        clipBehavior: Clip.antiAlias,
+                        height: _previewIconSize,
+                        width: _previewIconSize,
                         decoration: const BoxDecoration(
                             color: Colors.grey, borderRadius: BorderRadius.all(Radius.circular(25))),
                         child: const Opacity(opacity: 0.5, child: AdaptiveIcon())),
@@ -154,11 +154,17 @@ class _Preview extends StatelessWidget {
             GestureDetector(
               onTap: context.watch<SetupIcon>().devicePreview,
               child: Container(
-                clipBehavior: Clip.hardEdge,
-                height: 300,
-                width: 300,
+                clipBehavior: Clip.antiAlias,
+                height: _previewIconSize,
+                width: _previewIconSize,
                 decoration: BoxDecoration(
-                    color: Colors.grey,
+                    boxShadow: [
+                      BoxShadow(
+                          color: _isDark ? Colors.black38 : Colors.black12,
+                          spreadRadius: 2,
+                          blurRadius: 4,
+                          offset: const Offset(0, 2))
+                    ],
                     borderRadius: BorderRadius.all(
                         Radius.circular(_canChangeShape ? _androidCornerRadius : _staticCornerRadius))),
                 child: _isAdaptive
@@ -172,12 +178,12 @@ class _Preview extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Icon(CommunityMaterialIcons.square_outline),
+                  const Icon(CommunityMaterialIcons.square_outline, color: Color(0x80808080)),
                   AdaptiveSlider(
                       radius: _androidCornerRadius,
                       // label: _androidCornerRadius.round().toString(),
                       onChanged: (_newRadius) => context.read<SetupIcon>().setRadius(_newRadius)),
-                  const Icon(CommunityMaterialIcons.circle_outline),
+                  const Icon(CommunityMaterialIcons.circle_outline, color: Color(0x80808080)),
                 ],
               ),
             )
@@ -214,13 +220,14 @@ class _Setup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData _materialTheme = context.select((UserInterface ui) => ui.materialTheme);
     final Color _backgroundColor = context.select((SetupIcon icon) => icon.backgroundColor);
     final Color _adpativeColor = context.select((SetupIcon icon) => icon.adaptiveColor);
     final bool _haveAdaptiveBackground = context.select((SetupIcon icon) => icon.haveAdaptiveBackground);
     final bool _preferColorBg = context.select((SetupIcon icon) => icon.preferColorBg);
     final bool _colorNotSet = _backgroundColor == null;
     return SizedBox(
-      width: 300,
+      width: UserInterface.previewIconSize,
       height: 560,
       child: Column(
         // mainAxisSize: MainAxisSize.max,
@@ -230,12 +237,12 @@ class _Setup extends StatelessWidget {
             Padding(padding: const EdgeInsets.symmetric(vertical: 20), child: Text(S.of(context).uploadAdaptiveBg)),
             if (_preferColorBg)
               ColorPicker(
+                  // labelTextStyle: _materialTheme.sliderTheme.valueIndicatorTextStyle,
                   pickerAreaHeightPercent: 0.86,
-                  pickerColor: _adpativeColor ?? (_backgroundColor ?? _defaultPickerColor),
+                  pickerColor: _adpativeColor ?? (_backgroundColor ?? _materialTheme.accentColor),
                   onColorChanged: (_newColor) => context.read<SetupIcon>().setAdaptiveColor(_newColor),
                   displayThumbColor: true,
                   portraitOnly: true,
-                  enableAlpha: true,
                   showLabel: !UserInterface.isApple)
             else
               const Hero(tag: 'global', child: DragAndDrop(background: true)),
@@ -247,8 +254,9 @@ class _Setup extends StatelessWidget {
           ] else ...[
             Padding(padding: const EdgeInsets.symmetric(vertical: 20), child: Text(S.of(context).iconBgColor)),
             ColorPicker(
+                // labelTextStyle: _materialTheme.chipTheme.labelStyle,
                 pickerAreaHeightPercent: 0.86,
-                pickerColor: _colorNotSet ? _defaultPickerColor : _backgroundColor,
+                pickerColor: _colorNotSet ? _materialTheme.accentColor : _backgroundColor,
                 onColorChanged: (_newColor) => context.read<SetupIcon>().setBackgroundColor(_newColor),
                 displayThumbColor: true,
                 portraitOnly: true,

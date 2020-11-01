@@ -21,7 +21,7 @@ class _IssuesInfo extends State<IssuesInfo> with SingleTickerProviderStateMixin 
   Animation<double> _animation;
   AnimationController _animationController;
   List<int> _bgErrCodes, _fgErrCodes, _iconErrCodes;
-  bool _exportIOS = true, _exportAdaptive = true;
+  bool _exportIOS = true, _exportAdaptive = true, _exportPWA = true;
 
   static const int _infoCode = 3;
 
@@ -105,7 +105,7 @@ class _IssuesInfo extends State<IssuesInfo> with SingleTickerProviderStateMixin 
           for (final int _errorCode in _iconErrCodes) {
             _msgBuffer..write('\n')..write(_errorMessages[_errorCode]);
           }
-          if (_iconErrCodes.contains(_infoCode) && _exportIOS) {
+          if (_iconErrCodes.contains(_infoCode) && _exportIOS && _exportPWA) {
             _msgBuffer..write('\n')..write(S.of(context).transparencyIOS);
           }
           break;
@@ -121,9 +121,10 @@ class _IssuesInfo extends State<IssuesInfo> with SingleTickerProviderStateMixin 
     _bgErrCodes = context.select((SetupIcon icon) => icon.listBgErrCodes);
     _exportIOS = context.select((SetupIcon icon) => icon.exportIOS);
     _exportAdaptive = context.select((SetupIcon icon) => icon.exportAdaptive);
+    _exportPWA = context.select((SetupIcon icon) => icon.exportWeb);
     final String _message = _issues;
     return (_message.isEmpty)
-        ? const SizedBox(width: 24)
+        ? const SizedBox(width: 28)
         : Tooltip(
             decoration: BoxDecoration(
               color: Theme.of(context).bottomAppBarColor.withOpacity(0.84),
