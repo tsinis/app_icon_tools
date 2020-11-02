@@ -85,6 +85,7 @@ class IconPreview extends StatelessWidget {
         (MediaQuery.of(context).size.width <= 640);
 
     return PreviewLayout(
+      needsScroll: MediaQuery.of(context).size.height <= 640,
       portraitOrientation: _portrait,
       children: [
         _Preview(
@@ -92,7 +93,7 @@ class IconPreview extends StatelessWidget {
             isAdaptive: _isAdaptive,
             staticCornerRadius: _staticCornerRadius,
             supportTransparency: _supportTransparency),
-        _Setup(isAdaptive: _isAdaptive),
+        _Setup(isAdaptive: _isAdaptive, isPortrait: _portrait),
       ],
     );
   }
@@ -129,7 +130,7 @@ class _Preview extends StatelessWidget {
       width: _previewIconSize,
       height: 560,
       child: Column(
-        // mainAxisSize: MainAxisSize.max,
+        mainAxisSize: MainAxisSize.min,
         // mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Padding(
@@ -212,10 +213,11 @@ class _Preview extends StatelessWidget {
 }
 
 class _Setup extends StatelessWidget {
-  final bool _isAdaptive;
+  final bool _isAdaptive, _isPortrait;
 
-  const _Setup({@required bool isAdaptive, Key key})
+  const _Setup({@required bool isAdaptive, @required bool isPortrait, Key key})
       : _isAdaptive = isAdaptive,
+        _isPortrait = isPortrait,
         super(key: key);
 
   @override
@@ -228,13 +230,19 @@ class _Setup extends StatelessWidget {
     final bool _colorNotSet = _backgroundColor == null;
     return SizedBox(
       width: UserInterface.previewIconSize,
-      height: 560,
+      height: UserInterface.isApple ? 560 : 572,
       child: Column(
-        // mainAxisSize: MainAxisSize.max,
-        // mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: _isPortrait ? MainAxisAlignment.start : MainAxisAlignment.center,
         children: [
           if (_isAdaptive) ...[
-            Padding(padding: const EdgeInsets.symmetric(vertical: 20), child: Text(S.of(context).uploadAdaptiveBg)),
+            Padding(
+                padding: EdgeInsets.only(
+                    bottom: 20,
+                    top: (_preferColorBg && !_isPortrait)
+                        ? (UserInterface.isApple ? 62 : 72)
+                        : (UserInterface.isApple ? 10 : 2)),
+                child: Text(S.of(context).uploadAdaptiveBg)),
             if (_preferColorBg)
               ColorPicker(
                   // labelTextStyle: _materialTheme.sliderTheme.valueIndicatorTextStyle,
@@ -246,7 +254,14 @@ class _Setup extends StatelessWidget {
                   showLabel: !UserInterface.isApple)
             else
               const Hero(tag: 'global', child: DragAndDrop(background: true)),
-            SizedBox(height: _preferColorBg ? 0 : 16),
+            SizedBox(
+                height: _preferColorBg
+                    ? 0
+                    : UserInterface.isApple
+                        ? 16
+                        : _haveAdaptiveBackground
+                            ? 12
+                            : 46),
             AdaptiveSwitch(
                 title: S.of(context).colorAsBg,
                 value: _preferColorBg,
@@ -268,12 +283,17 @@ class _Setup extends StatelessWidget {
                 destructive: true,
                 text: S.of(context).removeColor,
                 // color: _backgroundColor,
-                onPressed: () => context.read<SetupIcon>().removeColor()),
+                onPressed: () => context.read<SetupIcon>().removeColor())
+          else if (_colorNotSet && !_isAdaptive)
+            const SizedBox(height: 26),
           if (!_preferColorBg && _isAdaptive && _haveAdaptiveBackground)
-            AdaptiveButton(
-                text: S.of(context).removeBackground,
-                destructive: true,
-                onPressed: () => context.read<SetupIcon>().removeAdaptiveBackground()),
+            Padding(
+              padding: EdgeInsets.only(top: UserInterface.isApple ? 0 : 6),
+              child: AdaptiveButton(
+                  text: S.of(context).removeBackground,
+                  destructive: true,
+                  onPressed: () => context.read<SetupIcon>().removeAdaptiveBackground()),
+            ),
         ],
       ),
     );

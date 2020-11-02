@@ -18,7 +18,7 @@ class AdaptiveScaffold extends StatelessWidget {
     final bool _loading = context.select((SetupIcon icon) => icon.loading);
     final bool _isDark = context.select((UserInterface ui) => ui.isDark);
     final Color _exportButtonColor = _isDark ? Colors.pinkAccent : Colors.tealAccent[400];
-    final bool _isWideScreen = MediaQuery.of(context).size.width > 549;
+    final bool _isWideScreen = MediaQuery.of(context).size.width > 560;
     return UserInterface.isApple
         ? CupertinoPageScaffold(
             navigationBar: CupertinoNavigationBar(

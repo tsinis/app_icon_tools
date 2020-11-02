@@ -23,7 +23,7 @@ class DeviceScreen extends StatelessWidget {
     return AdaptiveScaffold(
       child: Column(
         children: [
-          const SizedBox(height: 20),
+          const SizedBox(height: 60),
           Expanded(
             child: FittedBox(
               fit: BoxFit.contain,
@@ -66,6 +66,7 @@ class DeviceScreen extends StatelessWidget {
               ),
             ),
           ),
+          const SizedBox(height: 40),
           const AdaptiveNavgationBar()
         ],
       ),

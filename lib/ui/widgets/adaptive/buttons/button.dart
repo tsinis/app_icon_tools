@@ -39,19 +39,17 @@ class AdaptiveButton extends StatelessWidget {
                               ? CupertinoColors.white
                               : CupertinoColors.black)))
           : destructive
-              ? Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: Tooltip(
-                    message: S.of(context).longPress,
-                    child: TextButton(
-                      onPressed: () {},
-                      onLongPress: onPressed,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: Text(text.toUpperCase(), style: TextStyle(color: Theme.of(context).errorColor)),
-                      ),
+              ? Tooltip(
+                  message: S.of(context).longPress,
+                  child: TextButton(
+                    onPressed: () {},
+                    onLongPress: onPressed,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: Text(text.toUpperCase(), style: TextStyle(color: Theme.of(context).errorColor)),
                     ),
-                  ))
+                  ),
+                )
               : MaterialButton(
                   colorBrightness: Brightness.dark,
                   minWidth: 190,

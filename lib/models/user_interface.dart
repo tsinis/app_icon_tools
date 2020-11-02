@@ -116,18 +116,19 @@ class UserInterface extends ChangeNotifier {
   ThemeData get materialTheme => _isDark ? _materialDark : _materialLight;
 
   static final ThemeData _materialDark = ThemeData(
-    brightness: Brightness.dark,
-    primarySwatch: Colors.grey,
-    appBarTheme: AppBarTheme(color: Colors.grey[800]),
-    primaryColor: Colors.grey[900],
-    primaryColorLight: Colors.greenAccent[100],
-    sliderTheme: SliderThemeData(thumbColor: Colors.grey[100]),
-    accentColor: Colors.pink[300],
-    errorColor: const Color(0xFFBB5B68),
-    buttonColor: Colors.grey[800],
-    selectedRowColor: Colors.pink[300],
-    textButtonTheme: TextButtonThemeData(style: TextButton.styleFrom(primary: Colors.white)),
-  );
+      brightness: Brightness.dark,
+      primarySwatch: Colors.grey,
+      appBarTheme: AppBarTheme(color: Colors.grey[800]),
+      primaryColor: Colors.grey[900],
+      primaryColorLight: Colors.greenAccent[100],
+      sliderTheme: SliderThemeData(thumbColor: Colors.grey[100]),
+      accentColor: Colors.pink[300],
+      errorColor: const Color(0xFFBB5B68),
+      buttonColor: Colors.grey[800],
+      selectedRowColor: Colors.pink[300],
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(primary: Colors.white, minimumSize: const Size(64, 35)),
+      ));
 
   static final ThemeData _materialLight = ThemeData(
     brightness: Brightness.light,
@@ -140,7 +141,8 @@ class UserInterface extends ChangeNotifier {
     errorColor: const Color(0xFFBB5B93),
     buttonColor: Colors.grey[350],
     selectedRowColor: const Color(0xFF51BB96),
-    textButtonTheme: TextButtonThemeData(style: TextButton.styleFrom(primary: Colors.grey[800])),
+    textButtonTheme:
+        TextButtonThemeData(style: TextButton.styleFrom(primary: Colors.grey[800], minimumSize: const Size(64, 35))),
   );
 
   CupertinoThemeData get cupertinoTheme => _isDark ? _cupertinoDark : _cupertinoLight;
