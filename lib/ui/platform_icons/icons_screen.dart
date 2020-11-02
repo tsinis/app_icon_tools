@@ -85,7 +85,7 @@ class IconPreview extends StatelessWidget {
         (MediaQuery.of(context).size.width <= 640);
 
     return PreviewLayout(
-      needsScroll: MediaQuery.of(context).size.height <= 640,
+      needsScroll: MediaQuery.of(context).size.height <= 760,
       portraitOrientation: _portrait,
       children: [
         _Preview(
@@ -202,6 +202,7 @@ class _Preview extends StatelessWidget {
             // if (_isAdaptive) const SizedBox(height: 44) else const SizedBox(height: 64),
             if (_isAdaptive && _haveAdaptiveForeground)
               AdaptiveButton(
+                  //TODO Fix it on desktops.
                   text: S.of(context).removeForeground,
                   destructive: true,
                   onPressed: () => context.read<SetupIcon>().removeadaptiveForeground()),
@@ -241,7 +242,7 @@ class _Setup extends StatelessWidget {
                     bottom: 20,
                     top: (_preferColorBg && !_isPortrait)
                         ? (UserInterface.isApple ? 62 : 72)
-                        : (UserInterface.isApple ? 10 : 2)),
+                        : (UserInterface.isApple ? (_haveAdaptiveBackground ? 36 : 10) : 2)),
                 child: Text(S.of(context).uploadAdaptiveBg)),
             if (_preferColorBg)
               ColorPicker(
