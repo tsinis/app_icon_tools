@@ -24,14 +24,7 @@ class AdaptiveNavgationBar extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 20),
           child: (_countDown > 0)
-              ? Container(
-                  color: Colors.green,
-                  child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
-                      child: Row(children: [
-                        const Text('Done! "icons.zip" is in "Downloads" folder.'),
-                        CircularProgressIndicator(value: _countDown / 10, strokeWidth: 3),
-                      ])))
+              ? _DoneInfo(_countDown)
               : UserInterface.isApple
                   ? CupertinoSlidingSegmentedControl<int>(
                       onValueChanged: context.watch<SetupIcon>().setPlatform,
@@ -72,4 +65,41 @@ class AdaptiveNavgationBar extends StatelessWidget {
       ),
     );
   }
+}
+
+class _DoneInfo extends StatelessWidget {
+  const _DoneInfo(this._countDown, {Key key}) : super(key: key);
+
+  final int _countDown;
+
+  @override
+  Widget build(BuildContext context) => Container(
+        decoration: BoxDecoration(
+            color: Colors.greenAccent.withOpacity(0.2),
+            border: Border.all(color: Colors.greenAccent),
+            borderRadius: BorderRadius.all(Radius.circular(UserInterface.isApple ? 10 : 20))),
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: UserInterface.isApple ? 4 : 1, horizontal: 12),
+          child: FittedBox(
+            fit: BoxFit.fitWidth,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const SizedBox(width: 10),
+                const Text('Done! "icons.zip" is in "Downloads" folder.'),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 6),
+                  child: Transform.scale(
+                      scale: 0.6,
+                      child: CircularProgressIndicator(
+                          valueColor: const AlwaysStoppedAnimation<Color>(Colors.greenAccent),
+                          backgroundColor: Colors.grey.withOpacity(0.25),
+                          value: _countDown / 100)),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
 }

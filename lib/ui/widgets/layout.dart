@@ -5,7 +5,7 @@ class PreviewLayout extends StatelessWidget {
 
   final List<Widget> children;
   final bool portraitOrientation, needsScroll;
-  //TODO Add
+  //TODO Add links to downlad. assets and articles.
   @override
   Widget build(BuildContext context) => FractionallySizedBox(
         widthFactor: portraitOrientation ? 0.94 : 0.9,

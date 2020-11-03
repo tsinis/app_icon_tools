@@ -202,7 +202,6 @@ class _Preview extends StatelessWidget {
             // if (_isAdaptive) const SizedBox(height: 44) else const SizedBox(height: 64),
             if (_isAdaptive && _haveAdaptiveForeground)
               AdaptiveButton(
-                  //TODO Fix it on desktops.
                   text: S.of(context).removeForeground,
                   destructive: true,
                   onPressed: () => context.read<SetupIcon>().removeadaptiveForeground()),
@@ -242,7 +241,9 @@ class _Setup extends StatelessWidget {
                     bottom: 20,
                     top: (_preferColorBg && !_isPortrait)
                         ? (UserInterface.isApple ? 62 : 72)
-                        : (UserInterface.isApple ? (_haveAdaptiveBackground ? 36 : 10) : 2)),
+                        : (UserInterface.isApple
+                            ? (_haveAdaptiveBackground ? 36 : 10)
+                            : 4)), //TODO Check this 4 end value.
                 child: Text(S.of(context).uploadAdaptiveBg)),
             if (_preferColorBg)
               ColorPicker(

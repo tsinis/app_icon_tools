@@ -14,7 +14,7 @@ void main() {
   if (!platform.isWeb && platform.isDesktop) {
     WidgetsFlutterBinding.ensureInitialized();
     setWindowTitle('Flutter Launcher Icon Preview');
-    setWindowMinSize(const Size(320, 800));
+    setWindowMinSize(const Size(320, 840));
   }
   UserInterface.setupUI();
   setupLocator();

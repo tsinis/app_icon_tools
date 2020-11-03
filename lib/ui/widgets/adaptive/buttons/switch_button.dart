@@ -12,7 +12,7 @@ class AdaptiveSwitch extends StatelessWidget {
   @override
   Widget build(BuildContext context) => UserInterface.isApple
       ? Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 19),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             mainAxisSize: MainAxisSize.max,

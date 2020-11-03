@@ -17,7 +17,7 @@ import '../services/router.dart';
 
 class SetupIcon extends ChangeNotifier {
   void devicePreview() => locator<NavigationService>().navigateTo(UiRouter.deviceScreen);
-  void setupScreen() => locator<NavigationService>().navigateTo(UiRouter.setupScreen);
+  void setupScreen() => locator<NavigationService>().navigateAndReplaceTo(UiRouter.setupScreen);
   void goBack() => locator<NavigationService>().goBack();
 
   Color _backgroundColor;
@@ -170,7 +170,7 @@ class SetupIcon extends ChangeNotifier {
               // print('Images: ${_images.length}');
               final List<int> _data = _gen.generateArchive(_images);
               await _saveFile('icons.zip', binaryData: _data).whenComplete(() {
-                _countDown = 10;
+                _countDown = 0;
                 _setLoading(false);
                 _showSnackInfo();
               });
@@ -180,27 +180,18 @@ class SetupIcon extends ChangeNotifier {
   int _countDown = 0;
   int get countDown => _countDown;
 
-  void _showSnackInfo() {
-    // Timer _timer;
-    // if (_timer != null) {
-    //   _timer.cancel();
-    //   _timer = null;
-    // } else {
-    // _timer =
-    Timer.periodic(
-      const Duration(milliseconds: 500),
-      (Timer timer) {
-        if (_countDown < 0.4) {
-          _countDown = 0;
-          timer.cancel();
-        } else {
-          _countDown = _countDown - 1;
-        }
-        notifyListeners();
-      },
-    );
-    // }
-  }
+  void _showSnackInfo() => Timer.periodic(
+        const Duration(milliseconds: 50),
+        (Timer _timer) {
+          if (_countDown > 99) {
+            _countDown = 0;
+            _timer.cancel();
+          } else {
+            _countDown = _countDown + 1;
+          }
+          notifyListeners();
+        },
+      );
 
   Future<bool> _saveFile(String fileName, {List<int> binaryData, bool silentErrors = false}) async {
     if (kIsWeb) {
