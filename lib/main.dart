@@ -9,6 +9,7 @@ import 'models/upload_file.dart';
 import 'models/user_interface.dart';
 import 'ui/app_appearance.dart';
 
+//TODO Add accesibility and semantic labels.
 void main() {
   if (!platform.isWeb && platform.isDesktop) {
     WidgetsFlutterBinding.ensureInitialized();

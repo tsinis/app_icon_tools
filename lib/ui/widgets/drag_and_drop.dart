@@ -38,7 +38,7 @@ class DragAndDrop extends StatelessWidget {
             : Stack(
                 alignment: Alignment.center,
                 children: [
-                  if (kIsWeb)
+                  if (kIsWeb) //TODO Check latest working version of drag and drop in Chrome.
                     DropzoneView(
                       operation: DragOperation.copy,
                       cursor: CursorType.pointer,

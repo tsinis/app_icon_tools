@@ -247,7 +247,7 @@ class _Setup extends StatelessWidget {
             if (_preferColorBg)
               ColorPicker(
                   // labelTextStyle: _materialTheme.sliderTheme.valueIndicatorTextStyle,
-                  pickerAreaHeightPercent: 0.86,
+                  pickerAreaHeightPercent: 0.84,
                   pickerColor: _adpativeColor ?? (_backgroundColor ?? _materialTheme.accentColor),
                   onColorChanged: (_newColor) => context.read<SetupIcon>().setAdaptiveColor(_newColor),
                   displayThumbColor: true,
@@ -259,10 +259,10 @@ class _Setup extends StatelessWidget {
                 height: _preferColorBg
                     ? 0
                     : UserInterface.isApple
-                        ? 16
+                        ? 10
                         : _haveAdaptiveBackground
-                            ? 12
-                            : 46),
+                            ? 10
+                            : 43),
             AdaptiveSwitch(
                 title: S.of(context).colorAsBg,
                 value: _preferColorBg,
@@ -271,7 +271,7 @@ class _Setup extends StatelessWidget {
             Padding(padding: const EdgeInsets.symmetric(vertical: 20), child: Text(S.of(context).iconBgColor)),
             ColorPicker(
                 // labelTextStyle: _materialTheme.chipTheme.labelStyle,
-                pickerAreaHeightPercent: 0.86,
+                pickerAreaHeightPercent: 0.84,
                 pickerColor: _colorNotSet ? _materialTheme.accentColor : _backgroundColor,
                 onColorChanged: (_newColor) => context.read<SetupIcon>().setBackgroundColor(_newColor),
                 displayThumbColor: true,
@@ -286,7 +286,7 @@ class _Setup extends StatelessWidget {
                 // color: _backgroundColor,
                 onPressed: () => context.read<SetupIcon>().removeColor())
           else if (_colorNotSet && !_isAdaptive)
-            const SizedBox(height: 26),
+            const SizedBox(height: 27),
           if (!_preferColorBg && _isAdaptive && _haveAdaptiveBackground)
             Padding(
               padding: EdgeInsets.only(top: UserInterface.isApple ? 0 : 6),

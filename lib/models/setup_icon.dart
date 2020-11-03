@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io' as io;
 import 'dart:typed_data';
 
@@ -168,8 +169,37 @@ class SetupIcon extends ChangeNotifier {
               }
               // print('Images: ${_images.length}');
               final List<int> _data = _gen.generateArchive(_images);
-              await _saveFile('icons.zip', binaryData: _data).whenComplete(() => _setLoading(false));
+              await _saveFile('icons.zip', binaryData: _data).whenComplete(() {
+                _countDown = 10;
+                _setLoading(false);
+                _showSnackInfo();
+              });
             }));
+  }
+
+  int _countDown = 0;
+  int get countDown => _countDown;
+
+  void _showSnackInfo() {
+    // Timer _timer;
+    // if (_timer != null) {
+    //   _timer.cancel();
+    //   _timer = null;
+    // } else {
+    // _timer =
+    Timer.periodic(
+      const Duration(milliseconds: 500),
+      (Timer timer) {
+        if (_countDown < 0.4) {
+          _countDown = 0;
+          timer.cancel();
+        } else {
+          _countDown = _countDown - 1;
+        }
+        notifyListeners();
+      },
+    );
+    // }
   }
 
   Future<bool> _saveFile(String fileName, {List<int> binaryData, bool silentErrors = false}) async {

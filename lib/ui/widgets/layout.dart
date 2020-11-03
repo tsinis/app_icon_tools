@@ -5,11 +5,11 @@ class PreviewLayout extends StatelessWidget {
 
   final List<Widget> children;
   final bool portraitOrientation, needsScroll;
-
+  //TODO Add
   @override
   Widget build(BuildContext context) => FractionallySizedBox(
         widthFactor: portraitOrientation ? 0.94 : 0.9,
-        heightFactor: portraitOrientation ? 1 : 0.9, // TODO Fix height on small screen.
+        heightFactor: (portraitOrientation || needsScroll) ? 1 : 0.9,
         child: _ScrollChild(
           scroll: needsScroll || portraitOrientation,
           child: portraitOrientation

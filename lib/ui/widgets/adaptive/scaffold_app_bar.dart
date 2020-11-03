@@ -12,7 +12,7 @@ class AdaptiveScaffold extends StatelessWidget {
   const AdaptiveScaffold({this.child, this.uploadScreen = false, Key key}) : super(key: key);
   final bool uploadScreen;
   final Widget child;
-
+  //TODO Fix gear icon padding in Material Nav Bar.
   @override
   Widget build(BuildContext context) {
     final bool _loading = context.select((SetupIcon icon) => icon.loading);
