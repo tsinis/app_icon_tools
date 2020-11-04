@@ -45,7 +45,8 @@ class AdaptiveIconButtons extends StatelessWidget {
 void _onPressed({@required String direction}) => AdaptiveIcon.preview(direction);
 
 class _CupertinoIconButton extends StatelessWidget {
-  const _CupertinoIconButton({@required this.withAdaptives, this.direction, this.icon, Key key}) : super(key: key);
+  const _CupertinoIconButton({@required this.withAdaptives, @required this.direction, @required this.icon, Key key})
+      : super(key: key);
 
   final bool withAdaptives;
   final String direction;
@@ -54,7 +55,6 @@ class _CupertinoIconButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) => CupertinoButton(
       padding: const EdgeInsets.symmetric(horizontal: 19),
-      // color: CupertinoColors.activeBlue,
       onPressed: withAdaptives ? () => _onPressed(direction: direction) : null,
       child: Center(child: Icon(icon)));
 }

@@ -154,7 +154,7 @@ class _InfoCellText extends StatelessWidget {
 
 //TODO: Check when https://github.com/flutter/flutter/issues/19228 is closed.
 class _DataThemeWorkaround extends StatelessWidget {
-  const _DataThemeWorkaround({Key key, this.child}) : super(key: key);
+  const _DataThemeWorkaround({@required this.child, Key key}) : super(key: key);
   final Widget child;
   @override
   Widget build(BuildContext context) {

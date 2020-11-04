@@ -41,7 +41,8 @@ class AndroidAdaptiveIcon extends AndroidIcon {
       : super(size: adaptSize, folder: adaptFolder, folderSuffix: adaptSuffix);
   final bool background;
   final int adaptSize;
-  final String adaptFolder, adaptSuffix;
+  final String adaptFolder;
+  final String adaptSuffix;
 
   @override
   AndroidAdaptiveIcon copyWith({

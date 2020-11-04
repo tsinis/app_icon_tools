@@ -5,21 +5,20 @@ import '../../../models/user_interface.dart';
 
 class AdaptiveDialog extends StatelessWidget {
   const AdaptiveDialog(
-      {this.content,
-      this.title,
+      {@required this.content,
+      @required this.title,
+      @required this.onPressedMain,
       this.secondaryButtonTitle,
       this.mainButtonTitle,
       this.onPressedSecondary,
-      this.onPressedMain,
       Key key})
       : super(key: key);
 
-  @required
   final Widget content;
-  @required
   final String title;
   final String secondaryButtonTitle, mainButtonTitle;
-  final void Function() onPressedSecondary, onPressedMain;
+  final void Function() onPressedMain;
+  final void Function() onPressedSecondary;
   @override
   Widget build(BuildContext context) => UserInterface.isApple
       ? CupertinoAlertDialog(

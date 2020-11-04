@@ -13,7 +13,7 @@ class UserInterface extends ChangeNotifier {
   static bool _isDark = true;
   static bool _isAppleDevice = false;
   static final List<String> _langList = [], _langFilterList = [];
-  static String _locale;
+  static String _locale = 'en';
   static const String _storedTheme = 'isDark', _storedLocale = 'locale';
 
   void goBack() {
@@ -39,7 +39,7 @@ class UserInterface extends ChangeNotifier {
     }
   }
 
-  String get locale => _locale ?? 'en';
+  String get locale => _locale;
 
   void setLocale(String _newLocale) {
     final int _colon = _newLocale.indexOf(':');
@@ -56,7 +56,7 @@ class UserInterface extends ChangeNotifier {
 
   bool get isDark => _isDark;
 
-  static bool get isApple => _isAppleDevice ?? false;
+  static bool get isApple => _isAppleDevice;
 
   List<String> get langFilterList => _langFilterList;
 

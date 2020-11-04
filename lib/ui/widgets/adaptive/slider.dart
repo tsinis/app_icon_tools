@@ -8,7 +8,7 @@ class AdaptiveSlider extends StatelessWidget {
   final void Function(double) onChanged;
   // final String label;
 
-  const AdaptiveSlider({Key key, this.radius, this.onChanged}) : super(key: key);
+  const AdaptiveSlider({@required this.radius, @required this.onChanged, Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) => UserInterface.isApple
       ? Padding(

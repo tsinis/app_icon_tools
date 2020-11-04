@@ -13,7 +13,7 @@ class AdaptiveIcon extends StatefulWidget {
 
   static Future<void> preview(String _direction) async {
     const double _offset = 0.1;
-    Offset _end;
+    Offset _end = const Offset(0, _offset);
     switch (_direction) {
       case 'down':
         _end = const Offset(0, _offset);
@@ -59,7 +59,7 @@ class _AdaptiveIconState extends State<AdaptiveIcon> with SingleTickerProviderSt
 
     return AnimatedBuilder(
       animation: _controller,
-      builder: (BuildContext context, Widget _) => Stack(
+      builder: (BuildContext context, _) => Stack(
         alignment: Alignment.center,
         children: [
           if (!widget.onDevice) const TransparencyGrid(),

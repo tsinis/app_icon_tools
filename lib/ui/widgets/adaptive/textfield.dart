@@ -4,7 +4,9 @@ import 'package:flutter/services.dart';
 import '../../../models/user_interface.dart';
 
 class AdaptiveTextField extends StatelessWidget {
-  const AdaptiveTextField({Key key, this.onChanged, this.hint, this.label, this.autofillHints}) : super(key: key);
+  const AdaptiveTextField(
+      {@required this.onChanged, @required this.hint, @required this.label, @required this.autofillHints, Key key})
+      : super(key: key);
 
   final List<String> autofillHints;
   final String hint, label;
@@ -12,7 +14,7 @@ class AdaptiveTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color _textColor = Theme.of(context).textTheme.subtitle1.color;
+    final Color _textColor = Theme.of(context).textTheme.bodyText1?.color ?? Colors.grey;
     return UserInterface.isApple
         ? Padding(
             padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 10),

@@ -29,7 +29,7 @@ class AdaptiveNavgationBar extends StatelessWidget {
                   ? CupertinoSlidingSegmentedControl<int>(
                       onValueChanged: context.watch<SetupIcon>().setPlatform,
                       groupValue: _selectedPlatform,
-                      backgroundColor: CupertinoTheme.of(context).textTheme.textStyle.color.withOpacity(0.04),
+                      backgroundColor: CupertinoTheme.of(context).textTheme.textStyle.color?.withOpacity(0.04),
                       padding: const EdgeInsets.all(5),
                       children: {
                         for (IconPreview platform in platformList)
@@ -50,12 +50,12 @@ class AdaptiveNavgationBar extends StatelessWidget {
                           iconSize: 24,
                           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                           tabBackgroundColor: Theme.of(context).buttonColor,
-                          backgroundColor: Theme.of(context).textTheme.bodyText1.color.withOpacity(0.04),
+                          backgroundColor: Theme.of(context).textTheme.bodyText1?.color?.withOpacity(0.04),
                           selectedIndex: _selectedPlatform,
                           tabs: [
                             for (IconPreview platform in platformList)
                               GButton(
-                                  iconColor: Theme.of(context).sliderTheme.thumbColor.withOpacity(0.6),
+                                  iconColor: Theme.of(context).sliderTheme.thumbColor?.withOpacity(0.6),
                                   // margin: const EdgeInsets.all(6),
                                   icon: platform.icon,
                                   text: _isSmallScreen ? '' : platform.name),

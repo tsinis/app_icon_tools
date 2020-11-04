@@ -35,7 +35,7 @@ class SetupIcon extends ChangeNotifier {
     notifyListeners();
   }
 
-  Uint8List _icon;
+  Uint8List _icon = Uint8List(0);
   Image get iconImage => Image.memory(_icon);
   Uint8List get regularIcon => _icon;
   set regularIcon(Uint8List _uploadedImage) {
@@ -52,7 +52,9 @@ class SetupIcon extends ChangeNotifier {
   void setAdaptiveColor(Color _newColor) {
     if (_adaptiveColor != _newColor) {
       _adaptiveColor = _newColor;
-      _backgroundColor ??= _newColor.withAlpha(255);
+      if (_newColor != null) {
+        _backgroundColor ??= _newColor.withAlpha(255);
+      }
       notifyListeners();
     }
   }
@@ -66,7 +68,7 @@ class SetupIcon extends ChangeNotifier {
 
   bool _preferColorBg = false;
   bool get preferColorBg => _preferColorBg;
-  void switchBg({bool preferColor}) {
+  void switchBg({@required bool preferColor}) {
     _preferColorBg = preferColor;
     notifyListeners();
   }
@@ -102,8 +104,8 @@ class SetupIcon extends ChangeNotifier {
     notifyListeners();
   }
 
-  Map<int, bool> _fgErrCodes, _bgErrCodes, _iconErrCodes;
-  List<int> get listFgErrCodes => _fgErrCodes.keys.where((key) => _fgErrCodes[key]).toList() ?? [];
+  Map<int, bool> _fgErrCodes = {}, _bgErrCodes = {}, _iconErrCodes = {};
+  List<int> get listFgErrCodes => _fgErrCodes.keys.where((key) => _fgErrCodes[key] ?? false).toList();
 
 // ignore: avoid_setters_without_getters
   set foregroundErrorCodes(Map<int, bool> _issuesMap) {
@@ -113,7 +115,7 @@ class SetupIcon extends ChangeNotifier {
     }
   }
 
-  List<int> get listBgErrCodes => _bgErrCodes.keys.where((key) => _bgErrCodes[key]).toList() ?? [];
+  List<int> get listBgErrCodes => _bgErrCodes.keys.where((key) => _bgErrCodes[key] ?? false).toList();
 
 // ignore: avoid_setters_without_getters
   set backgroundErrorCodes(Map<int, bool> _issuesMap) {
@@ -123,7 +125,7 @@ class SetupIcon extends ChangeNotifier {
     }
   }
 
-  List<int> get listIconErrCodes => _iconErrCodes.keys.where((key) => _iconErrCodes[key]).toList() ?? [];
+  List<int> get listIconErrCodes => _iconErrCodes.keys.where((key) => _iconErrCodes[key] ?? false).toList();
 
 // ignore: avoid_setters_without_getters
   set iconErrorCodes(Map<int, bool> _issuesMap) {
@@ -147,13 +149,13 @@ class SetupIcon extends ChangeNotifier {
   void setPlatform(int _selectedPlatform) {
     if (_selectedPlatform != _platformID) {
       {
-        _platformID = _selectedPlatform;
+        _platformID = _selectedPlatform ?? 1;
         notifyListeners();
       }
     }
   }
 
-  Map<String, List<FileData>> _archiveFiles;
+  Map<String, List<FileData>> _archiveFiles = {};
 
   Future archive() async {
     _setLoading(true);
@@ -164,7 +166,7 @@ class SetupIcon extends ChangeNotifier {
         const Duration(milliseconds: 300),
         () async => await _resizeIcons().whenComplete(() async {
               for (final key in _archiveFiles.keys) {
-                final _folder = _archiveFiles[key];
+                final List<FileData> _folder = _archiveFiles[key];
                 _images.addAll(_folder.toList());
               }
               // print('Images: ${_images.length}');
@@ -193,10 +195,11 @@ class SetupIcon extends ChangeNotifier {
         },
       );
 
-  Future<bool> _saveFile(String fileName, {List<int> binaryData, bool silentErrors = false}) async {
+  Future<bool> _saveFile(String fileName, {@required List<int> binaryData, bool silentErrors = false}) async {
     if (kIsWeb) {
-      Uri dataUrl;
+      Uri dataUrl = Uri();
       try {
+        // ignore: unnecessary_null_comparison
         if (binaryData != null) {
           dataUrl = Uri.dataFromBytes(binaryData);
         }
@@ -219,28 +222,28 @@ class SetupIcon extends ChangeNotifier {
     return true;
   }
 
-  bool get exportIOS => _platforms[_ios];
-  bool get exportWeb => _platforms[_web];
-  bool get exportAdaptive => _platforms[_androidAdapt];
+  bool get exportIOS => _platforms[_ios] ?? true;
+  bool get exportWeb => _platforms[_web] ?? true;
+  bool get exportAdaptive => _platforms[_androidAdapt] ?? true;
 
   Future _resizeIcons() async {
     if (_archiveFiles.isEmpty) {
-      if (_platforms[_web]) {
+      if (_platforms[_web] ?? true) {
         await _generatePngIcons('web', WebIconsFolder());
       }
-      if (_platforms[_ios]) {
+      if (_platforms[_ios] ?? true) {
         await _generatePngIcons('iOS', IosIconsFolder());
       }
-      if (_platforms[_macOS]) {
+      if (_platforms[_macOS] ?? true) {
         await _generatePngIcons('macOS', MacOSIconsFolder());
       }
-      if (_platforms[_windows]) {
+      if (_platforms[_windows] ?? true) {
         await _generateIcoIcon(WindowsIconsFolder());
       }
-      if (_platforms[_androidReg]) {
+      if (_platforms[_androidReg] ?? true) {
         await _generatePngIcons('droid', AndroidIconsFolder());
       }
-      if (_platforms[_androidAdapt]) {
+      if (_platforms[_androidAdapt] ?? true) {
         if (haveAdaptiveForeground && (haveAdaptiveBackground || haveAdaptiveColor)) {
           if (!preferColorBg) {
             await _generateAdaptiveIcons(BackgroundIconsFolder());
@@ -249,10 +252,10 @@ class SetupIcon extends ChangeNotifier {
           await _generateAdaptiveIcons(ForegroundIconsFolder());
         }
       }
-      // if (_platforms[_linux]) {
+      // if (_platforms[_linux] ?? true) {
       //   await _generatePngIcons('linux', WebIconsFolder());
       // }
-      // if (_platforms[_fuchsiaOS]) {
+      // if (_platforms[_fuchsiaOS] ?? true) {
       //   await _generatePngIcons('fos', WebIconsFolder());
       // }
     }

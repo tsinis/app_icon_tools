@@ -21,7 +21,7 @@ class IconPreview extends StatelessWidget {
   final String name;
   final IconData icon;
 
-  const IconPreview(this.platformID, this.name, this.icon, {Key key, this.cornerRadius}) : super(key: key);
+  const IconPreview(this.platformID, this.name, this.icon, {@required this.cornerRadius, Key key}) : super(key: key);
 
   const IconPreview.oldAndroid()
       : cornerRadius = 0,
@@ -170,7 +170,12 @@ class _Preview extends StatelessWidget {
                         Radius.circular(_canChangeShape ? _androidCornerRadius : _staticCornerRadius))),
                 child: _isAdaptive
                     ? const Hero(tag: 'adaptive', child: AdaptiveIcon())
-                    : Hero(tag: 'regular', child: RegularIcon(supportTransparency: _supportTransparency)),
+                    : Hero(
+                        tag: 'regular',
+                        child: RegularIcon(
+                          supportTransparency: _supportTransparency,
+                          cornerRadius: -1,
+                        )),
               ),
             ),
           if (_canChangeShape)

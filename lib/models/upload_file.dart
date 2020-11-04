@@ -15,7 +15,8 @@ class UploadFile extends ChangeNotifier {
   static const int minIconSize = 1024;
   static const int minAdaptiveSize = 432;
   static const String expectedFileExtension = 'png';
-  Uint8List _recivedIcon, _recivedForeground, _recivedBackground;
+  Uint8List _recivedIcon = Uint8List(0);
+  Uint8List _recivedForeground, _recivedBackground;
 
   Uint8List get recivedIcon => _recivedIcon;
   Uint8List get recivedForeground => _recivedForeground;
@@ -34,7 +35,7 @@ class UploadFile extends ChangeNotifier {
   Future checkDropped(dynamic _droppedFile, {bool background = false, bool foreground = false}) async =>
       await _checkFile(_droppedFile, background: background, foreground: foreground);
 
-  Future _checkFile(dynamic _file, {bool background, bool foreground}) async {
+  Future _checkFile(dynamic _file, {@required bool background, @required bool foreground}) async {
     if (background) {
       _recivedBackground = null;
     } else if (foreground) {
@@ -57,7 +58,10 @@ class UploadFile extends ChangeNotifier {
               _bytes = _file.toUint8List();
             }
           }
-          _isValidFile = _findIssues(_bytes, foreground: foreground, background: background);
+          // ignore: unnecessary_null_comparison
+          if (_bytes != null) {
+            _isValidFile = _findIssues(_bytes, foreground: foreground, background: background);
+          }
           // ignore: avoid_catches_without_on_clauses
         } catch (e) {
           _isValidFile = false;
@@ -132,7 +136,7 @@ class UploadFile extends ChangeNotifier {
     return true;
   }
 
-  Map<int, bool> _iconIssues, _foregroundIssues, _backgroundIssues;
+  Map<int, bool> _iconIssues = {}, _foregroundIssues = {}, _backgroundIssues = {};
 
   Map<int, bool> get iconIssues => _iconIssues;
   Map<int, bool> get foregroundIssues => _foregroundIssues;

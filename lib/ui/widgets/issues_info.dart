@@ -20,7 +20,7 @@ class _IssuesInfo extends State<IssuesInfo> with SingleTickerProviderStateMixin 
   static const String _foreground = 'foreground', _background = 'background';
   Animation<double> _animation;
   AnimationController _animationController;
-  List<int> _bgErrCodes, _fgErrCodes, _iconErrCodes;
+  List<int> _bgErrCodes = [], _fgErrCodes = [], _iconErrCodes = [];
   bool _exportIOS = true, _exportAdaptive = true, _exportPWA = true;
 
   static const int _infoCode = 3;

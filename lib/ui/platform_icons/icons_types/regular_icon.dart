@@ -5,21 +5,21 @@ import '../../../models/setup_icon.dart';
 import '../../widgets/transparency_grid.dart';
 
 class RegularIcon extends StatelessWidget {
-  const RegularIcon({@required bool supportTransparency, int cornerRadius, Key key})
+  const RegularIcon({@required bool supportTransparency, @required int cornerRadius, Key key})
       : _supportTransparency = supportTransparency,
         _cornerRadius = cornerRadius,
         super(key: key);
 
   final bool _supportTransparency;
   final int _cornerRadius;
-  bool get _onDevice => _cornerRadius != null;
+  bool get _onDevice => _cornerRadius != -1;
 
   @override
   Widget build(BuildContext context) {
     final Color _backgroundColor = context.select((SetupIcon icon) => icon.backgroundColor);
     final bool _colorNotSet = _backgroundColor == null;
     return ClipRRect(
-      borderRadius: BorderRadius.all(Radius.circular(_onDevice ? _cornerRadius / 8 ?? 0 : 0)),
+      borderRadius: BorderRadius.all(Radius.circular(_onDevice ? _cornerRadius / 8 : 0)),
       child: Stack(
         alignment: Alignment.center,
         children: [

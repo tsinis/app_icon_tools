@@ -98,7 +98,7 @@ Future<void> showPlatformsDialog(BuildContext context) => showDialog<void>(
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       child: AdaptiveSwitch(
                           title: platformName,
-                          value: _platforms[platformName],
+                          value: _platforms[platformName] ?? true,
                           onChanged: (_exported) => _dialogContext
                               .read<SetupIcon>()
                               .switchPlatform(platformNameKey: platformName, isExported: _exported)),

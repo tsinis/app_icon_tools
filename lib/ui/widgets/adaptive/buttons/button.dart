@@ -11,7 +11,8 @@ class AdaptiveButton extends StatelessWidget {
   final Color color;
   final bool destructive;
 
-  const AdaptiveButton({Key key, this.text, this.color, this.onPressed, this.destructive = false}) : super(key: key);
+  const AdaptiveButton({@required this.text, @required this.onPressed, this.color, this.destructive = false, Key key})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     final Color _buttonColor = context.select((UserInterface ui) => ui.materialTheme.accentColor);
@@ -42,7 +43,7 @@ class AdaptiveButton extends StatelessWidget {
               ? Tooltip(
                   message: S.of(context).longPress,
                   child: TextButton(
-                    onPressed: () {}, //TODO Add show tooltip on single press.
+                    onPressed: () {}, //TODO Add show tooltip on tap?.
                     onLongPress: onPressed,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8),

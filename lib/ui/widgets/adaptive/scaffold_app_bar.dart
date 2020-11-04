@@ -9,19 +9,19 @@ import '../../../services/show_dialog.dart';
 import '../issues_info.dart';
 
 class AdaptiveScaffold extends StatelessWidget {
-  const AdaptiveScaffold({this.child, this.uploadScreen = false, Key key}) : super(key: key);
+  const AdaptiveScaffold({@required this.child, this.uploadScreen = false, Key key}) : super(key: key);
   final bool uploadScreen;
   final Widget child;
   @override
   Widget build(BuildContext context) {
     final bool _loading = context.select((SetupIcon icon) => icon.loading);
-    final bool _isDark = context.select((UserInterface ui) => ui.isDark);
-    final Color _exportButtonColor = _isDark ? Colors.pinkAccent : Colors.tealAccent[400];
+    final bool _isDark = context.select((UserInterface ui) => ui.isDark) ?? true;
+    final Color _exportButtonColor = (_isDark ? Colors.pinkAccent : Colors.tealAccent[400]) ?? const Color(0xFF1DE9B6);
     final bool _isWideScreen = MediaQuery.of(context).size.width > 560;
     return UserInterface.isApple
         ? CupertinoPageScaffold(
             navigationBar: CupertinoNavigationBar(
-              actionsForegroundColor: CupertinoTheme.of(context).textTheme.textStyle.color.withOpacity(0.7),
+              actionsForegroundColor: CupertinoTheme.of(context).textTheme.textStyle.color?.withOpacity(0.7),
               middle: uploadScreen
                   ? Text(S.of(context).appName)
                   : ButtonBar(

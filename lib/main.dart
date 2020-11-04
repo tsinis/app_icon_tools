@@ -10,6 +10,7 @@ import 'models/user_interface.dart';
 import 'ui/app_appearance.dart';
 
 //TODO Add accesibility and semantic labels.
+//TODO Migrate to null-safety when it's become stable.
 void main() {
   if (!platform.isWeb && platform.isDesktop) {
     WidgetsFlutterBinding.ensureInitialized();

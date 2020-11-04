@@ -8,7 +8,8 @@ class AdaptiveSwitch extends StatelessWidget {
   final Function(bool value) onChanged;
   final bool value;
 
-  const AdaptiveSwitch({Key key, this.title, this.onChanged, this.value}) : super(key: key);
+  const AdaptiveSwitch({@required this.title, @required this.onChanged, @required this.value, Key key})
+      : super(key: key);
   @override
   Widget build(BuildContext context) => UserInterface.isApple
       ? Padding(
