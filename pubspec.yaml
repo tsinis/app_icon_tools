@@ -4,7 +4,7 @@ description: Simple GUI for launcher icons preview.
 version: 1.0.0+1
 
 environment:
-  sdk: ">2.11.0"
+  sdk: ">2.10.0"
   flutter: ">1.23.0"
 
 dependencies:
@@ -36,7 +36,7 @@ dependencies:
   shared_preferences: ^0.5.12+4
   universal_html: ^1.2.3
   url_launcher: ^5.7.10
-  url_launcher_web: ^0.1.5
+  url_launcher_web: ^0.1.5+1
   websafe_svg: ^1.1.4
 
 dev_dependencies:

@@ -42,7 +42,7 @@ class UploadFile extends ChangeNotifier {
       _recivedForeground = null;
     }
     _setLoading(true);
-    //TODO! Fix workaround! Run in Isolate if !kIsWeb...
+    //TODO! Check when https://github.com/flutter/flutter/issues/33577 is closed.
     Future<void>.delayed(
       const Duration(milliseconds: 300),
       () async {

@@ -12,6 +12,8 @@ class AdaptiveScaffold extends StatelessWidget {
   const AdaptiveScaffold({@required this.child, this.uploadScreen = false, Key key}) : super(key: key);
   final bool uploadScreen;
   final Widget child;
+
+  //TODO Add home button instead back button in nav bar.
   @override
   Widget build(BuildContext context) {
     final bool _loading = context.select((SetupIcon icon) => icon.loading);

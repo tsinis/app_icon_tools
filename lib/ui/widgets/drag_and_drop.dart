@@ -35,6 +35,7 @@ class DragAndDrop extends StatelessWidget {
         color: const Color(0x11888888),
         child: _loading
             ? Center(child: Text(S.of(context).verifying, textAlign: TextAlign.center))
+            // ? const CircularProgressIndicator() //TODO Add to Column if !kIsWeb.
             : Stack(
                 alignment: Alignment.center,
                 children: [

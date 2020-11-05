@@ -246,9 +246,7 @@ class _Setup extends StatelessWidget {
                     bottom: 20,
                     top: (_preferColorBg && !_isPortrait)
                         ? (UserInterface.isApple ? 62 : 72)
-                        : (UserInterface.isApple
-                            ? (_haveAdaptiveBackground ? 36 : 10)
-                            : 4)), //TODO Check this 4 end value.
+                        : (UserInterface.isApple ? (_haveAdaptiveBackground ? 36 : 10) : 4)),
                 child: Text(S.of(context).uploadAdaptiveBg)),
             if (_preferColorBg)
               ColorPicker(
@@ -282,7 +280,7 @@ class _Setup extends StatelessWidget {
                 onColorChanged: (_newColor) => context.read<SetupIcon>().setBackgroundColor(_newColor),
                 displayThumbColor: true,
                 portraitOnly: true,
-                enableAlpha: false, //TODO: Change to _supportTransparency sometime later.
+                enableAlpha: false, //TODO: Consider change to _supportTransparency sometime later.
                 showLabel: !UserInterface.isApple),
           ],
           if (!_colorNotSet && !_isAdaptive)

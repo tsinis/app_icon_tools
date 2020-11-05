@@ -43,7 +43,7 @@ class AdaptiveButton extends StatelessWidget {
               ? Tooltip(
                   message: S.of(context).longPress,
                   child: TextButton(
-                    onPressed: () {}, //TODO Add show tooltip on tap?.
+                    onPressed: () {},
                     onLongPress: onPressed,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8),

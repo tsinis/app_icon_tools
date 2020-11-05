@@ -23,10 +23,11 @@ class UserInterface extends ChangeNotifier {
 
   Future openGuidelinesURL({bool fromGoogle = false, bool isAdaptive = false}) async {
     const String _apple = 'https://developer.apple.com/design/human-interface-guidelines/ios/icons-and-images/app-icon';
-    //TODO! Filter locales.
-    final String _google = 'https://support.google.com/googleplay/android-developer/answer/1078870?hl=$_locale';
+    final String _supportedLocale = (_googleLng.contains(_locale)) ? _locale : 'en';
+    final String _google =
+        'https://support.google.com/googleplay/android-developer/answer/1078870?hl=$_supportedLocale';
     final String _adaptive =
-        'https://developer.android.com/guide/practices/ui_guidelines/icon_design_adaptive?hl=$_locale';
+        'https://developer.android.com/guide/practices/ui_guidelines/icon_design_adaptive?hl=$_supportedLocale';
     final String _url = isAdaptive
         ? _adaptive
         : fromGoogle
@@ -38,6 +39,8 @@ class UserInterface extends ChangeNotifier {
       throw ArgumentError('Could not launch $_url');
     }
   }
+
+  static const List<String> _googleLng = ['de', 'en', 'es', 'fr', 'id', 'jp', 'ko', 'pt', 'ru', 'th', 'tr', 'vi', 'zh'];
 
   String get locale => _locale;
 
@@ -71,16 +74,19 @@ class UserInterface extends ChangeNotifier {
   }
 
   static Future<void> setupUI() async {
+    _currentTime = DateTime.now().hour;
     // ignore: unawaited_futures
     loadSettings();
     loadLocales();
     _isAppleDevice = platform.isCupertino;
   }
 
+  static int _currentTime = 12;
+
   static Future<void> loadSettings() async {
     final SharedPreferences _prefs = await SharedPreferences.getInstance();
     _locale = _prefs.getString(_storedLocale) ?? platform.locale;
-    _isDark = _prefs.getBool(_storedTheme) ?? true;
+    _isDark = _prefs.getBool(_storedTheme) ?? (_currentTime > 18 || _currentTime < 6);
   }
 
   Future<void> saveSettings() async {

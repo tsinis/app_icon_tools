@@ -16,7 +16,8 @@ import '../services/navigation_service.dart';
 import '../services/router.dart';
 
 class SetupIcon extends ChangeNotifier {
-  void devicePreview() => locator<NavigationService>().navigateTo(UiRouter.deviceScreen);
+  void devicePreview() =>
+      locator<NavigationService>().navigateTo(UiRouter.deviceScreen); //TODO Fix animation controller dispose.
   void setupScreen() => locator<NavigationService>().navigateAndReplaceTo(UiRouter.setupScreen);
   void goBack() => locator<NavigationService>().goBack();
 
@@ -162,7 +163,7 @@ class SetupIcon extends ChangeNotifier {
     final IconGenerator _gen = IconGenerator();
     final List<FileData> _images = [];
     Future<void>.delayed(
-        //TODO! Fix workaround! Run in Isolate if !kIsWeb...
+        //TODO! Check when https://github.com/flutter/flutter/issues/33577 is closed.
         const Duration(milliseconds: 300),
         () async => await _resizeIcons().whenComplete(() async {
               for (final key in _archiveFiles.keys) {
