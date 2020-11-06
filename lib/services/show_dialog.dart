@@ -19,6 +19,7 @@ Future<void> showSettingsDialog(BuildContext context) {
     builder: (_dialogContext) {
       final List<String> _langList = _dialogContext.select((UserInterface ui) => ui.langFilterList);
       final String _selectedocale = _dialogContext.select((UserInterface ui) => ui.locale);
+      final bool _isDark = _dialogContext.select((UserInterface ui) => ui.isDark) ?? true;
 
       return AdaptiveDialog(
         title: S.of(context).settings,
@@ -73,7 +74,7 @@ Future<void> showSettingsDialog(BuildContext context) {
             const AdaptiveDivider(),
             AdaptiveSwitch(
                 title: S.of(context).dark,
-                value: _dialogContext.watch<UserInterface>().isDark,
+                value: _isDark,
                 onChanged: (_isDark) => _dialogContext.read<UserInterface>().changeMode(_isDark))
           ],
         ),

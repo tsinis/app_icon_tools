@@ -9,8 +9,9 @@ import '../../../services/show_dialog.dart';
 import '../issues_info.dart';
 
 class AdaptiveScaffold extends StatelessWidget {
-  const AdaptiveScaffold({@required this.child, this.uploadScreen = false, Key key}) : super(key: key);
-  final bool uploadScreen;
+  const AdaptiveScaffold({@required this.child, this.uploadScreen = false, this.deviceScreen = false, Key key})
+      : super(key: key);
+  final bool uploadScreen, deviceScreen;
   final Widget child;
 
   //TODO Add home button instead back button in nav bar.
@@ -62,55 +63,59 @@ class AdaptiveScaffold extends StatelessWidget {
                       onTap: () => showSettingsDialog(context), child: const Icon(CupertinoIcons.gear, size: 26))
                 ],
               ),
-              // leading: uploadScreen
-              //     ? const SizedBox.shrink()
-              //     : GestureDetector(
-              //         onTap: () => context.read<SetupIcon>().backButton(),
-              //         child: const Icon(CupertinoIcons.back, size: 26)),
+              leading: uploadScreen
+                  ? const SizedBox(width: 24)
+                  : GestureDetector(
+                      onTap: () => deviceScreen
+                          ? context.read<SetupIcon>().setupScreen()
+                          : context.read<SetupIcon>().initialScreen(),
+                      child: Icon(deviceScreen ? CupertinoIcons.back : CupertinoIcons.house_fill)),
             ),
             child: SafeArea(child: child))
         : Scaffold(
             appBar: AppBar(
-              centerTitle: true,
-              title: uploadScreen
-                  ? Text(S.of(context).appName)
-                  : ButtonBar(
-                      alignment: MainAxisAlignment.center,
-                      children: [
-                        const IssuesInfo(),
-                        SizedBox(width: _isWideScreen ? 10 : 1),
-                        if (_isWideScreen)
-                          MaterialButton(
-                              minWidth: 220,
-                              // colorBrightness: Brightness.light,
-                              onPressed: _loading ? null : () => context.read<SetupIcon>().archive(),
-                              color: _exportButtonColor,
-                              child: Padding(
-                                  padding: const EdgeInsets.all(10),
-                                  child: Text(_loading
-                                      ? S.of(context).wait.toUpperCase()
-                                      : S.of(context).export.toUpperCase())))
-                        else
-                          _loading
-                              ? const CircularProgressIndicator()
-                              : IconButton(
-                                  icon: Icon(Icons.download_outlined, color: _exportButtonColor),
-                                  onPressed: () => context.read<SetupIcon>().archive()),
-                        IconButton(icon: const Icon(Icons.menu), onPressed: () => showPlatformsDialog(context))
-                      ],
-                    ),
-              actions: <Widget>[
-                IconButton(icon: const Icon(Icons.info_outline), onPressed: () => showAbout(context)),
-                Padding(
-                  padding: const EdgeInsets.only(right: 6),
-                  child: IconButton(icon: const Icon(Icons.settings), onPressed: () => showSettingsDialog(context)),
-                )
-              ],
-              // leading: uploadScreen
-              //     ? const SizedBox.shrink()
-              //     : IconButton(
-              //         icon: const Icon(Icons.arrow_back), onPressed: () => context.read<SetupIcon>().backButton()))
-            ),
+                centerTitle: true,
+                title: uploadScreen
+                    ? Text(S.of(context).appName)
+                    : ButtonBar(
+                        alignment: MainAxisAlignment.center,
+                        children: [
+                          const IssuesInfo(),
+                          SizedBox(width: _isWideScreen ? 10 : 1),
+                          if (_isWideScreen)
+                            MaterialButton(
+                                minWidth: 220,
+                                // colorBrightness: Brightness.light,
+                                onPressed: _loading ? null : () => context.read<SetupIcon>().archive(),
+                                color: _exportButtonColor,
+                                child: Padding(
+                                    padding: const EdgeInsets.all(10),
+                                    child: Text(_loading
+                                        ? S.of(context).wait.toUpperCase()
+                                        : S.of(context).export.toUpperCase())))
+                          else
+                            _loading
+                                ? const CircularProgressIndicator()
+                                : IconButton(
+                                    icon: Icon(Icons.download_outlined, color: _exportButtonColor),
+                                    onPressed: () => context.read<SetupIcon>().archive()),
+                          IconButton(icon: const Icon(Icons.menu), onPressed: () => showPlatformsDialog(context))
+                        ],
+                      ),
+                actions: <Widget>[
+                  IconButton(icon: const Icon(Icons.info_outline), onPressed: () => showAbout(context)),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 6),
+                    child: IconButton(icon: const Icon(Icons.settings), onPressed: () => showSettingsDialog(context)),
+                  )
+                ],
+                leading: uploadScreen
+                    ? const SizedBox(width: 24)
+                    : IconButton(
+                        icon: Icon(deviceScreen ? Icons.arrow_back : Icons.home),
+                        onPressed: () => deviceScreen
+                            ? context.read<SetupIcon>().setupScreen()
+                            : context.read<SetupIcon>().initialScreen())),
             body: SafeArea(child: child));
   }
 }

@@ -153,7 +153,7 @@ class _Preview extends StatelessWidget {
                 : const DragAndDrop(foreground: true)
           else
             GestureDetector(
-              onTap: context.watch<SetupIcon>().devicePreview,
+              onTap: () => context.read<SetupIcon>().devicePreview(),
               child: Container(
                 clipBehavior: Clip.antiAlias,
                 height: _previewIconSize,
@@ -198,9 +198,9 @@ class _Preview extends StatelessWidget {
           ...[
             AdaptiveButton(
                 text: S.of(context).devicePreview,
-                onPressed: (_isAdaptive && (!_haveAdaptiveAssets && _adaptiveColorNotSet))
+                onPressed: () => (_isAdaptive && (!_haveAdaptiveAssets && _adaptiveColorNotSet))
                     ? null
-                    : context.watch<SetupIcon>().devicePreview),
+                    : context.read<SetupIcon>().devicePreview()),
             if (_isAdaptive) AdaptiveIconButtons(withAdaptives: _haveAdaptiveAssets),
             // else
             // SizedBox(height: _portrait ? 0 : 20),

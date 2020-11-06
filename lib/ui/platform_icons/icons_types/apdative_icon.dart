@@ -31,10 +31,14 @@ class AdaptiveIcon extends StatefulWidget {
     _animation = Tween<Offset>(begin: Offset.zero, end: _end)
         .animate(CurvedAnimation(parent: _controller, curve: Curves.elasticIn));
     try {
-      await _controller.forward().orCancel;
-      await _controller.reverse().orCancel;
-      // ignore: empty_catches
-    } on TickerCanceled {}
+      await _controller.forward().orCancel.whenComplete(() async => await _controller.reverse().orCancel);
+    } on TickerCanceled catch (_error) {
+      // ignore: avoid_print
+      print('$_error.\nMost likely because the user has switched to another Icon Preview.');
+    } on Exception catch (_exception) {
+      // ignore: avoid_print
+      print('User most likely has switched to another screen.\n$_exception');
+    }
   }
 }
 
@@ -48,6 +52,24 @@ class _AdaptiveIconState extends State<AdaptiveIcon> with SingleTickerProviderSt
     _controller = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 800), reverseDuration: const Duration(milliseconds: 1000));
     _animation = Tween<Offset>(begin: Offset.zero, end: const Offset(0, 0.1)).animate(_controller);
+  }
+
+  @override
+  void deactivate() {
+    super.deactivate();
+    if (_controller.isAnimating) {
+      _controller.stop();
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    if (_controller.isAnimating) {
+      _controller
+        ..stop()
+        ..dispose();
+    }
   }
 
   @override

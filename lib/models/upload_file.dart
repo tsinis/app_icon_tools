@@ -22,8 +22,6 @@ class UploadFile extends ChangeNotifier {
   Uint8List get recivedForeground => _recivedForeground;
   Uint8List get recivedBackground => _recivedBackground;
 
-  final NavigationService _navigationService = locator<NavigationService>();
-
   bool _isValidFile = true;
 
   bool get isValidFile => _isValidFile;
@@ -87,7 +85,7 @@ class UploadFile extends ChangeNotifier {
 
   Future<void> _navigateToSetup() async {
     if (_isValidFile) {
-      await _navigationService.navigateTo(UiRouter.setupScreen);
+      await locator<NavigationService>().navigateTo(UiRouter.setupScreen);
     }
   }
 

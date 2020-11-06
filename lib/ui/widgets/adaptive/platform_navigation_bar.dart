@@ -27,7 +27,8 @@ class AdaptiveNavgationBar extends StatelessWidget {
               ? _DoneInfo(_countDown)
               : UserInterface.isApple
                   ? CupertinoSlidingSegmentedControl<int>(
-                      onValueChanged: context.watch<SetupIcon>().setPlatform,
+                      onValueChanged: (int _selectedPlatform) =>
+                          context.read<SetupIcon>().setPlatform(_selectedPlatform),
                       groupValue: _selectedPlatform,
                       backgroundColor: CupertinoTheme.of(context).textTheme.textStyle.color?.withOpacity(0.04),
                       padding: const EdgeInsets.all(5),
@@ -44,7 +45,8 @@ class AdaptiveNavgationBar extends StatelessWidget {
                   : ClipRRect(
                       borderRadius: const BorderRadius.all(Radius.circular(20)),
                       child: GNav(
-                          onTabChange: context.watch<SetupIcon>().setPlatform,
+                          onTabChange: (int _selectedPlatform) =>
+                              context.read<SetupIcon>().setPlatform(_selectedPlatform),
                           gap: 4,
                           activeColor: Theme.of(context).sliderTheme.thumbColor,
                           iconSize: 24,

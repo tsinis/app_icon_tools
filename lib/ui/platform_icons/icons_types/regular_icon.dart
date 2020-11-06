@@ -18,6 +18,7 @@ class RegularIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     final Color _backgroundColor = context.select((SetupIcon icon) => icon.backgroundColor);
     final bool _colorNotSet = _backgroundColor == null;
+    final Image _icon = context.select((SetupIcon icon) => icon.iconImage);
     return ClipRRect(
       borderRadius: BorderRadius.all(Radius.circular(_onDevice ? _cornerRadius / 8 : 0)),
       child: Stack(
@@ -32,7 +33,7 @@ class RegularIcon extends StatelessWidget {
                           ? Colors.transparent
                           : Colors.black
                       : _backgroundColor),
-              child: context.watch<SetupIcon>().iconImage),
+              child: _icon),
         ],
       ),
     );

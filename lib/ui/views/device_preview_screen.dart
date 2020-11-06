@@ -21,6 +21,7 @@ class DeviceScreen extends StatelessWidget {
     final int _selectedPlatform = context.select((SetupIcon icon) => icon.platformID);
     final int _id = platformList[_selectedPlatform].platformID;
     return AdaptiveScaffold(
+      deviceScreen: true,
       child: Column(
         children: [
           const SizedBox(height: 60),
@@ -28,7 +29,7 @@ class DeviceScreen extends StatelessWidget {
             child: FittedBox(
               fit: BoxFit.contain,
               child: GestureDetector(
-                onTap: context.watch<SetupIcon>().setupScreen,
+                onTap: () => context.read<SetupIcon>().setupScreen(),
                 child: Stack(
                   alignment: Alignment.center,
                   children: [

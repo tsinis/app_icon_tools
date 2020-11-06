@@ -16,10 +16,11 @@ import '../services/navigation_service.dart';
 import '../services/router.dart';
 
 class SetupIcon extends ChangeNotifier {
-  void devicePreview() =>
-      locator<NavigationService>().navigateTo(UiRouter.deviceScreen); //TODO Fix animation controller dispose.
-  void setupScreen() => locator<NavigationService>().navigateAndReplaceTo(UiRouter.setupScreen);
-  void goBack() => locator<NavigationService>().goBack();
+  final NavigationService _navigationService = locator<NavigationService>();
+  void devicePreview() => _navigationService.navigateTo(UiRouter.deviceScreen);
+  void initialScreen() => _navigationService.navigateTo(UiRouter.initialScreen);
+  void setupScreen() => _navigationService.navigateTo(UiRouter.setupScreen);
+  void goBack() => _navigationService.goBack();
 
   Color _backgroundColor;
   Color get backgroundColor => _backgroundColor;
