@@ -92,7 +92,7 @@ class _AdaptiveIconState extends State<AdaptiveIcon> with SingleTickerProviderSt
               child: SlideTransition(
                   position: _animation,
                   child: Transform.scale(
-                      scale: 2,
+                      scale: 2.14,
                       child: _preferColor
                           ? Container(color: _adpativeColor ?? Colors.transparent)
                           : (_background != null)
@@ -102,7 +102,7 @@ class _AdaptiveIconState extends State<AdaptiveIcon> with SingleTickerProviderSt
           SlideTransition(
               position: _animation,
               child: Transform.scale(
-                  scale: 1.42, child: (_foreground == null) ? const SizedBox.shrink() : Image.memory(_foreground))),
+                  scale: 1.5, child: (_foreground == null) ? const SizedBox.shrink() : Image.memory(_foreground))),
         ],
       ),
     );

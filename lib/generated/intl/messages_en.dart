@@ -32,6 +32,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "dark" : MessageLookupByLibrary.simpleMessage("Dark Mode"),
     "devicePreview" : MessageLookupByLibrary.simpleMessage("Device Preview"),
     "done" : MessageLookupByLibrary.simpleMessage("Done"),
+    "downloadsFolder" : MessageLookupByLibrary.simpleMessage("Done! Icons ZIP is in the Downloads folder."),
     "dragAndDropHere" : MessageLookupByLibrary.simpleMessage("Drop your image here or"),
     "export" : MessageLookupByLibrary.simpleMessage("Export Icons"),
     "exportPlatforms" : MessageLookupByLibrary.simpleMessage("Platforms to Export"),
@@ -66,7 +67,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "uploadAdaptiveBg" : MessageLookupByLibrary.simpleMessage("Select Adaptive Background"),
     "uploadAdaptiveFg" : MessageLookupByLibrary.simpleMessage("Select Adaptive Foreground"),
     "verifying" : MessageLookupByLibrary.simpleMessage("Wait please, the file is being verified."),
-    "wait" : MessageLookupByLibrary.simpleMessage("Please wait a moment"),
+    "wait" : MessageLookupByLibrary.simpleMessage("Please wait a moment."),
     "wrongFile" : MessageLookupByLibrary.simpleMessage("File doesn\'t meet the Requirements")
   };
 }

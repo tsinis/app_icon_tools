@@ -345,10 +345,10 @@ class S {
     );
   }
 
-  /// `Please wait a moment`
+  /// `Please wait a moment.`
   String get wait {
     return Intl.message(
-      'Please wait a moment',
+      'Please wait a moment.',
       name: 'wait',
       desc: '',
       args: [],
@@ -500,6 +500,16 @@ class S {
     return Intl.message(
       'Find your language here…',
       name: 'findLang',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Done! Icons ZIP is in the Downloads folder.`
+  String get downloadsFolder {
+    return Intl.message(
+      'Done! Icons ZIP is in the Downloads folder.',
+      name: 'downloadsFolder',
       desc: '',
       args: [],
     );

@@ -30,7 +30,7 @@
     "parallax": "Preview Adaptive Icon parallax effect.",
     "devicePreview": "Device Preview",
     "export": "Export Icons",
-    "wait": "Please wait a moment",
+    "wait": "Please wait a moment.",
     "colorAsBg": "Background as color",
     "exportPlatforms": "Platforms to Export",
     "longPress": "Long press to remove!",
@@ -45,5 +45,6 @@
     "transparencyIOS": "*iOS Launcher dоn't support transparency in any app Icon (including PWA).\nThe Alpha channel will be replaced with black color.",
     "transparencyAdaptive": "🛈 The Foreground have no Alpha Channel (transparency). In this case, the background image will not be visible at all.",
     "search": "Search",
-    "findLang": "Find your language here…"
+    "findLang": "Find your language here…",
+    "downloadsFolder": "Done! Icons ZIP is in the Downloads folder."
     }

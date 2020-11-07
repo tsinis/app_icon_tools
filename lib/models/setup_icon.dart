@@ -9,8 +9,10 @@ import 'package:image_resizer/image_resizer.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:universal_html/html.dart' as html;
 
-import '../extensions/image_resizer_adaptive.dart';
-import '../extensions/image_resizer_windows.dart';
+import '../extensions/image_resizer_package/android_adaptive.dart';
+import '../extensions/image_resizer_package/constants/android_regular.dart';
+import '../extensions/image_resizer_package/constants/web.dart';
+import '../extensions/image_resizer_package/windows.dart';
 import '../locator.dart';
 import '../services/navigation_service.dart';
 import '../services/router.dart';
@@ -55,6 +57,7 @@ class SetupIcon extends ChangeNotifier {
     if (_adaptiveColor != _newColor) {
       _adaptiveColor = _newColor;
       if (_newColor != null) {
+        _archiveFiles = {}; //TODO Color should not change files list. Fix it.
         _backgroundColor ??= _newColor.withAlpha(255);
       }
       notifyListeners();
@@ -228,7 +231,7 @@ class SetupIcon extends ChangeNotifier {
   Future _resizeIcons() async {
     if (_archiveFiles.isEmpty) {
       if (_platforms[_web] ?? true) {
-        await _generatePngIcons('web', WebIconsFolder());
+        await _generatePngIcons('web', WebIconsFolder(path: 'web', icons: webIcons));
       }
       if (_platforms[_ios] ?? true) {
         await _generatePngIcons('iOS', IosIconsFolder());
@@ -240,7 +243,7 @@ class SetupIcon extends ChangeNotifier {
         await _generateIcoIcon(WindowsIconsFolder());
       }
       if (_platforms[_androidReg] ?? true) {
-        await _generatePngIcons('droid', AndroidIconsFolder());
+        await _generatePngIcons('droid', AndroidIconsFolder(icons: androidRegular));
       }
       if (_platforms[_androidAdapt] ?? true) {
         if (haveAdaptiveForeground && (haveAdaptiveBackground || haveAdaptiveColor)) {

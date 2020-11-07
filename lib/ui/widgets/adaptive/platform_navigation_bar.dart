@@ -4,6 +4,8 @@ import 'package:flutter/rendering.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:provider/provider.dart';
 
+import '../../../generated/l10n.dart';
+
 import '../../../models/setup_icon.dart';
 import '../../../models/user_interface.dart';
 import '../../platform_icons/icons_screen.dart';
@@ -89,12 +91,14 @@ class _DoneInfo extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 const SizedBox(width: 10),
-                const Text('Done! "icons.zip" is in "Downloads" folder.'),
+                Text(S.of(context).downloadsFolder),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 6),
-                  child: Transform.scale(
-                      scale: 0.6,
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: SizedBox(
+                      height: 15,
+                      width: 15,
                       child: CircularProgressIndicator(
+                          strokeWidth: 3,
                           valueColor: const AlwaysStoppedAnimation<Color>(Colors.greenAccent),
                           backgroundColor: Colors.grey.withOpacity(0.25),
                           value: _countDown / 100)),
