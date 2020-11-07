@@ -56,5 +56,9 @@ class _CupertinoIconButton extends StatelessWidget {
   Widget build(BuildContext context) => CupertinoButton(
       padding: const EdgeInsets.symmetric(horizontal: 19),
       onPressed: withAdaptives ? () => _onPressed(direction: direction) : null,
-      child: Center(child: Icon(icon)));
+      child: Center(
+          child: Icon(icon,
+              color: withAdaptives
+                  ? CupertinoTheme.of(context).primaryContrastingColor
+                  : CupertinoTheme.of(context).primaryColor)));
 }

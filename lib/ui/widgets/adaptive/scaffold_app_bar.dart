@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -14,7 +15,6 @@ class AdaptiveScaffold extends StatelessWidget {
   final bool uploadScreen, deviceScreen;
   final Widget child;
 
-  //TODO Add home button instead back button in nav bar.
   @override
   Widget build(BuildContext context) {
     final bool _loading = context.select((SetupIcon icon) => icon.loading);
@@ -35,12 +35,24 @@ class AdaptiveScaffold extends StatelessWidget {
                         SizedBox(width: _isWideScreen ? 14 : 4),
                         if (_isWideScreen)
                           CupertinoButton(
-                              disabledColor: CupertinoColors.systemGrey,
-                              padding: const EdgeInsets.symmetric(horizontal: 64),
+                              disabledColor: Colors.transparent,
+                              padding: EdgeInsets.symmetric(horizontal: (_loading && !kIsWeb) ? 10 : 64),
                               onPressed: _loading ? null : () => context.read<SetupIcon>().archive(),
                               color: _exportButtonColor,
-                              child: Text(_loading ? S.of(context).wait : S.of(context).export,
-                                  style: const TextStyle(color: CupertinoColors.black)))
+                              child: _loading
+                                  ? Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                          Text(
+                                            S.of(context).wait,
+                                            // style: const TextStyle(color: CupertinoColors.black)
+                                          ),
+                                          if (!kIsWeb)
+                                            const Padding(
+                                                padding: EdgeInsets.only(left: 16), child: CupertinoActivityIndicator())
+                                        ])
+                                  : Text(S.of(context).export, style: const TextStyle(color: CupertinoColors.black)))
                         else
                           GestureDetector(
                               onTap: () => context.read<SetupIcon>().archive(),
@@ -69,7 +81,7 @@ class AdaptiveScaffold extends StatelessWidget {
                       onTap: () => deviceScreen
                           ? context.read<SetupIcon>().setupScreen()
                           : context.read<SetupIcon>().initialScreen(),
-                      child: Icon(deviceScreen ? CupertinoIcons.back : CupertinoIcons.house_fill)),
+                      child: Icon(deviceScreen ? CupertinoIcons.back : CupertinoIcons.house, size: 24)),
             ),
             child: SafeArea(child: child))
         : Scaffold(
@@ -90,9 +102,21 @@ class AdaptiveScaffold extends StatelessWidget {
                                 color: _exportButtonColor,
                                 child: Padding(
                                     padding: const EdgeInsets.all(10),
-                                    child: Text(_loading
-                                        ? S.of(context).wait.toUpperCase()
-                                        : S.of(context).export.toUpperCase())))
+                                    child: _loading
+                                        ? Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                                Text(S.of(context).wait.toUpperCase()),
+                                                if (!kIsWeb)
+                                                  const Padding(
+                                                      padding: EdgeInsets.only(left: 16),
+                                                      child: SizedBox(
+                                                          height: 16,
+                                                          width: 16,
+                                                          child: CircularProgressIndicator(strokeWidth: 2)))
+                                              ])
+                                        : Text(S.of(context).export.toUpperCase())))
                           else
                             _loading
                                 ? const CircularProgressIndicator()

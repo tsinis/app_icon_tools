@@ -156,14 +156,14 @@ class UserInterface extends ChangeNotifier {
   static const CupertinoThemeData _cupertinoDark = CupertinoThemeData(
       brightness: Brightness.dark,
       primaryColor: CupertinoColors.systemGrey,
-      primaryContrastingColor: CupertinoColors.systemGrey2,
+      primaryContrastingColor: CupertinoColors.white,
       barBackgroundColor: CupertinoColors.systemGrey5,
       scaffoldBackgroundColor: CupertinoColors.systemGrey6);
 
   static const CupertinoThemeData _cupertinoLight = CupertinoThemeData(
       brightness: Brightness.light,
       primaryColor: CupertinoColors.systemGrey,
-      primaryContrastingColor: CupertinoColors.systemGrey6,
+      primaryContrastingColor: CupertinoColors.black,
       barBackgroundColor: CupertinoColors.systemGrey6,
       scaffoldBackgroundColor: CupertinoColors.systemGrey5);
 }

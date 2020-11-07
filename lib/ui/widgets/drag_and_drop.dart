@@ -34,8 +34,19 @@ class DragAndDrop extends StatelessWidget {
         height: UserInterface.previewIconSize,
         color: const Color(0x11888888),
         child: _loading
-            ? Center(child: Text(S.of(context).verifying, textAlign: TextAlign.center))
-            // ? const CircularProgressIndicator() //TODO Add to Column if !kIsWeb.
+            ? Column(mainAxisAlignment: MainAxisAlignment.center, mainAxisSize: MainAxisSize.min, children: [
+                Padding(padding: const EdgeInsets.only(top: !kIsWeb ? 20 : 0), child: Text(S.of(context).verifying)),
+                if (!kIsWeb)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20),
+                    child: SizedBox(
+                        width: 40,
+                        height: 40,
+                        child: UserInterface.isApple
+                            ? const CupertinoActivityIndicator()
+                            : const CircularProgressIndicator()),
+                  )
+              ])
             : Stack(
                 alignment: Alignment.center,
                 children: [

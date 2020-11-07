@@ -165,7 +165,7 @@ class SetupIcon extends ChangeNotifier {
     final List<FileData> _images = [];
     Future<void>.delayed(
         //TODO! Check when https://github.com/flutter/flutter/issues/33577 is closed.
-        const Duration(milliseconds: 300),
+        const Duration(milliseconds: kIsWeb ? 300 : 0),
         () async => await _resizeIcons().whenComplete(() async {
               for (final key in _archiveFiles.keys) {
                 final List<FileData> _folder = _archiveFiles[key];
@@ -184,18 +184,15 @@ class SetupIcon extends ChangeNotifier {
   int _countDown = 0;
   int get countDown => _countDown;
 
-  void _showSnackInfo() => Timer.periodic(
-        const Duration(milliseconds: 50),
-        (Timer _timer) {
-          if (_countDown > 99) {
-            _countDown = 0;
-            _timer.cancel();
-          } else {
-            _countDown = _countDown + 1;
-          }
-          notifyListeners();
-        },
-      );
+  void _showSnackInfo() => Timer.periodic(const Duration(milliseconds: 50), (Timer _timer) {
+        if (_countDown > 99) {
+          _countDown = 0;
+          _timer.cancel();
+        } else {
+          _countDown = _countDown + 1;
+        }
+        notifyListeners();
+      });
 
   Future<bool> _saveFile(String fileName, {@required List<int> binaryData, bool silentErrors = false}) async {
     if (kIsWeb) {

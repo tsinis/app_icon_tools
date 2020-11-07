@@ -105,7 +105,7 @@ class _IssuesInfo extends State<IssuesInfo> with SingleTickerProviderStateMixin 
           for (final int _errorCode in _iconErrCodes) {
             _msgBuffer..write('\n')..write(_errorMessages[_errorCode]);
           }
-          if (_iconErrCodes.contains(_infoCode) && _exportIOS && _exportPWA) {
+          if (_iconErrCodes.contains(_infoCode) && (_exportIOS || _exportPWA)) {
             _msgBuffer..write('\n')..write(S.of(context).transparencyIOS);
           }
           break;

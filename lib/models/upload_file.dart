@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data' show Uint8List;
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:image/image.dart' as img;
 
 import 'package:file_picker_cross/file_picker_cross.dart';
@@ -42,18 +43,24 @@ class UploadFile extends ChangeNotifier {
     _setLoading(true);
     //TODO! Check when https://github.com/flutter/flutter/issues/33577 is closed.
     Future<void>.delayed(
-      const Duration(milliseconds: 300),
+      const Duration(milliseconds: kIsWeb ? 300 : 0),
       () async {
         Uint8List _bytes;
         try {
           if (_file is File) {
             if (_properExtension(_file.name)) {
               await _convertHtmlFileToBytes(_file).then((_convertedBytes) => _bytes = _convertedBytes);
+            } else {
+              _setLoading(false);
+              return;
             }
           }
           if (_file is FilePickerCross) {
             if (_properExtension(_file.fileName)) {
               _bytes = _file.toUint8List();
+            } else {
+              _setLoading(false);
+              return;
             }
           }
           // ignore: unnecessary_null_comparison
