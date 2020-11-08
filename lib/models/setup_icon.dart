@@ -45,7 +45,7 @@ class SetupIcon extends ChangeNotifier {
   set regularIcon(Uint8List _uploadedImage) {
     if (_uploadedImage != _icon) {
       _icon = _uploadedImage;
-      _archiveFiles = {};
+      _regularIconFiles = {};
       notifyListeners();
     }
   }
@@ -57,7 +57,6 @@ class SetupIcon extends ChangeNotifier {
     if (_adaptiveColor != _newColor) {
       _adaptiveColor = _newColor;
       if (_newColor != null) {
-        _archiveFiles = {}; //TODO Color should not change files list. Fix it.
         _backgroundColor ??= _newColor.withAlpha(255);
       }
       notifyListeners();
@@ -83,7 +82,7 @@ class SetupIcon extends ChangeNotifier {
   Uint8List get adaptiveBackground => _adaptiveBackground;
   set adaptiveBackground(Uint8List _uploadedImage) {
     _adaptiveBackground = _uploadedImage;
-    _archiveFiles = {};
+    _adaptiveIconFiles = {};
     notifyListeners();
   }
 
@@ -98,7 +97,7 @@ class SetupIcon extends ChangeNotifier {
   Uint8List get adaptiveForeground => _adaptiveForeground;
   set adaptiveForeground(Uint8List _uploadedImage) {
     _adaptiveForeground = _uploadedImage;
-    _archiveFiles = {};
+    _adaptiveIconFiles = {};
     notifyListeners();
   }
 
@@ -108,6 +107,9 @@ class SetupIcon extends ChangeNotifier {
     _fgErrCodes = {};
     notifyListeners();
   }
+
+  bool get _haveAdaptiveAssets =>
+      haveAdaptiveForeground && ((haveAdaptiveBackground && !preferColorBg) || (haveAdaptiveColor && preferColorBg));
 
   Map<int, bool> _fgErrCodes = {}, _bgErrCodes = {}, _iconErrCodes = {};
   List<int> get listFgErrCodes => _fgErrCodes.keys.where((key) => _fgErrCodes[key] ?? false).toList();
@@ -160,7 +162,7 @@ class SetupIcon extends ChangeNotifier {
     }
   }
 
-  Map<String, List<FileData>> _archiveFiles = {};
+  Map<String, List<FileData>> _regularIconFiles = {}, _adaptiveIconFiles = {}, _txtFiles = {};
 
   Future archive() async {
     _setLoading(true);
@@ -170,9 +172,20 @@ class SetupIcon extends ChangeNotifier {
         //TODO! Check when https://github.com/flutter/flutter/issues/33577 is closed.
         const Duration(milliseconds: kIsWeb ? 300 : 0),
         () async => await _resizeIcons().whenComplete(() async {
-              for (final key in _archiveFiles.keys) {
-                final List<FileData> _folder = _archiveFiles[key];
+              for (final key in _regularIconFiles.keys) {
+                final List<FileData> _folder = _regularIconFiles[key];
                 _images.addAll(_folder.toList());
+              }
+              if (_haveAdaptiveAssets) {
+                for (final key in _adaptiveIconFiles.keys) {
+                  final List<FileData> _adaptiveFolder = _adaptiveIconFiles[key];
+                  _images.addAll(_adaptiveFolder.toList());
+                }
+              }
+              for (final key in _txtFiles.keys) {
+                //TODO! Add HTML Generated Files here.
+                final List<FileData> _txtFolder = _txtFiles[key];
+                _images.addAll(_txtFolder.toList());
               }
               // print('Images: ${_images.length}');
               final List<int> _data = _gen.generateArchive(_images);
@@ -229,7 +242,24 @@ class SetupIcon extends ChangeNotifier {
   bool get exportAdaptive => _platforms[_androidAdapt] ?? true;
 
   Future _resizeIcons() async {
-    if (_archiveFiles.isEmpty) {
+    print('_HAVEADAPTIVEASSETS: ${_haveAdaptiveAssets}');
+    print(
+        '((HAVEADAPTIVEBACKGROUND && !PREFERCOLORBG) || (HAVEADAPTIVECOLOR && PREFERCOLORBG)): ${((haveAdaptiveBackground && !preferColorBg) || (haveAdaptiveColor && preferColorBg))}');
+    print('(HAVEADAPTIVECOLOR && PREFERCOLORBG): ${(haveAdaptiveColor && preferColorBg)}');
+    print('(HAVEADAPTIVEBACKGROUND && !PREFERCOLORBG): ${(haveAdaptiveBackground && !preferColorBg)}');
+    print('HAVEADAPTIVECOLOR: ${haveAdaptiveColor}');
+    print('PREFERCOLORBG: ${preferColorBg}');
+    print('HAVEADAPTIVEBACKGROUND: ${haveAdaptiveBackground}');
+    print('HAVEADAPTIVEFOREGROUND: ${haveAdaptiveForeground}');
+
+    print('_regularIconFiles.ISEMPTY: ${_regularIconFiles.isEmpty}');
+    if (_regularIconFiles.isEmpty) {
+      // if (_platforms[_linux] ?? true) {
+      //   await _generatePngIcons('linux', WebIconsFolder());
+      // }
+      // if (_platforms[_fuchsiaOS] ?? true) {
+      //   await _generatePngIcons('fos', WebIconsFolder());
+      // }
       if (_platforms[_web] ?? true) {
         await _generatePngIcons('web', WebIconsFolder(path: 'web', icons: webIcons));
       }
@@ -245,50 +275,52 @@ class SetupIcon extends ChangeNotifier {
       if (_platforms[_androidReg] ?? true) {
         await _generatePngIcons('droid', AndroidIconsFolder(icons: androidRegular));
       }
+    }
+    print('_ADAPTIVEICONFILES.ISEMPTY: ${_adaptiveIconFiles.isEmpty}');
+    if (_adaptiveIconFiles.isEmpty) {
       if (_platforms[_androidAdapt] ?? true) {
-        if (haveAdaptiveForeground && (haveAdaptiveBackground || haveAdaptiveColor)) {
+        if (_haveAdaptiveAssets) {
           if (!preferColorBg) {
             await _generateAdaptiveIcons(BackgroundIconsFolder());
           }
-          _generateXmlConfigs();
           await _generateAdaptiveIcons(ForegroundIconsFolder());
         }
       }
-      // if (_platforms[_linux] ?? true) {
-      //   await _generatePngIcons('linux', WebIconsFolder());
-      // }
-      // if (_platforms[_fuchsiaOS] ?? true) {
-      //   await _generatePngIcons('fos', WebIconsFolder());
-      // }
+    }
+    if (_platforms[_androidAdapt] ?? true) {
+      if (_haveAdaptiveAssets) {
+        _generateXmlConfigs();
+      }
     }
   }
 
   void _generateXmlConfigs({String key = 'xml'}) {
     final XmlGenerator _gen = XmlGenerator(bgAsColor: preferColorBg, color: adaptiveColor ?? const Color(0xFF000000));
     final List<FileData> _archive = _gen.generateXmls();
-    _archiveFiles[key] = _archive;
+    _txtFiles[key] = _archive;
   }
 
   Future _generatePngIcons(String key, ImageFolder folder) async {
     final img.Image _image = img.decodePng(_icon);
     final IconGenerator _gen = IconGenerator();
     final List<FileData> _archive = await _gen.generateIcons(_image, folder, writeToDiskIO: !kIsWeb);
-    _archiveFiles[key] = _archive;
+    _regularIconFiles[key] = _archive;
   }
 
   Future _generateAdaptiveIcons(ImageFolder folder) async {
     final bool _background = folder is BackgroundIconsFolder;
+    print('_BACKGROUND: ${_background}');
     final String _key = _background ? 'bg' : 'fg';
     final img.Image _image = img.decodePng(_background ? _adaptiveBackground : _adaptiveForeground);
     final IconGenerator _gen = IconGenerator();
     final List<FileData> _archive = await _gen.generateIcons(_image, folder, writeToDiskIO: !kIsWeb);
-    _archiveFiles[_key] = _archive;
+    _adaptiveIconFiles[_key] = _archive;
   }
 
   Future _generateIcoIcon(ImageFolder folder, {String key = 'win'}) async {
     final img.Image _image = img.decodePng(_icon);
     final List<FileData> _archive = await generateWinIcos(_image, folder, writeToDiskIO: !kIsWeb);
-    _archiveFiles[key] = _archive;
+    _regularIconFiles[key] = _archive;
   }
 
   bool _loading = false;
