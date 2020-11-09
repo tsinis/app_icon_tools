@@ -7,6 +7,10 @@
             "type": "dart",
             "request": "launch",
             "flutterMode": "debug",
+            "args": [
+                // "--dart-define=FLUTTER_WEB_USE_SKIA=false",
+                // "--dart-define=FLUTTER_WEB_USE_EXPERIMENTAL_CANVAS_TEXT=false"
+            ]
         },
         {
             "name": "Release Web",
@@ -14,8 +18,8 @@
             "type": "dart",
             "flutterMode": "release",
             "args": [
-                // "--dart-define=FLUTTER_WEB_USE_SKIA=true",
-                // "--dart-define=FLUTTER_WEB_USE_EXPERIMENTAL_CANVAS_TEXT=true"
+                // "--dart-define=FLUTTER_WEB_USE_SKIA=false",
+                // "--dart-define=FLUTTER_WEB_USE_EXPERIMENTAL_CANVAS_TEXT=false"
             ]
         }
     ]

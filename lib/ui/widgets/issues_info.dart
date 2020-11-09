@@ -20,7 +20,7 @@ class _IssuesInfo extends State<IssuesInfo> with SingleTickerProviderStateMixin 
   static const String _foreground = 'foreground', _background = 'background';
   Animation<double> _animation;
   AnimationController _animationController;
-  List<int> _bgErrCodes = [], _fgErrCodes = [], _iconErrCodes = [];
+  final List<int> _bgErrCodes = [], _fgErrCodes = [], _iconErrCodes = [];
   bool _exportIOS = true, _exportAdaptive = true, _exportPWA = true;
 
   static const int _infoCode = 3;
@@ -116,9 +116,15 @@ class _IssuesInfo extends State<IssuesInfo> with SingleTickerProviderStateMixin 
 
   @override
   Widget build(BuildContext context) {
-    _iconErrCodes = context.select((SetupIcon icon) => icon.listIconErrCodes);
-    _fgErrCodes = context.select((SetupIcon icon) => icon.listFgErrCodes);
-    _bgErrCodes = context.select((SetupIcon icon) => icon.listBgErrCodes);
+    _iconErrCodes
+      ..clear()
+      ..addAll(context.select((SetupIcon icon) => icon.listIconErrCodes));
+    _fgErrCodes
+      ..clear()
+      ..addAll(context.select((SetupIcon icon) => icon.listFgErrCodes));
+    _bgErrCodes
+      ..clear()
+      ..addAll(context.select((SetupIcon icon) => icon.listBgErrCodes));
     _exportIOS = context.select((SetupIcon icon) => icon.exportIOS);
     _exportAdaptive = context.select((SetupIcon icon) => icon.exportAdaptive);
     _exportPWA = context.select((SetupIcon icon) => icon.exportWeb);

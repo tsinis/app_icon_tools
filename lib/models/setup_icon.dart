@@ -39,13 +39,21 @@ class SetupIcon extends ChangeNotifier {
     notifyListeners();
   }
 
-  Uint8List _icon = Uint8List(0);
+  Uint8List _icon = Uint8List(0), _adaptiveBackground, _adaptiveForeground;
+
   Image get iconImage => Image.memory(_icon);
   Uint8List get regularIcon => _icon;
-  set regularIcon(Uint8List _uploadedImage) {
-    if (_uploadedImage != _icon) {
-      _icon = _uploadedImage;
-      _regularIconFiles = {};
+  set regularIcon(Uint8List _uploadedPng) {
+    if (_uploadedPng != _icon && _uploadedPng != null) {
+      // if (_icon.isNotEmpty) {
+      //   _icon.clear();
+      // }
+      _icon = _uploadedPng;
+      _regularIconFiles.clear();
+      _adaptiveIconFiles.clear();
+      _xmlFiles.clear();
+      _bgErrCodes.clear();
+      _fgErrCodes.clear();
       notifyListeners();
     }
   }
@@ -78,46 +86,55 @@ class SetupIcon extends ChangeNotifier {
   }
 
   // Adaptive Icon Background as IMAGE.
-  Uint8List _adaptiveBackground;
   Uint8List get adaptiveBackground => _adaptiveBackground;
-  set adaptiveBackground(Uint8List _uploadedImage) {
-    _adaptiveBackground = _uploadedImage;
-    _adaptiveIconFiles = {};
-    notifyListeners();
+  set adaptiveBackground(Uint8List _uploadedPng) {
+    if (_uploadedPng != _adaptiveBackground && _uploadedPng != null) {
+      // if (_adaptiveBackground.isNotEmpty) {
+      //   _adaptiveBackground.clear();
+      // }
+      _adaptiveBackground = _uploadedPng;
+      _adaptiveIconFiles.clear();
+      notifyListeners();
+    }
   }
 
   bool get haveAdaptiveBackground => _adaptiveBackground != null;
   void removeAdaptiveBackground() {
     _adaptiveBackground = null;
-    _bgErrCodes = {};
+    _bgErrCodes.clear();
     notifyListeners();
   }
 
-  Uint8List _adaptiveForeground;
   Uint8List get adaptiveForeground => _adaptiveForeground;
-  set adaptiveForeground(Uint8List _uploadedImage) {
-    _adaptiveForeground = _uploadedImage;
-    _adaptiveIconFiles = {};
-    notifyListeners();
+  set adaptiveForeground(Uint8List _uploadedPng) {
+    if (_uploadedPng != _adaptiveForeground && _uploadedPng != null) {
+      // if (_adaptiveForeground.isNotEmpty) {
+      //   _adaptiveForeground.clear();
+      // }
+      _adaptiveForeground = _uploadedPng;
+      _adaptiveIconFiles.clear();
+      notifyListeners();
+    }
   }
 
   bool get haveAdaptiveForeground => _adaptiveForeground != null;
   void removeadaptiveForeground() {
     _adaptiveForeground = null;
-    _fgErrCodes = {};
+    _fgErrCodes.clear();
     notifyListeners();
   }
 
-  bool get _haveAdaptiveAssets =>
-      haveAdaptiveForeground && ((haveAdaptiveBackground && !preferColorBg) || (haveAdaptiveColor && preferColorBg));
+  bool get _exportingAdaptiveFiles =>
+      exportAdaptive &&
+      (haveAdaptiveForeground && ((haveAdaptiveBackground && !preferColorBg) || (haveAdaptiveColor && preferColorBg)));
 
-  Map<int, bool> _fgErrCodes = {}, _bgErrCodes = {}, _iconErrCodes = {};
+  final Map<int, bool> _fgErrCodes = {}, _bgErrCodes = {}, _iconErrCodes = {};
   List<int> get listFgErrCodes => _fgErrCodes.keys.where((key) => _fgErrCodes[key] ?? false).toList();
 
 // ignore: avoid_setters_without_getters
   set foregroundErrorCodes(Map<int, bool> _issuesMap) {
     if (_fgErrCodes != _issuesMap) {
-      _fgErrCodes = _issuesMap;
+      _fgErrCodes.addAll(_issuesMap);
       // notifyListeners();
     }
   }
@@ -127,7 +144,7 @@ class SetupIcon extends ChangeNotifier {
 // ignore: avoid_setters_without_getters
   set backgroundErrorCodes(Map<int, bool> _issuesMap) {
     if (_bgErrCodes != _issuesMap) {
-      _bgErrCodes = _issuesMap;
+      _bgErrCodes.addAll(_issuesMap);
       // notifyListeners();
     }
   }
@@ -137,7 +154,7 @@ class SetupIcon extends ChangeNotifier {
 // ignore: avoid_setters_without_getters
   set iconErrorCodes(Map<int, bool> _issuesMap) {
     if (_iconErrCodes != _issuesMap) {
-      _iconErrCodes = _issuesMap;
+      _iconErrCodes.addAll(_issuesMap);
       // notifyListeners();
     }
   }
@@ -162,33 +179,37 @@ class SetupIcon extends ChangeNotifier {
     }
   }
 
-  Map<String, List<FileData>> _regularIconFiles = {}, _adaptiveIconFiles = {}, _txtFiles = {};
+  final Map<String, List<FileData>> _regularIconFiles = {}, _adaptiveIconFiles = {}, _xmlFiles = {};
 
   Future archive() async {
+    //TODO! Add progress percents.
     _setLoading(true);
     final IconGenerator _gen = IconGenerator();
-    final List<FileData> _images = [];
+    final List<FileData> _files = [];
     Future<void>.delayed(
         //TODO! Check when https://github.com/flutter/flutter/issues/33577 is closed.
         const Duration(milliseconds: kIsWeb ? 300 : 0),
         () async => await _resizeIcons().whenComplete(() async {
               for (final key in _regularIconFiles.keys) {
                 final List<FileData> _folder = _regularIconFiles[key];
-                _images.addAll(_folder.toList());
+                _files.addAll(_folder.toList());
               }
-              if (_haveAdaptiveAssets) {
+              if (_exportingAdaptiveFiles) {
                 for (final key in _adaptiveIconFiles.keys) {
                   final List<FileData> _adaptiveFolder = _adaptiveIconFiles[key];
-                  _images.addAll(_adaptiveFolder.toList());
+                  _files.addAll(_adaptiveFolder.toList());
+                }
+                _generateXmlConfigs();
+                for (final key in _xmlFiles.keys) {
+                  final List<FileData> _txtFolder = _xmlFiles[key];
+                  _files.addAll(_txtFolder.toList());
                 }
               }
-              for (final key in _txtFiles.keys) {
+              if (exportWeb) {
                 //TODO! Add HTML Generated Files here.
-                final List<FileData> _txtFolder = _txtFiles[key];
-                _images.addAll(_txtFolder.toList());
               }
               // print('Images: ${_images.length}');
-              final List<int> _data = _gen.generateArchive(_images);
+              final List<int> _data = _gen.generateArchive(_files);
               await _saveFile('icons.zip', binaryData: _data).whenComplete(() {
                 _countDown = 0;
                 _setLoading(false);
@@ -242,17 +263,6 @@ class SetupIcon extends ChangeNotifier {
   bool get exportAdaptive => _platforms[_androidAdapt] ?? true;
 
   Future _resizeIcons() async {
-    print('_HAVEADAPTIVEASSETS: ${_haveAdaptiveAssets}');
-    print(
-        '((HAVEADAPTIVEBACKGROUND && !PREFERCOLORBG) || (HAVEADAPTIVECOLOR && PREFERCOLORBG)): ${((haveAdaptiveBackground && !preferColorBg) || (haveAdaptiveColor && preferColorBg))}');
-    print('(HAVEADAPTIVECOLOR && PREFERCOLORBG): ${(haveAdaptiveColor && preferColorBg)}');
-    print('(HAVEADAPTIVEBACKGROUND && !PREFERCOLORBG): ${(haveAdaptiveBackground && !preferColorBg)}');
-    print('HAVEADAPTIVECOLOR: ${haveAdaptiveColor}');
-    print('PREFERCOLORBG: ${preferColorBg}');
-    print('HAVEADAPTIVEBACKGROUND: ${haveAdaptiveBackground}');
-    print('HAVEADAPTIVEFOREGROUND: ${haveAdaptiveForeground}');
-
-    print('_regularIconFiles.ISEMPTY: ${_regularIconFiles.isEmpty}');
     if (_regularIconFiles.isEmpty) {
       // if (_platforms[_linux] ?? true) {
       //   await _generatePngIcons('linux', WebIconsFolder());
@@ -276,20 +286,12 @@ class SetupIcon extends ChangeNotifier {
         await _generatePngIcons('droid', AndroidIconsFolder(icons: androidRegular));
       }
     }
-    print('_ADAPTIVEICONFILES.ISEMPTY: ${_adaptiveIconFiles.isEmpty}');
     if (_adaptiveIconFiles.isEmpty) {
-      if (_platforms[_androidAdapt] ?? true) {
-        if (_haveAdaptiveAssets) {
-          if (!preferColorBg) {
-            await _generateAdaptiveIcons(BackgroundIconsFolder());
-          }
-          await _generateAdaptiveIcons(ForegroundIconsFolder());
+      if (_exportingAdaptiveFiles) {
+        if (!preferColorBg) {
+          await _generateAdaptiveIcons(BackgroundIconsFolder());
         }
-      }
-    }
-    if (_platforms[_androidAdapt] ?? true) {
-      if (_haveAdaptiveAssets) {
-        _generateXmlConfigs();
+        await _generateAdaptiveIcons(ForegroundIconsFolder());
       }
     }
   }
@@ -297,7 +299,7 @@ class SetupIcon extends ChangeNotifier {
   void _generateXmlConfigs({String key = 'xml'}) {
     final XmlGenerator _gen = XmlGenerator(bgAsColor: preferColorBg, color: adaptiveColor ?? const Color(0xFF000000));
     final List<FileData> _archive = _gen.generateXmls();
-    _txtFiles[key] = _archive;
+    _xmlFiles[key] = _archive;
   }
 
   Future _generatePngIcons(String key, ImageFolder folder) async {
@@ -309,7 +311,6 @@ class SetupIcon extends ChangeNotifier {
 
   Future _generateAdaptiveIcons(ImageFolder folder) async {
     final bool _background = folder is BackgroundIconsFolder;
-    print('_BACKGROUND: ${_background}');
     final String _key = _background ? 'bg' : 'fg';
     final img.Image _image = img.decodePng(_background ? _adaptiveBackground : _adaptiveForeground);
     final IconGenerator _gen = IconGenerator();

@@ -16,8 +16,7 @@ class UploadFile extends ChangeNotifier {
   static const int minIconSize = 1024;
   static const int minAdaptiveSize = 432;
   static const String expectedFileExtension = 'png';
-  Uint8List _recivedIcon = Uint8List(0);
-  Uint8List _recivedForeground, _recivedBackground;
+  Uint8List _recivedIcon = Uint8List(0), _recivedForeground, _recivedBackground;
 
   Uint8List get recivedIcon => _recivedIcon;
   Uint8List get recivedForeground => _recivedForeground;
@@ -35,11 +34,7 @@ class UploadFile extends ChangeNotifier {
       await _checkFile(_droppedFile, background: background, foreground: foreground);
 
   Future _checkFile(dynamic _file, {@required bool background, @required bool foreground}) async {
-    if (background) {
-      _recivedBackground = null;
-    } else if (foreground) {
-      _recivedForeground = null;
-    }
+    _recivedBackground = _recivedForeground = null;
     _setLoading(true);
     //TODO! Check when https://github.com/flutter/flutter/issues/33577 is closed.
     Future<void>.delayed(
@@ -77,7 +72,6 @@ class UploadFile extends ChangeNotifier {
           } else if (foreground) {
             _recivedForeground = _bytes;
           } else {
-            _recivedForeground = _recivedBackground = null;
             _recivedIcon = _bytes;
           }
         }
@@ -130,18 +124,25 @@ class UploadFile extends ChangeNotifier {
     final Map<int, bool> _issuesMap = {0: _tooSmall, 1: _tooHeavy, 2: _notSquare, 3: _isTransparent};
 
     if (foreground) {
-      _foregroundIssues = _issuesMap;
+      _foregroundIssues
+        ..clear()
+        ..addAll(_issuesMap);
     } else if (background) {
-      _backgroundIssues = _issuesMap;
+      _backgroundIssues
+        ..clear()
+        ..addAll(_issuesMap);
     } else {
-      _backgroundIssues = _foregroundIssues = {};
-      _iconIssues = _issuesMap;
+      _backgroundIssues.clear();
+      _foregroundIssues.clear();
+      _iconIssues
+        ..clear()
+        ..addAll(_issuesMap);
     }
 
     return true;
   }
 
-  Map<int, bool> _iconIssues = {}, _foregroundIssues = {}, _backgroundIssues = {};
+  final Map<int, bool> _iconIssues = {}, _foregroundIssues = {}, _backgroundIssues = {};
 
   Map<int, bool> get iconIssues => _iconIssues;
   Map<int, bool> get foregroundIssues => _foregroundIssues;
