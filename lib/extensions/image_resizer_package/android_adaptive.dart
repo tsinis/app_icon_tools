@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_resizer/image_resizer.dart';
 
 import '../hex_color.dart';
-import '../xmls.dart';
+import 'text_based_config_files/xmls.dart';
 
 const String _path = 'android/app/src/main/res';
 

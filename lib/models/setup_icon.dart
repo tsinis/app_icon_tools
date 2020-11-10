@@ -12,6 +12,7 @@ import 'package:universal_html/html.dart' as html;
 import '../extensions/image_resizer_package/android_adaptive.dart';
 import '../extensions/image_resizer_package/constants/android_regular.dart';
 import '../extensions/image_resizer_package/constants/web.dart';
+import '../extensions/image_resizer_package/pwa.dart';
 import '../extensions/image_resizer_package/windows.dart';
 import '../locator.dart';
 import '../services/navigation_service.dart';
@@ -51,7 +52,8 @@ class SetupIcon extends ChangeNotifier {
       _icon = _uploadedPng;
       _regularIconFiles.clear();
       _adaptiveIconFiles.clear();
-      _xmlFiles.clear();
+      _pwaConfigs.clear();
+      _xmlConfigs.clear();
       _bgErrCodes.clear();
       _fgErrCodes.clear();
       notifyListeners();
@@ -179,7 +181,7 @@ class SetupIcon extends ChangeNotifier {
     }
   }
 
-  final Map<String, List<FileData>> _regularIconFiles = {}, _adaptiveIconFiles = {}, _xmlFiles = {};
+  final Map<String, List<FileData>> _regularIconFiles = {}, _adaptiveIconFiles = {}, _xmlConfigs = {}, _pwaConfigs = {};
 
   Future archive() async {
     //TODO! Add progress percents.
@@ -200,13 +202,17 @@ class SetupIcon extends ChangeNotifier {
                   _files.addAll(_adaptiveFolder.toList());
                 }
                 _generateXmlConfigs();
-                for (final key in _xmlFiles.keys) {
-                  final List<FileData> _txtFolder = _xmlFiles[key];
+                for (final key in _xmlConfigs.keys) {
+                  final List<FileData> _txtFolder = _xmlConfigs[key];
                   _files.addAll(_txtFolder.toList());
                 }
               }
               if (exportWeb) {
-                //TODO! Add HTML Generated Files here.
+                _generatePwaConfigs();
+                for (final key in _pwaConfigs.keys) {
+                  final List<FileData> _txtFolder = _pwaConfigs[key];
+                  _files.addAll(_txtFolder.toList());
+                }
               }
               // print('Images: ${_images.length}');
               final List<int> _data = _gen.generateArchive(_files);
@@ -297,9 +303,16 @@ class SetupIcon extends ChangeNotifier {
   }
 
   void _generateXmlConfigs({String key = 'xml'}) {
-    final XmlGenerator _gen = XmlGenerator(bgAsColor: preferColorBg, color: adaptiveColor ?? const Color(0xFF000000));
+    final XmlGenerator _gen =
+        XmlGenerator(bgAsColor: preferColorBg, color: adaptiveColor ?? backgroundColor ?? const Color(0xFF000000));
     final List<FileData> _archive = _gen.generateXmls();
-    _xmlFiles[key] = _archive;
+    _xmlConfigs[key] = _archive;
+  }
+
+  void _generatePwaConfigs({String key = 'pwa'}) {
+    final PwaConfigGenerator _gen = PwaConfigGenerator(color: backgroundColor ?? const Color(0xFF000000));
+    final List<FileData> _archive = _gen.generatePwaConfigs();
+    _pwaConfigs[key] = _archive;
   }
 
   Future _generatePngIcons(String key, ImageFolder folder) async {
@@ -352,6 +365,7 @@ class SetupIcon extends ChangeNotifier {
   };
   Map<String, bool> get platforms => _platforms;
   void switchPlatform({@required String platformNameKey, @required bool isExported}) {
+    _regularIconFiles.clear();
     _platforms[platformNameKey] = isExported;
     notifyListeners();
   }

@@ -21,7 +21,7 @@ dependencies:
       path: plugins/window_size
   auto_size_text: any
   community_material_icon: any
-  cupertino_icons: ^1.0.0
+  cupertino_icons: ^1.0.1
   fdottedline: ^1.0.1
   file_picker_cross: ^4.2.6
   flutter_dropzone: ^1.0.9

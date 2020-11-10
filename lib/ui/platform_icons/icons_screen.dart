@@ -42,7 +42,7 @@ class IconPreview extends StatelessWidget {
         icon = CommunityMaterialIcons.apple_ios;
 
   const IconPreview.web()
-      : cornerRadius = 0,
+      : cornerRadius = 800,
         platformID = 3,
         name = 'Web',
         icon = CommunityMaterialIcons.google_chrome;
@@ -73,7 +73,7 @@ class IconPreview extends StatelessWidget {
 
   double get _staticCornerRadius => cornerRadius.toDouble();
 
-  bool get _canChangeShape => platformID <= 1;
+  bool get _canChangeShape => platformID <= 1 || platformID == 3;
 
   bool get _isAdaptive => platformID == 1;
 
@@ -117,7 +117,7 @@ class _Preview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double _androidCornerRadius = context.select((SetupIcon icon) => icon.cornerRadius);
+    final double _adjustableCornerRadius = context.select((SetupIcon icon) => icon.cornerRadius);
     final Color _adpativeColor = context.select((SetupIcon icon) => icon.adaptiveColor);
     final bool _haveAdaptiveBackground = context.select((SetupIcon icon) => icon.haveAdaptiveBackground);
     final bool _haveAdaptiveForeground = context.select((SetupIcon icon) => icon.haveAdaptiveForeground);
@@ -167,7 +167,7 @@ class _Preview extends StatelessWidget {
                           offset: const Offset(0, 2))
                     ],
                     borderRadius: BorderRadius.all(
-                        Radius.circular(_canChangeShape ? _androidCornerRadius : _staticCornerRadius))),
+                        Radius.circular(_canChangeShape ? _adjustableCornerRadius : _staticCornerRadius))),
                 child: _isAdaptive
                     ? const Hero(tag: 'adaptive', child: AdaptiveIcon())
                     : Hero(
@@ -186,8 +186,8 @@ class _Preview extends StatelessWidget {
                 children: [
                   const Icon(CommunityMaterialIcons.square_outline, color: Color(0x80808080)),
                   AdaptiveSlider(
-                      radius: _androidCornerRadius,
-                      // label: _androidCornerRadius.round().toString(),
+                      radius: _adjustableCornerRadius,
+                      // label: _adjustableCornerRadius.round().toString(),
                       onChanged: (_newRadius) => context.read<SetupIcon>().setRadius(_newRadius)),
                   const Icon(CommunityMaterialIcons.circle_outline, color: Color(0x80808080)),
                 ],
@@ -247,7 +247,7 @@ class _Setup extends StatelessWidget {
                     top: (_preferColorBg && !_isPortrait)
                         ? (UserInterface.isApple ? 62 : 72)
                         : (UserInterface.isApple ? (_haveAdaptiveBackground ? 36 : 10) : 4)),
-                child: Text(S.of(context).uploadAdaptiveBg)),
+                child: Text(S.of(context).uploadAdaptiveBg)), //TODO Add ifPWA check and show PWA Color config.
             if (_preferColorBg)
               ColorPicker(
                   // labelTextStyle: _materialTheme.sliderTheme.valueIndicatorTextStyle,

@@ -16,8 +16,10 @@ class RegularIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final int _selectedPlatform = context.select((SetupIcon icon) => icon.platformID);
     final Color _backgroundColor = context.select((SetupIcon icon) => icon.backgroundColor);
     final bool _colorNotSet = _backgroundColor == null;
+    final bool _webSafeZone = _selectedPlatform == 3;
     final Image _icon = context.select((SetupIcon icon) => icon.iconImage);
     return ClipRRect(
       borderRadius: BorderRadius.all(Radius.circular(_onDevice ? _cornerRadius / 8 : 0)),
@@ -33,7 +35,8 @@ class RegularIcon extends StatelessWidget {
                           ? Colors.transparent
                           : Colors.black
                       : _backgroundColor),
-              child: _icon),
+              child:
+                  Transform.scale(scale: _webSafeZone ? 1.24 : 1, child: _icon)), //TODO Add scale to web maskable icon.
         ],
       ),
     );

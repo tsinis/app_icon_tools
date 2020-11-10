@@ -38,9 +38,15 @@ class DeviceScreen extends StatelessWidget {
                       width: (_id == 1 || _id == 2)
                           ? 105
                           : (_id > 2)
-                              ? 22
+                              ? (_id == 3)
+                                  ? 36
+                                  : 22
                               : 40,
-                      height: (_id > 2) ? 22 : 40,
+                      height: (_id > 2)
+                          ? (_id == 3)
+                              ? 36
+                              : 22
+                          : 40,
                       child: Align(
                         alignment: Alignment.centerRight,
                         child: (_id == 1)
