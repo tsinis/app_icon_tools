@@ -51,6 +51,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "notSqaure" : MessageLookupByLibrary.simpleMessage("! The image is not square. Icon can be deformed, or the edges of the trim can be visible."),
     "parallax" : MessageLookupByLibrary.simpleMessage("Preview Adaptive Icon parallax effect."),
     "previewShapes" : MessageLookupByLibrary.simpleMessage("Preview possible shapes"),
+    "pwaColor" : MessageLookupByLibrary.simpleMessage("Select PWA Background color"),
     "regularIcon" : MessageLookupByLibrary.simpleMessage("Regular Icon:"),
     "removeBackground" : MessageLookupByLibrary.simpleMessage("Remove Background"),
     "removeColor" : MessageLookupByLibrary.simpleMessage("Remove Color"),

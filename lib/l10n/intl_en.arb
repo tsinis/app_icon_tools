@@ -19,6 +19,7 @@
     "storeRequirement": "Technical requirements. Press for more info.",
     "transparencyiOS": "The iOS icons doesn't support transparency, alpha channel will be replaced with black color.",
     "previewShapes": "Preview possible shapes",
+    "pwaColor": "Select PWA Background color",
     "iconPreview": "Icon Preview",
     "uploadAdaptiveBg": "Select Adaptive Background",
     "uploadAdaptiveFg": "Select Adaptive Foreground",

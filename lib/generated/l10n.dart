@@ -235,6 +235,16 @@ class S {
     );
   }
 
+  /// `Select PWA Background color`
+  String get pwaColor {
+    return Intl.message(
+      'Select PWA Background color',
+      name: 'pwaColor',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Icon Preview`
   String get iconPreview {
     return Intl.message(

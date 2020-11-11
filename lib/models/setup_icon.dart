@@ -184,8 +184,8 @@ class SetupIcon extends ChangeNotifier {
   final Map<String, List<FileData>> _regularIconFiles = {}, _adaptiveIconFiles = {}, _xmlConfigs = {}, _pwaConfigs = {};
 
   Future archive() async {
-    //TODO! Add progress percents.
-    _setLoading(true);
+    _exportedDoneCount = 0;
+    notifyListeners();
     final IconGenerator _gen = IconGenerator();
     final List<FileData> _files = [];
     Future<void>.delayed(
@@ -218,7 +218,7 @@ class SetupIcon extends ChangeNotifier {
               final List<int> _data = _gen.generateArchive(_files);
               await _saveFile('icons.zip', binaryData: _data).whenComplete(() {
                 _countDown = 0;
-                _setLoading(false);
+                _exportedDoneCount = 100;
                 _showSnackInfo();
               });
             }));
@@ -227,15 +227,18 @@ class SetupIcon extends ChangeNotifier {
   int _countDown = 0;
   int get countDown => _countDown;
 
-  void _showSnackInfo() => Timer.periodic(const Duration(milliseconds: 50), (Timer _timer) {
-        if (_countDown > 99) {
-          _countDown = 0;
-          _timer.cancel();
-        } else {
-          _countDown = _countDown + 1;
-        }
-        notifyListeners();
-      });
+  void _showSnackInfo() {
+    _exportedDoneCount = 0;
+    Timer.periodic(const Duration(milliseconds: 50), (Timer _timer) {
+      if (_countDown > 99) {
+        _countDown = 0;
+        _timer.cancel();
+      } else {
+        _countDown = _countDown + 1;
+      }
+      notifyListeners();
+    });
+  }
 
   Future<bool> _saveFile(String fileName, {@required List<int> binaryData, bool silentErrors = false}) async {
     if (kIsWeb) {
@@ -267,6 +270,10 @@ class SetupIcon extends ChangeNotifier {
   bool get exportIOS => _platforms[_ios] ?? true;
   bool get exportWeb => _platforms[_web] ?? true;
   bool get exportAdaptive => _platforms[_androidAdapt] ?? true;
+  int get _toExportCount =>
+      (_exportingAdaptiveFiles ? 2 : 1) + _platforms.values.where((_willBeExported) => true).length ?? 1;
+  num get exportProgress => 100 * (_exportedDoneCount / _toExportCount).clamp(0, 1);
+  int _exportedDoneCount = 0;
 
   Future _resizeIcons() async {
     if (_regularIconFiles.isEmpty) {
@@ -291,6 +298,9 @@ class SetupIcon extends ChangeNotifier {
       if (_platforms[_androidReg] ?? true) {
         await _generatePngIcons('droid', AndroidIconsFolder(icons: androidRegular));
       }
+    } else {
+      _exportedDoneCount = _toExportCount - (_exportingAdaptiveFiles ? 3 : 2);
+      notifyListeners();
     }
     if (_adaptiveIconFiles.isEmpty) {
       if (_exportingAdaptiveFiles) {
@@ -299,6 +309,9 @@ class SetupIcon extends ChangeNotifier {
         }
         await _generateAdaptiveIcons(ForegroundIconsFolder());
       }
+    } else {
+      _exportedDoneCount = _toExportCount - 1;
+      notifyListeners();
     }
   }
 
@@ -307,6 +320,8 @@ class SetupIcon extends ChangeNotifier {
         XmlGenerator(bgAsColor: preferColorBg, color: adaptiveColor ?? backgroundColor ?? const Color(0xFF000000));
     final List<FileData> _archive = _gen.generateXmls();
     _xmlConfigs[key] = _archive;
+    _exportedDoneCount = _exportedDoneCount + 1;
+    notifyListeners();
   }
 
   void _generatePwaConfigs({String key = 'pwa'}) {
@@ -320,6 +335,8 @@ class SetupIcon extends ChangeNotifier {
     final IconGenerator _gen = IconGenerator();
     final List<FileData> _archive = await _gen.generateIcons(_image, folder, writeToDiskIO: !kIsWeb);
     _regularIconFiles[key] = _archive;
+    _exportedDoneCount = _exportedDoneCount + 1;
+    notifyListeners();
   }
 
   Future _generateAdaptiveIcons(ImageFolder folder) async {
@@ -329,18 +346,15 @@ class SetupIcon extends ChangeNotifier {
     final IconGenerator _gen = IconGenerator();
     final List<FileData> _archive = await _gen.generateIcons(_image, folder, writeToDiskIO: !kIsWeb);
     _adaptiveIconFiles[_key] = _archive;
+    _exportedDoneCount = _exportedDoneCount + 1;
+    notifyListeners();
   }
 
   Future _generateIcoIcon(ImageFolder folder, {String key = 'win'}) async {
     final img.Image _image = img.decodePng(_icon);
     final List<FileData> _archive = await generateWinIcos(_image, folder, writeToDiskIO: !kIsWeb);
     _regularIconFiles[key] = _archive;
-  }
-
-  bool _loading = false;
-  bool get loading => _loading;
-  void _setLoading(bool newValue) {
-    _loading = newValue;
+    _exportedDoneCount = _exportedDoneCount + 1;
     notifyListeners();
   }
 

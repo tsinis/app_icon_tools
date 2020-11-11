@@ -1,4 +1,4 @@
-const String _name = 'PWA Flutter App'; //TODO Add real app name maybe?
+const String _name = 'PWA Flutter App';
 
 String pwaHtml(String _color) => '''
 <!DOCTYPE html>

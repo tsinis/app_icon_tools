@@ -93,7 +93,7 @@ class IconPreview extends StatelessWidget {
             isAdaptive: _isAdaptive,
             staticCornerRadius: _staticCornerRadius,
             supportTransparency: _supportTransparency),
-        _Setup(isAdaptive: _isAdaptive, isPortrait: _portrait),
+        _Setup(isAdaptive: _isAdaptive, isPortrait: _portrait, pwaIcon: platformID == 3),
       ],
     );
   }
@@ -218,11 +218,12 @@ class _Preview extends StatelessWidget {
 }
 
 class _Setup extends StatelessWidget {
-  final bool _isAdaptive, _isPortrait;
+  final bool _isAdaptive, _isPortrait, _pwaIcon;
 
-  const _Setup({@required bool isAdaptive, @required bool isPortrait, Key key})
+  const _Setup({@required bool isAdaptive, @required bool isPortrait, @required bool pwaIcon, Key key})
       : _isAdaptive = isAdaptive,
         _isPortrait = isPortrait,
+        _pwaIcon = pwaIcon,
         super(key: key);
 
   @override
@@ -247,7 +248,7 @@ class _Setup extends StatelessWidget {
                     top: (_preferColorBg && !_isPortrait)
                         ? (UserInterface.isApple ? 62 : 72)
                         : (UserInterface.isApple ? (_haveAdaptiveBackground ? 36 : 10) : 4)),
-                child: Text(S.of(context).uploadAdaptiveBg)), //TODO Add ifPWA check and show PWA Color config.
+                child: Text(S.of(context).uploadAdaptiveBg)),
             if (_preferColorBg)
               ColorPicker(
                   // labelTextStyle: _materialTheme.sliderTheme.valueIndicatorTextStyle,
@@ -272,7 +273,9 @@ class _Setup extends StatelessWidget {
                 value: _preferColorBg,
                 onChanged: (_preferColor) => context.read<SetupIcon>().switchBg(preferColor: _preferColor))
           ] else ...[
-            Padding(padding: const EdgeInsets.symmetric(vertical: 20), child: Text(S.of(context).iconBgColor)),
+            Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                child: Text(_pwaIcon ? S.of(context).pwaColor : S.of(context).iconBgColor)),
             ColorPicker(
                 // labelTextStyle: _materialTheme.chipTheme.labelStyle,
                 pickerAreaHeightPercent: 0.84,

@@ -35,8 +35,7 @@ class RegularIcon extends StatelessWidget {
                           ? Colors.transparent
                           : Colors.black
                       : _backgroundColor),
-              child:
-                  Transform.scale(scale: _webSafeZone ? 1.24 : 1, child: _icon)), //TODO Add scale to web maskable icon.
+              child: Transform.scale(scale: _webSafeZone ? 1.24 : 1, child: _icon))
         ],
       ),
     );
