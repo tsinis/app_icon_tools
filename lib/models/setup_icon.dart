@@ -185,7 +185,7 @@ class SetupIcon extends ChangeNotifier {
 
   Future archive() async {
     _exportedDoneCount = 0;
-    notifyListeners();
+    _setLoading(true);
     final IconGenerator _gen = IconGenerator();
     final List<FileData> _files = [];
     Future<void>.delayed(
@@ -219,6 +219,7 @@ class SetupIcon extends ChangeNotifier {
               await _saveFile('icons.zip', binaryData: _data).whenComplete(() {
                 _countDown = 0;
                 _exportedDoneCount = 100;
+                _loading = false;
                 _showSnackInfo();
               });
             }));
@@ -270,10 +271,17 @@ class SetupIcon extends ChangeNotifier {
   bool get exportIOS => _platforms[_ios] ?? true;
   bool get exportWeb => _platforms[_web] ?? true;
   bool get exportAdaptive => _platforms[_androidAdapt] ?? true;
+
   int get _toExportCount =>
       (_exportingAdaptiveFiles ? 2 : 1) + _platforms.values.where((_willBeExported) => true).length ?? 1;
   num get exportProgress => 100 * (_exportedDoneCount / _toExportCount).clamp(0, 1);
   int _exportedDoneCount = 0;
+  bool _loading = false;
+  bool get loading => _loading;
+  void _setLoading(bool newValue) {
+    _loading = newValue;
+    notifyListeners();
+  }
 
   Future _resizeIcons() async {
     if (_regularIconFiles.isEmpty) {

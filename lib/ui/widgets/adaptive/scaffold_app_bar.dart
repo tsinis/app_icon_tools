@@ -17,8 +17,9 @@ class AdaptiveScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool _loading = context.select((SetupIcon icon) => icon.loading);
     final int _exportProgress = context.select((SetupIcon icon) => icon.exportProgress.round());
-    final bool _loading = _exportProgress > 0;
+    // final bool _loading = _exportProgress > 0;
     final bool _isDark = context.select((UserInterface ui) => ui.isDark) ?? true;
     final Color _exportButtonColor = (_isDark ? Colors.pinkAccent : Colors.tealAccent[400]) ?? const Color(0xFF1DE9B6);
     final bool _isWideScreen = MediaQuery.of(context).size.width > 560;
@@ -109,7 +110,7 @@ class AdaptiveScaffold extends StatelessWidget {
                                             mainAxisSize: MainAxisSize.min,
                                             children: [
                                                 Text(kIsWeb
-                                                    ? S.of(context).wait
+                                                    ? S.of(context).wait.toUpperCase()
                                                     : '${S.of(context).wait.toUpperCase()} $_exportProgress%'),
                                                 if (!kIsWeb)
                                                   const Padding(

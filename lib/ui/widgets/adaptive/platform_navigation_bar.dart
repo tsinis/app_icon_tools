@@ -83,7 +83,7 @@ class _DoneInfo extends StatelessWidget {
             border: Border.all(color: Colors.greenAccent),
             borderRadius: BorderRadius.all(Radius.circular(UserInterface.isApple ? 10 : 20))),
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: UserInterface.isApple ? 4 : 1, horizontal: 12),
+          padding: EdgeInsets.symmetric(vertical: UserInterface.isApple ? 4 : 8, horizontal: 12),
           child: FittedBox(
             fit: BoxFit.fitWidth,
             child: Row(
