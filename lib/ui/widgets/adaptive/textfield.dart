@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:platform_info/platform_info.dart';
 import '../../../models/user_interface.dart';
 
 class AdaptiveTextField extends StatelessWidget {
@@ -24,7 +25,7 @@ class AdaptiveTextField extends StatelessWidget {
                 clearButtonMode: OverlayVisibilityMode.editing,
                 keyboardType: TextInputType.text,
                 autofillHints: autofillHints,
-                autofocus: true,
+                autofocus: !platform.isMobile,
                 placeholder: hint),
           )
         : Padding(
@@ -34,7 +35,7 @@ class AdaptiveTextField extends StatelessWidget {
               inputFormatters: [FilteringTextInputFormatter.deny(RegExp('[0-9,.:!]'))],
               keyboardType: TextInputType.text,
               autofillHints: autofillHints,
-              autofocus: true,
+              autofocus: !platform.isMobile,
               decoration: InputDecoration(
                   labelStyle: TextStyle(color: _textColor.withOpacity(0.4)),
                   labelText: label,

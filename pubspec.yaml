@@ -4,7 +4,7 @@ description: Simple GUI for launcher icons preview.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.11.9"
+  sdk: ">=2.11.0 <=2.12.0"
   flutter: ">=1.24.0-8.0"
 
 dependencies:
@@ -31,6 +31,7 @@ dependencies:
   local_hero: ^0.1.0
   path_provider: ^1.6.24
   path_provider_macos: ^0.0.4+6
+  # permission_handler: ^5.0.1+1
   platform_info: ^2.1.0
   provider: any
   shared_preferences: ^0.5.12+4

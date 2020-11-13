@@ -12,8 +12,8 @@ import 'ui/app_appearance.dart';
 //TODO Add accesibility and semantic labels.
 //TODO Migrate to null-safety when it's become stable.
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   if (!platform.isWeb && platform.isDesktop) {
-    WidgetsFlutterBinding.ensureInitialized();
     setWindowTitle('Flutter Launcher Icon Preview');
     setWindowMinSize(const Size(320, 840));
   }

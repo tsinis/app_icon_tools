@@ -27,7 +27,7 @@ class UploadFile extends ChangeNotifier {
   bool get isValidFile => _isValidFile;
 
   Future checkSelected({bool background = false, bool foreground = false}) async =>
-      await FilePickerCross.importFromStorage(type: FileTypeCross.image, fileExtension: expectedFileExtension)
+      await FilePickerCross.importFromStorage(type: FileTypeCross.custom, fileExtension: expectedFileExtension)
           .then<void>((_selectedFile) => _checkFile(_selectedFile, background: background, foreground: foreground));
 
   Future checkDropped(dynamic _droppedFile, {bool background = false, bool foreground = false}) async =>
@@ -155,3 +155,22 @@ class UploadFile extends ChangeNotifier {
     notifyListeners();
   }
 }
+// TODO Consider use another package for permission handling, since the one provided with file_picker package is somehow limited.
+// Future _checkPermissions() async {
+//   final PermissionStatus _mobilePrmissions = await Permission.storage.status ?? PermissionStatus.undetermined;
+//   if (_mobilePrmissions.isUndetermined) {
+//     await Permission.storage.request().then<void>((PermissionStatus _status) async {
+//       if (_status == PermissionStatus.granted) {
+//         return;
+//       } else {
+//         await Permission.storage.shouldShowRequestRationale;
+//       }
+//     });
+//   } else if (_mobilePrmissions.isGranted) {
+//     return;
+//   } else if (_mobilePrmissions.isDenied) {
+//     await Permission.storage.shouldShowRequestRationale;
+//   } else {
+//     await openAppSettings();
+// }
+// }

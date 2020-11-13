@@ -7,6 +7,8 @@ import 'package:flutter/widgets.dart';
 import 'package:image/image.dart' as img;
 import 'package:image_resizer/image_resizer.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:platform_info/platform_info.dart';
+import 'package:share/share.dart';
 import 'package:universal_html/html.dart' as html;
 
 import '../extensions/image_resizer_package/android_adaptive.dart';
@@ -20,6 +22,7 @@ import '../services/router.dart';
 
 class SetupIcon extends ChangeNotifier {
   final NavigationService _navigationService = locator<NavigationService>();
+
   void devicePreview() => _navigationService.navigateTo(UiRouter.deviceScreen);
   void initialScreen() => _navigationService.navigateTo(UiRouter.initialScreen);
   void setupScreen() => _navigationService.navigateTo(UiRouter.setupScreen);
@@ -241,8 +244,29 @@ class SetupIcon extends ChangeNotifier {
     });
   }
 
+  // Future<String> get _tempDirectory async {
+  //   if (platform.isMobile) {
+  //     final io.Directory _dir = await getTemporaryDirectory();
+  //     return _dir.path;
+  //   } else {
+  //     return '';
+  //   }
+  // }
+
+  Future<String> get _getSaveDirectory async {
+    io.Directory _dir;
+    if (platform.isAndroid) {
+      _dir = await getExternalStorageDirectory();
+    } else if (platform.isIOS) {
+      _dir = await getApplicationDocumentsDirectory();
+    } else {
+      _dir = await getDownloadsDirectory();
+    }
+    return _dir.path;
+  }
+
   Future<bool> _saveFile(String fileName, {@required List<int> binaryData, bool silentErrors = false}) async {
-    if (kIsWeb) {
+    if (platform.isWeb) {
       Uri dataUrl = Uri();
       try {
         // ignore: unnecessary_null_comparison
@@ -260,11 +284,19 @@ class SetupIcon extends ChangeNotifier {
         ..href = dataUrl.toString()
         ..setAttribute('download', fileName)
         ..click();
-      return true;
+      // return true;
+      // } else if (platform.isMobile) {
+      //   await getApplicationDocumentsDirectory().then((_docsDir) => io.File('${_docsDir.path}/$fileName')
+      //     ..createSync()
+      //     ..writeAsBytesSync(binaryData));
+    } else {
+      await _getSaveDirectory.then((_path) async {
+        io.File('$_path/$fileName')
+          ..createSync()
+          ..writeAsBytesSync(binaryData);
+        await Share.shareFiles(['$_path/$fileName'], text: 'Share', mimeTypes: ['application/zip']);
+      });
     }
-    await getDownloadsDirectory().then((_downloadsDir) => io.File('${_downloadsDir.path}/$fileName')
-      ..createSync()
-      ..writeAsBytesSync(binaryData));
     return true;
   }
 
@@ -338,10 +370,12 @@ class SetupIcon extends ChangeNotifier {
     _pwaConfigs[key] = _archive;
   }
 
+  //TODO Check writeToDiskIO on desktops and iOS.
   Future _generatePngIcons(String key, ImageFolder folder) async {
     final img.Image _image = img.decodePng(_icon);
     final IconGenerator _gen = IconGenerator();
-    final List<FileData> _archive = await _gen.generateIcons(_image, folder, writeToDiskIO: !kIsWeb);
+    // final String _pathToTempDir = await _tempDirectory;
+    final List<FileData> _archive = await _gen.generateIcons(_image, folder, writeToDiskIO: false);
     _regularIconFiles[key] = _archive;
     _exportedDoneCount = _exportedDoneCount + 1;
     notifyListeners();
@@ -352,7 +386,8 @@ class SetupIcon extends ChangeNotifier {
     final String _key = _background ? 'bg' : 'fg';
     final img.Image _image = img.decodePng(_background ? _adaptiveBackground : _adaptiveForeground);
     final IconGenerator _gen = IconGenerator();
-    final List<FileData> _archive = await _gen.generateIcons(_image, folder, writeToDiskIO: !kIsWeb);
+    // final String _pathToTempDir = await _tempDirectory;
+    final List<FileData> _archive = await _gen.generateIcons(_image, folder, writeToDiskIO: false);
     _adaptiveIconFiles[_key] = _archive;
     _exportedDoneCount = _exportedDoneCount + 1;
     notifyListeners();
