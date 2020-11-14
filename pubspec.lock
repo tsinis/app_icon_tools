@@ -348,7 +348,7 @@ packages:
     source: hosted
     version: "0.0.1+2"
   path_provider_macos:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: path_provider_macos
       url: "https://pub.dartlang.org"

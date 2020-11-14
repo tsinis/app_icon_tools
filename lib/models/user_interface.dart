@@ -103,7 +103,6 @@ class UserInterface extends ChangeNotifier {
     ..addAll(_langList);
 
   void search(String _query) {
-    //TODO Check Issues with list not being updated.
     _resetFilter();
     if (_query.isNotEmpty) {
       final List<String> _filteredList = [];

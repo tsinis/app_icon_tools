@@ -28,7 +28,8 @@ class UploadFile extends ChangeNotifier {
 
   Future checkSelected({bool background = false, bool foreground = false}) async {
     try {
-      await FilePickerCross.importFromStorage(type: FileTypeCross.custom, fileExtension: expectedFileExtension)
+      //TODO Add condition for type, since custom file extension is not working on some platforms yet.
+      await FilePickerCross.importFromStorage(type: FileTypeCross.image) //fileExtension: expectedFileExtension
           .then<void>((_selectedFile) => _checkFile(_selectedFile, background: background, foreground: foreground));
       // ignore: avoid_catches_without_on_clauses
     } catch (_error) {

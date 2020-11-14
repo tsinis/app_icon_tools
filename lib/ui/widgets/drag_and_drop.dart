@@ -50,7 +50,7 @@ class DragAndDrop extends StatelessWidget {
             : Stack(
                 alignment: Alignment.center,
                 children: [
-                  if (kIsWeb) //TODO Check latest working version of drag and drop in Chrome.
+                  if (kIsWeb)
                     DropzoneView(
                       operation: DragOperation.copy,
                       cursor: CursorType.pointer,
@@ -143,13 +143,16 @@ class DragAndDrop extends StatelessWidget {
                           message: S.of(context).transparencyiOS,
                           child: Opacity(
                             opacity: 0.5,
-                            child: AutoSizeText.rich(
-                              TextSpan(
-                                  text: 'PPI ⩾ 72, ${S.of(context).noInterlacing}\n',
-                                  children: [TextSpan(text: S.of(context).addBackground)]),
-                              textAlign: TextAlign.center,
-                              maxLines: 2,
-                              style: const TextStyle(fontSize: 10),
+                            child: Tooltip(
+                              message: S.of(context).transparencyiOS,
+                              child: AutoSizeText.rich(
+                                TextSpan(
+                                    text: 'PPI ⩾ 72, ${S.of(context).noInterlacing}\n',
+                                    children: [TextSpan(text: S.of(context).addBackground)]),
+                                textAlign: TextAlign.center,
+                                maxLines: 2,
+                                style: const TextStyle(fontSize: 10),
+                              ),
                             ),
                           ),
                         ),

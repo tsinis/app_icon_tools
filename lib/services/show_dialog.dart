@@ -17,7 +17,7 @@ Future<void> showSettingsDialog(BuildContext context) {
   return showDialog<void>(
     context: context,
     builder: (_dialogContext) {
-      final List<String> _langList = _dialogContext.select((UserInterface ui) => ui.langFilterList);
+      final List<String> _langList = _dialogContext.watch<UserInterface>().langFilterList;
       final String _selectedocale = _dialogContext.select((UserInterface ui) => ui.locale);
       final bool _isDark = _dialogContext.select((UserInterface ui) => ui.isDark) ?? true;
 
