@@ -132,6 +132,7 @@ class _IssuesInfo extends State<IssuesInfo> with SingleTickerProviderStateMixin 
     return (_message.isEmpty)
         ? const SizedBox(width: 28)
         : Tooltip(
+            showDuration: Duration(seconds: 3 * (2 + _iconErrCodes.length + _bgErrCodes.length + _fgErrCodes.length)),
             decoration: BoxDecoration(
               color: Theme.of(context).bottomAppBarColor.withOpacity(0.84),
               borderRadius: const BorderRadius.all(Radius.circular(10)),

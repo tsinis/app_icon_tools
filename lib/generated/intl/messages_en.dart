@@ -59,6 +59,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "save" : MessageLookupByLibrary.simpleMessage("Save"),
     "search" : MessageLookupByLibrary.simpleMessage("Search"),
     "settings" : MessageLookupByLibrary.simpleMessage("Settings"),
+    "share" : MessageLookupByLibrary.simpleMessage("Done! You can share your icons with the world."),
     "storeRequirement" : MessageLookupByLibrary.simpleMessage("Technical requirements. Press for more info."),
     "tooHeavy" : MessageLookupByLibrary.simpleMessage("!! The file size is bigger than the limit. You may have trouble publishing it to app stores."),
     "tooSmall" : MessageLookupByLibrary.simpleMessage("!!! The image is smaller than required, the result Icon can be pixelized during upscaling."),

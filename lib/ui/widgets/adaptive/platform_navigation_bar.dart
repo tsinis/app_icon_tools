@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:platform_info/platform_info.dart';
 import 'package:provider/provider.dart';
 
 import '../../../generated/l10n.dart';
@@ -91,7 +92,7 @@ class _DoneInfo extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 const SizedBox(width: 10),
-                Text(S.of(context).downloadsFolder),
+                Text(platform.isMobile ? S.of(context).share : S.of(context).downloadsFolder),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: SizedBox(

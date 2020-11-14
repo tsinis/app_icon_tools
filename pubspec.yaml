@@ -31,7 +31,7 @@ dependencies:
   local_hero: ^0.1.0
   path_provider: ^1.6.24
   path_provider_macos: ^0.0.4+6
-  # permission_handler: ^5.0.1+1
+  # permission_handler: any
   platform_info: ^2.1.0
   provider: any
   shared_preferences: ^0.5.12+4

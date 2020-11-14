@@ -524,6 +524,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Done! You can share your icons with the world.`
+  String get share {
+    return Intl.message(
+      'Done! You can share your icons with the world.',
+      name: 'share',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

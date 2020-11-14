@@ -219,11 +219,13 @@ class SetupIcon extends ChangeNotifier {
               }
               // print('Images: ${_images.length}');
               final List<int> _data = _gen.generateArchive(_files);
-              await _saveFile('icons.zip', binaryData: _data).whenComplete(() {
-                _countDown = 0;
-                _exportedDoneCount = 100;
-                _loading = false;
-                _showSnackInfo();
+              await _saveFile('icons.zip', binaryData: _data).then((_exported) {
+                if (_exported) {
+                  _countDown = 0;
+                  _exportedDoneCount = 100;
+                  _loading = false;
+                  _showSnackInfo();
+                }
               });
             }));
   }
@@ -266,7 +268,7 @@ class SetupIcon extends ChangeNotifier {
   }
 
   Future<bool> _saveFile(String fileName, {@required List<int> binaryData, bool silentErrors = false}) async {
-    if (platform.isWeb) {
+    if (kIsWeb) {
       Uri dataUrl = Uri();
       try {
         // ignore: unnecessary_null_comparison
@@ -276,7 +278,7 @@ class SetupIcon extends ChangeNotifier {
         // ignore: avoid_catches_without_on_clauses
       } catch (e) {
         if (!silentErrors) {
-          throw Exception('Error Creating File Data: $e');
+          throw Exception('Error Creating File Data on Web: $e');
         }
         return false;
       }
@@ -284,18 +286,21 @@ class SetupIcon extends ChangeNotifier {
         ..href = dataUrl.toString()
         ..setAttribute('download', fileName)
         ..click();
-      // return true;
-      // } else if (platform.isMobile) {
-      //   await getApplicationDocumentsDirectory().then((_docsDir) => io.File('${_docsDir.path}/$fileName')
-      //     ..createSync()
-      //     ..writeAsBytesSync(binaryData));
     } else {
-      await _getSaveDirectory.then((_path) async {
-        io.File('$_path/$fileName')
-          ..createSync()
-          ..writeAsBytesSync(binaryData);
-        await Share.shareFiles(['$_path/$fileName'], text: 'Share', mimeTypes: ['application/zip']);
-      });
+      try {
+        await _getSaveDirectory.then((_path) async {
+          io.File('$_path/$fileName')
+            ..createSync()
+            ..writeAsBytesSync(binaryData);
+          await Share.shareFiles(['$_path/$fileName'], mimeTypes: ['application/zip']);
+        });
+        // ignore: avoid_catches_without_on_clauses
+      } catch (e) {
+        if (!silentErrors) {
+          throw Exception('Error Creating File Data on Device: $e');
+        }
+        return false;
+      }
     }
     return true;
   }

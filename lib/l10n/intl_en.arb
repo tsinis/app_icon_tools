@@ -47,5 +47,6 @@
     "transparencyAdaptive": "🛈 The Foreground have no Alpha Channel (transparency). In this case, the background image will not be visible at all.",
     "search": "Search",
     "findLang": "Find your language here…",
-    "downloadsFolder": "Done! Icons ZIP is in the Downloads folder."
+    "downloadsFolder": "Done! Icons ZIP is in the Downloads folder.",
+    "share" : "Done! You can share your icons with the world."
     }
