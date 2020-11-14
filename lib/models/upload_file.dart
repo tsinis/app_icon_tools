@@ -26,9 +26,16 @@ class UploadFile extends ChangeNotifier {
 
   bool get isValidFile => _isValidFile;
 
-  Future checkSelected({bool background = false, bool foreground = false}) async =>
+  Future checkSelected({bool background = false, bool foreground = false}) async {
+    try {
       await FilePickerCross.importFromStorage(type: FileTypeCross.custom, fileExtension: expectedFileExtension)
           .then<void>((_selectedFile) => _checkFile(_selectedFile, background: background, foreground: foreground));
+      // ignore: avoid_catches_without_on_clauses
+    } catch (_error) {
+      // ignore: avoid_print
+      print('Seems like User have cancled selection: $_error');
+    }
+  }
 
   Future checkDropped(dynamic _droppedFile, {bool background = false, bool foreground = false}) async =>
       await _checkFile(_droppedFile, background: background, foreground: foreground);

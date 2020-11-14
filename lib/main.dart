@@ -1,7 +1,7 @@
+import 'package:desktop_window/desktop_window.dart';
 import 'package:flutter/widgets.dart';
 import 'package:platform_info/platform_info.dart';
 import 'package:provider/provider.dart';
-import 'package:window_size/window_size.dart';
 
 import 'locator.dart';
 import 'models/setup_icon.dart';
@@ -11,14 +11,16 @@ import 'ui/app_appearance.dart';
 
 //TODO Add accesibility and semantic labels.
 //TODO Migrate to null-safety when it's become stable.
-void main() {
+Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (!platform.isWeb && platform.isDesktop) {
-    setWindowTitle('Flutter Launcher Icon Preview');
-    setWindowMinSize(const Size(320, 840));
+    await DesktopWindow.setWindowSize(const Size(420, 840));
+    await DesktopWindow.setMinWindowSize(const Size(320, 840));
   }
+  // ignore: unawaited_futures
   UserInterface.setupUI();
-  setupLocator();
+  Locators.setupLocator();
+
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider<UserInterface>(create: (_) => UserInterface()),
     ChangeNotifierProvider<UploadFile>(create: (_) => UploadFile()),

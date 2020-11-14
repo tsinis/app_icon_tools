@@ -7,6 +7,7 @@
     "settings": "Settings",
     "dark": "Dark Mode",
     "dragAndDropHere": "Drop your image here or",
+    "select": "Please select your image:",
     "wrongFile": "File doesn't meet the Requirements",
     "browse": "Browse",
     "iconAttributes": "Launcher Icon Requirements:",

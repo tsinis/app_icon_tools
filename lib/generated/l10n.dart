@@ -115,6 +115,16 @@ class S {
     );
   }
 
+  /// `Please select your image:`
+  String get select {
+    return Intl.message(
+      'Please select your image:',
+      name: 'select',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `File doesn't meet the Requirements`
   String get wrongFile {
     return Intl.message(

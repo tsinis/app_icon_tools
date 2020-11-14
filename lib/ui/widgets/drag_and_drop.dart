@@ -68,8 +68,12 @@ class DragAndDrop extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        AutoSizeText(_isValidFile ? S.of(context).dragAndDropHere : S.of(context).wrongFile,
-                            maxLines: 1, minFontSize: 17),
+                        AutoSizeText(
+                            _isValidFile
+                                ? (kIsWeb ? S.of(context).dragAndDropHere : S.of(context).select)
+                                : S.of(context).wrongFile,
+                            maxLines: 1,
+                            minFontSize: 17),
                         AdaptiveButton(
                             text: S.of(context).browse,
                             onPressed: () async => await context
@@ -126,9 +130,11 @@ class DragAndDrop extends StatelessWidget {
                                     DataCell(Tooltip(
                                         message: (_isAdaptive ? 'Google Play' : 'App Store') +
                                             S.of(context).storeRequirement,
-                                        child: Text(_isAdaptive
-                                            ? '$_minAdaptiveSize×$_minAdaptiveSize px'
-                                            : '$_minIconSize×$_minIconSize px')))
+                                        child: Text(
+                                            _isAdaptive
+                                                ? '$_minAdaptiveSize×$_minAdaptiveSize px'
+                                                : '$_minIconSize×$_minIconSize px',
+                                            maxLines: 1)))
                                   ])
                             ],
                           ),

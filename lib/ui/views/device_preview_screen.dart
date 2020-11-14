@@ -26,49 +26,52 @@ class DeviceScreen extends StatelessWidget {
         children: [
           const SizedBox(height: 60),
           Expanded(
-            child: FittedBox(
-              fit: BoxFit.contain,
-              child: GestureDetector(
-                onTap: () => context.read<SetupIcon>().setupScreen(),
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    _SVG(_selectedPlatform),
-                    SizedBox(
-                      width: (_id == 1 || _id == 2)
-                          ? 105
-                          : (_id > 2)
-                              ? (_id == 3)
-                                  ? 36
-                                  : 22
-                              : 40,
-                      height: (_id > 2)
-                          ? (_id == 3)
-                              ? 36
-                              : 22
-                          : 40,
-                      child: Align(
-                        alignment: Alignment.centerRight,
-                        child: (_id == 1)
-                            ? const AspectRatio(
-                                aspectRatio: 1,
-                                child: ClipOval(child: Hero(tag: 'adaptive', child: AdaptiveIcon(onDevice: true))))
-                            : Hero(
-                                tag: 'regular',
-                                child: LocalHeroScope(
-                                  duration: const Duration(seconds: 1),
-                                  curve: Curves.elasticOut,
-                                  child: LocalHero(
-                                    tag: 'local',
-                                    child: RegularIcon(
-                                        cornerRadius: platformList[_selectedPlatform].cornerRadius,
-                                        supportTransparency: _id != 2),
+            child: InteractiveViewer(
+              maxScale: 2,
+              child: FittedBox(
+                fit: BoxFit.contain,
+                child: GestureDetector(
+                  onTap: () => context.read<SetupIcon>().setupScreen(),
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      _SVG(_selectedPlatform),
+                      SizedBox(
+                        width: (_id == 1 || _id == 2)
+                            ? 105
+                            : (_id > 2)
+                                ? (_id == 3)
+                                    ? 36
+                                    : 22
+                                : 40,
+                        height: (_id > 2)
+                            ? (_id == 3)
+                                ? 36
+                                : 22
+                            : 40,
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: (_id == 1)
+                              ? const AspectRatio(
+                                  aspectRatio: 1,
+                                  child: ClipOval(child: Hero(tag: 'adaptive', child: AdaptiveIcon(onDevice: true))))
+                              : Hero(
+                                  tag: 'regular',
+                                  child: LocalHeroScope(
+                                    duration: const Duration(seconds: 1),
+                                    curve: Curves.elasticOut,
+                                    child: LocalHero(
+                                      tag: 'local',
+                                      child: RegularIcon(
+                                          cornerRadius: platformList[_selectedPlatform].cornerRadius,
+                                          supportTransparency: _id != 2),
+                                    ),
                                   ),
                                 ),
-                              ),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),

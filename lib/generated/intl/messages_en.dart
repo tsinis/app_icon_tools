@@ -58,6 +58,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "removeForeground" : MessageLookupByLibrary.simpleMessage("Remove Foreground"),
     "save" : MessageLookupByLibrary.simpleMessage("Save"),
     "search" : MessageLookupByLibrary.simpleMessage("Search"),
+    "select" : MessageLookupByLibrary.simpleMessage("Please select your image:"),
     "settings" : MessageLookupByLibrary.simpleMessage("Settings"),
     "share" : MessageLookupByLibrary.simpleMessage("Done! You can share your icons with the world."),
     "storeRequirement" : MessageLookupByLibrary.simpleMessage("Technical requirements. Press for more info."),

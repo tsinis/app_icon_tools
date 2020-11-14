@@ -37,7 +37,7 @@ Future<void> showSettingsDialog(BuildContext context) {
                 label: S.of(context).search),
             SizedBox(
                 width: 270,
-                height: 300,
+                height: 200,
                 child: _ScrollBar(
                   ListView.separated(
                       separatorBuilder: (_, __) => const AdaptiveDivider(),

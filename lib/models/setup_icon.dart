@@ -292,7 +292,9 @@ class SetupIcon extends ChangeNotifier {
           io.File('$_path/$fileName')
             ..createSync()
             ..writeAsBytesSync(binaryData);
-          await Share.shareFiles(['$_path/$fileName'], mimeTypes: ['application/zip']);
+          if (platform.isMobile) {
+            await Share.shareFiles(['$_path/$fileName'], mimeTypes: ['application/zip']);
+          }
         });
         // ignore: avoid_catches_without_on_clauses
       } catch (e) {
@@ -375,12 +377,12 @@ class SetupIcon extends ChangeNotifier {
     _pwaConfigs[key] = _archive;
   }
 
-  //TODO Check writeToDiskIO on desktops and iOS.
   Future _generatePngIcons(String key, ImageFolder folder) async {
     final img.Image _image = img.decodePng(_icon);
     final IconGenerator _gen = IconGenerator();
     // final String _pathToTempDir = await _tempDirectory;
-    final List<FileData> _archive = await _gen.generateIcons(_image, folder, writeToDiskIO: false);
+    final List<FileData> _archive =
+        await _gen.generateIcons(_image, folder, writeToDiskIO: !platform.isWeb && platform.isDesktop);
     _regularIconFiles[key] = _archive;
     _exportedDoneCount = _exportedDoneCount + 1;
     notifyListeners();
@@ -392,7 +394,8 @@ class SetupIcon extends ChangeNotifier {
     final img.Image _image = img.decodePng(_background ? _adaptiveBackground : _adaptiveForeground);
     final IconGenerator _gen = IconGenerator();
     // final String _pathToTempDir = await _tempDirectory;
-    final List<FileData> _archive = await _gen.generateIcons(_image, folder, writeToDiskIO: false);
+    final List<FileData> _archive =
+        await _gen.generateIcons(_image, folder, writeToDiskIO: !platform.isWeb && platform.isDesktop);
     _adaptiveIconFiles[_key] = _archive;
     _exportedDoneCount = _exportedDoneCount + 1;
     notifyListeners();
