@@ -8,6 +8,7 @@ import 'package:file_picker_cross/file_picker_cross.dart';
 import 'package:flutter/widgets.dart';
 import 'package:universal_html/prefer_universal/html.dart';
 
+// import '../generated/l10n.dart'; //TODO Add Error Strings instead of Codes.
 import '../locator.dart';
 import '../services/navigation_service.dart';
 import '../services/router.dart';
@@ -16,8 +17,8 @@ class UploadFile extends ChangeNotifier {
   static const int minIconSize = 1024;
   static const int minAdaptiveSize = 432;
   static const String expectedFileExtension = 'png';
+  static const FileTypeCross _fileType = kIsWeb ? FileTypeCross.image : FileTypeCross.custom;
   Uint8List _recivedIcon = Uint8List(0), _recivedForeground, _recivedBackground;
-
   Uint8List get recivedIcon => _recivedIcon;
   Uint8List get recivedForeground => _recivedForeground;
   Uint8List get recivedBackground => _recivedBackground;
@@ -28,8 +29,8 @@ class UploadFile extends ChangeNotifier {
 
   Future checkSelected({bool background = false, bool foreground = false}) async {
     try {
-      //TODO Add condition for type, since custom file extension is not working on some platforms yet.
-      await FilePickerCross.importFromStorage(type: FileTypeCross.image) //fileExtension: expectedFileExtension
+      //TODO Check condition for type, since custom file extension is not working on some platforms yet.
+      await FilePickerCross.importFromStorage(type: _fileType, fileExtension: expectedFileExtension)
           .then<void>((_selectedFile) => _checkFile(_selectedFile, background: background, foreground: foreground));
       // ignore: avoid_catches_without_on_clauses
     } catch (_error) {

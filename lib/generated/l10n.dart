@@ -235,6 +235,56 @@ class S {
     );
   }
 
+  /// `Back`
+  String get backButton {
+    return Intl.message(
+      'Back',
+      name: 'backButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Export icons as ZIP archive`
+  String get saveAsZip {
+    return Intl.message(
+      'Export icons as ZIP archive',
+      name: 'saveAsZip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `About this app`
+  String get about {
+    return Intl.message(
+      'About this app',
+      name: 'about',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `UI Settings`
+  String get appSettings {
+    return Intl.message(
+      'UI Settings',
+      name: 'appSettings',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose platforms for export`
+  String get choosePlatforms {
+    return Intl.message(
+      'Choose platforms for export',
+      name: 'choosePlatforms',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Preview possible shapes`
   String get previewShapes {
     return Intl.message(
@@ -252,6 +302,26 @@ class S {
       name: 'pwaColor',
       desc: '',
       args: [],
+    );
+  }
+
+  /// `Icon for OS:`
+  String get operatingSystem {
+    return Intl.message(
+      'Icon for OS:',
+      name: 'operatingSystem',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Zoom to check {platform} icon`
+  String lookOnDevice(Object platform) {
+    return Intl.message(
+      'Zoom to check $platform icon',
+      name: 'lookOnDevice',
+      desc: '',
+      args: [platform],
     );
   }
 

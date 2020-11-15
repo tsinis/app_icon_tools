@@ -146,7 +146,7 @@ class _IssuesInfo extends State<IssuesInfo> with SingleTickerProviderStateMixin 
                   UserInterface.isApple
                       ? CupertinoIcons.exclamationmark_triangle
                       : CommunityMaterialIcons.alert_outline,
-                  color: HSLColor.fromAHSL(1, _hue, 1, 0.5).toColor()),
+                  color: HSLColor.fromAHSL(1, _hue, 1, 0.4).toColor()),
             ),
           );
   }

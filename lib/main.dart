@@ -14,8 +14,9 @@ import 'ui/app_appearance.dart';
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (!platform.isWeb && platform.isDesktop) {
-    await DesktopWindow.setWindowSize(const Size(420, 840));
+    //TODO Check on Windows and Linux.
     await DesktopWindow.setMinWindowSize(const Size(320, 840));
+    await DesktopWindow.setWindowSize(const Size(420, 840));
   }
   // ignore: unawaited_futures
   UserInterface.setupUI();

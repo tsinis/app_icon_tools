@@ -6,11 +6,10 @@ import 'package:platform_info/platform_info.dart';
 import 'package:provider/provider.dart';
 
 import '../../../generated/l10n.dart';
-
+import '../../../models/constants/platforms_list.dart';
 import '../../../models/setup_icon.dart';
 import '../../../models/user_interface.dart';
 import '../../platform_icons/icons_screen.dart';
-import '../../platform_icons/platforms_list.dart';
 
 class AdaptiveNavgationBar extends StatelessWidget {
   const AdaptiveNavgationBar({Key key}) : super(key: key);
@@ -37,12 +36,14 @@ class AdaptiveNavgationBar extends StatelessWidget {
                       padding: const EdgeInsets.all(5),
                       children: {
                         for (IconPreview platform in platformList)
-                          platformList.indexOf(platform): _isSmallScreen
-                              ? Icon(platform.icon)
-                              : Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [Icon(platform.icon), const SizedBox(width: 5), Text(platform.name)])
+                          platformList.indexOf(platform): Tooltip(
+                              message: '${S.of(context).operatingSystem} ${platform.name}',
+                              child: _isSmallScreen
+                                  ? Icon(platform.icon)
+                                  : Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [Icon(platform.icon), const SizedBox(width: 5), Text(platform.name)]))
                       },
                     )
                   : ClipRRect(

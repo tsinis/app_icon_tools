@@ -19,14 +19,20 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
+  static m0(platform) => "Zoom to check ${platform} icon";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
+    "about" : MessageLookupByLibrary.simpleMessage("About this app"),
     "adaptiveBackground" : MessageLookupByLibrary.simpleMessage("Adaptive Background:"),
     "adaptiveForeground" : MessageLookupByLibrary.simpleMessage("Adaptive Foreground:"),
     "addBackground" : MessageLookupByLibrary.simpleMessage("Adaptive icon can be set up in the next step."),
     "appName" : MessageLookupByLibrary.simpleMessage("Launcher Icons Preview"),
+    "appSettings" : MessageLookupByLibrary.simpleMessage("UI Settings"),
+    "backButton" : MessageLookupByLibrary.simpleMessage("Back"),
     "browse" : MessageLookupByLibrary.simpleMessage("Browse"),
     "cancel" : MessageLookupByLibrary.simpleMessage("Cancel"),
+    "choosePlatforms" : MessageLookupByLibrary.simpleMessage("Choose platforms for export"),
     "colorAsBg" : MessageLookupByLibrary.simpleMessage("Background as color"),
     "colorProfile" : MessageLookupByLibrary.simpleMessage("Color profile:"),
     "dark" : MessageLookupByLibrary.simpleMessage("Dark Mode"),
@@ -45,10 +51,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "isTransparent" : MessageLookupByLibrary.simpleMessage("🛈 The image have Alpha Channel (transparency). "),
     "locale" : MessageLookupByLibrary.simpleMessage("en"),
     "longPress" : MessageLookupByLibrary.simpleMessage("Long press to remove!"),
+    "lookOnDevice" : m0,
     "maxKB" : MessageLookupByLibrary.simpleMessage("Max. file size:"),
     "noBackground" : MessageLookupByLibrary.simpleMessage("Please select background image first."),
     "noInterlacing" : MessageLookupByLibrary.simpleMessage("w/o interlacing."),
     "notSqaure" : MessageLookupByLibrary.simpleMessage("! The image is not square. Icon can be deformed, or the edges of the trim can be visible."),
+    "operatingSystem" : MessageLookupByLibrary.simpleMessage("Icon for OS:"),
     "parallax" : MessageLookupByLibrary.simpleMessage("Preview Adaptive Icon parallax effect."),
     "previewShapes" : MessageLookupByLibrary.simpleMessage("Preview possible shapes"),
     "pwaColor" : MessageLookupByLibrary.simpleMessage("Select PWA Background color"),
@@ -57,6 +65,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "removeColor" : MessageLookupByLibrary.simpleMessage("Remove Color"),
     "removeForeground" : MessageLookupByLibrary.simpleMessage("Remove Foreground"),
     "save" : MessageLookupByLibrary.simpleMessage("Save"),
+    "saveAsZip" : MessageLookupByLibrary.simpleMessage("Export icons as ZIP archive"),
     "search" : MessageLookupByLibrary.simpleMessage("Search"),
     "select" : MessageLookupByLibrary.simpleMessage("Please select your image:"),
     "settings" : MessageLookupByLibrary.simpleMessage("Settings"),

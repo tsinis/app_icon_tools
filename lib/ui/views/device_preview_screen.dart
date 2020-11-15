@@ -6,10 +6,11 @@ import 'package:local_hero/local_hero.dart';
 import 'package:provider/provider.dart';
 import 'package:websafe_svg/websafe_svg.dart';
 
+import '../../generated/l10n.dart';
+import '../../models/constants/platforms_list.dart';
 import '../../models/setup_icon.dart';
 import '../platform_icons/icons_types/apdative_icon.dart';
 import '../platform_icons/icons_types/regular_icon.dart';
-import '../platform_icons/platforms_list.dart';
 import '../widgets/adaptive/platform_navigation_bar.dart';
 import '../widgets/adaptive/scaffold_app_bar.dart';
 
@@ -88,9 +89,13 @@ class _SVG extends StatelessWidget {
   const _SVG(this._selectedPlatform, {Key key}) : super(key: key);
 
   final int _selectedPlatform;
-  String get _svgPath => 'svg/${platformList[_selectedPlatform].name}.svg'.replaceAll(' ', '');
+  String get _platformName => platformList[_selectedPlatform].name;
+  String get _svgPath => 'svg/$_platformName.svg'.replaceAll(' ', '');
 
   @override
-  Widget build(BuildContext context) =>
-      kIsWeb ? WebsafeSvg.asset(_svgPath, height: 640) : SvgPicture.asset('assets/$_svgPath', height: 640);
+  Widget build(BuildContext context) => Tooltip(
+      waitDuration: const Duration(seconds: 2),
+      showDuration: const Duration(seconds: 2),
+      message: S.of(context).lookOnDevice(_platformName),
+      child: kIsWeb ? WebsafeSvg.asset(_svgPath, height: 640) : SvgPicture.asset('assets/$_svgPath', height: 640));
 }

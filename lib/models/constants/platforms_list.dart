@@ -1,6 +1,6 @@
-import 'icons_screen.dart';
+import '../../ui/platform_icons/icons_screen.dart';
 
-const List<IconPreview> platformList = [
+const List<IconPreview> _platformList = [
   IconPreview.oldAndroid(),
   IconPreview.newAndroid(),
   IconPreview.iOS(),
@@ -11,3 +11,4 @@ const List<IconPreview> platformList = [
   // IconPreview.linux(),
   // IconPreview.fuchsiaOS()
 ];
+List<IconPreview> get platformList => List.from(_platformList)..sort((a, b) => a.platformID.compareTo(b.platformID));

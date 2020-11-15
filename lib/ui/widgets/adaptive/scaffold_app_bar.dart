@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import '../../../generated/l10n.dart';
 import '../../../models/setup_icon.dart';
 import '../../../models/user_interface.dart';
-import '../../../services/show_dialog.dart';
+import '../../../services/dailogs_service.dart';
 import '../issues_info.dart';
 
 class AdaptiveScaffold extends StatelessWidget {
@@ -17,8 +17,8 @@ class AdaptiveScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool _loading = context.select((SetupIcon icon) => icon.loading);
-    final int _exportProgress = context.select((SetupIcon icon) => icon.exportProgress.round());
+    final bool _loading = context.select((SetupIcon icon) => icon.loading) ?? false;
+    final int _exportProgress = context.select((SetupIcon icon) => icon.exportProgress.round()) ?? 0;
     // final bool _loading = _exportProgress > 0;
     final bool _isDark = context.select((UserInterface ui) => ui.isDark) ?? true;
     final Color _exportButtonColor = (_isDark ? Colors.pinkAccent : Colors.tealAccent[400]) ?? const Color(0xFF1DE9B6);
@@ -30,51 +30,65 @@ class AdaptiveScaffold extends StatelessWidget {
               middle: uploadScreen
                   ? Text(S.of(context).appName)
                   : ButtonBar(
+                      buttonPadding: const EdgeInsets.symmetric(horizontal: 11),
                       alignment: MainAxisAlignment.center,
                       children: [
                         SizedBox(width: _isWideScreen ? 44 : 14),
                         const IssuesInfo(),
                         SizedBox(width: _isWideScreen ? 14 : 4),
                         if (_isWideScreen)
-                          CupertinoButton(
-                              disabledColor: Colors.transparent,
-                              padding: EdgeInsets.symmetric(horizontal: (_loading && !kIsWeb) ? 10 : 64),
-                              onPressed: _loading ? null : () => context.read<SetupIcon>().archive(),
-                              color: _exportButtonColor,
-                              child: _loading
-                                  ? Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                          Text(
-                                            kIsWeb ? S.of(context).wait : '${S.of(context).wait} $_exportProgress%',
-                                            // style: const TextStyle(color: CupertinoColors.black)
-                                          ),
-                                          if (!kIsWeb)
-                                            const Padding(
-                                                padding: EdgeInsets.only(left: 16), child: CupertinoActivityIndicator())
-                                        ])
-                                  : Text(S.of(context).export, style: const TextStyle(color: CupertinoColors.black)))
+                          Tooltip(
+                            message: S.of(context).saveAsZip,
+                            child: CupertinoButton(
+                                disabledColor: Colors.transparent,
+                                padding: EdgeInsets.symmetric(horizontal: (_loading && !kIsWeb) ? 10 : 64),
+                                onPressed: _loading ? null : () => context.read<SetupIcon>().archive(),
+                                color: _exportButtonColor,
+                                child: _loading
+                                    ? Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                            Text(
+                                              kIsWeb ? S.of(context).wait : '${S.of(context).wait} $_exportProgress%',
+                                              // style: const TextStyle(color: CupertinoColors.black)
+                                            ),
+                                            if (!kIsWeb)
+                                              const Padding(
+                                                  padding: EdgeInsets.only(left: 16),
+                                                  child: CupertinoActivityIndicator())
+                                          ])
+                                    : Text(S.of(context).export, style: const TextStyle(color: CupertinoColors.black))),
+                          )
                         else
                           GestureDetector(
                               onTap: () => context.read<SetupIcon>().archive(),
                               child: _loading
                                   ? const CupertinoActivityIndicator()
-                                  : Icon(CupertinoIcons.tray_arrow_down, color: _exportButtonColor)),
+                                  : Tooltip(
+                                      message: S.of(context).saveAsZip,
+                                      child: Icon(CupertinoIcons.tray_arrow_down, color: _exportButtonColor))),
                         SizedBox(width: _isWideScreen ? 10 : 3),
                         GestureDetector(
                             onTap: () => showPlatformsDialog(context),
-                            child: const Icon(CupertinoIcons.ellipsis_circle)),
+                            child: Tooltip(
+                                message: S.of(context).choosePlatforms,
+                                child: const Icon(CupertinoIcons.ellipsis_circle))),
                       ],
                     ),
               trailing: ButtonBar(
+                buttonPadding: const EdgeInsets.symmetric(horizontal: 10),
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   GestureDetector(
-                      onTap: () => showAbout(context), child: const Icon(CupertinoIcons.info_circle, size: 26)),
+                      onTap: () => showAbout(context),
+                      child: Tooltip(
+                          message: S.of(context).about, child: const Icon(CupertinoIcons.info_circle, size: 26))),
                   // const SizedBox(width: 2),
                   GestureDetector(
-                      onTap: () => showSettingsDialog(context), child: const Icon(CupertinoIcons.gear, size: 26))
+                      onTap: () => showSettingsDialog(context),
+                      child:
+                          Tooltip(message: S.of(context).appSettings, child: const Icon(CupertinoIcons.gear, size: 26)))
                 ],
               ),
               leading: uploadScreen
@@ -83,7 +97,9 @@ class AdaptiveScaffold extends StatelessWidget {
                       onTap: () => deviceScreen
                           ? context.read<SetupIcon>().setupScreen()
                           : context.read<SetupIcon>().initialScreen(),
-                      child: Icon(deviceScreen ? CupertinoIcons.back : CupertinoIcons.house, size: 24)),
+                      child: Tooltip(
+                          message: S.of(context).backButton,
+                          child: Icon(deviceScreen ? CupertinoIcons.back : CupertinoIcons.home, size: 24))),
             ),
             child: SafeArea(child: child))
         : Scaffold(
@@ -92,55 +108,71 @@ class AdaptiveScaffold extends StatelessWidget {
                 title: uploadScreen
                     ? Text(S.of(context).appName)
                     : ButtonBar(
+                        buttonPadding: const EdgeInsets.symmetric(horizontal: 7),
                         alignment: MainAxisAlignment.center,
                         children: [
                           const IssuesInfo(),
                           SizedBox(width: _isWideScreen ? 10 : 1),
                           if (_isWideScreen)
-                            MaterialButton(
-                                minWidth: 220,
-                                // colorBrightness: Brightness.light,
-                                onPressed: _loading ? null : () => context.read<SetupIcon>().archive(),
-                                color: _exportButtonColor,
-                                child: Padding(
-                                    padding: const EdgeInsets.all(10),
-                                    child: _loading
-                                        ? Row(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                                Text(kIsWeb
-                                                    ? S.of(context).wait.toUpperCase()
-                                                    : '${S.of(context).wait.toUpperCase()} $_exportProgress%'),
-                                                if (!kIsWeb)
-                                                  const Padding(
-                                                      padding: EdgeInsets.only(left: 16),
-                                                      child: SizedBox(
-                                                          height: 16,
-                                                          width: 16,
-                                                          child: CircularProgressIndicator(strokeWidth: 2)))
-                                              ])
-                                        : Text(S.of(context).export.toUpperCase())))
+                            Tooltip(
+                              message: S.of(context).saveAsZip,
+                              child: MaterialButton(
+                                  minWidth: 220,
+                                  // colorBrightness: Brightness.light,
+                                  onPressed: _loading ? null : () => context.read<SetupIcon>().archive(),
+                                  color: _exportButtonColor,
+                                  child: Padding(
+                                      padding: const EdgeInsets.all(10),
+                                      child: _loading
+                                          ? Row(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                  Text(kIsWeb
+                                                      ? S.of(context).wait.toUpperCase()
+                                                      : '${S.of(context).wait.toUpperCase()} $_exportProgress%'),
+                                                  if (!kIsWeb)
+                                                    const Padding(
+                                                        padding: EdgeInsets.only(left: 16),
+                                                        child: SizedBox(
+                                                            height: 16,
+                                                            width: 16,
+                                                            child: CircularProgressIndicator(strokeWidth: 2)))
+                                                ])
+                                          : Text(S.of(context).export.toUpperCase()))),
+                            )
                           else
                             _loading
-                                ? const CircularProgressIndicator()
+                                ? const SizedBox(
+                                    height: 16, width: 16, child: CircularProgressIndicator(strokeWidth: 2))
                                 : IconButton(
+                                    tooltip: S.of(context).saveAsZip,
                                     icon: Icon(Icons.download_outlined, color: _exportButtonColor),
                                     onPressed: () => context.read<SetupIcon>().archive()),
-                          IconButton(icon: const Icon(Icons.menu), onPressed: () => showPlatformsDialog(context))
+                          IconButton(
+                              tooltip: S.of(context).choosePlatforms,
+                              icon: const Icon(Icons.menu),
+                              onPressed: () => showPlatformsDialog(context))
                         ],
                       ),
                 actions: <Widget>[
-                  IconButton(icon: const Icon(Icons.info_outline), onPressed: () => showAbout(context)),
+                  IconButton(
+                      tooltip: S.of(context).about,
+                      icon: const Icon(Icons.info_outline),
+                      onPressed: () => showAbout(context)),
                   Padding(
-                    padding: const EdgeInsets.only(right: 6),
-                    child: IconButton(icon: const Icon(Icons.settings), onPressed: () => showSettingsDialog(context)),
+                    padding: const EdgeInsets.symmetric(horizontal: 6),
+                    child: IconButton(
+                        tooltip: S.of(context).appSettings,
+                        icon: const Icon(Icons.settings),
+                        onPressed: () => showSettingsDialog(context)),
                   )
                 ],
                 leading: uploadScreen
                     ? const SizedBox(width: 24)
                     : IconButton(
-                        icon: Icon(deviceScreen ? Icons.arrow_back : Icons.home),
+                        tooltip: S.of(context).backButton,
+                        icon: Icon(deviceScreen ? Icons.arrow_back : Icons.home_outlined),
                         onPressed: () => deviceScreen
                             ? context.read<SetupIcon>().setupScreen()
                             : context.read<SetupIcon>().initialScreen())),
