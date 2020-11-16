@@ -41,7 +41,7 @@ class UserInterface extends ChangeNotifier {
     }
   }
 
-  static const List<String> _googleLng = ['de', 'en', 'es', 'fr', 'id', 'jp', 'ko', 'pt', 'ru', 'th', 'tr', 'vi', 'zh'];
+  static const Set<String> _googleLng = {'de', 'en', 'es', 'fr', 'id', 'jp', 'ko', 'pt', 'ru', 'th', 'tr', 'vi', 'zh'};
 
   String get locale => _locale;
 

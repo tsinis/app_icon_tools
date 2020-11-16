@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io' as io;
+import 'dart:math' show max;
 import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
@@ -16,6 +17,7 @@ import '../extensions/image_resizer_package/constants/android_regular.dart';
 import '../extensions/image_resizer_package/constants/web.dart';
 import '../extensions/image_resizer_package/pwa.dart';
 import '../extensions/image_resizer_package/windows.dart';
+import '../generated/l10n.dart';
 import '../locator.dart';
 import '../services/navigation_service.dart';
 import '../services/router.dart';
@@ -49,16 +51,13 @@ class SetupIcon extends ChangeNotifier {
   Uint8List get regularIcon => _icon;
   set regularIcon(Uint8List _uploadedPng) {
     if (_uploadedPng != _icon && _uploadedPng != null) {
-      // if (_icon.isNotEmpty) {
-      //   _icon.clear();
-      // }
       _icon = _uploadedPng;
       _regularIconFiles.clear();
       _adaptiveIconFiles.clear();
       _pwaConfigs.clear();
       _xmlConfigs.clear();
-      _bgErrCodes.clear();
-      _fgErrCodes.clear();
+      _bgIssues.clear();
+      _fgIssues.clear();
       notifyListeners();
     }
   }
@@ -106,16 +105,13 @@ class SetupIcon extends ChangeNotifier {
   bool get haveAdaptiveBackground => _adaptiveBackground != null;
   void removeAdaptiveBackground() {
     _adaptiveBackground = null;
-    _bgErrCodes.clear();
+    _bgIssues.clear();
     notifyListeners();
   }
 
   Uint8List get adaptiveForeground => _adaptiveForeground;
   set adaptiveForeground(Uint8List _uploadedPng) {
     if (_uploadedPng != _adaptiveForeground && _uploadedPng != null) {
-      // if (_adaptiveForeground.isNotEmpty) {
-      //   _adaptiveForeground.clear();
-      // }
       _adaptiveForeground = _uploadedPng;
       _adaptiveIconFiles.clear();
       notifyListeners();
@@ -125,7 +121,7 @@ class SetupIcon extends ChangeNotifier {
   bool get haveAdaptiveForeground => _adaptiveForeground != null;
   void removeadaptiveForeground() {
     _adaptiveForeground = null;
-    _fgErrCodes.clear();
+    _fgIssues.clear();
     notifyListeners();
   }
 
@@ -133,35 +129,98 @@ class SetupIcon extends ChangeNotifier {
       exportAdaptive &&
       (haveAdaptiveForeground && ((haveAdaptiveBackground && !preferColorBg) || (haveAdaptiveColor && preferColorBg)));
 
-  final Map<int, bool> _fgErrCodes = {}, _bgErrCodes = {}, _iconErrCodes = {};
-  List<int> get listFgErrCodes => _fgErrCodes.keys.where((key) => _fgErrCodes[key] ?? false).toList();
+  final Set<String> _fgIssues = {}, _bgIssues = {}, _iconIssues = {};
 
-// ignore: avoid_setters_without_getters
-  set foregroundErrorCodes(Map<int, bool> _issuesMap) {
-    if (_fgErrCodes != _issuesMap) {
-      _fgErrCodes.addAll(_issuesMap);
+  Set<String> get foregroundIssues => _fgIssues;
+  set foregroundIssues(Set<String> detectedIssues) {
+    if (_fgIssues != detectedIssues) {
+      _fgIssues
+        ..clear()
+        ..addAll(detectedIssues);
       // notifyListeners();
     }
   }
 
-  List<int> get listBgErrCodes => _bgErrCodes.keys.where((key) => _bgErrCodes[key] ?? false).toList();
-
-// ignore: avoid_setters_without_getters
-  set backgroundErrorCodes(Map<int, bool> _issuesMap) {
-    if (_bgErrCodes != _issuesMap) {
-      _bgErrCodes.addAll(_issuesMap);
+  Set<String> get backgroundIssues => _bgIssues;
+  set backgroundIssues(Set<String> detectedIssues) {
+    if (_bgIssues != detectedIssues) {
+      _bgIssues
+        ..clear()
+        ..addAll(detectedIssues);
       // notifyListeners();
     }
   }
 
-  List<int> get listIconErrCodes => _iconErrCodes.keys.where((key) => _iconErrCodes[key] ?? false).toList();
-
-// ignore: avoid_setters_without_getters
-  set iconErrorCodes(Map<int, bool> _issuesMap) {
-    if (_iconErrCodes != _issuesMap) {
-      _iconErrCodes.addAll(_issuesMap);
+  Set<String> get iconIssues => _iconIssues;
+  set iconIssues(Set<String> detectedIssues) {
+    if (_iconIssues != detectedIssues) {
+      _iconIssues
+        ..clear()
+        ..addAll(detectedIssues);
       // notifyListeners();
     }
+  }
+
+  String get issues {
+    String _iconMsg = '', _fgMsg = '', _bgMsg = '';
+    if (_iconIssues.isNotEmpty) {
+      _iconMsg = _stringIssues();
+    }
+    if (_fgIssues.isNotEmpty) {
+      _fgMsg = _stringIssues(where: _foreground);
+    }
+    if (_bgIssues.isNotEmpty) {
+      _bgMsg = _stringIssues(where: _background);
+    }
+    return _iconMsg + _fgMsg + _bgMsg;
+  }
+
+  static const String _foreground = 'foreground', _background = 'background';
+
+  String _stringIssues({String where = 'icon'}) {
+    final StringBuffer _msgBuffer = StringBuffer();
+    switch (where) {
+      case _background:
+        {
+          _msgBuffer..write('\n\n')..write(S.current.adaptiveBackground);
+          for (final String _Issue in _bgIssues) {
+            _msgBuffer..write('\n')..write(_Issue);
+          }
+          break;
+        }
+      case _foreground:
+        {
+          _msgBuffer..write('\n\n')..write(S.current.adaptiveForeground);
+          for (final String _Issue in _fgIssues) {
+            _msgBuffer..write('\n')..write(_Issue);
+          }
+          if (!_fgIssues.contains(_info) && exportAdaptive) {
+            _msgBuffer..write('\n')..write(S.current.transparencyAdaptive);
+          }
+          break;
+        }
+      default:
+        {
+          _msgBuffer..write('\n\n')..write(S.current.regularIcon);
+          for (final String _Issue in _iconIssues) {
+            _msgBuffer..write('\n')..write(_Issue);
+          }
+          if (_iconIssues.contains(_info) && (exportIOS || exportWeb)) {
+            _msgBuffer..write('\n')..write(S.current.transparencyIOS);
+          }
+          break;
+        }
+    }
+    return _msgBuffer.toString();
+  }
+
+  static final String _info = S.current.isTransparent;
+
+  double get hue {
+    final int _iconIssuesCount = _iconIssues.length - (_iconIssues.contains(_info) ? 1 : 0);
+    final int _foregroundIssuesCount = _fgIssues.length - (_fgIssues.contains(_info) ? 1 : 0);
+    final int _backgroundIssuesCount = _bgIssues.length - (_bgIssues.contains(_info) ? 1 : 0);
+    return max(0, 70 - (17.5 * _iconIssuesCount) - (17.5 * _foregroundIssuesCount) - (17.5 * _backgroundIssuesCount));
   }
 
   double _iconShapeRadius = 25;

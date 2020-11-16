@@ -545,10 +545,10 @@ class S {
     );
   }
 
-  /// `🛈 The image have Alpha Channel (transparency). `
+  /// `ℹ️ The image have Alpha Channel (transparency). `
   String get isTransparent {
     return Intl.message(
-      '🛈 The image have Alpha Channel (transparency). ',
+      'ℹ️ The image have Alpha Channel (transparency). ',
       name: 'isTransparent',
       desc: '',
       args: [],
@@ -565,10 +565,10 @@ class S {
     );
   }
 
-  /// `🛈 The Foreground have no Alpha Channel (transparency). In this case, the background image will not be visible at all.`
+  /// `ℹ️ The Foreground have no Alpha Channel (transparency). In this case, the background image will not be visible at all.`
   String get transparencyAdaptive {
     return Intl.message(
-      '🛈 The Foreground have no Alpha Channel (transparency). In this case, the background image will not be visible at all.',
+      'ℹ️ The Foreground have no Alpha Channel (transparency). In this case, the background image will not be visible at all.',
       name: 'transparencyAdaptive',
       desc: '',
       args: [],

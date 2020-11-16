@@ -27,13 +27,13 @@ Future main() async {
     ChangeNotifierProvider<UploadFile>(create: (_) => UploadFile()),
     ChangeNotifierProxyProvider<UploadFile, SetupIcon>(
       create: (_) => SetupIcon(),
-      update: (_, _file, _icon) => _icon
-        ..foregroundErrorCodes = _file.foregroundIssues
-        ..backgroundErrorCodes = _file.backgroundIssues
-        ..iconErrorCodes = _file.iconIssues
-        ..adaptiveForeground = _file.recivedForeground
-        ..adaptiveBackground = _file.recivedBackground
-        ..regularIcon = _file.recivedIcon,
+      update: (_, file, icon) => icon
+        ..foregroundIssues = file.detectedFgIssues
+        ..backgroundIssues = file.detectedBgIssues
+        ..iconIssues = file.detectedIconIssues
+        ..adaptiveForeground = file.recivedForeground
+        ..adaptiveBackground = file.recivedBackground
+        ..regularIcon = file.recivedIcon,
     ),
   ], child: const MyApp()));
 }

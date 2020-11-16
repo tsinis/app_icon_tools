@@ -8,7 +8,7 @@ import 'package:file_picker_cross/file_picker_cross.dart';
 import 'package:flutter/widgets.dart';
 import 'package:universal_html/prefer_universal/html.dart';
 
-// import '../generated/l10n.dart'; //TODO Add Error Strings instead of Codes.
+import '../generated/l10n.dart';
 import '../locator.dart';
 import '../services/navigation_service.dart';
 import '../services/router.dart';
@@ -130,32 +130,30 @@ class UploadFile extends ChangeNotifier {
         (_image.height < (_adaptive ? minAdaptiveSize : minIconSize));
     final bool _isTransparent = _image.channels == img.Channels.rgba;
 
-    final Map<int, bool> _issuesMap = {0: _tooSmall, 1: _tooHeavy, 2: _notSquare, 3: _isTransparent};
+    final Map<String, bool> _issuesMap = {
+      S.current.tooSmall: _tooSmall,
+      S.current.tooHeavy: _tooHeavy,
+      S.current.notSqaure: _notSquare,
+      S.current.isTransparent: _isTransparent
+    };
 
     if (foreground) {
-      _foregroundIssues
-        ..clear()
-        ..addAll(_issuesMap);
+      _foregroundIssues.addAll(_issuesMap.keys.where((key) => _issuesMap[key] ?? false).toSet());
     } else if (background) {
-      _backgroundIssues
-        ..clear()
-        ..addAll(_issuesMap);
+      _backgroundIssues.addAll(_issuesMap.keys.where((key) => _issuesMap[key] ?? false).toSet());
     } else {
       _backgroundIssues.clear();
       _foregroundIssues.clear();
-      _iconIssues
-        ..clear()
-        ..addAll(_issuesMap);
+      _iconIssues.addAll(_issuesMap.keys.where((key) => _issuesMap[key] ?? false).toSet());
     }
 
     return true;
   }
 
-  final Map<int, bool> _iconIssues = {}, _foregroundIssues = {}, _backgroundIssues = {};
-
-  Map<int, bool> get iconIssues => _iconIssues;
-  Map<int, bool> get foregroundIssues => _foregroundIssues;
-  Map<int, bool> get backgroundIssues => _backgroundIssues;
+  final Set<String> _foregroundIssues = {}, _backgroundIssues = {}, _iconIssues = {};
+  Set<String> get detectedFgIssues => _foregroundIssues;
+  Set<String> get detectedBgIssues => _backgroundIssues;
+  Set<String> get detectedIconIssues => _iconIssues;
 
   bool _loading = false;
   bool get loading => _loading;
@@ -163,7 +161,7 @@ class UploadFile extends ChangeNotifier {
     _loading = newValue;
     notifyListeners();
   }
-}
+
 // TODO Consider use another package for permission handling, since the one provided with file_picker package is somehow limited.
 // Future _checkPermissions() async {
 //   final PermissionStatus _mobilePrmissions = await Permission.storage.status ?? PermissionStatus.undetermined;
@@ -183,3 +181,4 @@ class UploadFile extends ChangeNotifier {
 //     await openAppSettings();
 // }
 // }
+}
