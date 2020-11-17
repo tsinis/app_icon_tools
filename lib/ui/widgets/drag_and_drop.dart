@@ -15,16 +15,16 @@ class DragAndDrop extends StatelessWidget {
   const DragAndDrop({this.background = false, this.foreground = false, Key key}) : super(key: key);
 
   final bool background, foreground;
-
   // static DropzoneViewController _controller;
 
   @override
   Widget build(BuildContext context) {
-    final bool _isAdaptive = background || foreground;
-    final bool _isValidFile = context.select((UploadFile upload) => upload.isValidFile);
-    final bool _loading = context.select((UploadFile upload) => upload.loading);
-    const int _minIconSize = UploadFile.minIconSize;
-    const int _minAdaptiveSize = UploadFile.minAdaptiveSize;
+    final bool isAdaptive = background || foreground;
+    final bool isValidFile = context.select((UploadFile upload) => upload.isValidFile);
+    final bool isLoading = context.select((UploadFile upload) => upload.loading);
+    const int minIconSize = UploadFile.minIconSize;
+    const int minAdaptiveSize = UploadFile.minAdaptiveSize;
+
     return FDottedLine(
       corner: FDottedLineCorner.all(20),
       color: const Color(0x7C888888),
@@ -33,19 +33,18 @@ class DragAndDrop extends StatelessWidget {
         width: UserInterface.previewIconSize,
         height: UserInterface.previewIconSize,
         color: const Color(0x11888888),
-        child: _loading
+        child: isLoading
             ? Column(mainAxisAlignment: MainAxisAlignment.center, mainAxisSize: MainAxisSize.min, children: [
                 Padding(padding: const EdgeInsets.only(top: !kIsWeb ? 20 : 0), child: Text(S.of(context).verifying)),
                 if (!kIsWeb)
                   Padding(
-                    padding: const EdgeInsets.only(top: 20),
-                    child: SizedBox(
-                        width: 40,
-                        height: 40,
-                        child: UserInterface.isApple
-                            ? const CupertinoActivityIndicator()
-                            : const CircularProgressIndicator()),
-                  )
+                      padding: const EdgeInsets.only(top: 20),
+                      child: SizedBox(
+                          width: 40,
+                          height: 40,
+                          child: UserInterface.isApple
+                              ? const CupertinoActivityIndicator()
+                              : const CircularProgressIndicator()))
               ])
             : Stack(
                 alignment: Alignment.center,
@@ -54,9 +53,9 @@ class DragAndDrop extends StatelessWidget {
                     DropzoneView(
                       operation: DragOperation.copy,
                       cursor: CursorType.pointer,
-                      onDrop: (dynamic _file) async => await context
+                      onDrop: (dynamic file) async => await context
                           .read<UploadFile>()
-                          .checkDropped(_file, background: background, foreground: foreground),
+                          .checkDropped(file, background: background, foreground: foreground),
                       // onCreated: (_assignController) => _controller = _assignController,
                       // onHover: () => setState(() => _highlighted = true),
                       // onLeave: () => setState(() => _highlighted = false),
@@ -69,7 +68,7 @@ class DragAndDrop extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         AutoSizeText(
-                            _isValidFile
+                            isValidFile
                                 ? (kIsWeb ? S.of(context).dragAndDropHere : S.of(context).select)
                                 : S.of(context).wrongFile,
                             maxLines: 1,
@@ -124,16 +123,16 @@ class DragAndDrop extends StatelessWidget {
                                   ]),
                               DataRow(
                                   onSelectChanged: (_) async =>
-                                      await context.read<UserInterface>().openGuidelinesURL(isAdaptive: _isAdaptive),
+                                      await context.read<UserInterface>().openGuidelinesURL(isAdaptive: isAdaptive),
                                   cells: <DataCell>[
                                     DataCell(_InfoCellText(S.of(context).imageSize)),
                                     DataCell(Tooltip(
-                                        message: (_isAdaptive ? 'Google Play' : 'App Store') +
-                                            S.of(context).storeRequirement,
+                                        message:
+                                            (isAdaptive ? 'Google Play' : 'App Store') + S.of(context).storeRequirement,
                                         child: Text(
-                                            _isAdaptive
-                                                ? '$_minAdaptiveSize×$_minAdaptiveSize px'
-                                                : '$_minIconSize×$_minIconSize px',
+                                            isAdaptive
+                                                ? '$minAdaptiveSize×$minAdaptiveSize px'
+                                                : '$minIconSize×$minIconSize px',
                                             maxLines: 1)))
                                   ])
                             ],
@@ -169,6 +168,7 @@ class DragAndDrop extends StatelessWidget {
 class _InfoCellText extends StatelessWidget {
   const _InfoCellText(this._text, {Key key}) : super(key: key);
   final String _text;
+
   @override
   Widget build(BuildContext context) => Opacity(opacity: 0.5, child: Text(_text, maxLines: 1));
 }
@@ -176,12 +176,14 @@ class _InfoCellText extends StatelessWidget {
 //TODO: Check when https://github.com/flutter/flutter/issues/19228 is closed.
 class _DataThemeWorkaround extends StatelessWidget {
   const _DataThemeWorkaround({@required this.child, Key key}) : super(key: key);
-  final Widget child;
+  final Widget child; //TODO Private it.
+
   @override
   Widget build(BuildContext context) {
-    final ThemeData _materialTheme = context.select((UserInterface ui) => ui.materialTheme);
+    final ThemeData materialTheme = context.select((UserInterface ui) => ui.materialTheme); //TODO Remove.
+
     return UserInterface.isApple
-        ? Material(type: MaterialType.transparency, child: Theme(data: _materialTheme, child: child))
+        ? Material(type: MaterialType.transparency, child: Theme(data: materialTheme, child: child))
         : SizedBox(child: child);
   }
 }

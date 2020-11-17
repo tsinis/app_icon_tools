@@ -17,11 +17,11 @@ import 'icons_types/apdative_icon.dart';
 import 'icons_types/regular_icon.dart';
 
 class IconPreview extends StatelessWidget {
+  const IconPreview(this.platformID, this.name, this.icon, {@required this.cornerRadius, Key key}) : super(key: key);
+
   final int cornerRadius, platformID;
   final String name;
   final IconData icon;
-
-  const IconPreview(this.platformID, this.name, this.icon, {@required this.cornerRadius, Key key}) : super(key: key);
 
   const IconPreview.oldAndroid()
       : cornerRadius = 0,
@@ -81,28 +81,25 @@ class IconPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool _portrait = (MediaQuery.of(context).size.height > MediaQuery.of(context).size.width) ||
+    final bool isPortrait = (MediaQuery.of(context).size.height > MediaQuery.of(context).size.width) ||
         (MediaQuery.of(context).size.width <= 680);
 
     return PreviewLayout(
       needsScroll: MediaQuery.of(context).size.height <= 760,
-      portraitOrientation: _portrait,
+      portraitOrientation: isPortrait,
       children: [
         _Preview(
             canChangeShape: _canChangeShape,
             isAdaptive: _isAdaptive,
             staticCornerRadius: _staticCornerRadius,
             supportTransparency: _supportTransparency),
-        _Setup(isAdaptive: _isAdaptive, isPortrait: _portrait, pwaIcon: platformID == 3),
+        _Setup(isAdaptive: _isAdaptive, isPortrait: isPortrait, pwaIcon: platformID == 3)
       ],
     );
   }
 }
 
 class _Preview extends StatelessWidget {
-  final bool _canChangeShape, _isAdaptive, _supportTransparency;
-  final double _staticCornerRadius;
-
   const _Preview({
     @required bool canChangeShape,
     @required bool isAdaptive,
@@ -115,19 +112,22 @@ class _Preview extends StatelessWidget {
         _canChangeShape = canChangeShape,
         super(key: key);
 
+  final bool _canChangeShape, _isAdaptive, _supportTransparency;
+  final double _staticCornerRadius;
+
   @override
   Widget build(BuildContext context) {
-    final double _adjustableCornerRadius = context.select((SetupIcon icon) => icon.cornerRadius);
-    final Color _adpativeColor = context.select((SetupIcon icon) => icon.adaptiveColor);
-    final bool _haveAdaptiveBackground = context.select((SetupIcon icon) => icon.haveAdaptiveBackground);
-    final bool _haveAdaptiveForeground = context.select((SetupIcon icon) => icon.haveAdaptiveForeground);
-    final bool _isDark = context.select((UserInterface ui) => ui.isDark);
-    const double _previewIconSize = UserInterface.previewIconSize;
-    final bool _adaptiveColorNotSet = _adpativeColor == null;
-    final bool _haveAdaptiveAssets = _haveAdaptiveBackground && _haveAdaptiveForeground;
+    const double previewSize = UserInterface.previewIconSize;
+    final double adjustableRadius = context.select((SetupIcon icon) => icon.cornerRadius);
+    final Color adaptiveColor = context.select((SetupIcon icon) => icon.adaptiveColor);
+    final bool adaptiveColorIsEmpty = adaptiveColor == null;
+    final bool isDark = context.select((UserInterface ui) => ui.isDark);
+    final bool haveAdaptiveBg = context.select((SetupIcon icon) => icon.haveAdaptiveBackground);
+    final bool haveAdaptiveFg = context.select((SetupIcon icon) => icon.haveAdaptiveForeground);
+    final bool haveAdaptiveAssets = haveAdaptiveBg && haveAdaptiveFg;
 
     return SizedBox(
-      width: _previewIconSize,
+      width: previewSize,
       height: 560,
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -138,13 +138,13 @@ class _Preview extends StatelessWidget {
               child: Text(_canChangeShape
                   ? (_isAdaptive ? S.of(context).uploadAdaptiveFg : S.of(context).previewShapes)
                   : S.of(context).iconPreview)),
-          if (!_haveAdaptiveForeground && _isAdaptive)
-            _haveAdaptiveBackground
+          if (!haveAdaptiveFg && _isAdaptive)
+            haveAdaptiveBg
                 ? Stack(children: [
                     Container(
                         clipBehavior: Clip.antiAlias,
-                        height: _previewIconSize,
-                        width: _previewIconSize,
+                        height: previewSize,
+                        width: previewSize,
                         decoration: const BoxDecoration(
                             color: Colors.grey, borderRadius: BorderRadius.all(Radius.circular(25))),
                         child: const Opacity(opacity: 0.5, child: AdaptiveIcon())),
@@ -156,18 +156,18 @@ class _Preview extends StatelessWidget {
               onTap: () => context.read<SetupIcon>().devicePreview(),
               child: Container(
                 clipBehavior: Clip.antiAlias,
-                height: _previewIconSize,
-                width: _previewIconSize,
+                height: previewSize,
+                width: previewSize,
                 decoration: BoxDecoration(
                     boxShadow: [
                       BoxShadow(
-                          color: _isDark ? Colors.black38 : Colors.black12,
+                          color: isDark ? Colors.black38 : Colors.black12,
                           spreadRadius: 2,
                           blurRadius: 4,
                           offset: const Offset(0, 2))
                     ],
-                    borderRadius: BorderRadius.all(
-                        Radius.circular(_canChangeShape ? _adjustableCornerRadius : _staticCornerRadius))),
+                    borderRadius:
+                        BorderRadius.all(Radius.circular(_canChangeShape ? adjustableRadius : _staticCornerRadius))),
                 child: _isAdaptive
                     ? const Hero(tag: 'adaptive', child: AdaptiveIcon())
                     : Hero(
@@ -186,8 +186,8 @@ class _Preview extends StatelessWidget {
                 children: [
                   const Icon(CommunityMaterialIcons.square_outline, color: Color(0x80808080)),
                   AdaptiveSlider(
-                      radius: _adjustableCornerRadius,
-                      // label: _adjustableCornerRadius.round().toString(),
+                      radius: adjustableRadius,
+                      // label: adjustableRadius.round().toString(),
                       onChanged: (_newRadius) => context.read<SetupIcon>().setRadius(_newRadius)),
                   const Icon(CommunityMaterialIcons.circle_outline, color: Color(0x80808080)),
                 ],
@@ -198,14 +198,14 @@ class _Preview extends StatelessWidget {
           ...[
             AdaptiveButton(
                 text: S.of(context).devicePreview,
-                onPressed: () => (_isAdaptive && (!_haveAdaptiveAssets && _adaptiveColorNotSet))
+                onPressed: () => (_isAdaptive && (!haveAdaptiveAssets && adaptiveColorIsEmpty))
                     ? null
                     : context.read<SetupIcon>().devicePreview()),
-            if (_isAdaptive) AdaptiveIconButtons(withAdaptives: _haveAdaptiveAssets),
+            if (_isAdaptive) AdaptiveIconButtons(withAdaptives: haveAdaptiveAssets),
             // else
-            // SizedBox(height: _portrait ? 0 : 20),
+            // SizedBox(height: isPortrait ? 0 : 20),
             // if (_isAdaptive) const SizedBox(height: 44) else const SizedBox(height: 64),
-            if (_isAdaptive && _haveAdaptiveForeground)
+            if (_isAdaptive && haveAdaptiveFg)
               AdaptiveButton(
                   text: S.of(context).removeForeground,
                   destructive: true,
@@ -218,22 +218,23 @@ class _Preview extends StatelessWidget {
 }
 
 class _Setup extends StatelessWidget {
-  final bool _isAdaptive, _isPortrait, _pwaIcon;
-
   const _Setup({@required bool isAdaptive, @required bool isPortrait, @required bool pwaIcon, Key key})
       : _isAdaptive = isAdaptive,
         _isPortrait = isPortrait,
         _pwaIcon = pwaIcon,
         super(key: key);
 
+  final bool _isAdaptive, _isPortrait, _pwaIcon; //TODO Pass more parameters from parent if possible.
+
   @override
   Widget build(BuildContext context) {
-    final ThemeData _materialTheme = context.select((UserInterface ui) => ui.materialTheme);
-    final Color _backgroundColor = context.select((SetupIcon icon) => icon.backgroundColor);
-    final Color _adpativeColor = context.select((SetupIcon icon) => icon.adaptiveColor);
-    final bool _haveAdaptiveBackground = context.select((SetupIcon icon) => icon.haveAdaptiveBackground);
-    final bool _preferColorBg = context.select((SetupIcon icon) => icon.preferColorBg);
-    final bool _colorNotSet = _backgroundColor == null;
+    final ThemeData materialTheme = context.select((UserInterface ui) => ui.materialTheme);
+    final Color regularBgColor = context.select((SetupIcon icon) => icon.backgroundColor);
+    final Color adaptiveColor = context.select((SetupIcon icon) => icon.adaptiveColor);
+    final bool haveAdaptiveBg = context.select((SetupIcon icon) => icon.haveAdaptiveBackground);
+    final bool preferColorBg = context.select((SetupIcon icon) => icon.preferColorBg);
+    final bool colorIsEmpty = regularBgColor == null;
+
     return SizedBox(
       width: UserInterface.previewIconSize,
       height: UserInterface.isApple ? 560 : 572,
@@ -245,15 +246,15 @@ class _Setup extends StatelessWidget {
             Padding(
                 padding: EdgeInsets.only(
                     bottom: 20,
-                    top: (_preferColorBg && !_isPortrait)
+                    top: (preferColorBg && !_isPortrait)
                         ? (UserInterface.isApple ? 62 : 72)
-                        : (UserInterface.isApple ? (_haveAdaptiveBackground ? 36 : 10) : 4)),
+                        : (UserInterface.isApple ? (haveAdaptiveBg ? 36 : 10) : 4)),
                 child: Text(S.of(context).uploadAdaptiveBg)),
-            if (_preferColorBg)
+            if (preferColorBg)
               ColorPicker(
-                  // labelTextStyle: _materialTheme.sliderTheme.valueIndicatorTextStyle,
+                  // labelTextStyle: materialTheme.sliderTheme.valueIndicatorTextStyle,
                   pickerAreaHeightPercent: 0.84,
-                  pickerColor: _adpativeColor ?? (_backgroundColor ?? _materialTheme.accentColor),
+                  pickerColor: adaptiveColor ?? (regularBgColor ?? materialTheme.accentColor),
                   onColorChanged: (_newColor) => context.read<SetupIcon>().setAdaptiveColor(_newColor),
                   displayThumbColor: true,
                   portraitOnly: true,
@@ -261,40 +262,41 @@ class _Setup extends StatelessWidget {
             else
               const Hero(tag: 'global', child: DragAndDrop(background: true)),
             SizedBox(
-                height: _preferColorBg
+                height: preferColorBg
                     ? 0
                     : UserInterface.isApple
                         ? 10
-                        : _haveAdaptiveBackground
+                        : haveAdaptiveBg
                             ? 10
                             : 43),
             AdaptiveSwitch(
                 title: S.of(context).colorAsBg,
-                value: _preferColorBg,
-                onChanged: (_preferColor) => context.read<SetupIcon>().switchBg(preferColor: _preferColor))
+                value: preferColorBg,
+                onChanged: (_preferColor) =>
+                    context.read<SetupIcon>().switchBgColorPreference(preferColor: _preferColor))
           ] else ...[
             Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20),
                 child: Text(_pwaIcon ? S.of(context).pwaColor : S.of(context).iconBgColor)),
             ColorPicker(
-                // labelTextStyle: _materialTheme.chipTheme.labelStyle,
+                // labelTextStyle: materialTheme.chipTheme.labelStyle,
                 pickerAreaHeightPercent: 0.84,
-                pickerColor: _colorNotSet ? _materialTheme.accentColor : _backgroundColor,
+                pickerColor: colorIsEmpty ? materialTheme.accentColor : regularBgColor,
                 onColorChanged: (_newColor) => context.read<SetupIcon>().setBackgroundColor(_newColor),
                 displayThumbColor: true,
                 portraitOnly: true,
                 enableAlpha: false, //TODO: Consider change to _supportTransparency sometime later.
                 showLabel: !UserInterface.isApple),
           ],
-          if (!_colorNotSet && !_isAdaptive)
+          if (!colorIsEmpty && !_isAdaptive)
             AdaptiveButton(
                 destructive: true,
                 text: S.of(context).removeColor,
-                // color: _backgroundColor,
+                // color: regularBgColor,
                 onPressed: () => context.read<SetupIcon>().removeColor())
-          else if (_colorNotSet && !_isAdaptive)
+          else if (colorIsEmpty && !_isAdaptive)
             const SizedBox(height: 27),
-          if (!_preferColorBg && _isAdaptive && _haveAdaptiveBackground)
+          if (!preferColorBg && _isAdaptive && haveAdaptiveBg)
             Padding(
               padding: EdgeInsets.only(top: UserInterface.isApple ? 0 : 6),
               child: AdaptiveButton(

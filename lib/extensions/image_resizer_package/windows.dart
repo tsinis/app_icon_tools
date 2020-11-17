@@ -24,20 +24,20 @@ class WindowsIcon extends IconTemplate {
 
   @override
   String get filename => '$name.$ext';
-}
 
-Future<List<FileData>> generateWinIcos(Image image, ImageFolder folder,
-    {String path = '', bool writeToDiskIO = true}) async {
-  final List<Image> _images = [];
-  final String _filename = folder.templates.first.filename;
-  for (final template in folder.templates) {
-    final Image _icon = _createResizedImage(template, image);
-    _images.add(_icon);
+  static Future<List<FileData>> generate(Image image, ImageFolder folder,
+      {String path = '', bool writeToDiskIO = true}) async {
+    final List<Image> sizedImages = [];
+    final String filename = folder.templates.first.filename;
+    for (final template in folder.templates) {
+      final Image icoIcon = _createResizedImage(template.size, image);
+      sizedImages.add(icoIcon);
+    }
+    final String fullPath = path.isNotEmpty ? '$path/$filename' : '${folder.path}/$filename';
+    final List<int> icoAsBytes = encodeIcoImages(sizedImages);
+    return [FileData(icoAsBytes, icoAsBytes.length, '', fullPath)];
   }
-  final String _fullPath = path.isNotEmpty ? '$path/$_filename' : '${folder.path}/$_filename';
-  final List<int> _icoBytes = encodeIcoImages(_images);
-  return [FileData(_icoBytes, _icoBytes.length, '', _fullPath)];
-}
 
-Image _createResizedImage(IconTemplate template, Image image) =>
-    copyResize(image, width: template.size, interpolation: Interpolation.linear);
+  static Image _createResizedImage(int width, Image image) =>
+      copyResize(image, width: width, interpolation: Interpolation.linear);
+}

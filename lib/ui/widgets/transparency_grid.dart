@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class TransparencyGrid extends StatelessWidget {
   const TransparencyGrid({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) => GridView.builder(
       shrinkWrap: true,

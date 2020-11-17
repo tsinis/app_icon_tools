@@ -12,17 +12,19 @@ import '../issues_info.dart';
 class AdaptiveScaffold extends StatelessWidget {
   const AdaptiveScaffold({@required this.child, this.uploadScreen = false, this.deviceScreen = false, Key key})
       : super(key: key);
+
   final bool uploadScreen, deviceScreen;
   final Widget child;
 
   @override
   Widget build(BuildContext context) {
-    final bool _loading = context.select((SetupIcon icon) => icon.loading) ?? false;
-    final int _exportProgress = context.select((SetupIcon icon) => icon.exportProgress.round()) ?? 0;
-    // final bool _loading = _exportProgress > 0;
-    final bool _isDark = context.select((UserInterface ui) => ui.isDark) ?? true;
-    final Color _exportButtonColor = (_isDark ? Colors.pinkAccent : Colors.tealAccent[400]) ?? const Color(0xFF1DE9B6);
-    final bool _isWideScreen = MediaQuery.of(context).size.width > 560;
+    final bool isExporting = context.select((SetupIcon icon) => icon.loading) ?? false;
+    final int exportProgress = context.select((SetupIcon icon) => icon.exportProgress.round()) ?? 0;
+    // final bool isExporting = exportProgress > 0;
+    final bool isDark = context.select((UserInterface ui) => ui.isDark) ?? true;
+    final Color exportButtonColor = (isDark ? Colors.pinkAccent : Colors.tealAccent[400]) ?? const Color(0xFF1DE9B6);
+    final bool isWideScreen = MediaQuery.of(context).size.width > 560;
+
     return UserInterface.isApple
         ? CupertinoPageScaffold(
             navigationBar: CupertinoNavigationBar(
@@ -33,24 +35,24 @@ class AdaptiveScaffold extends StatelessWidget {
                       buttonPadding: const EdgeInsets.symmetric(horizontal: 11),
                       alignment: MainAxisAlignment.center,
                       children: [
-                        SizedBox(width: _isWideScreen ? 44 : 14),
+                        SizedBox(width: isWideScreen ? 44 : 14),
                         const IssuesInfo(),
-                        SizedBox(width: _isWideScreen ? 14 : 4),
-                        if (_isWideScreen)
+                        SizedBox(width: isWideScreen ? 14 : 4),
+                        if (isWideScreen)
                           Tooltip(
                             message: S.of(context).saveAsZip,
                             child: CupertinoButton(
                                 disabledColor: Colors.transparent,
-                                padding: EdgeInsets.symmetric(horizontal: (_loading && !kIsWeb) ? 10 : 64),
-                                onPressed: _loading ? null : () => context.read<SetupIcon>().archive(),
-                                color: _exportButtonColor,
-                                child: _loading
+                                padding: EdgeInsets.symmetric(horizontal: (isExporting && !kIsWeb) ? 10 : 64),
+                                onPressed: isExporting ? null : () => context.read<SetupIcon>().archive(),
+                                color: exportButtonColor,
+                                child: isExporting
                                     ? Row(
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
                                             Text(
-                                              kIsWeb ? S.of(context).wait : '${S.of(context).wait} $_exportProgress%',
+                                              kIsWeb ? S.of(context).wait : '${S.of(context).wait} $exportProgress%',
                                               // style: const TextStyle(color: CupertinoColors.black)
                                             ),
                                             if (!kIsWeb)
@@ -63,12 +65,12 @@ class AdaptiveScaffold extends StatelessWidget {
                         else
                           GestureDetector(
                               onTap: () => context.read<SetupIcon>().archive(),
-                              child: _loading
+                              child: isExporting
                                   ? const CupertinoActivityIndicator()
                                   : Tooltip(
                                       message: S.of(context).saveAsZip,
-                                      child: Icon(CupertinoIcons.tray_arrow_down, color: _exportButtonColor))),
-                        SizedBox(width: _isWideScreen ? 10 : 3),
+                                      child: Icon(CupertinoIcons.tray_arrow_down, color: exportButtonColor))),
+                        SizedBox(width: isWideScreen ? 10 : 3),
                         GestureDetector(
                             onTap: () => showPlatformsDialog(context),
                             child: Tooltip(
@@ -112,25 +114,25 @@ class AdaptiveScaffold extends StatelessWidget {
                         alignment: MainAxisAlignment.center,
                         children: [
                           const IssuesInfo(),
-                          SizedBox(width: _isWideScreen ? 10 : 1),
-                          if (_isWideScreen)
+                          SizedBox(width: isWideScreen ? 10 : 1),
+                          if (isWideScreen)
                             Tooltip(
                               message: S.of(context).saveAsZip,
                               child: MaterialButton(
                                   minWidth: 220,
                                   // colorBrightness: Brightness.light,
-                                  onPressed: _loading ? null : () => context.read<SetupIcon>().archive(),
-                                  color: _exportButtonColor,
+                                  onPressed: isExporting ? null : () => context.read<SetupIcon>().archive(),
+                                  color: exportButtonColor,
                                   child: Padding(
                                       padding: const EdgeInsets.all(10),
-                                      child: _loading
+                                      child: isExporting
                                           ? Row(
                                               mainAxisAlignment: MainAxisAlignment.center,
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
                                                   Text(kIsWeb
                                                       ? S.of(context).wait.toUpperCase()
-                                                      : '${S.of(context).wait.toUpperCase()} $_exportProgress%'),
+                                                      : '${S.of(context).wait.toUpperCase()} $exportProgress%'),
                                                   if (!kIsWeb)
                                                     const Padding(
                                                         padding: EdgeInsets.only(left: 16),
@@ -142,12 +144,12 @@ class AdaptiveScaffold extends StatelessWidget {
                                           : Text(S.of(context).export.toUpperCase()))),
                             )
                           else
-                            _loading
+                            isExporting
                                 ? const SizedBox(
                                     height: 16, width: 16, child: CircularProgressIndicator(strokeWidth: 2))
                                 : IconButton(
                                     tooltip: S.of(context).saveAsZip,
-                                    icon: Icon(Icons.download_outlined, color: _exportButtonColor),
+                                    icon: Icon(Icons.download_outlined, color: exportButtonColor),
                                     onPressed: () => context.read<SetupIcon>().archive()),
                           IconButton(
                               tooltip: S.of(context).choosePlatforms,

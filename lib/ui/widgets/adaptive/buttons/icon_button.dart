@@ -6,9 +6,10 @@ import '../../../../models/user_interface.dart';
 import '../../../platform_icons/icons_types/apdative_icon.dart';
 
 class AdaptiveIconButtons extends StatelessWidget {
+  const AdaptiveIconButtons({Key key, this.withAdaptives = false}) : super(key: key);
+
   final bool withAdaptives;
 
-  const AdaptiveIconButtons({Key key, this.withAdaptives = false}) : super(key: key);
   @override
   Widget build(BuildContext context) => Tooltip(
         message: withAdaptives ? S.of(context).parallax : S.of(context).noBackground,

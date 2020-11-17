@@ -13,11 +13,13 @@ import 'ui/app_appearance.dart';
 //TODO Migrate to null-safety when it's become stable.
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   if (!platform.isWeb && platform.isDesktop) {
     //TODO Check on Windows and Linux.
     await DesktopWindow.setMinWindowSize(const Size(320, 840));
     await DesktopWindow.setWindowSize(const Size(420, 840));
   }
+
   // ignore: unawaited_futures
   UserInterface.setupUI();
   Locators.setupLocator();

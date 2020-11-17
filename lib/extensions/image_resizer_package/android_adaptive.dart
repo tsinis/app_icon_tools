@@ -75,14 +75,14 @@ class XmlGenerator {
   final String ext, colorsName, iconsNames, path, colorsFolder, iconsFolder;
 
   List<FileData> generateXmls() {
-    final List<FileData> _xmls = [];
+    final List<FileData> xmlFiles = [];
     if (bgAsColor) {
-      final FileData _colorsXml = _generateColorsXML();
-      _xmls.add(_colorsXml);
+      final FileData colorsXml = _generateColorsXML();
+      xmlFiles.add(colorsXml);
     }
-    final FileData _iconsXml = _generateIconsXML();
-    _xmls.add(_iconsXml);
-    return _xmls;
+    final FileData iconsXml = _generateIconsXML();
+    xmlFiles.add(iconsXml);
+    return xmlFiles;
   }
 
   FileData _generateIconsXML() {
@@ -92,8 +92,8 @@ class XmlGenerator {
   }
 
   FileData _generateColorsXML() {
-    final String _colorAsString = color.toHex();
-    final List<int> xmlAsBytes = utf8.encode(colorsXml(_colorAsString));
+    final String colorAsString = color.toHex();
+    final List<int> xmlAsBytes = utf8.encode(colorsXml(colorAsString));
     return FileData(xmlAsBytes, xmlAsBytes.length, '', '$path/$colorsFolder/$colorsName.$ext');
   }
 }

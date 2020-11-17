@@ -32,10 +32,10 @@ class SetupIcon extends ChangeNotifier {
 
   Color _backgroundColor;
   Color get backgroundColor => _backgroundColor;
-  void setBackgroundColor(Color _newColor) {
-    if (_backgroundColor != _newColor) {
-      _backgroundColor = _newColor;
-      _adaptiveColor ??= _newColor.withAlpha(255);
+  void setBackgroundColor(Color newColor) {
+    if (_backgroundColor != newColor) {
+      _backgroundColor = newColor;
+      _adaptiveColor ??= newColor.withAlpha(255);
       notifyListeners();
     }
   }
@@ -49,27 +49,31 @@ class SetupIcon extends ChangeNotifier {
 
   Image get iconImage => Image.memory(_icon);
   Uint8List get regularIcon => _icon;
-  set regularIcon(Uint8List _uploadedPng) {
-    if (_uploadedPng != _icon && _uploadedPng != null) {
-      _icon = _uploadedPng;
-      _regularIconFiles.clear();
-      _adaptiveIconFiles.clear();
-      _pwaConfigs.clear();
-      _xmlConfigs.clear();
-      _bgIssues.clear();
-      _fgIssues.clear();
+  set regularIcon(Uint8List uploadedPNG) {
+    if (uploadedPNG != _icon && uploadedPNG != null) {
+      _icon = uploadedPNG;
+      _wipeOldData();
       notifyListeners();
     }
+  }
+
+  void _wipeOldData() {
+    _regularIconFiles.clear();
+    _adaptiveIconFiles.clear();
+    _pwaConfigs.clear();
+    _xmlConfigs.clear();
+    _bgIssues.clear();
+    _fgIssues.clear();
   }
 
   // Adaptive Icon Background as COLOR.
   Color _adaptiveColor;
   Color get adaptiveColor => _adaptiveColor;
-  void setAdaptiveColor(Color _newColor) {
-    if (_adaptiveColor != _newColor) {
-      _adaptiveColor = _newColor;
-      if (_newColor != null) {
-        _backgroundColor ??= _newColor.withAlpha(255);
+  void setAdaptiveColor(Color newColor) {
+    if (_adaptiveColor != newColor) {
+      _adaptiveColor = newColor;
+      if (newColor != null) {
+        _backgroundColor ??= newColor.withAlpha(255);
       }
       notifyListeners();
     }
@@ -84,19 +88,16 @@ class SetupIcon extends ChangeNotifier {
 
   bool _preferColorBg = false;
   bool get preferColorBg => _preferColorBg;
-  void switchBg({@required bool preferColor}) {
+  void switchBgColorPreference({@required bool preferColor}) {
     _preferColorBg = preferColor;
     notifyListeners();
   }
 
   // Adaptive Icon Background as IMAGE.
   Uint8List get adaptiveBackground => _adaptiveBackground;
-  set adaptiveBackground(Uint8List _uploadedPng) {
-    if (_uploadedPng != _adaptiveBackground && _uploadedPng != null) {
-      // if (_adaptiveBackground.isNotEmpty) {
-      //   _adaptiveBackground.clear();
-      // }
-      _adaptiveBackground = _uploadedPng;
+  set adaptiveBackground(Uint8List uploadedPNG) {
+    if (uploadedPNG != _adaptiveBackground && uploadedPNG != null) {
+      _adaptiveBackground = uploadedPNG;
       _adaptiveIconFiles.clear();
       notifyListeners();
     }
@@ -110,9 +111,9 @@ class SetupIcon extends ChangeNotifier {
   }
 
   Uint8List get adaptiveForeground => _adaptiveForeground;
-  set adaptiveForeground(Uint8List _uploadedPng) {
-    if (_uploadedPng != _adaptiveForeground && _uploadedPng != null) {
-      _adaptiveForeground = _uploadedPng;
+  set adaptiveForeground(Uint8List uploadedPNG) {
+    if (uploadedPNG != _adaptiveForeground && uploadedPNG != null) {
+      _adaptiveForeground = uploadedPNG;
       _adaptiveIconFiles.clear();
       notifyListeners();
     }
@@ -137,7 +138,6 @@ class SetupIcon extends ChangeNotifier {
       _fgIssues
         ..clear()
         ..addAll(detectedIssues);
-      // notifyListeners();
     }
   }
 
@@ -147,7 +147,6 @@ class SetupIcon extends ChangeNotifier {
       _bgIssues
         ..clear()
         ..addAll(detectedIssues);
-      // notifyListeners();
     }
   }
 
@@ -157,87 +156,86 @@ class SetupIcon extends ChangeNotifier {
       _iconIssues
         ..clear()
         ..addAll(detectedIssues);
-      // notifyListeners();
     }
   }
 
   String get issues {
-    String _iconMsg = '', _fgMsg = '', _bgMsg = '';
+    String regularIssuesText = '', foregroundIssuesText = '', backgroundIssuesText = '';
     if (_iconIssues.isNotEmpty) {
-      _iconMsg = _stringIssues();
+      regularIssuesText = _stringIssues();
     }
     if (_fgIssues.isNotEmpty) {
-      _fgMsg = _stringIssues(where: _foreground);
+      foregroundIssuesText = _stringIssues(where: _foreground);
     }
     if (_bgIssues.isNotEmpty) {
-      _bgMsg = _stringIssues(where: _background);
+      backgroundIssuesText = _stringIssues(where: _background);
     }
-    return _iconMsg + _fgMsg + _bgMsg;
+    return regularIssuesText + foregroundIssuesText + backgroundIssuesText;
   }
 
   static const String _foreground = 'foreground', _background = 'background';
 
   String _stringIssues({String where = 'icon'}) {
-    final StringBuffer _msgBuffer = StringBuffer();
+    final StringBuffer textInMemory = StringBuffer();
     switch (where) {
       case _background:
         {
-          _msgBuffer..write('\n\n')..write(S.current.adaptiveBackground);
-          for (final String _Issue in _bgIssues) {
-            _msgBuffer..write('\n')..write(_Issue);
+          textInMemory..write('\n\n')..write(S.current.adaptiveBackground);
+          for (final String issue in _bgIssues) {
+            textInMemory..write('\n')..write(issue);
           }
           break;
         }
       case _foreground:
         {
-          _msgBuffer..write('\n\n')..write(S.current.adaptiveForeground);
-          for (final String _Issue in _fgIssues) {
-            _msgBuffer..write('\n')..write(_Issue);
+          textInMemory..write('\n\n')..write(S.current.adaptiveForeground);
+          for (final String issue in _fgIssues) {
+            textInMemory..write('\n')..write(issue);
           }
           if (!_fgIssues.contains(_info) && exportAdaptive) {
-            _msgBuffer..write('\n')..write(S.current.transparencyAdaptive);
+            textInMemory..write('\n')..write(S.current.transparencyAdaptive);
           }
           break;
         }
       default:
         {
-          _msgBuffer..write('\n\n')..write(S.current.regularIcon);
-          for (final String _Issue in _iconIssues) {
-            _msgBuffer..write('\n')..write(_Issue);
+          textInMemory..write('\n\n')..write(S.current.regularIcon);
+          for (final String issue in _iconIssues) {
+            textInMemory..write('\n')..write(issue);
           }
           if (_iconIssues.contains(_info) && (exportIOS || exportWeb)) {
-            _msgBuffer..write('\n')..write(S.current.transparencyIOS);
+            textInMemory..write('\n')..write(S.current.transparencyIOS);
           }
           break;
         }
     }
-    return _msgBuffer.toString();
+    return textInMemory.toString();
   }
 
   static final String _info = S.current.isTransparent;
 
   double get hue {
-    final int _iconIssuesCount = _iconIssues.length - (_iconIssues.contains(_info) ? 1 : 0);
-    final int _foregroundIssuesCount = _fgIssues.length - (_fgIssues.contains(_info) ? 1 : 0);
-    final int _backgroundIssuesCount = _bgIssues.length - (_bgIssues.contains(_info) ? 1 : 0);
-    return max(0, 70 - (17.5 * _iconIssuesCount) - (17.5 * _foregroundIssuesCount) - (17.5 * _backgroundIssuesCount));
+    final int iconIssuesCount = _iconIssues.length - (_iconIssues.contains(_info) ? 1 : 0);
+    final int fgIssuesCount = _fgIssues.length - (_fgIssues.contains(_info) ? 1 : 0);
+    final int bgIssuesCount = _bgIssues.length - (_bgIssues.contains(_info) ? 1 : 0);
+    return max(0, 70 - (17.5 * iconIssuesCount) - (17.5 * fgIssuesCount) - (17.5 * bgIssuesCount));
   }
 
   double _iconShapeRadius = 25;
   double get cornerRadius => _iconShapeRadius;
-  void setRadius(double _newRadius) {
-    if (_newRadius != _iconShapeRadius) {
-      _iconShapeRadius = _newRadius;
+  void setRadius(double newRadius) {
+    if (newRadius != _iconShapeRadius) {
+      _iconShapeRadius = newRadius;
       notifyListeners();
     }
   }
 
   int _platformID = 0;
   int get platformID => _platformID;
-  void setPlatform(int _selectedPlatform) {
-    if (_selectedPlatform != _platformID) {
+  void setPlatform(int selectedPlatform) {
+    if (selectedPlatform != _platformID) {
       {
-        _platformID = _selectedPlatform ?? 1;
+        _platformID = selectedPlatform ?? 1;
         notifyListeners();
       }
     }
@@ -248,40 +246,43 @@ class SetupIcon extends ChangeNotifier {
   Future archive() async {
     _exportedDoneCount = 0;
     _setLoading(true);
-    final IconGenerator _gen = IconGenerator();
-    final List<FileData> _files = [];
+
+    final IconGenerator genertator = IconGenerator();
+    final List<FileData> filesList = [];
+
     Future<void>.delayed(
         //TODO! Check when https://github.com/flutter/flutter/issues/33577 is closed.
         const Duration(milliseconds: kIsWeb ? 300 : 0),
         () async => await _resizeIcons().whenComplete(() async {
-              for (final key in _regularIconFiles.keys) {
-                final List<FileData> _folder = _regularIconFiles[key];
-                _files.addAll(_folder.toList());
+              for (final String key in _regularIconFiles.keys) {
+                final List<FileData> folderWithIcons = _regularIconFiles[key];
+                filesList.addAll(folderWithIcons.toList());
               }
+
               if (_exportingAdaptiveFiles) {
-                for (final key in _adaptiveIconFiles.keys) {
+                for (final String key in _adaptiveIconFiles.keys) {
                   final List<FileData> _adaptiveFolder = _adaptiveIconFiles[key];
-                  _files.addAll(_adaptiveFolder.toList());
+                  filesList.addAll(_adaptiveFolder.toList());
                 }
                 _generateXmlConfigs();
-                for (final key in _xmlConfigs.keys) {
-                  final List<FileData> _txtFolder = _xmlConfigs[key];
-                  _files.addAll(_txtFolder.toList());
+                for (final String key in _xmlConfigs.keys) {
+                  final List<FileData> txtFolder = _xmlConfigs[key];
+                  filesList.addAll(txtFolder.toList());
                 }
               }
+
               if (exportWeb) {
                 _generatePwaConfigs();
-                for (final key in _pwaConfigs.keys) {
-                  final List<FileData> _txtFolder = _pwaConfigs[key];
-                  _files.addAll(_txtFolder.toList());
+                for (final String key in _pwaConfigs.keys) {
+                  final List<FileData> txtFolder = _pwaConfigs[key];
+                  filesList.addAll(txtFolder.toList());
                 }
               }
-              // print('Images: ${_images.length}');
-              final List<int> _data = _gen.generateArchive(_files);
-              await _saveFile('icons.zip', binaryData: _data).then((_exported) {
-                if (_exported) {
-                  _countDown = 0;
-                  _exportedDoneCount = 100;
+
+              final List<int> archiveFileData = genertator.generateArchive(filesList);
+              await _saveFile('icons.zip', binaryData: archiveFileData).then((bool correctlyExported) {
+                if (correctlyExported) {
+                  _countdown = 0;
                   _loading = false;
                   _showSnackInfo();
                 }
@@ -289,17 +290,17 @@ class SetupIcon extends ChangeNotifier {
             }));
   }
 
-  int _countDown = 0;
-  int get countDown => _countDown;
+  int _countdown = 0;
+  int get countdown => _countdown;
 
   void _showSnackInfo() {
     _exportedDoneCount = 0;
-    Timer.periodic(const Duration(milliseconds: 50), (Timer _timer) {
-      if (_countDown > 99) {
-        _countDown = 0;
-        _timer.cancel();
+    Timer.periodic(const Duration(milliseconds: 50), (Timer timer) {
+      if (_countdown > 99) {
+        _countdown = 0;
+        timer.cancel();
       } else {
-        _countDown = _countDown + 1;
+        _countdown = _countdown + 1;
       }
       notifyListeners();
     });
@@ -307,23 +308,23 @@ class SetupIcon extends ChangeNotifier {
 
   // Future<String> get _tempDirectory async {
   //   if (platform.isMobile) {
-  //     final io.Directory _dir = await getTemporaryDirectory();
-  //     return _dir.path;
+  //     final io.Directory dir = await getTemporaryDirectory();
+  //     return dir.path;
   //   } else {
   //     return '';
   //   }
   // }
 
   Future<String> get _getSaveDirectory async {
-    io.Directory _dir;
+    io.Directory platformSpecificDir;
     if (platform.isAndroid) {
-      _dir = await getExternalStorageDirectory();
+      platformSpecificDir = await getExternalStorageDirectory();
     } else if (platform.isIOS) {
-      _dir = await getApplicationDocumentsDirectory();
+      platformSpecificDir = await getApplicationDocumentsDirectory();
     } else {
-      _dir = await getDownloadsDirectory();
+      platformSpecificDir = await getDownloadsDirectory();
     }
-    return _dir.path;
+    return platformSpecificDir.path;
   }
 
   Future<bool> _saveFile(String fileName, {@required List<int> binaryData, bool silentErrors = false}) async {
@@ -347,12 +348,12 @@ class SetupIcon extends ChangeNotifier {
         ..click();
     } else {
       try {
-        await _getSaveDirectory.then((_path) async {
-          io.File('$_path/$fileName')
+        await _getSaveDirectory.then((String pathToFile) async {
+          io.File('$pathToFile/$fileName')
             ..createSync()
             ..writeAsBytesSync(binaryData);
           if (platform.isMobile) {
-            await Share.shareFiles(['$_path/$fileName'], mimeTypes: ['application/zip']);
+            await Share.shareFiles(['$pathToFile/$fileName'], mimeTypes: ['application/zip']);
           }
         });
         // ignore: avoid_catches_without_on_clauses
@@ -422,48 +423,49 @@ class SetupIcon extends ChangeNotifier {
   }
 
   void _generateXmlConfigs({String key = 'xml'}) {
-    final XmlGenerator _gen =
+    final XmlGenerator genertator =
         XmlGenerator(bgAsColor: preferColorBg, color: adaptiveColor ?? backgroundColor ?? const Color(0xFF000000));
-    final List<FileData> _archive = _gen.generateXmls();
-    _xmlConfigs[key] = _archive;
+    final List<FileData> xmlsList = genertator.generateXmls();
+    _xmlConfigs[key] = xmlsList;
     _exportedDoneCount = _exportedDoneCount + 1;
     notifyListeners();
   }
 
   void _generatePwaConfigs({String key = 'pwa'}) {
-    final PwaConfigGenerator _gen = PwaConfigGenerator(color: backgroundColor ?? const Color(0xFF000000));
-    final List<FileData> _archive = _gen.generatePwaConfigs();
-    _pwaConfigs[key] = _archive;
+    final PwaConfigGenerator genertator = PwaConfigGenerator(color: backgroundColor ?? const Color(0xFF000000));
+    final List<FileData> configsList = genertator.generatePwaConfigs();
+    _pwaConfigs[key] = configsList;
   }
 
   Future _generatePngIcons(String key, ImageFolder folder) async {
-    final img.Image _image = img.decodePng(_icon);
-    final IconGenerator _gen = IconGenerator();
-    // final String _pathToTempDir = await _tempDirectory;
-    final List<FileData> _archive =
-        await _gen.generateIcons(_image, folder, writeToDiskIO: !platform.isWeb && platform.isDesktop);
-    _regularIconFiles[key] = _archive;
+    final img.Image uploadedPNG = img.decodePng(_icon);
+    final IconGenerator genertator = IconGenerator();
+    // final String pathToTempDir = await _tempDirectory;
+    final List<FileData> regularIconsList =
+        await genertator.generateIcons(uploadedPNG, folder, writeToDiskIO: !kIsWeb && platform.isDesktop);
+    _regularIconFiles[key] = regularIconsList;
     _exportedDoneCount = _exportedDoneCount + 1;
     notifyListeners();
   }
 
   Future _generateAdaptiveIcons(ImageFolder folder) async {
-    final bool _background = folder is BackgroundIconsFolder;
-    final String _key = _background ? 'bg' : 'fg';
-    final img.Image _image = img.decodePng(_background ? _adaptiveBackground : _adaptiveForeground);
-    final IconGenerator _gen = IconGenerator();
-    // final String _pathToTempDir = await _tempDirectory;
-    final List<FileData> _archive =
-        await _gen.generateIcons(_image, folder, writeToDiskIO: !platform.isWeb && platform.isDesktop);
-    _adaptiveIconFiles[_key] = _archive;
+    final bool background = folder is BackgroundIconsFolder;
+    final String key = background ? 'bg' : 'fg';
+    final img.Image uploadedAdaptivePNG = img.decodePng(background ? _adaptiveBackground : _adaptiveForeground);
+    final IconGenerator genertator = IconGenerator();
+    // final String pathToTempDir = await _tempDirectory;
+    final List<FileData> adaptiveIconsList =
+        await genertator.generateIcons(uploadedAdaptivePNG, folder, writeToDiskIO: !kIsWeb && platform.isDesktop);
+    _adaptiveIconFiles[key] = adaptiveIconsList;
     _exportedDoneCount = _exportedDoneCount + 1;
     notifyListeners();
   }
 
   Future _generateIcoIcon(ImageFolder folder, {String key = 'win'}) async {
-    final img.Image _image = img.decodePng(_icon);
-    final List<FileData> _archive = await generateWinIcos(_image, folder, writeToDiskIO: !kIsWeb);
-    _regularIconFiles[key] = _archive;
+    final img.Image uploadedPNG = img.decodePng(_icon);
+    final List<FileData> icoList =
+        await WindowsIcon.generate(uploadedPNG, folder, writeToDiskIO: !kIsWeb && platform.isDesktop);
+    _regularIconFiles[key] = icoList;
     _exportedDoneCount = _exportedDoneCount + 1;
     notifyListeners();
   }
@@ -487,6 +489,7 @@ class SetupIcon extends ChangeNotifier {
     // _linux: true,
     // _fuchsiaOS: true,
   };
+
   Map<String, bool> get platforms => _platforms;
   void switchPlatform({@required String platformNameKey, @required bool isExported}) {
     _regularIconFiles.clear();

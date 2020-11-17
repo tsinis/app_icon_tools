@@ -7,31 +7,35 @@ import '../../widgets/transparency_grid.dart';
 
 class AdaptiveIcon extends StatefulWidget {
   const AdaptiveIcon({Key key, this.onDevice = false}) : super(key: key);
-  final bool onDevice;
-  @override
-  _AdaptiveIconState createState() => _AdaptiveIconState();
 
-  static Future<void> preview(String _direction) async {
-    const double _offset = 0.1;
-    Offset _end = const Offset(0, _offset);
+  final bool onDevice;
+
+  static AnimationController controller; //TODO Check it.
+  static Animation<Offset> animation;
+
+  static Future preview(String _direction) async {
+    const double parallaxOffset = 0.1;
+    Offset endOffset = const Offset(0, parallaxOffset);
     switch (_direction) {
-      case 'down':
-        _end = const Offset(0, _offset);
+      case 'down': //TODO Replace with static Strings.
+        endOffset = const Offset(0, parallaxOffset);
         break;
       case 'up':
-        _end = const Offset(0, -_offset);
+        endOffset = const Offset(0, -parallaxOffset);
         break;
       case 'right':
-        _end = const Offset(_offset, 0);
+        endOffset = const Offset(parallaxOffset, 0);
         break;
       case 'left':
-        _end = const Offset(-_offset, 0);
+        endOffset = const Offset(-parallaxOffset, 0);
         break;
     }
-    _animation = Tween<Offset>(begin: Offset.zero, end: _end)
-        .animate(CurvedAnimation(parent: _controller, curve: Curves.elasticIn));
+
+    animation = Tween<Offset>(begin: Offset.zero, end: endOffset)
+        .animate(CurvedAnimation(parent: controller, curve: Curves.elasticIn));
+
     try {
-      await _controller.forward().orCancel.whenComplete(() async => await _controller.reverse().orCancel);
+      await controller.forward().orCancel.whenComplete(() async => await controller.reverse().orCancel);
     } on TickerCanceled catch (_error) {
       // ignore: avoid_print
       print('$_error.\nMost likely because the user has switched to another Icon Preview.');
@@ -40,33 +44,34 @@ class AdaptiveIcon extends StatefulWidget {
       print('User most likely has switched to another screen.\n$_exception');
     }
   }
-}
 
-AnimationController _controller;
-Animation<Offset> _animation;
+  @override
+  _AdaptiveIconState createState() => _AdaptiveIconState();
+}
 
 class _AdaptiveIconState extends State<AdaptiveIcon> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
+    AdaptiveIcon.controller = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 800), reverseDuration: const Duration(milliseconds: 1000));
-    _animation = Tween<Offset>(begin: Offset.zero, end: const Offset(0, 0.1)).animate(_controller);
+    AdaptiveIcon.animation =
+        Tween<Offset>(begin: Offset.zero, end: const Offset(0, 0.1)).animate(AdaptiveIcon.controller);
   }
 
   @override
   void deactivate() {
     super.deactivate();
-    if (_controller.isAnimating) {
-      _controller.stop();
+    if (AdaptiveIcon.controller.isAnimating) {
+      AdaptiveIcon.controller.stop();
     }
   }
 
   @override
   void dispose() {
     super.dispose();
-    if (_controller.isAnimating) {
-      _controller
+    if (AdaptiveIcon.controller.isAnimating) {
+      AdaptiveIcon.controller
         ..stop()
         ..dispose();
     }
@@ -74,35 +79,36 @@ class _AdaptiveIconState extends State<AdaptiveIcon> with SingleTickerProviderSt
 
   @override
   Widget build(BuildContext context) {
-    final Uint8List _background = context.select((SetupIcon icon) => icon.adaptiveBackground);
-    final Uint8List _foreground = context.select((SetupIcon icon) => icon.adaptiveForeground);
-    final Color _adpativeColor = context.select((SetupIcon icon) => icon.adaptiveColor);
-    final bool _preferColor = context.select((SetupIcon icon) => icon.preferColorBg);
+    final Uint8List backgroundImage = context.select((SetupIcon icon) => icon.adaptiveBackground);
+    final Uint8List foregroundImage = context.select((SetupIcon icon) => icon.adaptiveForeground);
+    final Color backgroundColor = context.select((SetupIcon icon) => icon.adaptiveColor);
+    final bool preferColorBg = context.select((SetupIcon icon) => icon.preferColorBg);
 
     return AnimatedBuilder(
-      animation: _controller,
-      builder: (BuildContext context, _) => Stack(
+      animation: AdaptiveIcon.controller,
+      builder: (_, __) => Stack(
         alignment: Alignment.center,
         children: [
           if (!widget.onDevice) const TransparencyGrid(),
-          if (_background != null || _adpativeColor != null)
+          if (backgroundImage != null || backgroundColor != null)
             FractionallySizedBox(
               widthFactor: 0.7,
               heightFactor: 0.7,
               child: SlideTransition(
-                  position: _animation,
+                  position: AdaptiveIcon.animation,
                   child: Transform.scale(
                       scale: 2.14,
-                      child: _preferColor
-                          ? Container(color: _adpativeColor ?? Colors.transparent)
-                          : (_background != null)
-                              ? Image.memory(_background)
+                      child: preferColorBg
+                          ? Container(color: backgroundColor ?? Colors.transparent)
+                          : (backgroundImage != null)
+                              ? Image.memory(backgroundImage)
                               : const SizedBox.shrink())),
             ),
           SlideTransition(
-              position: _animation,
+              position: AdaptiveIcon.animation,
               child: Transform.scale(
-                  scale: 1.5, child: (_foreground == null) ? const SizedBox.shrink() : Image.memory(_foreground))),
+                  scale: 1.5,
+                  child: (foregroundImage == null) ? const SizedBox.shrink() : Image.memory(foregroundImage))),
         ],
       ),
     );

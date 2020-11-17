@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 import '../../../models/user_interface.dart';
 
 class AdaptiveSlider extends StatelessWidget {
+  const AdaptiveSlider({@required this.radius, @required this.onChanged, Key key}) : super(key: key);
+
   final double radius;
   final void Function(double) onChanged;
   // final String label;
 
-  const AdaptiveSlider({@required this.radius, @required this.onChanged, Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) => UserInterface.isApple
       ? Padding(

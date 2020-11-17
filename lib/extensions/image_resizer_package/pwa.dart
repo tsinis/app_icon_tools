@@ -20,21 +20,21 @@ class PwaConfigGenerator {
   String get _colorAsHex => '#${color.toHex(leadingHashSign: false).substring(2)}';
 
   List<FileData> generatePwaConfigs() {
-    final List<FileData> _pwaConfigs = [];
-    final FileData _indexHtmlFile = _generateIndexHtml();
-    _pwaConfigs.add(_indexHtmlFile);
-    final FileData _manifestFile = _generateManifest();
-    _pwaConfigs.add(_manifestFile);
-    return _pwaConfigs;
+    final List<FileData> pwaConfigs = [];
+    final FileData indexHtmlFile = _generateIndexHtml();
+    pwaConfigs.add(indexHtmlFile);
+    final FileData manifestFile = _generateManifest();
+    pwaConfigs.add(manifestFile);
+    return pwaConfigs;
   }
 
   FileData _generateIndexHtml() {
-    final List<int> _indexHtmlFile = utf8.encode(pwaHtml(_colorAsHex));
-    return FileData(_indexHtmlFile, _indexHtmlFile.length, '', '$path/$indexName.$indexExt');
+    final List<int> indexHtmlFile = utf8.encode(pwaHtml(_colorAsHex));
+    return FileData(indexHtmlFile, indexHtmlFile.length, '', '$path/$indexName.$indexExt');
   }
 
   FileData _generateManifest() {
-    final List<int> _manifestFile = utf8.encode(pwaManifest(_colorAsHex));
-    return FileData(_manifestFile, _manifestFile.length, '', '$path/$manifestName.$manifestExt');
+    final List<int> manifestFile = utf8.encode(pwaManifest(_colorAsHex));
+    return FileData(manifestFile, manifestFile.length, '', '$path/$manifestName.$manifestExt');
   }
 }

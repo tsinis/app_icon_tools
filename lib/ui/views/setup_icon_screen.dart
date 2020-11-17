@@ -12,12 +12,12 @@ class SetupScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final int _selectedPlatform = context.select((SetupIcon icon) => icon.platformID);
+    final int selectedPlatform = context.select((SetupIcon icon) => icon.platformID); //TODO Remove.
 
     return AdaptiveScaffold(
       child: Column(
         children: [
-          Expanded(child: platformList[_selectedPlatform]),
+          Expanded(child: platformList[selectedPlatform]),
           const AdaptiveNavgationBar(),
         ],
       ),

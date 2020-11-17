@@ -19,6 +19,7 @@ class AdaptiveDialog extends StatelessWidget {
   final String secondaryButtonTitle, mainButtonTitle;
   final void Function() onPressedMain;
   final void Function() onPressedSecondary;
+
   @override
   Widget build(BuildContext context) => UserInterface.isApple
       ? CupertinoAlertDialog(

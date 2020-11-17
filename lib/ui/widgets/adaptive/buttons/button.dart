@@ -6,16 +6,18 @@ import '../../../../generated/l10n.dart';
 import '../../../../models/user_interface.dart';
 
 class AdaptiveButton extends StatelessWidget {
+  const AdaptiveButton({@required this.text, @required this.onPressed, this.color, this.destructive = false, Key key})
+      : super(key: key);
+
   final String text;
   final Function() onPressed;
   final Color color;
   final bool destructive;
 
-  const AdaptiveButton({@required this.text, @required this.onPressed, this.color, this.destructive = false, Key key})
-      : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final Color _buttonColor = context.select((UserInterface ui) => ui.materialTheme.accentColor);
+    final Color buttonColor = context.select((UserInterface ui) => ui.materialTheme.accentColor); //TODO Remove.
+
     return Padding(
       padding: destructive ? const EdgeInsets.all(0) : const EdgeInsets.all(8.5),
       child: UserInterface.isApple
@@ -32,7 +34,7 @@ class AdaptiveButton extends StatelessWidget {
                 )
               : CupertinoButton(
                   padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 64),
-                  color: color ?? _buttonColor,
+                  color: color ?? buttonColor,
                   onPressed: onPressed,
                   child: Text(text,
                       style: TextStyle(

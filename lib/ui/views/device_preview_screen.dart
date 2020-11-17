@@ -19,8 +19,9 @@ class DeviceScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final int _selectedPlatform = context.select((SetupIcon icon) => icon.platformID);
-    final int _id = platformList[_selectedPlatform].platformID;
+    final int selectedPlatform = context.select((SetupIcon icon) => icon.platformID);
+    final int platformID = platformList[selectedPlatform].platformID;
+
     return AdaptiveScaffold(
       deviceScreen: true,
       child: Column(
@@ -36,23 +37,23 @@ class DeviceScreen extends StatelessWidget {
                   child: Stack(
                     alignment: Alignment.center,
                     children: [
-                      _SVG(_selectedPlatform),
+                      _SVG(selectedPlatform),
                       SizedBox(
-                        width: (_id == 1 || _id == 2)
+                        width: (platformID == 1 || platformID == 2)
                             ? 105
-                            : (_id > 2)
-                                ? (_id == 3)
+                            : (platformID > 2)
+                                ? (platformID == 3)
                                     ? 36
                                     : 22
                                 : 40,
-                        height: (_id > 2)
-                            ? (_id == 3)
+                        height: (platformID > 2)
+                            ? (platformID == 3)
                                 ? 36
                                 : 22
                             : 40,
                         child: Align(
                           alignment: Alignment.centerRight,
-                          child: (_id == 1)
+                          child: (platformID == 1)
                               ? const AspectRatio(
                                   aspectRatio: 1,
                                   child: ClipOval(child: Hero(tag: 'adaptive', child: AdaptiveIcon(onDevice: true))))
@@ -64,8 +65,8 @@ class DeviceScreen extends StatelessWidget {
                                     child: LocalHero(
                                       tag: 'local',
                                       child: RegularIcon(
-                                          cornerRadius: platformList[_selectedPlatform].cornerRadius,
-                                          supportTransparency: _id != 2),
+                                          cornerRadius: platformList[selectedPlatform].cornerRadius,
+                                          supportTransparency: platformID != 2),
                                     ),
                                   ),
                                 ),
@@ -86,10 +87,10 @@ class DeviceScreen extends StatelessWidget {
 }
 
 class _SVG extends StatelessWidget {
-  const _SVG(this._selectedPlatform, {Key key}) : super(key: key);
+  const _SVG(this.selectedPlatform, {Key key}) : super(key: key);
 
-  final int _selectedPlatform;
-  String get _platformName => platformList[_selectedPlatform].name;
+  final int selectedPlatform;
+  String get _platformName => platformList[selectedPlatform].name;
   String get _svgPath => 'svg/$_platformName.svg'.replaceAll(' ', '');
 
   @override

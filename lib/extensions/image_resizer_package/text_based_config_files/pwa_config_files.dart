@@ -1,6 +1,6 @@
-const String _name = 'PWA Flutter App';
+const String _name = 'CHANGE_TO_YOUR_APP_NAME';
 
-String pwaHtml(String _color) => '''
+String pwaHtml(String color) => '''
 <!DOCTYPE html>
 <html>
 <head>
@@ -34,9 +34,9 @@ String pwaHtml(String _color) => '''
   <link rel="manifest" href="manifest.json">
 
   <!-- Windows -->
-  <meta name="msapplication-TileColor" content="$_color">
+  <meta name="msapplication-TileColor" content="$color">
   <meta name="msapplication-TileImage" content="icons/Icon-144.png">
-  <meta name="theme-color" content="$_color">
+  <meta name="theme-color" content="$color">
 
 </head>
 <body>
@@ -55,14 +55,14 @@ String pwaHtml(String _color) => '''
 </html>
 ''';
 
-String pwaManifest(String _color) => '''
+String pwaManifest(String color) => '''
 {
     "name": "$_name",
     "short_name": "${_name.toLowerCase()}",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "$_color",
-    "theme_color": "$_color",
+    "background_color": "$color",
+    "theme_color": "$color",
     "description": "$_name",
     "orientation": "natural",
     "prefer_related_applications": false,

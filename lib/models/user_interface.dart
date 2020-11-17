@@ -23,21 +23,23 @@ class UserInterface extends ChangeNotifier {
   }
 
   Future openGuidelinesURL({bool fromGoogle = false, bool isAdaptive = false}) async {
-    const String _apple = 'https://developer.apple.com/design/human-interface-guidelines/ios/icons-and-images/app-icon';
-    final String _supportedLocale = (_googleLng.contains(_locale)) ? _locale : 'en';
-    final String _google =
-        'https://support.google.com/googleplay/android-developer/answer/1078870?hl=$_supportedLocale';
-    final String _adaptive =
-        'https://developer.android.com/guide/practices/ui_guidelines/icon_design_adaptive?hl=$_supportedLocale';
-    final String _url = isAdaptive
-        ? _adaptive
+    final String supportedLocale = (_googleLng.contains(_locale)) ? _locale : 'en';
+    const String appleURL =
+        'https://developer.apple.com/design/human-interface-guidelines/ios/icons-and-images/app-icon';
+    final String googleURL =
+            'https://support.google.com/googleplay/android-developer/answer/1078870?hl=$supportedLocale',
+        adaptiveURL =
+            'https://developer.android.com/guide/practices/ui_guidelines/icon_design_adaptive?hl=$supportedLocale';
+    final String url = isAdaptive
+        ? adaptiveURL
         : fromGoogle
-            ? _google
-            : _apple;
-    if (await canLaunch(_url)) {
-      await launch(_url);
+            ? googleURL
+            : appleURL;
+
+    if (await canLaunch(url)) {
+      await launch(url);
     } else {
-      throw ArgumentError('Could not launch $_url');
+      throw ArgumentError('Could not launch $url');
     }
   }
 
@@ -45,10 +47,9 @@ class UserInterface extends ChangeNotifier {
 
   String get locale => _locale;
 
-  void setLocale(String _newLocale) {
-    final int _colon = _newLocale.indexOf(':');
-    _locale = _newLocale.substring(0, _colon).toLowerCase();
-    // print(_locale);
+  void setLocale(String newLocale) {
+    final int colon = newLocale.indexOf(':');
+    _locale = newLocale.substring(0, colon).toLowerCase();
     notifyListeners();
   }
 
@@ -66,15 +67,15 @@ class UserInterface extends ChangeNotifier {
 
   static void loadLocales() {
     if (_langList.isEmpty) {
-      for (final Locale _locale in supportedLocales) {
-        _langList.add('${_locale.languageCode.toUpperCase()}: ${languageNames[_locale]}');
+      for (final Locale locale in supportedLocales) {
+        _langList.add('${locale.languageCode.toUpperCase()}: ${languageNames[locale]}');
       }
       _langList.sort();
     }
     _resetFilter();
   }
 
-  static Future<void> setupUI() async {
+  static Future setupUI() async {
     _currentTime = DateTime.now().hour;
     // ignore: unawaited_futures
     loadSettings();
@@ -84,17 +85,17 @@ class UserInterface extends ChangeNotifier {
 
   static int _currentTime = 12;
 
-  static Future<void> loadSettings() async {
-    final SharedPreferences _prefs = await SharedPreferences.getInstance();
-    _locale = _prefs.getString(_storedLocale) ?? platform.locale;
-    _isDark = _prefs.getBool(_storedTheme) ?? (_currentTime > 18 || _currentTime < 6);
+  static Future loadSettings() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    _locale = prefs.getString(_storedLocale) ?? platform.locale;
+    _isDark = prefs.getBool(_storedTheme) ?? (_currentTime > 18 || _currentTime < 6);
   }
 
-  Future<void> saveSettings() async {
+  Future saveSettings() async {
     locator<NavigationService>().goBack();
-    final SharedPreferences _prefs = await SharedPreferences.getInstance();
-    await _prefs.setString(_storedLocale, _locale);
-    await _prefs.setBool(_storedTheme, _isDark);
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_storedLocale, _locale);
+    await prefs.setBool(_storedTheme, _isDark);
     // print('Saved Settings!');
   }
 
@@ -102,18 +103,18 @@ class UserInterface extends ChangeNotifier {
     ..clear()
     ..addAll(_langList);
 
-  void search(String _query) {
+  void search(String query) {
     _resetFilter();
-    if (_query.isNotEmpty) {
-      final List<String> _filteredList = [];
-      for (final String _lang in _langList) {
-        if (_lang.toLowerCase().contains(_query.toLowerCase())) {
-          _filteredList.add(_lang);
+    if (query.isNotEmpty) {
+      final List<String> filteredList = [];
+      for (final String language in _langList) {
+        if (language.toLowerCase().contains(query.toLowerCase())) {
+          filteredList.add(language);
         }
       }
       _langFilterList
         ..clear()
-        ..addAll(_filteredList);
+        ..addAll(filteredList);
     } else {
       _resetFilter();
     }

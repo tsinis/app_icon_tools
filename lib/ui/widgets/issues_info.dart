@@ -14,53 +14,54 @@ class IssuesInfo extends StatefulWidget {
 }
 
 class _IssuesInfo extends State<IssuesInfo> with SingleTickerProviderStateMixin {
-  Animation<double> _animation;
-  AnimationController _animationController;
+  Animation<double> animation;
+  AnimationController animationController;
 
   @override
   void dispose() {
-    _animationController.dispose();
+    animationController.dispose();
     super.dispose();
   }
 
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(vsync: this, duration: const Duration(seconds: 2));
-    final CurvedAnimation curve = CurvedAnimation(parent: _animationController, curve: Curves.linear);
+    animationController = AnimationController(vsync: this, duration: const Duration(seconds: 2));
+    final CurvedAnimation curve = CurvedAnimation(parent: animationController, curve: Curves.linear);
     // ignore: prefer_int_literals
-    _animation = Tween(begin: 0.2, end: 1.0).animate(curve)
+    animation = Tween(begin: 0.2, end: 1.0).animate(curve)
       ..addStatusListener((status) {
         if (status == AnimationStatus.completed) {
-          _animationController.reverse();
+          animationController.reverse();
         } else if (status == AnimationStatus.dismissed) {
-          _animationController.forward();
+          animationController.forward();
         }
       });
-    _animationController.forward();
+    animationController.forward();
   }
 
   @override
   Widget build(BuildContext context) {
-    final double _hue = context.select((SetupIcon icon) => icon.hue);
-    final String _message = context.select((SetupIcon icon) => icon.issues);
-    return (_message.isEmpty)
+    final double hue = context.select((SetupIcon icon) => icon.hue);
+    final String issues = context.select((SetupIcon icon) => icon.issues);
+
+    return (issues.isEmpty)
         ? const SizedBox(width: 28)
         : Tooltip(
-            showDuration: Duration(seconds: 2 * ('\n'.allMatches(_message).length + 3)),
+            showDuration: Duration(seconds: 2 * ('\n'.allMatches(issues).length + 3)),
             decoration: BoxDecoration(
                 color: Theme.of(context).bottomAppBarColor.withOpacity(0.84),
                 borderRadius: const BorderRadius.all(Radius.circular(10))),
             textStyle: Theme.of(context).textTheme.button,
             padding: const EdgeInsets.fromLTRB(24, 0, 24, 32),
-            message: _message,
+            message: issues,
             child: FadeTransition(
-              opacity: _animation,
+              opacity: animation,
               child: Icon(
                   UserInterface.isApple
                       ? CupertinoIcons.exclamationmark_triangle
                       : CommunityMaterialIcons.alert_outline,
-                  color: HSLColor.fromAHSL(1, _hue, 1, 0.4).toColor()),
+                  color: HSLColor.fromAHSL(1, hue, 1, 0.4).toColor()),
             ),
           );
   }

@@ -10,26 +10,29 @@ import '../services/router.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key key}) : super(key: key);
+  //TODO Set global textScale factor to 1.0.
+
   @override
   Widget build(BuildContext context) {
-    final ThemeData _materialTheme = context.select((UserInterface ui) => ui.materialTheme);
-    final CupertinoThemeData _cupertinoTheme = context.select((UserInterface ui) => ui.cupertinoTheme);
-    final Locale _locale = Locale(context.select((UserInterface ui) => ui.locale));
+    final ThemeData materialTheme = context.select((UserInterface ui) => ui.materialTheme); //TODO Remove.
+    final CupertinoThemeData cupertinoTheme = context.select((UserInterface ui) => ui.cupertinoTheme); //TODO Remove.
+    final Locale locale = Locale(context.select((UserInterface ui) => ui.locale));
+
     return UserInterface.isApple
         ? CupertinoApp(
             navigatorKey: locator<NavigationService>().navigatorKey,
             localizationsDelegates: localizationDelgates,
             supportedLocales: supportedLocales,
-            locale: _locale,
-            theme: _cupertinoTheme,
+            locale: locale,
+            theme: cupertinoTheme,
             onGenerateRoute: UiRouter.generateRoute,
             initialRoute: UiRouter.initialScreen)
         : MaterialApp(
             navigatorKey: locator<NavigationService>().navigatorKey,
             localizationsDelegates: localizationDelgates,
             supportedLocales: supportedLocales,
-            locale: _locale,
-            theme: _materialTheme,
+            locale: locale,
+            theme: materialTheme,
             onGenerateRoute: UiRouter.generateRoute,
             initialRoute: UiRouter.initialScreen);
   }
