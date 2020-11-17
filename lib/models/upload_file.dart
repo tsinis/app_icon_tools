@@ -28,7 +28,7 @@ class UploadFile extends ChangeNotifier {
 
   Future checkSelected({bool background = false, bool foreground = false}) async {
     try {
-      //TODO Check condition for type, since custom file extension is not working on some platforms yet.
+      //TODO Check condition for type om Windows/Linux, since custom file extension is not working on some platforms yet.
       await FilePickerCross.importFromStorage(type: _fileType, fileExtension: expectedFileExtension)
           .then<void>((selectedFile) => _checkFile(selectedFile, background: background, foreground: foreground));
       // ignore: avoid_catches_without_on_clauses
@@ -42,19 +42,18 @@ class UploadFile extends ChangeNotifier {
       await _checkFile(droppedFile, background: background, foreground: foreground);
 
   Future _checkFile(dynamic uploadedFile, {@required bool background, @required bool foreground}) async {
-    _recivedBackground = _recivedForeground = null;
-    _setLoading(true);
-    //TODO! Check when https://github.com/flutter/flutter/issues/33577 is closed.
-    Future.delayed(
-      const Duration(milliseconds: kIsWeb ? 300 : 0),
-      () async {
+    if (!_loading) {
+      _recivedBackground = _recivedForeground = null;
+      _setLoading(isLoading: true, isValidFile: true);
+      //TODO! Check when https://github.com/flutter/flutter/issues/33577 is closed.
+      Future.delayed(const Duration(milliseconds: kIsWeb ? 300 : 0), () async {
         Uint8List rawBytes;
         try {
           if (uploadedFile is File) {
             if (_properExtension(uploadedFile.name)) {
               await _convertHtmlFileToBytes(uploadedFile).then((convertedBytes) => rawBytes = convertedBytes);
             } else {
-              _setLoading(false);
+              _setLoading(isLoading: false);
               return;
             }
           }
@@ -62,7 +61,7 @@ class UploadFile extends ChangeNotifier {
             if (_properExtension(uploadedFile.fileName)) {
               rawBytes = uploadedFile.toUint8List();
             } else {
-              _setLoading(false);
+              _setLoading(isLoading: false);
               return;
             }
           }
@@ -72,7 +71,8 @@ class UploadFile extends ChangeNotifier {
           }
           // ignore: avoid_catches_without_on_clauses
         } catch (e) {
-          _isValidFile = false;
+          _setLoading(isLoading: false);
+          return;
         }
         if (_isValidFile) {
           if (background) {
@@ -84,12 +84,12 @@ class UploadFile extends ChangeNotifier {
           }
         }
 
-        _setLoading(false); //TODO Add Congrats animation.
+        _setLoading(isLoading: false, isValidFile: _isValidFile); //TODO Add Success animation.
         if (!background && !foreground) {
           await _navigateToSetup();
         }
-      },
-    );
+      });
+    }
   }
 
   Future<void> _navigateToSetup() async {
@@ -121,7 +121,6 @@ class UploadFile extends ChangeNotifier {
   }
 
   bool _findIssues(Uint8List uploadedFile, {@required bool foreground, @required bool background}) {
-    //TODO Check drag and drop results when passing renamed JPG.
     final bool adaptive = foreground || background;
     final bool tooHeavy = uploadedFile.buffer.lengthInBytes / 1000 > 1024;
     final img.Image imageFile = img.decodePng(uploadedFile);
@@ -157,8 +156,9 @@ class UploadFile extends ChangeNotifier {
 
   bool _loading = false;
   bool get loading => _loading;
-  void _setLoading(bool newValue) {
-    _loading = newValue;
+  void _setLoading({@required bool isLoading, bool isValidFile = false}) {
+    _loading = isLoading;
+    _isValidFile = isValidFile;
     notifyListeners();
   }
 

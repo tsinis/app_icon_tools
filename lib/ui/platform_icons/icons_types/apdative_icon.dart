@@ -7,26 +7,26 @@ import '../../widgets/transparency_grid.dart';
 
 class AdaptiveIcon extends StatefulWidget {
   const AdaptiveIcon({Key key, this.onDevice = false}) : super(key: key);
+  static const String moveDown = 'down', moveUp = 'up', moveRight = 'right', moveLeft = 'left';
+  static AnimationController controller;
+  static Animation<Offset> animation;
 
   final bool onDevice;
-
-  static AnimationController controller; //TODO Check it.
-  static Animation<Offset> animation;
 
   static Future preview(String _direction) async {
     const double parallaxOffset = 0.1;
     Offset endOffset = const Offset(0, parallaxOffset);
     switch (_direction) {
-      case 'down': //TODO Replace with static Strings.
+      case moveDown:
         endOffset = const Offset(0, parallaxOffset);
         break;
-      case 'up':
+      case moveUp:
         endOffset = const Offset(0, -parallaxOffset);
         break;
-      case 'right':
+      case moveRight:
         endOffset = const Offset(parallaxOffset, 0);
         break;
-      case 'left':
+      case moveLeft:
         endOffset = const Offset(-parallaxOffset, 0);
         break;
     }
@@ -38,7 +38,8 @@ class AdaptiveIcon extends StatefulWidget {
       await controller.forward().orCancel.whenComplete(() async => await controller.reverse().orCancel);
     } on TickerCanceled catch (_error) {
       // ignore: avoid_print
-      print('$_error.\nMost likely because the user has switched to another Icon Preview.');
+      print(
+          '$_error.\nMost likely because the user has switched to another\nIcon Preview or tapped on button twp times.');
     } on Exception catch (_exception) {
       // ignore: avoid_print
       print('User most likely has switched to another screen.\n$_exception');

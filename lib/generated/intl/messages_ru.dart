@@ -22,6 +22,7 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
     "appName" : MessageLookupByLibrary.simpleMessage("Настройка иконок лаунчера"),
+    "cancel" : MessageLookupByLibrary.simpleMessage("Отменить"),
     "locale" : MessageLookupByLibrary.simpleMessage("ru"),
     "regularIcon" : MessageLookupByLibrary.simpleMessage("Обычная иконка:")
   };

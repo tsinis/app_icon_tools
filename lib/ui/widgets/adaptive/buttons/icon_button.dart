@@ -18,12 +18,15 @@ class AdaptiveIconButtons extends StatelessWidget {
           children: UserInterface.isApple
               ? <_CupertinoIconButton>[
                   _CupertinoIconButton(
-                      direction: 'left', icon: CupertinoIcons.arrow_left, withAdaptives: withAdaptives),
+                      direction: AdaptiveIcon.moveLeft, icon: CupertinoIcons.arrow_left, withAdaptives: withAdaptives),
                   _CupertinoIconButton(
-                      direction: 'right', icon: CupertinoIcons.arrow_right, withAdaptives: withAdaptives),
+                      direction: AdaptiveIcon.moveRight,
+                      icon: CupertinoIcons.arrow_right,
+                      withAdaptives: withAdaptives),
                   _CupertinoIconButton(
-                      direction: 'down', icon: CupertinoIcons.arrow_down, withAdaptives: withAdaptives),
-                  _CupertinoIconButton(direction: 'up', icon: CupertinoIcons.arrow_up, withAdaptives: withAdaptives),
+                      direction: AdaptiveIcon.moveDown, icon: CupertinoIcons.arrow_down, withAdaptives: withAdaptives),
+                  _CupertinoIconButton(
+                      direction: AdaptiveIcon.moveUp, icon: CupertinoIcons.arrow_up, withAdaptives: withAdaptives),
                 ]
               : <IconButton>[
                   IconButton(

@@ -10,12 +10,9 @@ import '../services/router.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key key}) : super(key: key);
-  //TODO Set global textScale factor to 1.0.
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData materialTheme = context.select((UserInterface ui) => ui.materialTheme); //TODO Remove.
-    final CupertinoThemeData cupertinoTheme = context.select((UserInterface ui) => ui.cupertinoTheme); //TODO Remove.
     final Locale locale = Locale(context.select((UserInterface ui) => ui.locale));
 
     return UserInterface.isApple
@@ -24,7 +21,7 @@ class MyApp extends StatelessWidget {
             localizationsDelegates: localizationDelgates,
             supportedLocales: supportedLocales,
             locale: locale,
-            theme: cupertinoTheme,
+            theme: context.select((UserInterface ui) => ui.cupertinoTheme),
             onGenerateRoute: UiRouter.generateRoute,
             initialRoute: UiRouter.initialScreen)
         : MaterialApp(
@@ -32,7 +29,7 @@ class MyApp extends StatelessWidget {
             localizationsDelegates: localizationDelgates,
             supportedLocales: supportedLocales,
             locale: locale,
-            theme: materialTheme,
+            theme: context.select((UserInterface ui) => ui.materialTheme),
             onGenerateRoute: UiRouter.generateRoute,
             initialRoute: UiRouter.initialScreen);
   }

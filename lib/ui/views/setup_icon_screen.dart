@@ -11,16 +11,12 @@ class SetupScreen extends StatelessWidget {
   const SetupScreen({Key key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final int selectedPlatform = context.select((SetupIcon icon) => icon.platformID); //TODO Remove.
-
-    return AdaptiveScaffold(
-      child: Column(
-        children: [
-          Expanded(child: platformList[selectedPlatform]),
-          const AdaptiveNavgationBar(),
-        ],
-      ),
-    );
-  }
+  Widget build(BuildContext context) => AdaptiveScaffold(
+        child: Column(
+          children: [
+            Expanded(child: platformList[context.select((SetupIcon icon) => icon.platformID)]),
+            const AdaptiveNavgationBar()
+          ],
+        ),
+      );
 }

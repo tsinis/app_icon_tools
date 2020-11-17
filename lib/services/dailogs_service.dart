@@ -23,7 +23,7 @@ Future showSettingsDialog(BuildContext context) {
       final bool isDark = dialogContext.select((UserInterface ui) => ui.isDark) ?? true;
 
       return AdaptiveDialog(
-        title: S.of(context).settings,
+        title: S.of(dialogContext).settings,
         onPressedSecondary: () =>
             UserInterface.loadSettings().whenComplete(() => dialogContext.read<UserInterface>().goBack()),
         onPressedMain: () => dialogContext.read<UserInterface>().saveSettings(),
@@ -32,10 +32,10 @@ Future showSettingsDialog(BuildContext context) {
           mainAxisSize: MainAxisSize.max,
           children: [
             AdaptiveTextField(
-                onChanged: (query) => context.read<UserInterface>().search(query),
-                hint: S.of(context).findLang,
+                onChanged: (query) => dialogContext.read<UserInterface>().search(query),
+                hint: S.of(dialogContext).findLang,
                 autofillHints: languageList,
-                label: S.of(context).search),
+                label: S.of(dialogContext).search),
             SizedBox(
                 width: 270,
                 height: 200,
@@ -53,7 +53,7 @@ Future showSettingsDialog(BuildContext context) {
                                   padding: const EdgeInsets.all(10),
                                   child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                                     Text(languageList[i],
-                                        style: CupertinoTheme.of(context)
+                                        style: CupertinoTheme.of(dialogContext)
                                             .textTheme
                                             .textStyle
                                             .copyWith(fontWeight: isSelected ? FontWeight.bold : FontWeight.normal)),
@@ -63,17 +63,18 @@ Future showSettingsDialog(BuildContext context) {
                                 ),
                               )
                             : ListTile(
-                                selectedTileColor: Theme.of(context).accentColor.withOpacity(0.1),
+                                selectedTileColor: Theme.of(dialogContext).accentColor.withOpacity(0.1),
                                 selected: isSelected,
                                 onTap: () => dialogContext.read<UserInterface>().setLocale(languageList[i]),
                                 title: isSelected
-                                    ? Text(languageList[i], style: TextStyle(color: Theme.of(context).selectedRowColor))
+                                    ? Text(languageList[i],
+                                        style: TextStyle(color: Theme.of(dialogContext).selectedRowColor))
                                     : Text(languageList[i]));
                       }),
                 )),
             const AdaptiveDivider(),
             AdaptiveSwitch(
-                title: S.of(context).dark,
+                title: S.of(dialogContext).dark,
                 value: isDark,
                 onChanged: (isDark) => dialogContext.read<UserInterface>().changeMode(isDark))
           ],
@@ -89,9 +90,9 @@ Future showPlatformsDialog(BuildContext context) => showDialog<void>(
         final Map<String, bool> exportedPlatforms = dialogContext.watch<SetupIcon>().platforms;
 
         return AdaptiveDialog(
-          title: S.of(context).exportPlatforms,
+          title: S.of(dialogContext).exportPlatforms,
           onPressedMain: () => dialogContext.read<SetupIcon>().goBack(),
-          mainButtonTitle: S.of(context).done,
+          mainButtonTitle: S.of(dialogContext).done,
           content: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,

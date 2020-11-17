@@ -28,7 +28,8 @@ class DragAndDrop extends StatelessWidget {
     return FDottedLine(
       corner: FDottedLineCorner.all(20),
       color: const Color(0x7C888888),
-      space: kIsWeb ? 3 : 0,
+      dottedLength: 10,
+      space: kIsWeb ? 6 : 0,
       child: Container(
         width: UserInterface.previewIconSize,
         height: UserInterface.previewIconSize,
@@ -82,7 +83,7 @@ class DragAndDrop extends StatelessWidget {
                             opacity: 0.66,
                             child: Text(S.of(context).iconAttributes, style: const TextStyle(fontSize: 14))),
                         _DataThemeWorkaround(
-                          child: DataTable(
+                          DataTable(
                             sortAscending: false,
                             showCheckboxColumn: false,
                             headingRowHeight: 0,
@@ -175,15 +176,13 @@ class _InfoCellText extends StatelessWidget {
 
 //TODO: Check when https://github.com/flutter/flutter/issues/19228 is closed.
 class _DataThemeWorkaround extends StatelessWidget {
-  const _DataThemeWorkaround({@required this.child, Key key}) : super(key: key);
-  final Widget child; //TODO Private it.
+  const _DataThemeWorkaround(this._child, {Key key}) : super(key: key);
+  final Widget _child;
 
   @override
-  Widget build(BuildContext context) {
-    final ThemeData materialTheme = context.select((UserInterface ui) => ui.materialTheme); //TODO Remove.
-
-    return UserInterface.isApple
-        ? Material(type: MaterialType.transparency, child: Theme(data: materialTheme, child: child))
-        : SizedBox(child: child);
-  }
+  Widget build(BuildContext context) => UserInterface.isApple
+      ? Material(
+          type: MaterialType.transparency,
+          child: Theme(data: context.select((UserInterface ui) => ui.materialTheme), child: _child))
+      : SizedBox(child: _child);
 }

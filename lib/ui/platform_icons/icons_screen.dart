@@ -83,17 +83,19 @@ class IconPreview extends StatelessWidget {
   Widget build(BuildContext context) {
     final bool isPortrait = (MediaQuery.of(context).size.height > MediaQuery.of(context).size.width) ||
         (MediaQuery.of(context).size.width <= 680);
+    final bool haveAdaptiveBg = context.select((SetupIcon icon) => icon.haveAdaptiveBackground);
 
     return PreviewLayout(
-      needsScroll: MediaQuery.of(context).size.height <= 760,
       portraitOrientation: isPortrait,
       children: [
         _Preview(
             canChangeShape: _canChangeShape,
             isAdaptive: _isAdaptive,
             staticCornerRadius: _staticCornerRadius,
-            supportTransparency: _supportTransparency),
-        _Setup(isAdaptive: _isAdaptive, isPortrait: isPortrait, pwaIcon: platformID == 3)
+            supportTransparency: _supportTransparency,
+            haveAdaptiveBg: haveAdaptiveBg),
+        _Setup(
+            isAdaptive: _isAdaptive, isPortrait: isPortrait, pwaIcon: platformID == 3, haveAdaptiveBg: haveAdaptiveBg)
       ],
     );
   }
@@ -104,27 +106,27 @@ class _Preview extends StatelessWidget {
     @required bool canChangeShape,
     @required bool isAdaptive,
     @required bool supportTransparency,
+    @required bool haveAdaptiveBg,
     @required double staticCornerRadius,
     Key key,
   })  : _staticCornerRadius = staticCornerRadius,
+        _haveAdaptiveBg = haveAdaptiveBg,
         _supportTransparency = supportTransparency,
         _isAdaptive = isAdaptive,
         _canChangeShape = canChangeShape,
         super(key: key);
 
-  final bool _canChangeShape, _isAdaptive, _supportTransparency;
+  final bool _canChangeShape, _isAdaptive, _supportTransparency, _haveAdaptiveBg;
   final double _staticCornerRadius;
 
   @override
   Widget build(BuildContext context) {
     const double previewSize = UserInterface.previewIconSize;
     final double adjustableRadius = context.select((SetupIcon icon) => icon.cornerRadius);
-    final Color adaptiveColor = context.select((SetupIcon icon) => icon.adaptiveColor);
-    final bool adaptiveColorIsEmpty = adaptiveColor == null;
+    final bool adaptiveColorIsEmpty = context.select((SetupIcon icon) => icon.adaptiveColor) == null;
     final bool isDark = context.select((UserInterface ui) => ui.isDark);
-    final bool haveAdaptiveBg = context.select((SetupIcon icon) => icon.haveAdaptiveBackground);
     final bool haveAdaptiveFg = context.select((SetupIcon icon) => icon.haveAdaptiveForeground);
-    final bool haveAdaptiveAssets = haveAdaptiveBg && haveAdaptiveFg;
+    final bool haveAdaptiveAssets = _haveAdaptiveBg && haveAdaptiveFg;
 
     return SizedBox(
       width: previewSize,
@@ -139,7 +141,7 @@ class _Preview extends StatelessWidget {
                   ? (_isAdaptive ? S.of(context).uploadAdaptiveFg : S.of(context).previewShapes)
                   : S.of(context).iconPreview)),
           if (!haveAdaptiveFg && _isAdaptive)
-            haveAdaptiveBg
+            _haveAdaptiveBg
                 ? Stack(children: [
                     Container(
                         clipBehavior: Clip.antiAlias,
@@ -218,20 +220,25 @@ class _Preview extends StatelessWidget {
 }
 
 class _Setup extends StatelessWidget {
-  const _Setup({@required bool isAdaptive, @required bool isPortrait, @required bool pwaIcon, Key key})
+  const _Setup(
+      {@required bool isAdaptive,
+      @required bool isPortrait,
+      @required bool pwaIcon,
+      @required bool haveAdaptiveBg,
+      Key key})
       : _isAdaptive = isAdaptive,
+        _haveAdaptiveBg = haveAdaptiveBg,
         _isPortrait = isPortrait,
         _pwaIcon = pwaIcon,
         super(key: key);
 
-  final bool _isAdaptive, _isPortrait, _pwaIcon; //TODO Pass more parameters from parent if possible.
+  final bool _isAdaptive, _isPortrait, _pwaIcon, _haveAdaptiveBg;
 
   @override
   Widget build(BuildContext context) {
     final ThemeData materialTheme = context.select((UserInterface ui) => ui.materialTheme);
     final Color regularBgColor = context.select((SetupIcon icon) => icon.backgroundColor);
     final Color adaptiveColor = context.select((SetupIcon icon) => icon.adaptiveColor);
-    final bool haveAdaptiveBg = context.select((SetupIcon icon) => icon.haveAdaptiveBackground);
     final bool preferColorBg = context.select((SetupIcon icon) => icon.preferColorBg);
     final bool colorIsEmpty = regularBgColor == null;
 
@@ -248,7 +255,7 @@ class _Setup extends StatelessWidget {
                     bottom: 20,
                     top: (preferColorBg && !_isPortrait)
                         ? (UserInterface.isApple ? 62 : 72)
-                        : (UserInterface.isApple ? (haveAdaptiveBg ? 36 : 10) : 4)),
+                        : (UserInterface.isApple ? (_haveAdaptiveBg ? 36 : 10) : 4)),
                 child: Text(S.of(context).uploadAdaptiveBg)),
             if (preferColorBg)
               ColorPicker(
@@ -266,7 +273,7 @@ class _Setup extends StatelessWidget {
                     ? 0
                     : UserInterface.isApple
                         ? 10
-                        : haveAdaptiveBg
+                        : _haveAdaptiveBg
                             ? 10
                             : 43),
             AdaptiveSwitch(
@@ -296,7 +303,7 @@ class _Setup extends StatelessWidget {
                 onPressed: () => context.read<SetupIcon>().removeColor())
           else if (colorIsEmpty && !_isAdaptive)
             const SizedBox(height: 27),
-          if (!preferColorBg && _isAdaptive && haveAdaptiveBg)
+          if (!preferColorBg && _isAdaptive && _haveAdaptiveBg)
             Padding(
               padding: EdgeInsets.only(top: UserInterface.isApple ? 0 : 6),
               child: AdaptiveButton(
