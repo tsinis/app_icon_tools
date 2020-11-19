@@ -86,15 +86,16 @@ class UploadFile extends ChangeNotifier {
 
         _setLoading(isLoading: false, isValidFile: _isValidFile); //TODO Add Success animation.
         if (!background && !foreground) {
-          await _navigateToSetup();
+          await _showSuccess();
         }
       });
     }
   }
 
-  Future<void> _navigateToSetup() async {
+  Future _showSuccess() async {
     if (_isValidFile) {
-      await locator<NavigationService>().navigateTo(UiRouter.setupScreen);
+      _done = true;
+      notifyListeners();
     }
   }
 
@@ -160,6 +161,15 @@ class UploadFile extends ChangeNotifier {
     _loading = isLoading;
     _isValidFile = isValidFile;
     notifyListeners();
+  }
+
+  bool _done = false;
+  bool get done => _done;
+
+  Future navigateToSetup() async {
+    _done = false;
+    Future<void>.delayed(const Duration(milliseconds: 400),
+        () async => await locator<NavigationService>().navigateTo(UiRouter.setupScreen));
   }
 
 // TODO Consider use another package for permission handling, since the one provided with file_picker package is somehow limited.

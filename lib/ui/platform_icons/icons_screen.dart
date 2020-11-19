@@ -190,7 +190,7 @@ class _Preview extends StatelessWidget {
                   AdaptiveSlider(
                       radius: adjustableRadius,
                       // label: adjustableRadius.round().toString(),
-                      onChanged: (_newRadius) => context.read<SetupIcon>().setRadius(_newRadius)),
+                      onChanged: (newRadius) => context.read<SetupIcon>().setRadius(newRadius)),
                   const Icon(CommunityMaterialIcons.circle_outline, color: Color(0x80808080)),
                 ],
               ),
@@ -279,8 +279,7 @@ class _Setup extends StatelessWidget {
             AdaptiveSwitch(
                 title: S.of(context).colorAsBg,
                 value: preferColorBg,
-                onChanged: (_preferColor) =>
-                    context.read<SetupIcon>().switchBgColorPreference(preferColor: _preferColor))
+                onChanged: (preferColor) => context.read<SetupIcon>().switchBgColorPreference(preferColor: preferColor))
           ] else ...[
             Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20),
@@ -289,7 +288,7 @@ class _Setup extends StatelessWidget {
                 // labelTextStyle: materialTheme.chipTheme.labelStyle,
                 pickerAreaHeightPercent: 0.84,
                 pickerColor: colorIsEmpty ? materialTheme.accentColor : regularBgColor,
-                onColorChanged: (_newColor) => context.read<SetupIcon>().setBackgroundColor(_newColor),
+                onColorChanged: (Color newColor) => context.read<SetupIcon>().setBackgroundColor(newColor),
                 displayThumbColor: true,
                 portraitOnly: true,
                 enableAlpha: false, //TODO: Consider change to _supportTransparency sometime later.

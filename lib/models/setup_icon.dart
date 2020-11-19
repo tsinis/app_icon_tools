@@ -58,6 +58,7 @@ class SetupIcon extends ChangeNotifier {
   }
 
   void _wipeOldData() {
+    _adaptiveBackground = _adaptiveForeground = null;
     _regularIconFiles.clear();
     _adaptiveIconFiles.clear();
     _pwaConfigs.clear();
