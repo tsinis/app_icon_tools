@@ -15,7 +15,7 @@ class AdaptiveIconButtons extends StatelessWidget {
         message: withAdaptives ? S.of(context).parallax : S.of(context).noBackground,
         child: ButtonBar(
           alignment: MainAxisAlignment.center,
-          children: UserInterface.isApple
+          children: UserInterface.isCupertino
               ? <_CupertinoIconButton>[
                   _CupertinoIconButton(
                       direction: AdaptiveIcon.moveLeft, icon: CupertinoIcons.arrow_left, withAdaptives: withAdaptives),

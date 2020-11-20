@@ -13,6 +13,8 @@ import '../locator.dart';
 import '../services/navigation_service.dart';
 import '../services/router.dart';
 
+//TODO Move file checking to services.
+
 class UploadFile extends ChangeNotifier {
   static const int minIconSize = 1024;
   static const int minAdaptiveSize = 432;
@@ -32,9 +34,9 @@ class UploadFile extends ChangeNotifier {
       await FilePickerCross.importFromStorage(type: _fileType, fileExtension: expectedFileExtension)
           .then<void>((selectedFile) => _checkFile(selectedFile, background: background, foreground: foreground));
       // ignore: avoid_catches_without_on_clauses
-    } catch (_error) {
+    } catch (error) {
       // ignore: avoid_print
-      print('Seems like User have cancled selection: $_error');
+      print('Seems like User have cancled selection: $error');
     }
   }
 
@@ -70,7 +72,7 @@ class UploadFile extends ChangeNotifier {
             _isValidFile = _findIssues(rawBytes, foreground: foreground, background: background);
           }
           // ignore: avoid_catches_without_on_clauses
-        } catch (e) {
+        } catch (error) {
           _setLoading(isLoading: false);
           return;
         }
@@ -84,7 +86,7 @@ class UploadFile extends ChangeNotifier {
           }
         }
 
-        _setLoading(isLoading: false, isValidFile: _isValidFile); //TODO Add Success animation.
+        _setLoading(isLoading: false, isValidFile: _isValidFile);
         if (!background && !foreground) {
           await _showSuccess();
         }
@@ -96,20 +98,24 @@ class UploadFile extends ChangeNotifier {
     if (_isValidFile) {
       _done = true;
       notifyListeners();
+      Future<void>.delayed(const Duration(milliseconds: 2400), () async {
+        await locator<NavigationService>().navigateTo(UiRouter.setupScreen);
+        _done = false;
+      });
     }
   }
 
   // Future<Image> _convertFileToImage(File uploadedFile) async =>
   //     await _convertHtmlFileToBytes(uploadedFile).then((_uint8list) => Image.memory(_uint8list));
 
-  Future<Uint8List> _convertHtmlFileToBytes(File _htmlFile) async {
+  Future<Uint8List> _convertHtmlFileToBytes(File htmlFile) async {
     final Completer<Uint8List> bytesCompleter = Completer<Uint8List>();
     final FileReader reader = FileReader();
     reader.onLoadEnd.listen((_) {
       final Uint8List decodedBytes = const Base64Decoder().convert(reader.result.toString().split(',').last);
       bytesCompleter.complete(decodedBytes);
     });
-    reader.readAsDataUrl(_htmlFile);
+    reader.readAsDataUrl(htmlFile);
     return bytesCompleter.future;
   }
 
@@ -166,18 +172,12 @@ class UploadFile extends ChangeNotifier {
   bool _done = false;
   bool get done => _done;
 
-  Future navigateToSetup() async {
-    _done = false;
-    Future<void>.delayed(const Duration(milliseconds: 400),
-        () async => await locator<NavigationService>().navigateTo(UiRouter.setupScreen));
-  }
-
 // TODO Consider use another package for permission handling, since the one provided with file_picker package is somehow limited.
 // Future _checkPermissions() async {
 //   final PermissionStatus mobilePermissions = await Permission.storage.status ?? PermissionStatus.undetermined;
 //   if (mobilePermissions.isUndetermined) {
-//     await Permission.storage.request().then<void>((PermissionStatus _status) async {
-//       if (_status == PermissionStatus.granted) {
+//     await Permission.storage.request().then<void>((PermissionStatus status) async {
+//       if (status == PermissionStatus.granted) {
 //         return;
 //       } else {
 //         await Permission.storage.shouldShowRequestRationale;

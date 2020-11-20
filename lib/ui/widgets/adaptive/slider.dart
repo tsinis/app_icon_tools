@@ -11,7 +11,7 @@ class AdaptiveSlider extends StatelessWidget {
   // final String label;
 
   @override
-  Widget build(BuildContext context) => UserInterface.isApple
+  Widget build(BuildContext context) => UserInterface.isCupertino
       ? Padding(
           padding: const EdgeInsets.symmetric(vertical: 2),
           child: CupertinoSlider(

@@ -20,9 +20,8 @@ class UiRouter {
     }
   }
 
-  //TODO Get rid of static isApple from UI Model.
   static Route _showScreen(Widget screen) =>
-      UserInterface.isApple ? _CupertinoPageRoute((_) => screen) : _MaterialPageRoute((_) => screen);
+      UserInterface.isCupertino ? _CupertinoPageRoute((_) => screen) : _MaterialPageRoute((_) => screen);
 }
 
 class _MaterialPageRoute extends MaterialPageRoute<void> {

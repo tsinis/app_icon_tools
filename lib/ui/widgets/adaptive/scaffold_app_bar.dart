@@ -27,10 +27,10 @@ class AdaptiveScaffold extends StatelessWidget {
 
     return MediaQuery(
       data: MediaQuery.of(context).copyWith(textScaleFactor: 1), //TODO Check on iOS/Android devices.
-      child: UserInterface.isApple
+      child: UserInterface.isCupertino
           ? CupertinoPageScaffold(
               navigationBar: CupertinoNavigationBar(
-                actionsForegroundColor: CupertinoTheme.of(context).textTheme.textStyle.color?.withOpacity(0.7),
+                actionsForegroundColor: CupertinoTheme.of(context).textTheme.textStyle.color.withOpacity(0.7),
                 middle: uploadScreen
                     ? Text(S.of(context).appName)
                     : ButtonBar(

@@ -21,7 +21,7 @@ class AdaptiveDialog extends StatelessWidget {
   final void Function() onPressedSecondary;
 
   @override
-  Widget build(BuildContext context) => UserInterface.isApple
+  Widget build(BuildContext context) => UserInterface.isCupertino
       ? CupertinoAlertDialog(
           title: Padding(padding: const EdgeInsets.only(bottom: 10), child: Text(title)),
           content: content,

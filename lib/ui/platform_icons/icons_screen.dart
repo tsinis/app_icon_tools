@@ -244,7 +244,7 @@ class _Setup extends StatelessWidget {
 
     return SizedBox(
       width: UserInterface.previewIconSize,
-      height: UserInterface.isApple ? 560 : 572,
+      height: UserInterface.isCupertino ? 560 : 572,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: _isPortrait ? MainAxisAlignment.start : MainAxisAlignment.center,
@@ -254,24 +254,24 @@ class _Setup extends StatelessWidget {
                 padding: EdgeInsets.only(
                     bottom: 20,
                     top: (preferColorBg && !_isPortrait)
-                        ? (UserInterface.isApple ? 62 : 72)
-                        : (UserInterface.isApple ? (_haveAdaptiveBg ? 36 : 10) : 4)),
+                        ? (UserInterface.isCupertino ? 62 : 72)
+                        : (UserInterface.isCupertino ? (_haveAdaptiveBg ? 36 : 10) : 4)),
                 child: Text(S.of(context).uploadAdaptiveBg)),
             if (preferColorBg)
               ColorPicker(
                   // labelTextStyle: materialTheme.sliderTheme.valueIndicatorTextStyle,
                   pickerAreaHeightPercent: 0.84,
                   pickerColor: adaptiveColor ?? (regularBgColor ?? materialTheme.accentColor),
-                  onColorChanged: (_newColor) => context.read<SetupIcon>().setAdaptiveColor(_newColor),
+                  onColorChanged: (newColor) => context.read<SetupIcon>().setAdaptiveColor(newColor),
                   displayThumbColor: true,
                   portraitOnly: true,
-                  showLabel: !UserInterface.isApple)
+                  showLabel: !UserInterface.isCupertino)
             else
               const Hero(tag: 'global', child: DragAndDrop(background: true)),
             SizedBox(
                 height: preferColorBg
                     ? 0
-                    : UserInterface.isApple
+                    : UserInterface.isCupertino
                         ? 10
                         : _haveAdaptiveBg
                             ? 10
@@ -292,7 +292,7 @@ class _Setup extends StatelessWidget {
                 displayThumbColor: true,
                 portraitOnly: true,
                 enableAlpha: false, //TODO: Consider change to _supportTransparency sometime later.
-                showLabel: !UserInterface.isApple),
+                showLabel: !UserInterface.isCupertino),
           ],
           if (!colorIsEmpty && !_isAdaptive)
             AdaptiveButton(
@@ -304,7 +304,7 @@ class _Setup extends StatelessWidget {
             const SizedBox(height: 27),
           if (!preferColorBg && _isAdaptive && _haveAdaptiveBg)
             Padding(
-              padding: EdgeInsets.only(top: UserInterface.isApple ? 0 : 6),
+              padding: EdgeInsets.only(top: UserInterface.isCupertino ? 0 : 6),
               child: AdaptiveButton(
                   text: S.of(context).removeBackground,
                   destructive: true,

@@ -17,7 +17,7 @@ class AdaptiveButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Padding(
         padding: destructive ? const EdgeInsets.all(0) : const EdgeInsets.all(8.5),
-        child: UserInterface.isApple
+        child: UserInterface.isCupertino
             ? destructive
                 ? Tooltip(
                     message: S.of(context).longPress,

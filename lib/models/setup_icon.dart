@@ -337,9 +337,9 @@ class SetupIcon extends ChangeNotifier {
           dataUrl = Uri.dataFromBytes(binaryData);
         }
         // ignore: avoid_catches_without_on_clauses
-      } catch (e) {
+      } catch (error) {
         if (!silentErrors) {
-          throw Exception('Error Creating File Data on Web: $e');
+          throw Exception('Error Creating File Data on Web: $error');
         }
         return false;
       }
@@ -358,9 +358,9 @@ class SetupIcon extends ChangeNotifier {
           }
         });
         // ignore: avoid_catches_without_on_clauses
-      } catch (e) {
+      } catch (error) {
         if (!silentErrors) {
-          throw Exception('Error Creating File Data on Device: $e');
+          throw Exception('Error Creating File Data on Device: $error');
         }
         return false;
       }

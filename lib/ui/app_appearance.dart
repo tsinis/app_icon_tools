@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final Locale locale = Locale(context.select((UserInterface ui) => ui.locale));
 
-    return UserInterface.isApple
+    return UserInterface.isCupertino
         ? CupertinoApp(
             navigatorKey: locator<NavigationService>().navigatorKey,
             localizationsDelegates: localizationDelgates,

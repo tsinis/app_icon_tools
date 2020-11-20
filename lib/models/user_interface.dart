@@ -11,11 +11,12 @@ import 'constants/themes.dart';
 
 class UserInterface extends ChangeNotifier {
   static const double previewIconSize = 300;
-  static bool _isDark = true;
-  static bool _isAppleDevice = false;
+  static int _currentTime = 12;
+  static const Set<String> _googleLng = {'de', 'en', 'es', 'fr', 'id', 'jp', 'ko', 'pt', 'ru', 'th', 'tr', 'vi', 'zh'};
+  static bool _isCupertinoDesign = false, _isDark = true;
   static final List<String> _langList = [], _langFilterList = [];
   static String _locale = 'en';
-  static const String _storedTheme = 'isDark', _storedLocale = 'locale';
+  static const String _storedTheme = 'isDark', _storedLocale = 'locale', _storedDesign = 'isCupertino';
 
   void goBack() {
     notifyListeners();
@@ -43,8 +44,6 @@ class UserInterface extends ChangeNotifier {
     }
   }
 
-  static const Set<String> _googleLng = {'de', 'en', 'es', 'fr', 'id', 'jp', 'ko', 'pt', 'ru', 'th', 'tr', 'vi', 'zh'};
-
   String get locale => _locale;
 
   void setLocale(String newLocale) {
@@ -53,15 +52,22 @@ class UserInterface extends ChangeNotifier {
     notifyListeners();
   }
 
-  // ignore: avoid_positional_boolean_parameters
-  void changeMode(bool isDark) {
+  void changeMode({bool isDark}) {
     _isDark = isDark;
     notifyListeners();
   }
 
   bool get isDark => _isDark;
 
-  static bool get isApple => _isAppleDevice;
+  static bool _selectedCupertino;
+  bool get selectedCupertino => _selectedCupertino ?? _isCupertinoDesign;
+
+  void changeStyle({bool selectedCupertino}) {
+    _selectedCupertino = selectedCupertino;
+    notifyListeners();
+  }
+
+  static bool get isCupertino => _isCupertinoDesign;
 
   List<String> get langFilterList => _langFilterList;
 
@@ -78,17 +84,17 @@ class UserInterface extends ChangeNotifier {
   static Future setupUI() async {
     _currentTime = DateTime.now().hour;
     // ignore: unawaited_futures
-    loadSettings();
+    loadSettings(isInitialization: true);
     loadLocales();
-    _isAppleDevice = platform.isCupertino;
   }
 
-  static int _currentTime = 12;
-
-  static Future loadSettings() async {
+  static Future loadSettings({bool isInitialization = false}) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     _locale = prefs.getString(_storedLocale) ?? platform.locale;
     _isDark = prefs.getBool(_storedTheme) ?? (_currentTime > 18 || _currentTime < 6);
+    if (isInitialization) {
+      _isCupertinoDesign = prefs.getBool(_storedDesign) ?? platform.isCupertino;
+    }
   }
 
   Future saveSettings() async {
@@ -96,6 +102,7 @@ class UserInterface extends ChangeNotifier {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString(_storedLocale, _locale);
     await prefs.setBool(_storedTheme, _isDark);
+    await prefs.setBool(_storedDesign, selectedCupertino);
     // print('Saved Settings!');
   }
 
@@ -122,5 +129,6 @@ class UserInterface extends ChangeNotifier {
   }
 
   ThemeData get materialTheme => _isDark ? materialDark : materialLight;
+
   CupertinoThemeData get cupertinoTheme => _isDark ? cupertinoDark : cupertinoLight;
 }

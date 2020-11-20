@@ -12,33 +12,35 @@ import '../ui/widgets/adaptive/textfield.dart';
 
 void showAbout(BuildContext context) => showAboutDialog(context: context, applicationName: S.of(context).appName);
 
-Future showSettingsDialog(BuildContext context) {
+Future showSettingsDialog(BuildContext _) {
   UserInterface.loadLocales();
 
   return showDialog<void>(
-    context: context,
-    builder: (dialogContext) {
-      final List<String> languageList = dialogContext.watch<UserInterface>().langFilterList;
-      final String selectedLanguage = dialogContext.select((UserInterface ui) => ui.locale) ?? 'en';
-      final bool isDark = dialogContext.select((UserInterface ui) => ui.isDark) ?? true;
+    barrierDismissible: false,
+    context: _,
+    builder: (context) {
+      final List<String> languageList = context.watch<UserInterface>().langFilterList;
+      final String selectedLanguage = context.select((UserInterface ui) => ui.locale) ?? 'en';
+      final bool isDark = context.select((UserInterface ui) => ui.isDark) ?? true;
+      final bool isCupertino = context.select((UserInterface ui) => ui.selectedCupertino) ?? false;
 
       return AdaptiveDialog(
-        title: S.of(dialogContext).settings,
+        title: S.of(context).settings,
         onPressedSecondary: () =>
-            UserInterface.loadSettings().whenComplete(() => dialogContext.read<UserInterface>().goBack()),
-        onPressedMain: () => dialogContext.read<UserInterface>().saveSettings(),
+            UserInterface.loadSettings().whenComplete(() => context.read<UserInterface>().goBack()),
+        onPressedMain: () => context.read<UserInterface>().saveSettings(),
         content: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.max,
           children: [
             AdaptiveTextField(
-                onChanged: (query) => dialogContext.read<UserInterface>().search(query),
-                hint: S.of(dialogContext).findLang,
+                onChanged: (query) => context.read<UserInterface>().search(query),
+                hint: S.of(context).findLang,
                 autofillHints: languageList,
-                label: S.of(dialogContext).search),
+                label: S.of(context).search),
             SizedBox(
                 width: 270,
-                height: 200,
+                height: 170,
                 child: _ScrollBar(
                   ListView.separated(
                       separatorBuilder: (_, __) => const AdaptiveDivider(),
@@ -46,14 +48,14 @@ Future showSettingsDialog(BuildContext context) {
                       itemBuilder: (_, int i) {
                         final bool isSelected = languageList[i].contains('${selectedLanguage.toUpperCase()}: ');
 
-                        return UserInterface.isApple
+                        return UserInterface.isCupertino
                             ? GestureDetector(
-                                onTap: () => dialogContext.read<UserInterface>().setLocale(languageList[i]),
+                                onTap: () => context.read<UserInterface>().setLocale(languageList[i]),
                                 child: Padding(
                                   padding: const EdgeInsets.all(10),
                                   child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                                     Text(languageList[i],
-                                        style: CupertinoTheme.of(dialogContext)
+                                        style: CupertinoTheme.of(context)
                                             .textTheme
                                             .textStyle
                                             .copyWith(fontWeight: isSelected ? FontWeight.bold : FontWeight.normal)),
@@ -63,20 +65,30 @@ Future showSettingsDialog(BuildContext context) {
                                 ),
                               )
                             : ListTile(
-                                selectedTileColor: Theme.of(dialogContext).accentColor.withOpacity(0.1),
+                                selectedTileColor: Theme.of(context).accentColor.withOpacity(0.1),
                                 selected: isSelected,
-                                onTap: () => dialogContext.read<UserInterface>().setLocale(languageList[i]),
+                                onTap: () => context.read<UserInterface>().setLocale(languageList[i]),
                                 title: isSelected
-                                    ? Text(languageList[i],
-                                        style: TextStyle(color: Theme.of(dialogContext).selectedRowColor))
+                                    ? Text(languageList[i], style: TextStyle(color: Theme.of(context).selectedRowColor))
                                     : Text(languageList[i]));
                       }),
                 )),
             const AdaptiveDivider(),
             AdaptiveSwitch(
-                title: S.of(dialogContext).dark,
+                title: S.of(context).dark,
                 value: isDark,
-                onChanged: (isDark) => dialogContext.read<UserInterface>().changeMode(isDark))
+                onChanged: (isDarkMode) => context.read<UserInterface>().changeMode(isDark: isDarkMode)),
+            const SizedBox(height: 10),
+            Tooltip(
+              preferBelow: false,
+              message: S.of(context).restart,
+              child: AdaptiveSwitch(
+                  title: S.of(context).cupertino,
+                  value: isCupertino,
+                  toRestart: true,
+                  onChanged: (isCupertino) =>
+                      context.read<UserInterface>().changeStyle(selectedCupertino: isCupertino)),
+            )
           ],
         ),
       );
@@ -84,15 +96,15 @@ Future showSettingsDialog(BuildContext context) {
   );
 }
 
-Future showPlatformsDialog(BuildContext context) => showDialog<void>(
-      context: context,
-      builder: (dialogContext) {
-        final Map<String, bool> exportedPlatforms = dialogContext.watch<SetupIcon>().platforms;
+Future showPlatformsDialog(BuildContext _) => showDialog<void>(
+      context: _,
+      builder: (context) {
+        final Map<String, bool> exportedPlatforms = context.watch<SetupIcon>().platforms;
 
         return AdaptiveDialog(
-          title: S.of(dialogContext).exportPlatforms,
-          onPressedMain: () => dialogContext.read<SetupIcon>().goBack(),
-          mainButtonTitle: S.of(dialogContext).done,
+          title: S.of(context).exportPlatforms,
+          onPressedMain: () => context.read<SetupIcon>().goBack(),
+          mainButtonTitle: S.of(context).done,
           content: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
@@ -102,7 +114,7 @@ Future showPlatformsDialog(BuildContext context) => showDialog<void>(
                       child: AdaptiveSwitch(
                           title: platformName,
                           value: exportedPlatforms[platformName] ?? true,
-                          onChanged: (bool isExported) => dialogContext
+                          onChanged: (bool isExported) => context
                               .read<SetupIcon>()
                               .switchPlatform(platformNameKey: platformName, isExported: isExported)),
                     ))
@@ -116,5 +128,5 @@ class _ScrollBar extends StatelessWidget {
   const _ScrollBar(this._child, {Key key}) : super(key: key);
   final Widget _child;
   @override
-  Widget build(BuildContext context) => UserInterface.isApple ? SizedBox(child: _child) : Scrollbar(child: _child);
+  Widget build(BuildContext context) => UserInterface.isCupertino ? SizedBox(child: _child) : Scrollbar(child: _child);
 }

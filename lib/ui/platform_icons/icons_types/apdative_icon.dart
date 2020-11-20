@@ -36,10 +36,10 @@ class AdaptiveIcon extends StatefulWidget {
 
     try {
       await controller.forward().orCancel.whenComplete(() async => await controller.reverse().orCancel);
-    } on TickerCanceled catch (_error) {
+    } on TickerCanceled catch (error) {
       // ignore: avoid_print
       print(
-          '$_error.\nMost likely because the user has switched to another\nIcon Preview or tapped on button twp times.');
+          '$error.\nMost likely because the user has switched to another\nIcon Preview or tapped on button twp times.');
     } on Exception catch (_exception) {
       // ignore: avoid_print
       print('User most likely has switched to another screen.\n$_exception');

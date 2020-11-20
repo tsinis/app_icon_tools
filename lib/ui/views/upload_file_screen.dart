@@ -21,5 +21,5 @@ class _HeroWorkaround extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) =>
-      UserInterface.isApple ? SizedBox(child: child) : Material(type: MaterialType.transparency, child: child);
+      UserInterface.isCupertino ? SizedBox(child: child) : Material(type: MaterialType.transparency, child: child);
 }

@@ -105,6 +105,26 @@ class S {
     );
   }
 
+  /// `App restart required`
+  String get restart {
+    return Intl.message(
+      'App restart required',
+      name: 'restart',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `iOS-style UI`
+  String get cupertino {
+    return Intl.message(
+      'iOS-style UI',
+      name: 'cupertino',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Drop your image here or`
   String get dragAndDropHere {
     return Intl.message(
@@ -545,10 +565,10 @@ class S {
     );
   }
 
-  /// `ℹ️ The image have Alpha Channel (transparency). `
+  /// `ℹ️  The image have Alpha Channel (transparency). `
   String get isTransparent {
     return Intl.message(
-      'ℹ️ The image have Alpha Channel (transparency). ',
+      'ℹ️  The image have Alpha Channel (transparency). ',
       name: 'isTransparent',
       desc: '',
       args: [],
@@ -565,10 +585,10 @@ class S {
     );
   }
 
-  /// `ℹ️ The Foreground have no Alpha Channel (transparency). In this case, the background image will not be visible at all.`
+  /// `ℹ️  The Foreground have no Alpha Channel (transparency). In this case, the background image will not be visible at all.`
   String get transparencyAdaptive {
     return Intl.message(
-      'ℹ️ The Foreground have no Alpha Channel (transparency). In this case, the background image will not be visible at all.',
+      'ℹ️  The Foreground have no Alpha Channel (transparency). In this case, the background image will not be visible at all.',
       name: 'transparencyAdaptive',
       desc: '',
       args: [],

@@ -11,11 +11,12 @@ import 'ui/app_appearance.dart';
 
 //TODO Add accesibility and semantic labels.
 //TODO Migrate to null-safety when it's become stable.
+// TODO Make proper folder organization.
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   if (!platform.isWeb && platform.isDesktop) {
-    //TODO Check on Windows and Linux.
+    //TODO Return Flutter Team version of it's plugin.
     await DesktopWindow.setMinWindowSize(const Size(320, 840));
     await DesktopWindow.setWindowSize(const Size(420, 840));
   }

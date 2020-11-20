@@ -1,4 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:fdottedline/fdottedline.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -48,7 +47,7 @@ class DragAndDrop extends StatelessWidget {
                           child: SizedBox(
                               width: 40,
                               height: 40,
-                              child: UserInterface.isApple
+                              child: UserInterface.isCupertino
                                   ? const CupertinoActivityIndicator()
                                   : const CircularProgressIndicator()))
                   ])
@@ -73,12 +72,11 @@ class DragAndDrop extends StatelessWidget {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            AutoSizeText(
+                            Text(
                                 isValidFile
                                     ? (kIsWeb ? S.of(context).dragAndDropHere : S.of(context).select)
                                     : S.of(context).wrongFile,
-                                maxLines: 1,
-                                minFontSize: 17),
+                                maxLines: 1),
                             AdaptiveButton(
                                 text: S.of(context).browse,
                                 onPressed: () async => await context
@@ -105,12 +103,13 @@ class DragAndDrop extends StatelessWidget {
                                     onSelectChanged: (_) async =>
                                         await context.read<UserInterface>().openGuidelinesURL(),
                                     cells: <DataCell>[
-                                      DataCell(_InfoCellText(S.of(context).fileFormat)),
+                                      DataCell(_InfoCellText(S.of(context).fileFormat, bold: true)),
                                       DataCell(
                                         Tooltip(
-                                          message: 'Google Play & App Store ${S.of(context).storeRequirement}',
-                                          child: Text(UploadFile.expectedFileExtension.toUpperCase()),
-                                        ),
+                                            message:
+                                                'Google Play & App Store ${S.of(context).storeRequirement}', //TODO Remove irrelevant info.
+                                            child: Text(UploadFile.expectedFileExtension.toUpperCase(),
+                                                style: const TextStyle(fontWeight: FontWeight.bold))),
                                       )
                                     ],
                                   ),
@@ -138,7 +137,7 @@ class DragAndDrop extends StatelessWidget {
                                       cells: <DataCell>[
                                         DataCell(_InfoCellText(S.of(context).imageSize)),
                                         DataCell(Tooltip(
-                                            message: (isAdaptive ? 'Google Play' : 'App Store') +
+                                            message: (isAdaptive ? 'Google Play ' : 'App Store ') +
                                                 S.of(context).storeRequirement,
                                             child: Text(
                                                 isAdaptive
@@ -155,13 +154,13 @@ class DragAndDrop extends StatelessWidget {
                                 opacity: 0.5,
                                 child: Tooltip(
                                   message: S.of(context).transparencyiOS,
-                                  child: AutoSizeText.rich(
+                                  child: Text.rich(
                                     TextSpan(
                                         text: 'PPI ⩾ 72, ${S.of(context).noInterlacing}\n',
-                                        children: [TextSpan(text: S.of(context).addBackground)]),
+                                        children: [TextSpan(text: isAdaptive ? '' : S.of(context).addBackground)]),
                                     textAlign: TextAlign.center,
                                     maxLines: 2,
-                                    style: const TextStyle(fontSize: 10),
+                                    style: const TextStyle(fontSize: 11),
                                   ),
                                 ),
                               ),
@@ -177,11 +176,14 @@ class DragAndDrop extends StatelessWidget {
 }
 
 class _InfoCellText extends StatelessWidget {
-  const _InfoCellText(this._text, {Key key}) : super(key: key);
+  const _InfoCellText(this._text, {Key key, this.bold = false}) : super(key: key);
   final String _text;
+  final bool bold;
 
   @override
-  Widget build(BuildContext context) => Opacity(opacity: 0.5, child: Text(_text, maxLines: 1));
+  Widget build(BuildContext context) => Opacity(
+      opacity: 0.5,
+      child: Text(_text, maxLines: 1, style: TextStyle(fontWeight: bold ? FontWeight.bold : FontWeight.w300)));
 }
 
 //TODO: Check when https://github.com/flutter/flutter/issues/19228 is closed.
@@ -190,7 +192,7 @@ class _DataThemeWorkaround extends StatelessWidget {
   final Widget _child;
 
   @override
-  Widget build(BuildContext context) => UserInterface.isApple
+  Widget build(BuildContext context) => UserInterface.isCupertino
       ? Material(
           type: MaterialType.transparency,
           child: Theme(data: context.select((UserInterface ui) => ui.materialTheme), child: _child))

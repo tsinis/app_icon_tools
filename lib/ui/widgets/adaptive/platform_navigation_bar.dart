@@ -18,21 +18,21 @@ class AdaptiveNavgationBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final int selectedPlatform = context.select((SetupIcon icon) => icon.platformID);
     final int countdown = context.select((SetupIcon icon) => icon.countdown);
-    final bool isSmallScreen = MediaQuery.of(context).size.width < (UserInterface.isApple ? 800 : 600);
+    final bool isSmallScreen = MediaQuery.of(context).size.width < (UserInterface.isCupertino ? 800 : 600);
 
     return Align(
       alignment: Alignment.bottomCenter,
       child: ConstrainedBox(
-        constraints: BoxConstraints(maxWidth: UserInterface.isApple ? 860 : 500),
+        constraints: BoxConstraints(maxWidth: UserInterface.isCupertino ? 860 : 500),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 20),
           child: (countdown > 0)
               ? _DoneInfo(countdown)
-              : UserInterface.isApple
+              : UserInterface.isCupertino
                   ? CupertinoSlidingSegmentedControl<int>(
                       onValueChanged: (int selectedPlatform) => context.read<SetupIcon>().setPlatform(selectedPlatform),
                       groupValue: selectedPlatform,
-                      backgroundColor: CupertinoTheme.of(context).textTheme.textStyle.color?.withOpacity(0.04),
+                      backgroundColor: CupertinoTheme.of(context).textTheme.textStyle.color.withOpacity(0.04),
                       padding: const EdgeInsets.all(5),
                       children: {
                         for (IconPreview platform in platformList)
@@ -56,7 +56,7 @@ class AdaptiveNavgationBar extends StatelessWidget {
                           iconSize: 24,
                           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                           tabBackgroundColor: Theme.of(context).buttonColor,
-                          backgroundColor: Theme.of(context).textTheme.bodyText1?.color?.withOpacity(0.04),
+                          backgroundColor: Theme.of(context).textTheme.bodyText1.color.withOpacity(0.04),
                           selectedIndex: selectedPlatform,
                           tabs: [
                             for (IconPreview platform in platformList)
@@ -83,9 +83,9 @@ class _DoneInfo extends StatelessWidget {
         decoration: BoxDecoration(
             color: Colors.greenAccent.withOpacity(0.2),
             border: Border.all(color: Colors.greenAccent),
-            borderRadius: BorderRadius.all(Radius.circular(UserInterface.isApple ? 10 : 20))),
+            borderRadius: BorderRadius.all(Radius.circular(UserInterface.isCupertino ? 10 : 20))),
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: UserInterface.isApple ? 4 : 8, horizontal: 12),
+          padding: EdgeInsets.symmetric(vertical: UserInterface.isCupertino ? 4 : 8, horizontal: 12),
           child: FittedBox(
             fit: BoxFit.fitWidth,
             child: Row(

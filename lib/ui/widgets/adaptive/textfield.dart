@@ -19,9 +19,9 @@ class AdaptiveTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color textColor = Theme.of(context).textTheme.bodyText1?.color ?? Colors.grey;
+    final Color textColor = Theme.of(context).textTheme.bodyText1.color ?? Colors.grey;
 
-    return UserInterface.isApple
+    return UserInterface.isCupertino
         ? Padding(
             padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 10),
             child: CupertinoTextField(
