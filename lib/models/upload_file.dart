@@ -30,7 +30,7 @@ class UploadFile extends ChangeNotifier {
 
   Future checkSelected({bool background = false, bool foreground = false}) async {
     try {
-      //TODO Check condition for type om Windows/Linux, since custom file extension is not working on some platforms yet.
+      //TODO Check condition for type on Windows/Linux, since custom file extension is not working on some platforms yet.
       await FilePickerCross.importFromStorage(type: _fileType, fileExtension: expectedFileExtension)
           .then<void>((selectedFile) => _checkFile(selectedFile, background: background, foreground: foreground));
       // ignore: avoid_catches_without_on_clauses

@@ -4,14 +4,13 @@ description: Simple GUI for launcher icons preview.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.11.0 <=2.12.0"
+  sdk: ">=2.10.0 <=2.12.0"
   flutter: ">=1.24.0-8.0"
 
 dependencies:
   community_material_icon:
   cupertino_icons: ^1.0.1+1
-  desktop_window:
-  fdottedline:
+  dotted_border:
   file_picker_cross: ^4.2.6
   flutter:
     sdk: flutter
@@ -22,7 +21,9 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   get_it:
-  google_nav_bar: ^3.1.0
+  google_nav_bar:
+    git:
+      url: git://github.com/tsinis/google_nav_bar.git
   image_resizer:
   local_hero: ^0.1.0
   path_provider: ^1.6.24
@@ -33,6 +34,10 @@ dependencies:
   universal_html:
   url_launcher:
   websafe_svg: ^1.1.4
+  window_size:
+    git:
+      url: git://github.com/google/flutter-desktop-embedding.git
+      path: plugins/window_size
 
 dependency_overrides:
   file_picker:

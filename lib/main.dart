@@ -1,12 +1,11 @@
-import 'package:desktop_window/desktop_window.dart';
 import 'package:flutter/widgets.dart';
-import 'package:platform_info/platform_info.dart';
 import 'package:provider/provider.dart';
 
 import 'locator.dart';
 import 'models/setup_icon.dart';
 import 'models/upload_file.dart';
 import 'models/user_interface.dart';
+import 'services/desktop_window_sizer.dart';
 import 'ui/app_appearance.dart';
 
 //TODO Add accesibility and semantic labels.
@@ -14,13 +13,7 @@ import 'ui/app_appearance.dart';
 // TODO Make proper folder organization.
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  if (!platform.isWeb && platform.isDesktop) {
-    //TODO Return Flutter Team version of it's plugin.
-    await DesktopWindow.setMinWindowSize(const Size(320, 840));
-    await DesktopWindow.setWindowSize(const Size(420, 840));
-  }
-
+  DesktopWindow.setupSize();
   // ignore: unawaited_futures
   UserInterface.setupUI();
   Locators.setupLocator();

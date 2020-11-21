@@ -6,11 +6,13 @@ String pwaHtml(String color) => '''
 <head>
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <!-- TODO Don't forget to change your app name here! Use search and replace for CHANGE_TO_YOUR_APP_NAME -->
   <meta name="description" content="$_name>
 
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <!-- TODO Don't forget to change your app name here! Use search and replace for CHANGE_TO_YOUR_APP_NAME -->
   <meta name="apple-mobile-web-app-title" content="$_name">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
   <link rel="apple-touch-icon" sizes="57x57" href="icons/Icon-57.png">
@@ -30,12 +32,15 @@ String pwaHtml(String color) => '''
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="icons/favicon.png"/>
 
+  <!-- TODO Don't forget to change your app name here! Use search and replace for CHANGE_TO_YOUR_APP_NAME -->
   <title>$_name</title>
   <link rel="manifest" href="manifest.json">
 
   <!-- Windows -->
+  <!-- TODO Don't forget to your colors here. -->
   <meta name="msapplication-TileColor" content="$color">
   <meta name="msapplication-TileImage" content="icons/Icon-144.png">
+  <!-- TODO Don't forget to your colors here. -->
   <meta name="theme-color" content="$color">
 
 </head>
@@ -53,6 +58,7 @@ String pwaHtml(String color) => '''
   <script src="main.dart.js" type="application/javascript"></script>
 </body>
 </html>
+<!-- TODO Also don't forget to change app name in manifest.json file. -->
 ''';
 
 String pwaManifest(String color) => '''

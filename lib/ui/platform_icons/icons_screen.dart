@@ -44,7 +44,7 @@ class IconPreview extends StatelessWidget {
   const IconPreview.web()
       : cornerRadius = 800,
         platformID = 3,
-        name = 'Web',
+        name = 'PWA',
         icon = CommunityMaterialIcons.google_chrome;
 
   const IconPreview.windows()

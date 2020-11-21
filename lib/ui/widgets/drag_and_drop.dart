@@ -1,4 +1,4 @@
-import 'package:fdottedline/fdottedline.dart';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -26,15 +26,16 @@ class DragAndDrop extends StatelessWidget {
     const int minIconSize = UploadFile.minIconSize;
     const int minAdaptiveSize = UploadFile.minAdaptiveSize;
 
-    return FDottedLine(
-      corner: FDottedLineCorner.all(20),
+    return DottedBorder(
+      borderType: BorderType.RRect,
+      padding: EdgeInsets.zero,
+      radius: const Radius.circular(20),
       color: const Color(0x7C888888),
-      dottedLength: 10,
-      space: kIsWeb ? 6 : 0,
+      dashPattern: const [10, if (kIsWeb) 6 else 0],
       child: Container(
         width: UserInterface.previewIconSize,
         height: UserInterface.previewIconSize,
-        color: const Color(0x11888888),
+        decoration: BoxDecoration(color: const Color(0x11888888), borderRadius: BorderRadius.circular(20)),
         child: (isDone && !isAdaptive)
             ? const SuccessAnimatedIcon()
             : isLoading
@@ -100,27 +101,22 @@ class DragAndDrop extends StatelessWidget {
                                 ],
                                 rows: <DataRow>[
                                   DataRow(
-                                    onSelectChanged: (_) async =>
-                                        await context.read<UserInterface>().openGuidelinesURL(),
+                                    // onSelectChanged: (_) async =>
+                                    //     await context.read<UserInterface>().openGuidelinesURL(),
                                     cells: <DataCell>[
                                       DataCell(_InfoCellText(S.of(context).fileFormat, bold: true)),
                                       DataCell(
-                                        Tooltip(
-                                            message:
-                                                'Google Play & App Store ${S.of(context).storeRequirement}', //TODO Remove irrelevant info.
-                                            child: Text(UploadFile.expectedFileExtension.toUpperCase(),
-                                                style: const TextStyle(fontWeight: FontWeight.bold))),
+                                        Text(UploadFile.expectedFileExtension.toUpperCase(),
+                                            style: const TextStyle(fontWeight: FontWeight.bold)),
                                       )
                                     ],
                                   ),
                                   DataRow(
-                                      onSelectChanged: (_) async =>
-                                          await context.read<UserInterface>().openGuidelinesURL(),
+                                      // onSelectChanged: (_) async =>
+                                      //     await context.read<UserInterface>().openGuidelinesURL(),
                                       cells: <DataCell>[
                                         DataCell(_InfoCellText(S.of(context).colorProfile)),
-                                        DataCell(Tooltip(
-                                            message: 'Google Play & App Store ${S.of(context).storeRequirement}',
-                                            child: const Text('sRGB')))
+                                        const DataCell(Text('sRGB'))
                                       ]),
                                   DataRow(
                                       onSelectChanged: (_) async =>

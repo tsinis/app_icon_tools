@@ -27,7 +27,6 @@ class PwaConfigGenerator {
     pwaConfigs.add(manifestFile);
     return pwaConfigs;
   }
-  //TODO Add to-dos to configs, so users can easelly rename it.
 
   FileData _generateIndexHtml() {
     final List<int> indexHtmlFile = utf8.encode(pwaHtml(_colorAsHex));

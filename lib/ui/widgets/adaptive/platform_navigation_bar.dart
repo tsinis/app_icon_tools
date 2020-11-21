@@ -62,7 +62,7 @@ class AdaptiveNavgationBar extends StatelessWidget {
                             for (IconPreview platform in platformList)
                               GButton(
                                   iconColor: Theme.of(context).sliderTheme.thumbColor?.withOpacity(0.6),
-                                  // margin: const EdgeInsets.all(6),
+                                  semanticLabel: '${S.of(context).operatingSystem} ${platform.name}',
                                   icon: platform.icon,
                                   text: isSmallScreen ? '' : platform.name),
                           ]),
