@@ -152,8 +152,8 @@ class DragAndDrop extends StatelessWidget {
                                   message: S.of(context).transparencyiOS,
                                   child: Text.rich(
                                     TextSpan(
-                                        text: 'PPI ⩾ 72, ${S.of(context).noInterlacing}\n',
-                                        children: [TextSpan(text: isAdaptive ? '' : S.of(context).addBackground)]),
+                                        text: isAdaptive ? '' : S.of(context).addBackground,
+                                        children: [TextSpan(text: '\nPPI ⩾ 72, ${S.of(context).noInterlacing}')]),
                                     textAlign: TextAlign.center,
                                     maxLines: 2,
                                     style: const TextStyle(fontSize: 11),

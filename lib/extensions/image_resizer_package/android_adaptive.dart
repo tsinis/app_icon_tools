@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:image_resizer/image_resizer.dart';
 
 import '../hex_color.dart';
@@ -37,23 +38,24 @@ class BackgroundIconsFolder extends AndroidIconsFolder {
 }
 
 class AndroidAdaptiveIcon extends AndroidIcon {
-  const AndroidAdaptiveIcon({this.adaptSize, this.adaptFolder = 'drawable', this.adaptSuffix, this.background = false})
+  const AndroidAdaptiveIcon(
+      {@required this.adaptSize, @required this.adaptSuffix, this.adaptFolder = 'drawable', this.background = false})
       : super(size: adaptSize, folder: adaptFolder, folderSuffix: adaptSuffix);
   final bool background;
   final int adaptSize;
   final String adaptFolder;
   final String adaptSuffix;
 
-  @override
-  AndroidAdaptiveIcon copyWith({
-    String name,
-    String folder,
-    String folderSuffix,
-    String ext,
-    int size,
-    bool background,
-  }) =>
-      AndroidAdaptiveIcon(background: background ?? false, adaptSize: size ?? this.size);
+  // @override
+  // AndroidAdaptiveIcon copyWith({
+  //   String name,
+  //   String folder,
+  //   String folderSuffix,
+  //   String ext,
+  //   int size,
+  //   bool background,
+  // }) =>
+  //     AndroidAdaptiveIcon(background: background ?? false, adaptSize: size ?? this.size);
 
   @override
   String get filename => name + (background ? '_background.' : '_foreground.') + ext;

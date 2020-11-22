@@ -56,7 +56,7 @@ class AdaptiveNavgationBar extends StatelessWidget {
                           iconSize: 24,
                           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                           tabBackgroundColor: Theme.of(context).buttonColor,
-                          backgroundColor: Theme.of(context).textTheme.bodyText1.color.withOpacity(0.04),
+                          backgroundColor: Theme.of(context).textTheme.bodyText1?.color?.withOpacity(0.04),
                           selectedIndex: selectedPlatform,
                           tabs: [
                             for (IconPreview platform in platformList)

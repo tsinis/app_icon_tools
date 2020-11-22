@@ -8,8 +8,7 @@ import 'models/user_interface.dart';
 import 'services/desktop_window_sizer.dart';
 import 'ui/app_appearance.dart';
 
-//TODO Add accesibility and semantic labels.
-//TODO Migrate to null-safety when it's become stable.
+//TODO Migrate to null-safety when it's become stable and packages are ready.
 // TODO Make proper folder organization.
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();

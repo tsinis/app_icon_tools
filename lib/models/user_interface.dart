@@ -52,7 +52,7 @@ class UserInterface extends ChangeNotifier {
     notifyListeners();
   }
 
-  void changeMode({bool isDark}) {
+  void changeMode({@required bool isDark}) {
     _isDark = isDark;
     notifyListeners();
   }
@@ -62,7 +62,7 @@ class UserInterface extends ChangeNotifier {
   static bool _selectedCupertino;
   bool get selectedCupertino => _selectedCupertino ?? _isCupertinoDesign;
 
-  void changeStyle({bool selectedCupertino}) {
+  void changeStyle({@required bool selectedCupertino}) {
     _selectedCupertino = selectedCupertino;
     notifyListeners();
   }

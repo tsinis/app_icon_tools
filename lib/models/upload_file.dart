@@ -12,6 +12,7 @@ import '../generated/l10n.dart';
 import '../locator.dart';
 import '../services/navigation_service.dart';
 import '../services/router.dart';
+import 'constants/default_values.dart';
 
 //TODO Move file checking to services.
 
@@ -20,7 +21,7 @@ class UploadFile extends ChangeNotifier {
   static const int minAdaptiveSize = 432;
   static const String expectedFileExtension = 'png';
   static const FileTypeCross _fileType = kIsWeb ? FileTypeCross.image : FileTypeCross.custom;
-  Uint8List _recivedIcon = Uint8List(0), _recivedForeground, _recivedBackground;
+  Uint8List _recivedIcon = zeroBytes, _recivedForeground = zeroBytes, _recivedBackground = zeroBytes;
   Uint8List get recivedIcon => _recivedIcon;
   Uint8List get recivedForeground => _recivedForeground;
   Uint8List get recivedBackground => _recivedBackground;
@@ -45,11 +46,11 @@ class UploadFile extends ChangeNotifier {
 
   Future _checkFile(dynamic uploadedFile, {@required bool background, @required bool foreground}) async {
     if (!_loading) {
-      _recivedBackground = _recivedForeground = null;
+      _recivedBackground = _recivedForeground = zeroBytes;
       _setLoading(isLoading: true, isValidFile: true);
       //TODO! Check when https://github.com/flutter/flutter/issues/33577 is closed.
       Future.delayed(const Duration(milliseconds: kIsWeb ? 300 : 0), () async {
-        Uint8List rawBytes;
+        Uint8List rawBytes = zeroBytes;
         try {
           if (uploadedFile is File) {
             if (_properExtension(uploadedFile.name)) {
@@ -67,8 +68,7 @@ class UploadFile extends ChangeNotifier {
               return;
             }
           }
-          // ignore: unnecessary_null_comparison
-          if (rawBytes != null) {
+          if (rawBytes != zeroBytes) {
             _isValidFile = _findIssues(rawBytes, foreground: foreground, background: background);
           }
           // ignore: avoid_catches_without_on_clauses

@@ -1,7 +1,9 @@
 import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../models/constants/default_values.dart';
 import '../../../models/setup_icon.dart';
 import '../../widgets/transparency_grid.dart';
 
@@ -13,10 +15,10 @@ class AdaptiveIcon extends StatefulWidget {
 
   final bool onDevice;
 
-  static Future preview(String _direction) async {
+  static Future preview(String direction) async {
     const double parallaxOffset = 0.1;
     Offset endOffset = const Offset(0, parallaxOffset);
-    switch (_direction) {
+    switch (direction) {
       case moveDown:
         endOffset = const Offset(0, parallaxOffset);
         break;
@@ -91,7 +93,7 @@ class _AdaptiveIconState extends State<AdaptiveIcon> with SingleTickerProviderSt
         alignment: Alignment.center,
         children: [
           if (!widget.onDevice) const TransparencyGrid(),
-          if (backgroundImage != null || backgroundColor != null)
+          if (backgroundImage != zeroBytes || backgroundColor != transparent)
             FractionallySizedBox(
               widthFactor: 0.7,
               heightFactor: 0.7,
@@ -100,8 +102,8 @@ class _AdaptiveIconState extends State<AdaptiveIcon> with SingleTickerProviderSt
                   child: Transform.scale(
                       scale: 2.14,
                       child: preferColorBg
-                          ? Container(color: backgroundColor ?? Colors.transparent)
-                          : (backgroundImage != null)
+                          ? Container(color: backgroundColor)
+                          : (backgroundImage != zeroBytes)
                               ? Image.memory(backgroundImage)
                               : const SizedBox.shrink())),
             ),
@@ -109,7 +111,7 @@ class _AdaptiveIconState extends State<AdaptiveIcon> with SingleTickerProviderSt
               position: AdaptiveIcon.animation,
               child: Transform.scale(
                   scale: 1.5,
-                  child: (foregroundImage == null) ? const SizedBox.shrink() : Image.memory(foregroundImage))),
+                  child: (foregroundImage == zeroBytes) ? const SizedBox.shrink() : Image.memory(foregroundImage))),
         ],
       ),
     );

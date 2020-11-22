@@ -21,6 +21,7 @@ import '../generated/l10n.dart';
 import '../locator.dart';
 import '../services/navigation_service.dart';
 import '../services/router.dart';
+import 'constants/default_values.dart';
 
 class SetupIcon extends ChangeNotifier {
   final NavigationService _navigationService = locator<NavigationService>();
@@ -30,27 +31,31 @@ class SetupIcon extends ChangeNotifier {
   void setupScreen() => _navigationService.navigateTo(UiRouter.setupScreen);
   void goBack() => _navigationService.goBack();
 
-  Color _backgroundColor;
+  Color _backgroundColor = transparent;
   Color get backgroundColor => _backgroundColor;
   void setBackgroundColor(Color newColor) {
     if (_backgroundColor != newColor) {
       _backgroundColor = newColor;
-      _adaptiveColor ??= newColor.withAlpha(255);
+      if (!haveAdaptiveColor) {
+        _adaptiveColor = newColor.withAlpha(255);
+      }
       notifyListeners();
     }
   }
 
+  bool get bgColorIsEmpty => backgroundColor == transparent;
+
   void removeColor() {
-    _backgroundColor = null;
+    _backgroundColor = transparent;
     notifyListeners();
   }
 
-  Uint8List _icon = Uint8List(0), _adaptiveBackground, _adaptiveForeground;
+  Uint8List _icon = zeroBytes, _adaptiveBackground = zeroBytes, _adaptiveForeground = zeroBytes;
 
   Image get iconImage => Image.memory(_icon);
   Uint8List get regularIcon => _icon;
   set regularIcon(Uint8List uploadedPNG) {
-    if (uploadedPNG != _icon && uploadedPNG != null) {
+    if (uploadedPNG != _icon && uploadedPNG != zeroBytes) {
       _icon = uploadedPNG;
       _wipeOldData();
       notifyListeners();
@@ -58,7 +63,7 @@ class SetupIcon extends ChangeNotifier {
   }
 
   void _wipeOldData() {
-    _adaptiveBackground = _adaptiveForeground = null;
+    _adaptiveBackground = _adaptiveForeground = zeroBytes;
     _regularIconFiles.clear();
     _adaptiveIconFiles.clear();
     _pwaConfigs.clear();
@@ -68,24 +73,24 @@ class SetupIcon extends ChangeNotifier {
   }
 
   // Adaptive Icon Background as COLOR.
-  Color _adaptiveColor;
+  Color _adaptiveColor = transparent;
   Color get adaptiveColor => _adaptiveColor;
   void setAdaptiveColor(Color newColor) {
     if (_adaptiveColor != newColor) {
       _adaptiveColor = newColor;
-      if (newColor != null) {
-        _backgroundColor ??= newColor.withAlpha(255);
+      if (newColor != transparent && bgColorIsEmpty) {
+        _backgroundColor = newColor.withAlpha(255);
       }
       notifyListeners();
     }
   }
 
   void removeAdaptiveColor() {
-    _adaptiveColor = null;
+    _adaptiveColor = transparent;
     notifyListeners();
   }
 
-  bool get haveAdaptiveColor => _adaptiveColor != null;
+  bool get haveAdaptiveColor => _adaptiveColor != transparent;
 
   bool _preferColorBg = false;
   bool get preferColorBg => _preferColorBg;
@@ -97,32 +102,32 @@ class SetupIcon extends ChangeNotifier {
   // Adaptive Icon Background as IMAGE.
   Uint8List get adaptiveBackground => _adaptiveBackground;
   set adaptiveBackground(Uint8List uploadedPNG) {
-    if (uploadedPNG != _adaptiveBackground && uploadedPNG != null) {
+    if (uploadedPNG != _adaptiveBackground && uploadedPNG != zeroBytes) {
       _adaptiveBackground = uploadedPNG;
       _adaptiveIconFiles.clear();
       notifyListeners();
     }
   }
 
-  bool get haveAdaptiveBackground => _adaptiveBackground != null;
+  bool get haveAdaptiveBackground => _adaptiveBackground != zeroBytes;
   void removeAdaptiveBackground() {
-    _adaptiveBackground = null;
+    _adaptiveBackground = zeroBytes;
     _bgIssues.clear();
     notifyListeners();
   }
 
   Uint8List get adaptiveForeground => _adaptiveForeground;
   set adaptiveForeground(Uint8List uploadedPNG) {
-    if (uploadedPNG != _adaptiveForeground && uploadedPNG != null) {
+    if (uploadedPNG != _adaptiveForeground && uploadedPNG != zeroBytes) {
       _adaptiveForeground = uploadedPNG;
       _adaptiveIconFiles.clear();
       notifyListeners();
     }
   }
 
-  bool get haveAdaptiveForeground => _adaptiveForeground != null;
+  bool get haveAdaptiveForeground => _adaptiveForeground != zeroBytes;
   void removeadaptiveForeground() {
-    _adaptiveForeground = null;
+    _adaptiveForeground = zeroBytes;
     _fgIssues.clear();
     notifyListeners();
   }
@@ -236,7 +241,7 @@ class SetupIcon extends ChangeNotifier {
   void setPlatform(int selectedPlatform) {
     if (selectedPlatform != _platformID) {
       {
-        _platformID = selectedPlatform ?? 1;
+        _platformID = selectedPlatform;
         notifyListeners();
       }
     }
@@ -260,7 +265,7 @@ class SetupIcon extends ChangeNotifier {
                 filesList.addAll(folderWithIcons.toList());
               }
 
-              if (_exportingAdaptiveFiles) {
+              if (_exportingAdaptiveFiles && _adaptiveIconFiles.isNotEmpty) {
                 for (final String key in _adaptiveIconFiles.keys) {
                   final List<FileData> _adaptiveFolder = _adaptiveIconFiles[key];
                   filesList.addAll(_adaptiveFolder.toList());
@@ -332,10 +337,8 @@ class SetupIcon extends ChangeNotifier {
     if (kIsWeb) {
       Uri dataUrl = Uri();
       try {
-        // ignore: unnecessary_null_comparison
-        if (binaryData != null) {
-          dataUrl = Uri.dataFromBytes(binaryData);
-        }
+        dataUrl = Uri.dataFromBytes(binaryData);
+
         // ignore: avoid_catches_without_on_clauses
       } catch (error) {
         if (!silentErrors) {
@@ -373,13 +376,13 @@ class SetupIcon extends ChangeNotifier {
   bool get exportAdaptive => _platforms[_androidAdapt] ?? true;
 
   int get _toExportCount =>
-      (_exportingAdaptiveFiles ? 2 : 1) + _platforms.values.where((_willBeExported) => true).length ?? 1;
+      (_exportingAdaptiveFiles ? 2 : 1) + _platforms.values.where((_willBeExported) => true).length;
   num get exportProgress => 100 * (_exportedDoneCount / _toExportCount).clamp(0, 1);
   int _exportedDoneCount = 0;
   bool _loading = false;
   bool get loading => _loading;
-  void _setLoading(bool newValue) {
-    _loading = newValue;
+  void _setLoading(bool isLoading) {
+    _loading = isLoading;
     notifyListeners();
   }
 
@@ -424,16 +427,23 @@ class SetupIcon extends ChangeNotifier {
   }
 
   void _generateXmlConfigs({String key = 'xml'}) {
-    final XmlGenerator genertator =
-        XmlGenerator(bgAsColor: preferColorBg, color: adaptiveColor ?? backgroundColor ?? const Color(0xFF000000));
+    final XmlGenerator genertator = XmlGenerator(bgAsColor: preferColorBg, color: _colorForConfigs(isXml: true));
     final List<FileData> xmlsList = genertator.generateXmls();
     _xmlConfigs[key] = xmlsList;
     _exportedDoneCount = _exportedDoneCount + 1;
     notifyListeners();
   }
 
+  Color _colorForConfigs({bool isXml = false}) {
+    Color color = bgColorIsEmpty ? const Color(0xFF000000) : backgroundColor;
+    if (isXml && haveAdaptiveColor) {
+      color = adaptiveColor;
+    }
+    return color;
+  }
+
   void _generatePwaConfigs({String key = 'pwa'}) {
-    final PwaConfigGenerator genertator = PwaConfigGenerator(color: backgroundColor ?? const Color(0xFF000000));
+    final PwaConfigGenerator genertator = PwaConfigGenerator(color: _colorForConfigs());
     final List<FileData> configsList = genertator.generatePwaConfigs();
     _pwaConfigs[key] = configsList;
   }

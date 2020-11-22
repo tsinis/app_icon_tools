@@ -31,22 +31,27 @@ class AdaptiveIconButtons extends StatelessWidget {
               : <IconButton>[
                   IconButton(
                       icon: const Icon(Icons.arrow_back),
-                      onPressed: withAdaptives ? () => _onPressed(direction: 'left') : null),
+                      onPressed: withAdaptives ? () => _onPressed(direction: AdaptiveIcon.moveLeft) : null),
                   IconButton(
                       icon: const Icon(Icons.arrow_forward),
-                      onPressed: withAdaptives ? () => _onPressed(direction: 'right') : null),
+                      onPressed: withAdaptives ? () => _onPressed(direction: AdaptiveIcon.moveRight) : null),
                   IconButton(
                       icon: const Icon(Icons.arrow_downward),
-                      onPressed: withAdaptives ? () => _onPressed(direction: 'down') : null),
+                      onPressed: withAdaptives ? () => _onPressed(direction: AdaptiveIcon.moveDown) : null),
                   IconButton(
                       icon: const Icon(Icons.arrow_upward),
-                      onPressed: withAdaptives ? () => _onPressed(direction: 'up') : null),
+                      onPressed: withAdaptives ? () => _onPressed(direction: AdaptiveIcon.moveUp) : null),
                 ],
         ),
       );
 }
 
 void _onPressed({@required String direction}) => AdaptiveIcon.preview(direction);
+// void _onPressed({@required String direction, @required bool withAdaptives}) {
+//   if (withAdaptives) {
+//     AdaptiveIcon.preview(direction);
+//   }
+// }
 
 class _CupertinoIconButton extends StatelessWidget {
   const _CupertinoIconButton({@required this.withAdaptives, @required this.direction, @required this.icon, Key key})

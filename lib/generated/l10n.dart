@@ -315,6 +315,16 @@ class S {
     );
   }
 
+  /// `Maskable PWA Icon (Min. Safe Area)`
+  String get maskable {
+    return Intl.message(
+      'Maskable PWA Icon (Min. Safe Area)',
+      name: 'maskable',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Select PWA Background color`
   String get pwaColor {
     return Intl.message(
@@ -415,10 +425,10 @@ class S {
     );
   }
 
-  /// `Please select background image first.`
+  /// `Please select background/foreground first.`
   String get noBackground {
     return Intl.message(
-      'Please select background image first.',
+      'Please select background/foreground first.',
       name: 'noBackground',
       desc: '',
       args: [],

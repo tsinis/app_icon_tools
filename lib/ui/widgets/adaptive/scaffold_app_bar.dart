@@ -30,7 +30,7 @@ class AdaptiveScaffold extends StatelessWidget {
       child: UserInterface.isCupertino
           ? CupertinoPageScaffold(
               navigationBar: CupertinoNavigationBar(
-                actionsForegroundColor: CupertinoTheme.of(context).textTheme.textStyle.color.withOpacity(0.7),
+                actionsForegroundColor: CupertinoTheme.of(context).textTheme.textStyle.color?.withOpacity(0.7),
                 middle: uploadScreen
                     ? Text(S.of(context).appName)
                     : ButtonBar(

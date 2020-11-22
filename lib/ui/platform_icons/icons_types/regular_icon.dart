@@ -17,8 +17,8 @@ class RegularIcon extends StatelessWidget {
     final Image iconImage = context.select((SetupIcon icon) => icon.iconImage);
     final int selectedPlatformID = context.select((SetupIcon icon) => icon.platformID);
     final Color backgroundColor = context.select((SetupIcon icon) => icon.backgroundColor);
-    final bool webSafeZone = selectedPlatformID == 3 ?? false;
-    final bool bgColorIsEmpty = backgroundColor == null;
+    final bool bgColorIsEmpty = context.select((SetupIcon icon) => icon.bgColorIsEmpty);
+    final bool webSafeZone = selectedPlatformID == 3;
 
     return ClipRRect(
       borderRadius: BorderRadius.all(Radius.circular(_onDevice ? cornerRadius / 8 : 0)),

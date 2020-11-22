@@ -8,8 +8,8 @@ class AdaptiveDialog extends StatelessWidget {
       {@required this.content,
       @required this.title,
       @required this.onPressedMain,
-      this.secondaryButtonTitle,
-      this.mainButtonTitle,
+      this.secondaryButtonTitle = '',
+      this.mainButtonTitle = '',
       this.onPressedSecondary,
       Key key})
       : super(key: key);
@@ -30,12 +30,12 @@ class AdaptiveDialog extends StatelessWidget {
               CupertinoDialogAction(
                   isDestructiveAction: true,
                   onPressed: onPressedSecondary,
-                  child: Text(secondaryButtonTitle ?? S.of(context).cancel)),
+                  child: Text(secondaryButtonTitle.isEmpty ? S.of(context).cancel : secondaryButtonTitle)),
             CupertinoDialogAction(
                 isDefaultAction: true,
                 onPressed: onPressedMain,
                 textStyle: CupertinoTheme.of(context).textTheme.textStyle,
-                child: Text(mainButtonTitle ?? S.of(context).save)),
+                child: Text(mainButtonTitle.isEmpty ? S.of(context).save : mainButtonTitle)),
           ],
         )
       : AlertDialog(
@@ -47,9 +47,12 @@ class AdaptiveDialog extends StatelessWidget {
             if (onPressedSecondary != null)
               TextButton(
                   onPressed: onPressedSecondary,
-                  child: Text((secondaryButtonTitle ?? S.of(context).cancel).toUpperCase(),
+                  child: Text(
+                      (secondaryButtonTitle.isEmpty ? S.of(context).cancel : secondaryButtonTitle).toUpperCase(),
                       style: TextStyle(color: Theme.of(context).errorColor))),
-            TextButton(onPressed: onPressedMain, child: Text((mainButtonTitle ?? S.of(context).save).toUpperCase()))
+            TextButton(
+                onPressed: onPressedMain,
+                child: Text((mainButtonTitle.isEmpty ? S.of(context).save : mainButtonTitle).toUpperCase()))
           ],
           content: content);
 }

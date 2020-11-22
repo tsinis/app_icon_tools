@@ -6,13 +6,19 @@ import '../../../../generated/l10n.dart';
 import '../../../../models/user_interface.dart';
 
 class AdaptiveButton extends StatelessWidget {
-  const AdaptiveButton({@required this.text, @required this.onPressed, this.color, this.destructive = false, Key key})
+  const AdaptiveButton(
+      {@required this.text,
+      @required this.onPressed,
+      this.color,
+      this.destructive = false,
+      this.isDisabled = false,
+      Key key})
       : super(key: key);
 
   final String text;
   final Function() onPressed;
   final Color color;
-  final bool destructive;
+  final bool destructive, isDisabled;
 
   @override
   Widget build(BuildContext context) => Padding(
@@ -32,7 +38,7 @@ class AdaptiveButton extends StatelessWidget {
                 : CupertinoButton(
                     padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 64),
                     color: color ?? context.select((UserInterface ui) => ui.materialTheme.accentColor),
-                    onPressed: onPressed,
+                    onPressed: isDisabled ? null : onPressed,
                     child: Text(text,
                         style: TextStyle(
                             color: (CupertinoTheme.of(context).brightness == Brightness.dark)
@@ -54,7 +60,7 @@ class AdaptiveButton extends StatelessWidget {
                     colorBrightness: Brightness.dark,
                     minWidth: 190,
                     color: color ?? Theme.of(context).accentColor,
-                    onPressed: onPressed,
+                    onPressed: isDisabled ? null : onPressed,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                       child: Text(text.toUpperCase(), style: const TextStyle(letterSpacing: 1.2)),
