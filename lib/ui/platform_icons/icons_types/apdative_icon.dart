@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../models/constants/default_values.dart';
+import '../../../constants/default_non_null_values.dart';
 import '../../../models/setup_icon.dart';
 import '../../widgets/transparency_grid.dart';
 
@@ -93,7 +93,7 @@ class _AdaptiveIconState extends State<AdaptiveIcon> with SingleTickerProviderSt
         alignment: Alignment.center,
         children: [
           if (!widget.onDevice) const TransparencyGrid(),
-          if (backgroundImage != zeroBytes || backgroundColor != transparent)
+          if (backgroundImage != NullSafeValues.zeroBytes || backgroundColor != NullSafeValues.noColor)
             FractionallySizedBox(
               widthFactor: 0.7,
               heightFactor: 0.7,
@@ -103,7 +103,7 @@ class _AdaptiveIconState extends State<AdaptiveIcon> with SingleTickerProviderSt
                       scale: 2.14,
                       child: preferColorBg
                           ? Container(color: backgroundColor)
-                          : (backgroundImage != zeroBytes)
+                          : (backgroundImage != NullSafeValues.zeroBytes)
                               ? Image.memory(backgroundImage)
                               : const SizedBox.shrink())),
             ),
@@ -111,7 +111,9 @@ class _AdaptiveIconState extends State<AdaptiveIcon> with SingleTickerProviderSt
               position: AdaptiveIcon.animation,
               child: Transform.scale(
                   scale: 1.5,
-                  child: (foregroundImage == zeroBytes) ? const SizedBox.shrink() : Image.memory(foregroundImage))),
+                  child: (foregroundImage == NullSafeValues.zeroBytes)
+                      ? const SizedBox.shrink()
+                      : Image.memory(foregroundImage))),
         ],
       ),
     );

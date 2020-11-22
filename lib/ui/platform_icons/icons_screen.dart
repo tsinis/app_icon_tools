@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:provider/provider.dart';
 
+import '../../constants/default_non_null_values.dart';
 import '../../generated/l10n.dart';
 import '../../models/setup_icon.dart';
 import '../../models/user_interface.dart';
@@ -59,17 +60,17 @@ class IconPreview extends StatelessWidget {
         name = 'macOS',
         icon = CommunityMaterialIcons.apple;
 
-  // const IconPreview.linux()
-  //     : cornerRadius = 0,
-  //       platformID = 6,
-  //       name = 'Linux',
-  //       icon = CommunityMaterialIcons.linux;
+  const IconPreview.linux()
+      : cornerRadius = 0,
+        platformID = 6,
+        name = 'Linux',
+        icon = CommunityMaterialIcons.linux;
 
-  // const IconPreview.fuchsiaOS()
-  //     : cornerRadius = 0,
-  //       platformID = 7,
-  //       name = 'Fuchsia',
-  //       icon = CommunityMaterialIcons.linux;
+  const IconPreview.fuchsiaOS()
+      : cornerRadius = 0,
+        platformID = 7,
+        name = 'Fuchsia',
+        icon = CommunityMaterialIcons.linux;
 
   double get _staticCornerRadius => cornerRadius.toDouble();
 
@@ -180,9 +181,7 @@ class _Preview extends StatelessWidget {
                     : Hero(
                         tag: 'regular',
                         child: RegularIcon(
-                          supportTransparency: _supportTransparency,
-                          cornerRadius: -1,
-                        )),
+                            supportTransparency: _supportTransparency, cornerRadius: NullSafeValues.deviceShape)),
               ),
             ),
           if (_canChangeShape)

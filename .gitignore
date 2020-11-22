@@ -50,6 +50,9 @@ $RECYCLE.BIN/
 .pub/
 /build/
 
+# Flutter/Dart Tests related
+/test/
+
 # Web related
 lib/generated_plugin_registrant.dart
 
@@ -61,9 +64,6 @@ lib/generated_plugin_registrant.dart
 **/.pub-cache/
 **/.pub/
 **/build/
-
-# Remove pubspec.lock for libraries
-flutter_clock_helper/pubspec.lock
 
 # Other items grabbed from flutter/flutter repo
 flutter_*.png

@@ -1,4 +1,4 @@
-import '../../ui/platform_icons/icons_screen.dart';
+import '../ui/platform_icons/icons_screen.dart';
 
 const List<IconPreview> _platformList = [
   IconPreview.oldAndroid(),
@@ -7,7 +7,7 @@ const List<IconPreview> _platformList = [
   IconPreview.web(),
   IconPreview.windows(),
   IconPreview.macOS(),
-  //TODO: Check when https://github.com/flutter/flutter/issues/53229 is closed.
+  //TODO! Check when https://github.com/flutter/flutter/issues/53229 is closed.
   // IconPreview.linux(),
   // IconPreview.fuchsiaOS()
 ];

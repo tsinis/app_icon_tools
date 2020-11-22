@@ -2,17 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:platform_info/platform_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:url_launcher/url_launcher.dart';
 
-import '../locator.dart';
+import '../constants/locales.dart';
+import '../constants/themes.dart';
+import '../locator_dependency_injection.dart';
 import '../services/navigation_service.dart';
-import 'constants/locale.dart';
-import 'constants/themes.dart';
+import '../services/url_opener.dart';
 
 class UserInterface extends ChangeNotifier {
   static const double previewIconSize = 300;
   static int _currentTime = 12;
-  static const Set<String> _googleLng = {'de', 'en', 'es', 'fr', 'id', 'jp', 'ko', 'pt', 'ru', 'th', 'tr', 'vi', 'zh'};
   static bool _isCupertinoDesign = false, _isDark = true;
   static final List<String> _langList = [], _langFilterList = [];
   static String _locale = 'en';
@@ -23,26 +22,8 @@ class UserInterface extends ChangeNotifier {
     locator<NavigationService>().goBack();
   }
 
-  Future openGuidelinesURL({bool fromGoogle = false, bool isAdaptive = false}) async {
-    final String supportedLocale = (_googleLng.contains(_locale)) ? _locale : 'en';
-    const String appleURL =
-        'https://developer.apple.com/design/human-interface-guidelines/ios/icons-and-images/app-icon';
-    final String googleURL =
-            'https://support.google.com/googleplay/android-developer/answer/1078870?hl=$supportedLocale',
-        adaptiveURL =
-            'https://developer.android.com/guide/practices/ui_guidelines/icon_design_adaptive?hl=$supportedLocale';
-    final String url = isAdaptive
-        ? adaptiveURL
-        : fromGoogle
-            ? googleURL
-            : appleURL;
-
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw ArgumentError('Could not launch $url');
-    }
-  }
+  Future showGuidelines({bool fromGoogle = false, bool isAdaptive = false}) async =>
+      await openGuidelinesURL(_locale, fromGoogle: fromGoogle, isAdaptive: isAdaptive);
 
   String get locale => _locale;
 

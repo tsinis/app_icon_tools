@@ -16,7 +16,7 @@ class AdaptiveSwitch extends StatelessWidget {
   Widget build(BuildContext context) => UserInterface.isCupertino
       ? Padding(
           padding: const EdgeInsets.symmetric(horizontal: 19),
-          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, mainAxisSize: MainAxisSize.max, children: [
+          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Text(title, textAlign: TextAlign.center),
             CupertinoSwitch(
                 value: value,

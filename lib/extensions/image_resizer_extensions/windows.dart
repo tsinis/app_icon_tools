@@ -4,7 +4,9 @@ import 'package:image_resizer/image_resizer.dart';
 class WindowsIconsFolder extends ImageFolder {
   WindowsIconsFolder({String path = 'windows/runner/resources', List<WindowsIcon> icons = _defaultIcons})
       : super(path, icons);
+
   static const _defaultIcons = [
+    // ignore: avoid_redundant_argument_values
     WindowsIcon(size: 256),
     WindowsIcon(size: 64), // Optional.
     WindowsIcon(size: 48),

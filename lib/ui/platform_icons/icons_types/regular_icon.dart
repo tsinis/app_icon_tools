@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../constants/default_non_null_values.dart';
 import '../../../models/setup_icon.dart';
 import '../../widgets/transparency_grid.dart';
 
@@ -10,7 +11,7 @@ class RegularIcon extends StatelessWidget {
   final bool supportTransparency;
   final int cornerRadius;
 
-  bool get _onDevice => cornerRadius != -1;
+  bool get _onDevice => cornerRadius != NullSafeValues.deviceShape;
 
   @override
   Widget build(BuildContext context) {

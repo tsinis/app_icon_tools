@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-import 'locator.dart';
+import 'locator_dependency_injection.dart';
 import 'models/setup_icon.dart';
 import 'models/upload_file.dart';
 import 'models/user_interface.dart';
@@ -9,7 +9,6 @@ import 'services/desktop_window_sizer.dart';
 import 'ui/app_appearance.dart';
 
 //TODO Migrate to null-safety when it's become stable and packages are ready.
-// TODO Make proper folder organization.
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   DesktopWindow.setupSize();

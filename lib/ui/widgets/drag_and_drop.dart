@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dropzone/flutter_dropzone.dart';
 import 'package:provider/provider.dart';
 
+import '../../constants/icons_properties.dart';
 import '../../generated/l10n.dart';
 import '../../models/upload_file.dart';
 import '../../models/user_interface.dart';
@@ -23,8 +24,8 @@ class DragAndDrop extends StatelessWidget {
     final bool isValidFile = context.select((UploadFile upload) => upload.isValidFile) ?? true;
     final bool isLoading = context.select((UploadFile upload) => upload.loading) ?? false;
     final bool isDone = context.select((UploadFile upload) => upload.done) ?? false;
-    const int minIconSize = UploadFile.minIconSize;
-    const int minAdaptiveSize = UploadFile.minAdaptiveSize;
+    const int minIconSize = IconsProperties.minIconSize;
+    const int minAdaptiveSize = IconsProperties.minAdaptiveSize;
 
     return DottedBorder(
       borderType: BorderType.RRect,
@@ -41,7 +42,9 @@ class DragAndDrop extends StatelessWidget {
             : isLoading
                 ? Column(mainAxisAlignment: MainAxisAlignment.center, mainAxisSize: MainAxisSize.min, children: [
                     Padding(
-                        padding: const EdgeInsets.only(top: !kIsWeb ? 20 : 0), child: Text(S.of(context).verifying)),
+                        // ignore: avoid_redundant_argument_values
+                        padding: const EdgeInsets.only(top: !kIsWeb ? 20 : 0),
+                        child: Text(S.of(context).verifying)),
                     if (!kIsWeb)
                       Padding(
                           padding: const EdgeInsets.only(top: 20),
@@ -102,34 +105,34 @@ class DragAndDrop extends StatelessWidget {
                                 rows: <DataRow>[
                                   DataRow(
                                     // onSelectChanged: (_) async =>
-                                    //     await context.read<UserInterface>().openGuidelinesURL(),
+                                    //     await context.read<UserInterface>().showGuidelines(),
                                     cells: <DataCell>[
                                       DataCell(_InfoCellText(S.of(context).fileFormat, bold: true)),
                                       DataCell(
-                                        Text(UploadFile.expectedFileExtension.toUpperCase(),
+                                        Text(IconsProperties.expectedFileExtension.toUpperCase(),
                                             style: const TextStyle(fontWeight: FontWeight.bold)),
                                       )
                                     ],
                                   ),
                                   DataRow(
                                       // onSelectChanged: (_) async =>
-                                      //     await context.read<UserInterface>().openGuidelinesURL(),
+                                      //     await context.read<UserInterface>().showGuidelines(),
                                       cells: <DataCell>[
                                         DataCell(_InfoCellText(S.of(context).colorProfile)),
                                         const DataCell(Text('sRGB'))
                                       ]),
                                   DataRow(
                                       onSelectChanged: (_) async =>
-                                          await context.read<UserInterface>().openGuidelinesURL(fromGoogle: true),
+                                          await context.read<UserInterface>().showGuidelines(fromGoogle: true),
                                       cells: <DataCell>[
                                         DataCell(_InfoCellText(S.of(context).maxKB)),
                                         DataCell(Tooltip(
                                             message: 'Google Play ${S.of(context).storeRequirement}',
-                                            child: const Text('1024KB')))
+                                            child: const Text('${IconsProperties.maxFileSizeKB}KB')))
                                       ]),
                                   DataRow(
                                       onSelectChanged: (_) async =>
-                                          await context.read<UserInterface>().openGuidelinesURL(isAdaptive: isAdaptive),
+                                          await context.read<UserInterface>().showGuidelines(isAdaptive: isAdaptive),
                                       cells: <DataCell>[
                                         DataCell(_InfoCellText(S.of(context).imageSize)),
                                         DataCell(Tooltip(

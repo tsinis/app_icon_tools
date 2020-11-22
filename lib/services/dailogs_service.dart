@@ -31,7 +31,6 @@ Future showSettingsDialog(BuildContext _) {
         onPressedMain: () => context.read<UserInterface>().saveSettings(),
         content: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.max,
           children: [
             AdaptiveTextField(
                 onChanged: (query) => context.read<UserInterface>().search(query),

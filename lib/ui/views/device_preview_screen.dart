@@ -6,8 +6,8 @@ import 'package:local_hero/local_hero.dart';
 import 'package:provider/provider.dart';
 import 'package:websafe_svg/websafe_svg.dart';
 
+import '../../constants/platforms_list.dart';
 import '../../generated/l10n.dart';
-import '../../models/constants/platforms_list.dart';
 import '../../models/setup_icon.dart';
 import '../platform_icons/icons_types/apdative_icon.dart';
 import '../platform_icons/icons_types/regular_icon.dart';
@@ -31,7 +31,6 @@ class DeviceScreen extends StatelessWidget {
             child: InteractiveViewer(
               maxScale: 2,
               child: FittedBox(
-                fit: BoxFit.contain,
                 child: GestureDetector(
                   onTap: () => context.read<SetupIcon>().setupScreen(),
                   child: Stack(

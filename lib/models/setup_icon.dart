@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io' as io;
 import 'dart:math' show max;
 import 'dart:typed_data';
 
@@ -7,55 +6,99 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image/image.dart' as img;
 import 'package:image_resizer/image_resizer.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:platform_info/platform_info.dart';
-import 'package:share/share.dart';
-import 'package:universal_html/html.dart' as html;
 
-import '../extensions/image_resizer_package/android_adaptive.dart';
-import '../extensions/image_resizer_package/constants/android_regular.dart';
-import '../extensions/image_resizer_package/constants/web.dart';
-import '../extensions/image_resizer_package/pwa.dart';
-import '../extensions/image_resizer_package/windows.dart';
+import '../constants/default_non_null_values.dart';
+import '../extensions/image_resizer_extensions/android_adaptive.dart';
+import '../extensions/image_resizer_extensions/constants/android_regular.dart';
+import '../extensions/image_resizer_extensions/constants/web.dart';
+import '../extensions/image_resizer_extensions/pwa.dart';
+import '../extensions/image_resizer_extensions/windows.dart';
 import '../generated/l10n.dart';
-import '../locator.dart';
+import '../locator_dependency_injection.dart';
+import '../services/files_services/file_saver.dart';
 import '../services/navigation_service.dart';
 import '../services/router.dart';
-import 'constants/default_values.dart';
 
 class SetupIcon extends ChangeNotifier {
-  final NavigationService _navigationService = locator<NavigationService>();
+  // ! Consts section !
 
+  static const String _androidReg = 'Android Regular',
+      _androidAdapt = 'Android Adaptive',
+      _ios = 'Apple iOS',
+      _web = 'Web (PWA)',
+      _windows = 'MS Windows',
+      _macOS = 'Apple macOS',
+      _linux = 'Linux',
+      _fuchsiaOS = 'Fuchsia OS';
+
+  static const String _foreground = 'foreground', _background = 'background';
+  static final String _info = S.current.isTransparent;
+
+  // ! Navigation section !
+
+  final NavigationService _navigationService = locator<NavigationService>();
   void devicePreview() => _navigationService.navigateTo(UiRouter.deviceScreen);
   void initialScreen() => _navigationService.navigateTo(UiRouter.initialScreen);
   void setupScreen() => _navigationService.navigateTo(UiRouter.setupScreen);
   void goBack() => _navigationService.goBack();
 
-  Color _backgroundColor = transparent;
-  Color get backgroundColor => _backgroundColor;
+// ! Platforms section !
+  int _platformID = 0;
+  int get platformID => _platformID;
+  void setPlatform(int selectedPlatform) {
+    if (selectedPlatform != _platformID) {
+      {
+        _platformID = selectedPlatform;
+        notifyListeners();
+      }
+    }
+  }
+
+  final Map<String, bool> _platforms = {
+    _androidReg: true,
+    _androidAdapt: true,
+    _ios: true,
+    _web: true,
+    _windows: true,
+    _macOS: true,
+    _linux: false,
+    _fuchsiaOS: false,
+  };
+
+  Map<String, bool> get platforms => _platforms;
+
+  void switchPlatform({@required String platformNameKey, @required bool isExported}) {
+    _regularIconFiles.clear();
+    _platforms[platformNameKey] = isExported;
+    notifyListeners();
+  }
+
+  // ! Regular (Non-Adaptive-Android) Icon section !
+
+  // Regular (Non-Adaptive-Android) Icon Background Color:
+  Color get backgroundColor => _regularBgColor;
   void setBackgroundColor(Color newColor) {
-    if (_backgroundColor != newColor) {
-      _backgroundColor = newColor;
+    if (_regularBgColor != newColor) {
+      _regularBgColor = newColor;
       if (!haveAdaptiveColor) {
-        _adaptiveColor = newColor.withAlpha(255);
+        _adaptiveBgColor = newColor.withAlpha(255);
       }
       notifyListeners();
     }
   }
 
-  bool get bgColorIsEmpty => backgroundColor == transparent;
-
+  bool get bgColorIsEmpty => backgroundColor == NullSafeValues.noColor;
   void removeColor() {
-    _backgroundColor = transparent;
+    _regularBgColor = NullSafeValues.noColor;
     notifyListeners();
   }
 
-  Uint8List _icon = zeroBytes, _adaptiveBackground = zeroBytes, _adaptiveForeground = zeroBytes;
-
+// Regular (Non-Adaptive-Android) Icon Image:
   Image get iconImage => Image.memory(_icon);
   Uint8List get regularIcon => _icon;
   set regularIcon(Uint8List uploadedPNG) {
-    if (uploadedPNG != _icon && uploadedPNG != zeroBytes) {
+    if (uploadedPNG != _icon && uploadedPNG != NullSafeValues.zeroBytes) {
       _icon = uploadedPNG;
       _wipeOldData();
       notifyListeners();
@@ -63,7 +106,7 @@ class SetupIcon extends ChangeNotifier {
   }
 
   void _wipeOldData() {
-    _adaptiveBackground = _adaptiveForeground = zeroBytes;
+    _adaptiveBackground = _adaptiveForeground = NullSafeValues.zeroBytes;
     _regularIconFiles.clear();
     _adaptiveIconFiles.clear();
     _pwaConfigs.clear();
@@ -72,73 +115,90 @@ class SetupIcon extends ChangeNotifier {
     _fgIssues.clear();
   }
 
-  // Adaptive Icon Background as COLOR.
-  Color _adaptiveColor = transparent;
-  Color get adaptiveColor => _adaptiveColor;
+  Set<String> get iconIssues => _regIconIssues;
+
+  set iconIssues(Set<String> detectedIssues) {
+    if (_regIconIssues != detectedIssues) {
+      _regIconIssues
+        ..clear()
+        ..addAll(detectedIssues);
+    }
+  }
+
+  Color _adaptiveBgColor = NullSafeValues.noColor, _regularBgColor = NullSafeValues.noColor;
+  Uint8List _icon = NullSafeValues.zeroBytes,
+      _adaptiveBackground = NullSafeValues.zeroBytes,
+      _adaptiveForeground = NullSafeValues.zeroBytes;
+
+// ! Android 8+ Icon section !
+
+// Android 8+ Adaptive Icon Background COLOR:
+  Color get adaptiveColor => _adaptiveBgColor;
   void setAdaptiveColor(Color newColor) {
-    if (_adaptiveColor != newColor) {
-      _adaptiveColor = newColor;
-      if (newColor != transparent && bgColorIsEmpty) {
-        _backgroundColor = newColor.withAlpha(255);
+    if (_adaptiveBgColor != newColor) {
+      _adaptiveBgColor = newColor;
+      if (newColor != NullSafeValues.noColor && bgColorIsEmpty) {
+        _regularBgColor = newColor.withAlpha(255);
       }
       notifyListeners();
     }
   }
 
   void removeAdaptiveColor() {
-    _adaptiveColor = transparent;
+    _adaptiveBgColor = NullSafeValues.noColor;
     notifyListeners();
   }
 
-  bool get haveAdaptiveColor => _adaptiveColor != transparent;
-
   bool _preferColorBg = false;
+  bool get haveAdaptiveColor => _adaptiveBgColor != NullSafeValues.noColor;
   bool get preferColorBg => _preferColorBg;
   void switchBgColorPreference({@required bool preferColor}) {
     _preferColorBg = preferColor;
     notifyListeners();
   }
 
-  // Adaptive Icon Background as IMAGE.
+// Android 8+ Adaptive Icon Background IMAGE:
   Uint8List get adaptiveBackground => _adaptiveBackground;
   set adaptiveBackground(Uint8List uploadedPNG) {
-    if (uploadedPNG != _adaptiveBackground && uploadedPNG != zeroBytes) {
+    if (uploadedPNG != _adaptiveBackground && uploadedPNG != NullSafeValues.zeroBytes) {
       _adaptiveBackground = uploadedPNG;
       _adaptiveIconFiles.clear();
       notifyListeners();
     }
   }
 
-  bool get haveAdaptiveBackground => _adaptiveBackground != zeroBytes;
+  bool get haveAdaptiveBackground => _adaptiveBackground != NullSafeValues.zeroBytes;
   void removeAdaptiveBackground() {
-    _adaptiveBackground = zeroBytes;
+    _adaptiveBackground = NullSafeValues.zeroBytes;
     _bgIssues.clear();
     notifyListeners();
   }
 
   Uint8List get adaptiveForeground => _adaptiveForeground;
+
+// Android 8+ Adaptive Icon Foreground (always as image):
   set adaptiveForeground(Uint8List uploadedPNG) {
-    if (uploadedPNG != _adaptiveForeground && uploadedPNG != zeroBytes) {
+    if (uploadedPNG != _adaptiveForeground && uploadedPNG != NullSafeValues.zeroBytes) {
       _adaptiveForeground = uploadedPNG;
       _adaptiveIconFiles.clear();
       notifyListeners();
     }
   }
 
-  bool get haveAdaptiveForeground => _adaptiveForeground != zeroBytes;
+  bool get haveAdaptiveForeground => _adaptiveForeground != NullSafeValues.zeroBytes;
   void removeadaptiveForeground() {
-    _adaptiveForeground = zeroBytes;
+    _adaptiveForeground = NullSafeValues.zeroBytes;
     _fgIssues.clear();
     notifyListeners();
   }
 
+// Other Android 8+ Adaptive icon setups:
   bool get _exportingAdaptiveFiles =>
       exportAdaptive &&
       (haveAdaptiveForeground && ((haveAdaptiveBackground && !preferColorBg) || (haveAdaptiveColor && preferColorBg)));
 
-  final Set<String> _fgIssues = {}, _bgIssues = {}, _iconIssues = {};
-
   Set<String> get foregroundIssues => _fgIssues;
+
   set foregroundIssues(Set<String> detectedIssues) {
     if (_fgIssues != detectedIssues) {
       _fgIssues
@@ -148,6 +208,7 @@ class SetupIcon extends ChangeNotifier {
   }
 
   Set<String> get backgroundIssues => _bgIssues;
+
   set backgroundIssues(Set<String> detectedIssues) {
     if (_bgIssues != detectedIssues) {
       _bgIssues
@@ -156,18 +217,13 @@ class SetupIcon extends ChangeNotifier {
     }
   }
 
-  Set<String> get iconIssues => _iconIssues;
-  set iconIssues(Set<String> detectedIssues) {
-    if (_iconIssues != detectedIssues) {
-      _iconIssues
-        ..clear()
-        ..addAll(detectedIssues);
-    }
-  }
+  // ! All Issues Section !
+
+  final Set<String> _fgIssues = {}, _bgIssues = {}, _regIconIssues = {};
 
   String get issues {
     String regularIssuesText = '', foregroundIssuesText = '', backgroundIssuesText = '';
-    if (_iconIssues.isNotEmpty) {
+    if (_regIconIssues.isNotEmpty) {
       regularIssuesText = _stringIssues();
     }
     if (_fgIssues.isNotEmpty) {
@@ -179,9 +235,7 @@ class SetupIcon extends ChangeNotifier {
     return regularIssuesText + foregroundIssuesText + backgroundIssuesText;
   }
 
-  static const String _foreground = 'foreground', _background = 'background';
-
-  String _stringIssues({String where = 'icon'}) {
+  String _stringIssues({String where = 'regularIcon'}) {
     final StringBuffer textInMemory = StringBuffer();
     switch (where) {
       case _background:
@@ -206,10 +260,10 @@ class SetupIcon extends ChangeNotifier {
       default:
         {
           textInMemory..write('\n\n')..write(S.current.regularIcon);
-          for (final String issue in _iconIssues) {
+          for (final String issue in _regIconIssues) {
             textInMemory..write('\n')..write(issue);
           }
-          if (_iconIssues.contains(_info) && (exportIOS || exportWeb)) {
+          if (_regIconIssues.contains(_info) && (exportIOS || exportWeb)) {
             textInMemory..write('\n')..write(S.current.transparencyIOS);
           }
           break;
@@ -218,14 +272,14 @@ class SetupIcon extends ChangeNotifier {
     return textInMemory.toString();
   }
 
-  static final String _info = S.current.isTransparent;
-
   double get hue {
-    final int iconIssuesCount = _iconIssues.length - (_iconIssues.contains(_info) ? 1 : 0);
+    final int iconIssuesCount = _regIconIssues.length - (_regIconIssues.contains(_info) ? 1 : 0);
     final int fgIssuesCount = _fgIssues.length - (_fgIssues.contains(_info) ? 1 : 0);
     final int bgIssuesCount = _bgIssues.length - (_bgIssues.contains(_info) ? 1 : 0);
     return max(0, 70 - (17.5 * iconIssuesCount) - (17.5 * fgIssuesCount) - (17.5 * bgIssuesCount));
   }
+
+// ! Icon Shape section !
 
   double _iconShapeRadius = 25;
   double get cornerRadius => _iconShapeRadius;
@@ -236,16 +290,7 @@ class SetupIcon extends ChangeNotifier {
     }
   }
 
-  int _platformID = 0;
-  int get platformID => _platformID;
-  void setPlatform(int selectedPlatform) {
-    if (selectedPlatform != _platformID) {
-      {
-        _platformID = selectedPlatform;
-        notifyListeners();
-      }
-    }
-  }
+  // ! Icons Export and Archive section !
 
   final Map<String, List<FileData>> _regularIconFiles = {}, _adaptiveIconFiles = {}, _xmlConfigs = {}, _pwaConfigs = {};
 
@@ -257,7 +302,7 @@ class SetupIcon extends ChangeNotifier {
     final List<FileData> filesList = [];
 
     Future<void>.delayed(
-        //TODO! Check when https://github.com/flutter/flutter/issues/33577 is closed.
+        //TODO Check when https://github.com/flutter/flutter/issues/33577 is closed.
         const Duration(milliseconds: kIsWeb ? 300 : 0),
         () async => await _resizeIcons().whenComplete(() async {
               for (final String key in _regularIconFiles.keys) {
@@ -286,7 +331,7 @@ class SetupIcon extends ChangeNotifier {
               }
 
               final List<int> archiveFileData = genertator.generateArchive(filesList);
-              await _saveFile('icons.zip', binaryData: archiveFileData).then((bool correctlyExported) {
+              await saveFile(archiveFileData).then((correctlyExported) {
                 if (correctlyExported) {
                   _countdown = 0;
                   _loading = false;
@@ -296,12 +341,14 @@ class SetupIcon extends ChangeNotifier {
             }));
   }
 
-  int _countdown = 0;
+  bool _loading = false;
+  int _countdown = 0, _exportedDoneCount = 0;
+
   int get countdown => _countdown;
 
   void _showSnackInfo() {
     _exportedDoneCount = 0;
-    Timer.periodic(const Duration(milliseconds: 50), (Timer timer) {
+    Timer.periodic(const Duration(milliseconds: 50), (timer) {
       if (_countdown > 99) {
         _countdown = 0;
         timer.cancel();
@@ -312,79 +359,25 @@ class SetupIcon extends ChangeNotifier {
     });
   }
 
-  // Future<String> get _tempDirectory async {
-  //   if (platform.isMobile) {
-  //     final io.Directory dir = await getTemporaryDirectory();
-  //     return dir.path;
-  //   } else {
-  //     return '';
-  //   }
-  // }
-
-  Future<String> get _getSaveDirectory async {
-    io.Directory platformSpecificDir;
-    if (platform.isAndroid) {
-      platformSpecificDir = await getExternalStorageDirectory();
-    } else if (platform.isIOS) {
-      platformSpecificDir = await getApplicationDocumentsDirectory();
-    } else {
-      platformSpecificDir = await getDownloadsDirectory();
-    }
-    return platformSpecificDir.path;
-  }
-
-  Future<bool> _saveFile(String fileName, {@required List<int> binaryData, bool silentErrors = false}) async {
-    if (kIsWeb) {
-      Uri dataUrl = Uri();
-      try {
-        dataUrl = Uri.dataFromBytes(binaryData);
-
-        // ignore: avoid_catches_without_on_clauses
-      } catch (error) {
-        if (!silentErrors) {
-          throw Exception('Error Creating File Data on Web: $error');
-        }
-        return false;
-      }
-      html.AnchorElement()
-        ..href = dataUrl.toString()
-        ..setAttribute('download', fileName)
-        ..click();
-    } else {
-      try {
-        await _getSaveDirectory.then((String pathToFile) async {
-          io.File('$pathToFile/$fileName')
-            ..createSync()
-            ..writeAsBytesSync(binaryData);
-          if (platform.isMobile) {
-            await Share.shareFiles(['$pathToFile/$fileName'], mimeTypes: ['application/zip']);
-          }
-        });
-        // ignore: avoid_catches_without_on_clauses
-      } catch (error) {
-        if (!silentErrors) {
-          throw Exception('Error Creating File Data on Device: $error');
-        }
-        return false;
-      }
-    }
-    return true;
-  }
-
-  bool get exportIOS => _platforms[_ios] ?? true;
-  bool get exportWeb => _platforms[_web] ?? true;
-  bool get exportAdaptive => _platforms[_androidAdapt] ?? true;
-
   int get _toExportCount =>
       (_exportingAdaptiveFiles ? 2 : 1) + _platforms.values.where((_willBeExported) => true).length;
+
   num get exportProgress => 100 * (_exportedDoneCount / _toExportCount).clamp(0, 1);
-  int _exportedDoneCount = 0;
-  bool _loading = false;
+
   bool get loading => _loading;
+
   void _setLoading(bool isLoading) {
     _loading = isLoading;
     notifyListeners();
   }
+
+// ! Icons Generate section !
+
+  bool get exportIOS => _platforms[_ios] ?? true;
+
+  bool get exportWeb => _platforms[_web] ?? true;
+
+  bool get exportAdaptive => _platforms[_androidAdapt] ?? true;
 
   Future _resizeIcons() async {
     if (_regularIconFiles.isEmpty) {
@@ -478,33 +471,6 @@ class SetupIcon extends ChangeNotifier {
         await WindowsIcon.generate(uploadedPNG, folder, writeToDiskIO: !kIsWeb && platform.isDesktop);
     _regularIconFiles[key] = icoList;
     _exportedDoneCount = _exportedDoneCount + 1;
-    notifyListeners();
-  }
-
-  static const String _androidReg = 'Android Regular',
-      _androidAdapt = 'Android Adaptive',
-      _ios = 'Apple iOS',
-      _web = 'Web (PWA)',
-      _windows = 'MS Windows',
-      _macOS = 'Apple macOS'
-      // _linux = 'Linux', _fuchsiaOS = 'Fuchsia OS'
-      ;
-
-  final Map<String, bool> _platforms = {
-    _androidReg: true,
-    _androidAdapt: true,
-    _ios: true,
-    _web: true,
-    _windows: true,
-    _macOS: true,
-    // _linux: true,
-    // _fuchsiaOS: true,
-  };
-
-  Map<String, bool> get platforms => _platforms;
-  void switchPlatform({@required String platformNameKey, @required bool isExported}) {
-    _regularIconFiles.clear();
-    _platforms[platformNameKey] = isExported;
     notifyListeners();
   }
 }

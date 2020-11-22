@@ -15,6 +15,6 @@ class AdaptiveSlider extends StatelessWidget {
       ? Padding(
           padding: const EdgeInsets.symmetric(vertical: 2),
           child: CupertinoSlider(
-              value: radius, onChanged: onChanged, min: 0, max: UserInterface.previewIconSize / 2, divisions: 11))
-      : Slider(value: radius, onChanged: onChanged, min: 0, max: UserInterface.previewIconSize / 2, divisions: 11);
+              value: radius, onChanged: onChanged, max: UserInterface.previewIconSize / 2, divisions: 11))
+      : Slider(value: radius, onChanged: onChanged, max: UserInterface.previewIconSize / 2, divisions: 11);
 }

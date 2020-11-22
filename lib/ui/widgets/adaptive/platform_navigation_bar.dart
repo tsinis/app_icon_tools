@@ -5,8 +5,8 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:platform_info/platform_info.dart';
 import 'package:provider/provider.dart';
 
+import '../../../constants/platforms_list.dart';
 import '../../../generated/l10n.dart';
-import '../../../models/constants/platforms_list.dart';
 import '../../../models/setup_icon.dart';
 import '../../../models/user_interface.dart';
 import '../../platform_icons/icons_screen.dart';

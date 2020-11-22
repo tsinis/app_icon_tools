@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 
 class SuccessAnimatedIcon extends StatefulWidget {
-  const SuccessAnimatedIcon({this.color = Colors.greenAccent, this.halfSize = 80});
+  const SuccessAnimatedIcon({this.color = Colors.greenAccent, this.halfSize = 80, Key key}) : super(key: key);
   final Color color;
   final double halfSize;
 
@@ -27,17 +27,15 @@ class _SuccessAnimatedIcon extends State<SuccessAnimatedIcon> with SingleTickerP
 
   @override
   Widget build(BuildContext context) => kIsWeb
-      //TODO Check when https://github.com/flutter/flutter/issues/44152 is closed.
+      //TODO! Check when https://github.com/flutter/flutter/issues/44152 is closed.
       ? ScaleTransition(scale: scaleAnimation, child: Icon(Icons.check, size: widget.halfSize, color: widget.color))
       : ShaderMask(
           shaderCallback: (bounds) => SweepGradient(
-                  center: const Alignment(0.5, 0.1),
-                  startAngle: math.pi / (3 * angleAnimation.value),
-                  endAngle: math.pi / (2.6 * angleAnimation.value),
-                  transform: const GradientRotation(math.pi / -2),
-                  colors: [widget.color.withOpacity(0), widget.color],
-                  tileMode: TileMode.clamp)
-              .createShader(bounds),
+              center: const Alignment(0.5, 0.1),
+              startAngle: math.pi / (3 * angleAnimation.value),
+              endAngle: math.pi / (2.6 * angleAnimation.value),
+              transform: const GradientRotation(math.pi / -2),
+              colors: [widget.color.withOpacity(0), widget.color]).createShader(bounds),
           child: ScaleTransition(
               scale: scaleAnimation, child: Icon(Icons.check, size: widget.halfSize, color: widget.color)));
 }

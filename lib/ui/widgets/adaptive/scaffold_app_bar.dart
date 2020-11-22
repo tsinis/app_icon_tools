@@ -26,7 +26,7 @@ class AdaptiveScaffold extends StatelessWidget {
     final bool isWideScreen = MediaQuery.of(context).size.width > 560;
 
     return MediaQuery(
-      data: MediaQuery.of(context).copyWith(textScaleFactor: 1), //TODO Check on iOS/Android devices.
+      data: MediaQuery.of(context).copyWith(textScaleFactor: 1), //TODO! Check on iOS/Android devices.
       child: UserInterface.isCupertino
           ? CupertinoPageScaffold(
               navigationBar: CupertinoNavigationBar(
