@@ -13,8 +13,8 @@ class AdaptiveScaffold extends StatelessWidget {
   const AdaptiveScaffold({@required this.child, this.uploadScreen = false, this.deviceScreen = false, Key key})
       : super(key: key);
 
-  final bool uploadScreen, deviceScreen;
   final Widget child;
+  final bool uploadScreen, deviceScreen;
 
   @override
   Widget build(BuildContext context) {

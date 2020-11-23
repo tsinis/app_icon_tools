@@ -15,8 +15,9 @@ class AdaptiveDialog extends StatelessWidget {
       : super(key: key);
 
   final Widget content;
-  final String title;
   final String secondaryButtonTitle, mainButtonTitle;
+  final String title;
+
   final void Function() onPressedMain;
   final void Function() onPressedSecondary;
 

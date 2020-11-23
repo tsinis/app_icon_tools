@@ -18,14 +18,14 @@ class WindowsIconsFolder extends ImageFolder {
 
 class WindowsIcon extends IconTemplate {
   const WindowsIcon({int size = 256, this.name = 'appicon', this.ext = 'ico'}) : super(size);
-  final String name;
-  final String ext;
 
-  WindowsIcon copyWith({int size, String name, String ext}) =>
-      WindowsIcon(size: size ?? this.size, ext: ext ?? this.ext, name: name ?? this.name);
+  final String ext, name;
 
   @override
   String get filename => '$name.$ext';
+
+  // WindowsIcon copyWith({int size, String name, String ext}) =>
+  //     WindowsIcon(size: size ?? this.size, ext: ext ?? this.ext, name: name ?? this.name);
 
   static Future<List<FileData>> generate(Image image, ImageFolder folder,
       {String path = '', bool writeToDiskIO = true}) async {

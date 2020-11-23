@@ -5,15 +5,19 @@ import 'package:provider/provider.dart';
 
 import '../../../constants/default_non_null_values.dart';
 import '../../../models/setup_icon.dart';
-import '../../widgets/transparency_grid.dart';
+import '../transparency_grid.dart';
 
 class AdaptiveIcon extends StatefulWidget {
   const AdaptiveIcon({Key key, this.onDevice = false}) : super(key: key);
-  static const String moveDown = 'down', moveUp = 'up', moveRight = 'right', moveLeft = 'left';
-  static AnimationController controller;
+
   static Animation<Offset> animation;
+  static AnimationController controller;
+  static const String moveDown = 'down', moveUp = 'up', moveRight = 'right', moveLeft = 'left';
 
   final bool onDevice;
+
+  @override
+  _AdaptiveIconState createState() => _AdaptiveIconState();
 
   static Future preview(String direction) async {
     const double parallaxOffset = 0.1;
@@ -47,21 +51,9 @@ class AdaptiveIcon extends StatefulWidget {
       print('User most likely has switched to another screen.\n$_exception');
     }
   }
-
-  @override
-  _AdaptiveIconState createState() => _AdaptiveIconState();
 }
 
 class _AdaptiveIconState extends State<AdaptiveIcon> with SingleTickerProviderStateMixin {
-  @override
-  void initState() {
-    super.initState();
-    AdaptiveIcon.controller = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 800), reverseDuration: const Duration(milliseconds: 1000));
-    AdaptiveIcon.animation =
-        Tween<Offset>(begin: Offset.zero, end: const Offset(0, 0.1)).animate(AdaptiveIcon.controller);
-  }
-
   @override
   void deactivate() {
     super.deactivate();
@@ -78,6 +70,15 @@ class _AdaptiveIconState extends State<AdaptiveIcon> with SingleTickerProviderSt
         ..stop()
         ..dispose();
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    AdaptiveIcon.controller = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 800), reverseDuration: const Duration(milliseconds: 1000));
+    AdaptiveIcon.animation =
+        Tween<Offset>(begin: Offset.zero, end: const Offset(0, 0.1)).animate(AdaptiveIcon.controller);
   }
 
   @override

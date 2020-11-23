@@ -62,9 +62,8 @@ class UserInterface extends ChangeNotifier {
     _resetFilter();
   }
 
-  static Future setupUI() async {
+  static void setupUI() {
     _currentTime = DateTime.now().hour;
-    // ignore: unawaited_futures
     loadSettings(isInitialization: true);
     loadLocales();
   }

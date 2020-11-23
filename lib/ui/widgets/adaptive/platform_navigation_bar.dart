@@ -5,11 +5,11 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:platform_info/platform_info.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constants/platforms_list.dart';
+import '../../../constants/platforms/platforms_icons_settings.dart';
+import '../../../constants/platforms/platforms_list.dart';
 import '../../../generated/l10n.dart';
 import '../../../models/setup_icon.dart';
 import '../../../models/user_interface.dart';
-import '../../platform_icons/icons_screen.dart';
 
 class AdaptiveNavgationBar extends StatelessWidget {
   const AdaptiveNavgationBar({Key key}) : super(key: key);
@@ -35,7 +35,7 @@ class AdaptiveNavgationBar extends StatelessWidget {
                       backgroundColor: CupertinoTheme.of(context).textTheme.textStyle.color.withOpacity(0.04),
                       padding: const EdgeInsets.all(5),
                       children: {
-                        for (IconPreview platform in platformList)
+                        for (PlatformIcon platform in platformList)
                           platformList.indexOf(platform): Tooltip(
                               message: '${S.of(context).operatingSystem} ${platform.name}',
                               child: isSmallScreen
@@ -59,7 +59,7 @@ class AdaptiveNavgationBar extends StatelessWidget {
                           backgroundColor: Theme.of(context).textTheme.bodyText1?.color?.withOpacity(0.04),
                           selectedIndex: selectedPlatform,
                           tabs: [
-                            for (IconPreview platform in platformList)
+                            for (PlatformIcon platform in platformList)
                               GButton(
                                   iconColor: Theme.of(context).sliderTheme.thumbColor?.withOpacity(0.6),
                                   semanticLabel: '${S.of(context).operatingSystem} ${platform.name}',

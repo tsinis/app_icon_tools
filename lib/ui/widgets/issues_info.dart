@@ -14,8 +14,8 @@ class IssuesInfo extends StatefulWidget {
 }
 
 class _IssuesInfo extends State<IssuesInfo> with SingleTickerProviderStateMixin {
-  AnimationController animationController;
   Animation<double> animation;
+  AnimationController animationController;
 
   @override
   void dispose() {

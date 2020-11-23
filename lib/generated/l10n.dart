@@ -245,16 +245,6 @@ class S {
     );
   }
 
-  /// `The iOS icons doesn't support transparency, alpha channel will be replaced with black color.`
-  String get transparencyiOS {
-    return Intl.message(
-      'The iOS icons doesn\'t support transparency, alpha channel will be replaced with black color.',
-      name: 'transparencyiOS',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Back`
   String get backButton {
     return Intl.message(
@@ -585,10 +575,10 @@ class S {
     );
   }
 
-  /// `*iOS Launcher dоn't support transparency in any app Icon (including PWA).\nThe Alpha channel will be replaced with black color.`
+  /// `*iOS Launcher dоn't support transparency in any app Icon (including PWA).\nThe Alpha channel will be replaced with black color on iOS.`
   String get transparencyIOS {
     return Intl.message(
-      '*iOS Launcher dоn\'t support transparency in any app Icon (including PWA).\nThe Alpha channel will be replaced with black color.',
+      '*iOS Launcher dоn\'t support transparency in any app Icon (including PWA).\nThe Alpha channel will be replaced with black color on iOS.',
       name: 'transparencyIOS',
       desc: '',
       args: [],

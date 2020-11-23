@@ -41,10 +41,14 @@ class AndroidAdaptiveIcon extends AndroidIcon {
   const AndroidAdaptiveIcon(
       {@required this.adaptSize, @required this.adaptSuffix, this.adaptFolder = 'drawable', this.background = false})
       : super(size: adaptSize, folder: adaptFolder, folderSuffix: adaptSuffix);
-  final bool background;
-  final int adaptSize;
+
   final String adaptFolder;
+  final int adaptSize;
   final String adaptSuffix;
+  final bool background;
+
+  @override
+  String get filename => name + (background ? '_background.' : '_foreground.') + ext;
 
   // @override
   // AndroidAdaptiveIcon copyWith({
@@ -56,9 +60,6 @@ class AndroidAdaptiveIcon extends AndroidIcon {
   //   bool background,
   // }) =>
   //     AndroidAdaptiveIcon(background: background ?? false, adaptSize: size ?? this.size);
-
-  @override
-  String get filename => name + (background ? '_background.' : '_foreground.') + ext;
 }
 
 class XmlGenerator {
@@ -72,6 +73,7 @@ class XmlGenerator {
     this.colorsFolder = 'values',
     this.iconsFolder = 'mipmap-anydpi-v26',
   });
+
   final bool bgAsColor;
   final Color color;
   final String ext, colorsName, iconsNames, path, colorsFolder, iconsFolder;

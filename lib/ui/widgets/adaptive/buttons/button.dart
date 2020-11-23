@@ -6,14 +6,14 @@ import '../../../../generated/l10n.dart';
 import '../../../../models/user_interface.dart';
 
 class AdaptiveButton extends StatelessWidget {
-  const AdaptiveButton(
-      {@required this.text,
-      @required this.onPressed,
-      this.color,
-      this.destructive = false,
-      this.isDisabled = false,
-      Key key})
-      : super(key: key);
+  const AdaptiveButton({
+    @required this.text,
+    @required this.onPressed,
+    this.color,
+    this.destructive = false,
+    this.isDisabled = false,
+    Key key,
+  }) : super(key: key);
 
   final String text;
   final Function() onPressed;

@@ -6,11 +6,11 @@ import 'package:platform_info/platform_info.dart';
 import 'package:share/share.dart';
 import 'package:universal_html/html.dart' as html;
 
-import '../../constants/icons_properties.dart';
+import '../../constants/files_properties.dart';
 import 'file_directory_getter.dart';
 
 Future<bool> saveFile(List<int> binaryData, {bool silentErrors = false}) async {
-  const String fileName = IconsProperties.archiveName;
+  const String fileName = FilesProperties.archiveName;
   if (kIsWeb) {
     Uri dataUrl = Uri();
     try {

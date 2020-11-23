@@ -9,10 +9,9 @@ import 'services/desktop_window_sizer.dart';
 import 'ui/app_appearance.dart';
 
 //TODO Migrate to null-safety when it's become stable and packages are ready.
-Future main() async {
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
   DesktopWindow.setupSize();
-  // ignore: unawaited_futures
   UserInterface.setupUI();
   Locators.setupLocator();
 

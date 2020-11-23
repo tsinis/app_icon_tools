@@ -5,13 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dropzone/flutter_dropzone.dart';
 import 'package:provider/provider.dart';
 
-import '../../constants/icons_properties.dart';
+import '../../constants/files_properties.dart';
 import '../../generated/l10n.dart';
 import '../../models/upload_file.dart';
 import '../../models/user_interface.dart';
 import 'adaptive/buttons/button.dart';
 import 'success_animated_icon.dart';
 
+// TODO Check when https://github.com/flutter/flutter/issues/30719 is closed.
 class DragAndDrop extends StatelessWidget {
   const DragAndDrop({this.background = false, this.foreground = false, Key key}) : super(key: key);
 
@@ -24,8 +25,8 @@ class DragAndDrop extends StatelessWidget {
     final bool isValidFile = context.select((UploadFile upload) => upload.isValidFile) ?? true;
     final bool isLoading = context.select((UploadFile upload) => upload.loading) ?? false;
     final bool isDone = context.select((UploadFile upload) => upload.done) ?? false;
-    const int minIconSize = IconsProperties.minIconSize;
-    const int minAdaptiveSize = IconsProperties.minAdaptiveSize;
+    const int minIconSize = FilesProperties.minIconSize;
+    const int minAdaptiveSize = FilesProperties.minAdaptiveSize;
 
     return DottedBorder(
       borderType: BorderType.RRect,
@@ -109,7 +110,7 @@ class DragAndDrop extends StatelessWidget {
                                     cells: <DataCell>[
                                       DataCell(_InfoCellText(S.of(context).fileFormat, bold: true)),
                                       DataCell(
-                                        Text(IconsProperties.expectedFileExtension.toUpperCase(),
+                                        Text(FilesProperties.expectedFileExtension.toUpperCase(),
                                             style: const TextStyle(fontWeight: FontWeight.bold)),
                                       )
                                     ],
@@ -128,7 +129,7 @@ class DragAndDrop extends StatelessWidget {
                                         DataCell(_InfoCellText(S.of(context).maxKB)),
                                         DataCell(Tooltip(
                                             message: 'Google Play ${S.of(context).storeRequirement}',
-                                            child: const Text('${IconsProperties.maxFileSizeKB}KB')))
+                                            child: const Text('${FilesProperties.maxFileSizeKB}KB')))
                                       ]),
                                   DataRow(
                                       onSelectChanged: (_) async =>
@@ -176,18 +177,20 @@ class DragAndDrop extends StatelessWidget {
 
 class _InfoCellText extends StatelessWidget {
   const _InfoCellText(this._text, {Key key, this.bold = false}) : super(key: key);
-  final String _text;
+
   final bool bold;
+  final String _text;
 
   @override
   Widget build(BuildContext context) => Opacity(
-      opacity: 0.5,
+      opacity: 0.6,
       child: Text(_text, maxLines: 1, style: TextStyle(fontWeight: bold ? FontWeight.bold : FontWeight.w300)));
 }
 
-//TODO: Check when https://github.com/flutter/flutter/issues/19228 is closed.
+//TODO Check when https://github.com/flutter/flutter/issues/19228 is closed.
 class _DataThemeWorkaround extends StatelessWidget {
   const _DataThemeWorkaround(this._child, {Key key}) : super(key: key);
+
   final Widget _child;
 
   @override

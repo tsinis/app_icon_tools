@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 class SuccessAnimatedIcon extends StatefulWidget {
   const SuccessAnimatedIcon({this.color = Colors.greenAccent, this.halfSize = 80, Key key}) : super(key: key);
+
   final Color color;
   final double halfSize;
 
@@ -14,6 +15,7 @@ class SuccessAnimatedIcon extends StatefulWidget {
 class _SuccessAnimatedIcon extends State<SuccessAnimatedIcon> with SingleTickerProviderStateMixin {
   AnimationController animationController;
   Animation<double> angleAnimation, scaleAnimation;
+
   @override
   void initState() {
     animationController = AnimationController(vsync: this, duration: const Duration(seconds: 2));

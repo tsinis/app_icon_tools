@@ -8,7 +8,7 @@ import 'package:image/image.dart' as img;
 import 'package:universal_html/prefer_universal/html.dart';
 
 import '../constants/default_non_null_values.dart';
-import '../constants/icons_properties.dart';
+import '../constants/files_properties.dart';
 import '../generated/l10n.dart';
 import '../locator_dependency_injection.dart';
 import '../services/files_services/file_converter.dart';
@@ -36,7 +36,7 @@ class UploadFile extends ChangeNotifier {
   Future checkSelected({bool background = false, bool foreground = false}) async {
     try {
       //TODO! Check condition for type on Windows/Linux, since custom file extension is not working on some platforms yet.
-      await FilePickerCross.importFromStorage(type: _fileType, fileExtension: IconsProperties.expectedFileExtension)
+      await FilePickerCross.importFromStorage(type: _fileType, fileExtension: FilesProperties.expectedFileExtension)
           .then<void>((selectedFile) => _checkFile(selectedFile, background: background, foreground: foreground));
       // ignore: avoid_catches_without_on_clauses
     } catch (error) {
@@ -133,12 +133,12 @@ class UploadFile extends ChangeNotifier {
   }
 
   Map<String, bool> _checkedIssues({@required Uint8List fileToCheck, @required bool isAdaptive}) {
-    final bool tooHeavy = fileToCheck.buffer.lengthInBytes / 1000 > IconsProperties.maxFileSizeKB;
+    final bool tooHeavy = fileToCheck.buffer.lengthInBytes / 1000 > FilesProperties.maxFileSizeKB;
     final img.Image imageFile = img.decodePng(fileToCheck);
     final bool notSquare = imageFile.width != imageFile.height;
     final bool tooSmall =
-        (imageFile.width < (isAdaptive ? IconsProperties.minAdaptiveSize : IconsProperties.minIconSize)) ||
-            (imageFile.height < (isAdaptive ? IconsProperties.minAdaptiveSize : IconsProperties.minIconSize));
+        (imageFile.width < (isAdaptive ? FilesProperties.minAdaptiveSize : FilesProperties.minIconSize)) ||
+            (imageFile.height < (isAdaptive ? FilesProperties.minAdaptiveSize : FilesProperties.minIconSize));
     final bool isTransparent = imageFile.channels == img.Channels.rgba;
     return {
       S.current.tooSmall: tooSmall,

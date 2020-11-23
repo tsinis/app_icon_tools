@@ -3,13 +3,13 @@ import 'package:provider/provider.dart';
 
 import '../../../constants/default_non_null_values.dart';
 import '../../../models/setup_icon.dart';
-import '../../widgets/transparency_grid.dart';
+import '../transparency_grid.dart';
 
 class RegularIcon extends StatelessWidget {
   const RegularIcon({@required this.supportTransparency, @required this.cornerRadius, Key key}) : super(key: key);
 
+  final double cornerRadius;
   final bool supportTransparency;
-  final int cornerRadius;
 
   bool get _onDevice => cornerRadius != NullSafeValues.deviceShape;
 

@@ -33,8 +33,9 @@ class PreviewLayout extends StatelessWidget {
 
 class _ScrollChild extends StatelessWidget {
   const _ScrollChild({@required this.scroll, @required this.child, Key key}) : super(key: key);
-  final bool scroll;
+
   final Widget child;
+  final bool scroll;
 
   @override
   Widget build(BuildContext context) => scroll ? SingleChildScrollView(child: child) : SizedBox(child: child);

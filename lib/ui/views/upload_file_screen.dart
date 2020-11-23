@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import '../../models/user_interface.dart';
 
-import '../widgets/adaptive/scaffold_app_bar.dart';
+import '../widgets/adaptive/scaffold_and_app_bar.dart';
 import '../widgets/drag_and_drop.dart';
 
 class InitialUploadScreen extends StatelessWidget {

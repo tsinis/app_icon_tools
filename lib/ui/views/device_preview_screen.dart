@@ -6,13 +6,13 @@ import 'package:local_hero/local_hero.dart';
 import 'package:provider/provider.dart';
 import 'package:websafe_svg/websafe_svg.dart';
 
-import '../../constants/platforms_list.dart';
+import '../../constants/platforms/platforms_list.dart';
 import '../../generated/l10n.dart';
 import '../../models/setup_icon.dart';
-import '../platform_icons/icons_types/apdative_icon.dart';
-import '../platform_icons/icons_types/regular_icon.dart';
 import '../widgets/adaptive/platform_navigation_bar.dart';
-import '../widgets/adaptive/scaffold_app_bar.dart';
+import '../widgets/adaptive/scaffold_and_app_bar.dart';
+import '../widgets/icons/apdative_icon.dart';
+import '../widgets/icons/regular_icon.dart';
 
 class DeviceScreen extends StatelessWidget {
   const DeviceScreen({Key key}) : super(key: key);
@@ -89,7 +89,9 @@ class _SVG extends StatelessWidget {
   const _SVG(this.selectedPlatform, {Key key}) : super(key: key);
 
   final int selectedPlatform;
+
   String get _platformName => platformList[selectedPlatform].name;
+
   String get _svgPath => 'svg/$_platformName.svg'.replaceAll(' ', '');
 
   @override

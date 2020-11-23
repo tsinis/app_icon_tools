@@ -62,8 +62,8 @@ class SetupIcon extends ChangeNotifier {
     _web: true,
     _windows: true,
     _macOS: true,
-    _linux: false,
-    _fuchsiaOS: false,
+    // _linux: true,
+    // _fuchsiaOS: true,
   };
 
   Map<String, bool> get platforms => _platforms;
@@ -82,7 +82,7 @@ class SetupIcon extends ChangeNotifier {
     if (_regularBgColor != newColor) {
       _regularBgColor = newColor;
       if (!haveAdaptiveColor) {
-        _adaptiveBgColor = newColor.withAlpha(255);
+        _adaptiveBgColor = _regularBgColor.withAlpha(255);
       }
       notifyListeners();
     }
@@ -138,7 +138,7 @@ class SetupIcon extends ChangeNotifier {
     if (_adaptiveBgColor != newColor) {
       _adaptiveBgColor = newColor;
       if (newColor != NullSafeValues.noColor && bgColorIsEmpty) {
-        _regularBgColor = newColor.withAlpha(255);
+        _regularBgColor = _adaptiveBgColor.withAlpha(255);
       }
       notifyListeners();
     }
@@ -382,10 +382,14 @@ class SetupIcon extends ChangeNotifier {
   Future _resizeIcons() async {
     if (_regularIconFiles.isEmpty) {
       // if (_platforms[_linux] ?? true) {
+      //   _exportedDoneCount = _exportedDoneCount + 1;
+      //   notifyListeners();
       //   await _generatePngIcons('linux', WebIconsFolder());
       // }
       // if (_platforms[_fuchsiaOS] ?? true) {
       //   await _generatePngIcons('fos', WebIconsFolder());
+      //   _exportedDoneCount = _exportedDoneCount + 1;
+      //   notifyListeners();
       // }
       if (_platforms[_web] ?? true) {
         await _generatePngIcons('web', WebIconsFolder(path: 'web', icons: webIcons));

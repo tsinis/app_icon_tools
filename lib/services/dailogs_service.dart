@@ -125,7 +125,9 @@ Future showPlatformsDialog(BuildContext _) => showDialog<void>(
 
 class _ScrollBar extends StatelessWidget {
   const _ScrollBar(this._child, {Key key}) : super(key: key);
+
   final Widget _child;
+
   @override
   Widget build(BuildContext context) => UserInterface.isCupertino ? SizedBox(child: _child) : Scrollbar(child: _child);
 }

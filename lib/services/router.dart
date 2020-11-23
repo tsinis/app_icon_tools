@@ -26,12 +26,14 @@ class UiRouter {
 
 class _MaterialPageRoute extends MaterialPageRoute<void> {
   _MaterialPageRoute(Widget Function(BuildContext) _builder) : super(builder: _builder);
+
   @override
   Duration get transitionDuration => const Duration(milliseconds: 1000);
 }
 
 class _CupertinoPageRoute extends MaterialPageRoute<void> {
   _CupertinoPageRoute(Widget Function(BuildContext) _builder) : super(builder: _builder);
+
   @override
   Duration get transitionDuration => const Duration(milliseconds: 1000);
 }
