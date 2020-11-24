@@ -149,19 +149,16 @@ class DragAndDrop extends StatelessWidget {
                               ),
                             ),
                             Tooltip(
-                              message: S.of(context).transparencyiOS,
+                              message: S.of(context).transparencyIOS,
                               child: Opacity(
                                 opacity: 0.5,
-                                child: Tooltip(
-                                  message: S.of(context).transparencyiOS,
-                                  child: Text.rich(
-                                    TextSpan(
-                                        text: isAdaptive ? '' : S.of(context).addBackground,
-                                        children: [TextSpan(text: '\nPPI ⩾ 72, ${S.of(context).noInterlacing}')]),
-                                    textAlign: TextAlign.center,
-                                    maxLines: 2,
-                                    style: const TextStyle(fontSize: 11),
-                                  ),
+                                child: Text.rich(
+                                  TextSpan(
+                                      text: isAdaptive ? '' : S.of(context).addBackground,
+                                      children: [TextSpan(text: '\nPPI ⩾ 72, ${S.of(context).noInterlacing}')]),
+                                  textAlign: TextAlign.center,
+                                  maxLines: 2,
+                                  style: const TextStyle(fontSize: 11),
                                 ),
                               ),
                             ),

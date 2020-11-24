@@ -73,7 +73,7 @@ class UserInterface extends ChangeNotifier {
     _locale = prefs.getString(_storedLocale) ?? platform.locale;
     _isDark = prefs.getBool(_storedTheme) ?? (_currentTime > 18 || _currentTime < 6);
     if (isInitialization) {
-      _isCupertinoDesign = prefs.getBool(_storedDesign) ?? platform.isCupertino;
+      _isCupertinoDesign = _selectedCupertino = prefs.getBool(_storedDesign) ?? platform.isCupertino;
     }
   }
 

@@ -29,7 +29,9 @@ class SetupIcon extends ChangeNotifier {
       _web = 'Web (PWA)',
       _windows = 'MS Windows',
       _macOS = 'Apple macOS',
+      // ignore: unused_field
       _linux = 'Linux',
+      // ignore: unused_field
       _fuchsiaOS = 'Fuchsia OS';
 
   static const String _foreground = 'foreground', _background = 'background';

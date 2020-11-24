@@ -22,38 +22,41 @@ class AdaptiveDialog extends StatelessWidget {
   final void Function() onPressedSecondary;
 
   @override
-  Widget build(BuildContext context) => UserInterface.isCupertino
-      ? CupertinoAlertDialog(
-          title: Padding(padding: const EdgeInsets.only(bottom: 10), child: Text(title)),
-          content: content,
-          actions: <CupertinoDialogAction>[
-            if (onPressedSecondary != null)
-              CupertinoDialogAction(
-                  isDestructiveAction: true,
-                  onPressed: onPressedSecondary,
-                  child: Text(secondaryButtonTitle.isEmpty ? S.of(context).cancel : secondaryButtonTitle)),
-            CupertinoDialogAction(
-                isDefaultAction: true,
-                onPressed: onPressedMain,
-                textStyle: CupertinoTheme.of(context).textTheme.textStyle,
-                child: Text(mainButtonTitle.isEmpty ? S.of(context).save : mainButtonTitle)),
-          ],
-        )
-      : AlertDialog(
-          scrollable: true,
-          // titlePadding: const EdgeInsets.all(0),
-          // contentPadding: const EdgeInsets.all(0),
-          title: Text(title, textAlign: TextAlign.center),
-          actions: <TextButton>[
-            if (onPressedSecondary != null)
-              TextButton(
-                  onPressed: onPressedSecondary,
-                  child: Text(
-                      (secondaryButtonTitle.isEmpty ? S.of(context).cancel : secondaryButtonTitle).toUpperCase(),
-                      style: TextStyle(color: Theme.of(context).errorColor))),
-            TextButton(
-                onPressed: onPressedMain,
-                child: Text((mainButtonTitle.isEmpty ? S.of(context).save : mainButtonTitle).toUpperCase()))
-          ],
-          content: content);
+  Widget build(BuildContext context) => MediaQuery(
+        data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
+        child: UserInterface.isCupertino
+            ? CupertinoAlertDialog(
+                title: Padding(padding: const EdgeInsets.only(bottom: 10), child: Text(title)),
+                content: content,
+                actions: <CupertinoDialogAction>[
+                  if (onPressedSecondary != null)
+                    CupertinoDialogAction(
+                        isDestructiveAction: true,
+                        onPressed: onPressedSecondary,
+                        child: Text(secondaryButtonTitle.isEmpty ? S.of(context).cancel : secondaryButtonTitle)),
+                  CupertinoDialogAction(
+                      isDefaultAction: true,
+                      onPressed: onPressedMain,
+                      textStyle: CupertinoTheme.of(context).textTheme.textStyle,
+                      child: Text(mainButtonTitle.isEmpty ? S.of(context).save : mainButtonTitle)),
+                ],
+              )
+            : AlertDialog(
+                scrollable: true,
+                // titlePadding: const EdgeInsets.all(0),
+                // contentPadding: const EdgeInsets.all(0),
+                title: Text(title, textAlign: TextAlign.center),
+                actions: <TextButton>[
+                  if (onPressedSecondary != null)
+                    TextButton(
+                        onPressed: onPressedSecondary,
+                        child: Text(
+                            (secondaryButtonTitle.isEmpty ? S.of(context).cancel : secondaryButtonTitle).toUpperCase(),
+                            style: TextStyle(color: Theme.of(context).errorColor))),
+                  TextButton(
+                      onPressed: onPressedMain,
+                      child: Text((mainButtonTitle.isEmpty ? S.of(context).save : mainButtonTitle).toUpperCase()))
+                ],
+                content: content),
+      );
 }
