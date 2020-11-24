@@ -23,8 +23,8 @@ import '../services/router.dart';
 class SetupIcon extends ChangeNotifier {
   // ! Consts section !
 
-  static const String _androidReg = 'Android Regular',
-      _androidAdapt = 'Android Adaptive',
+  static const String _androidReg = 'Android',
+      _androidAdapt = 'Android 8+',
       _ios = 'Apple iOS',
       _web = 'Web (PWA)',
       _windows = 'MS Windows',

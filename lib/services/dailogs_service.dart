@@ -10,6 +10,7 @@ import '../ui/widgets/adaptive/buttons/switch_button.dart';
 import '../ui/widgets/adaptive/divider.dart';
 import '../ui/widgets/adaptive/textfield.dart';
 
+//TODO? Add version check.
 void showAbout(BuildContext context) => showAboutDialog(context: context, applicationName: S.of(context).appName);
 
 Future showSettingsDialog(BuildContext _) {

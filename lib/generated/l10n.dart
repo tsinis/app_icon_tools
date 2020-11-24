@@ -45,10 +45,10 @@ class S {
     );
   }
 
-  /// `Launcher Icons Preview`
+  /// `App Icon Tools`
   String get appName {
     return Intl.message(
-      'Launcher Icons Preview',
+      'App Icon Tools',
       name: 'appName',
       desc: '',
       args: [],
@@ -135,10 +135,10 @@ class S {
     );
   }
 
-  /// `Please select your image:`
+  /// `Please select your image`
   String get select {
     return Intl.message(
-      'Please select your image:',
+      'Please select your image',
       name: 'select',
       desc: '',
       args: [],
@@ -225,10 +225,10 @@ class S {
     );
   }
 
-  /// `Adaptive icon can be set up in the next step.`
+  /// `An adaptive icon can be set up in the next step.`
   String get addBackground {
     return Intl.message(
-      'Adaptive icon can be set up in the next step.',
+      'An adaptive icon can be set up in the next step.',
       name: 'addBackground',
       desc: '',
       args: [],
@@ -305,10 +305,10 @@ class S {
     );
   }
 
-  /// `Maskable PWA Icon (Min. Safe Area)`
+  /// `Maskable PWA Icon (min. Safe Area)`
   String get maskable {
     return Intl.message(
-      'Maskable PWA Icon (Min. Safe Area)',
+      'Maskable PWA Icon (min. Safe Area)',
       name: 'maskable',
       desc: '',
       args: [],
@@ -405,30 +405,30 @@ class S {
     );
   }
 
-  /// `Preview possible background color`
+  /// `Preview possible background-color`
   String get iconBgColor {
     return Intl.message(
-      'Preview possible background color',
+      'Preview possible background-color',
       name: 'iconBgColor',
       desc: '',
       args: [],
     );
   }
 
-  /// `Please select background/foreground first.`
+  /// `Please select the background/foreground first`
   String get noBackground {
     return Intl.message(
-      'Please select background/foreground first.',
+      'Please select the background/foreground first',
       name: 'noBackground',
       desc: '',
       args: [],
     );
   }
 
-  /// `Preview Adaptive Icon parallax effect.`
+  /// `Preview Adaptive Icon parallax effect`
   String get parallax {
     return Intl.message(
-      'Preview Adaptive Icon parallax effect.',
+      'Preview Adaptive Icon parallax effect',
       name: 'parallax',
       desc: '',
       args: [],
@@ -555,20 +555,20 @@ class S {
     );
   }
 
-  /// `! The image is not square. Icon can be deformed, or the edges of the trim can be visible.`
+  /// `!The image is not square. The icon can be deformed, or the edges of the trim can be visible.`
   String get notSqaure {
     return Intl.message(
-      '! The image is not square. Icon can be deformed, or the edges of the trim can be visible.',
+      '!The image is not square. The icon can be deformed, or the edges of the trim can be visible.',
       name: 'notSqaure',
       desc: '',
       args: [],
     );
   }
 
-  /// `ℹ️  The image have Alpha Channel (transparency). `
+  /// `ℹ️  The image has an Alpha Channel (transparency).`
   String get isTransparent {
     return Intl.message(
-      'ℹ️  The image have Alpha Channel (transparency). ',
+      'ℹ️  The image has an Alpha Channel (transparency).',
       name: 'isTransparent',
       desc: '',
       args: [],
@@ -585,10 +585,10 @@ class S {
     );
   }
 
-  /// `ℹ️  The Foreground have no Alpha Channel (transparency). In this case, the background image will not be visible at all.`
+  /// `ℹ️  The Foreground has no Alpha Channel (transparency). In this case, the background image will not be visible at all.`
   String get transparencyAdaptive {
     return Intl.message(
-      'ℹ️  The Foreground have no Alpha Channel (transparency). In this case, the background image will not be visible at all.',
+      'ℹ️  The Foreground has no Alpha Channel (transparency). In this case, the background image will not be visible at all.',
       name: 'transparencyAdaptive',
       desc: '',
       args: [],
@@ -642,6 +642,7 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
   List<Locale> get supportedLocales {
     return const <Locale>[
       Locale.fromSubtags(languageCode: 'en'),
+      Locale.fromSubtags(languageCode: 'cs'),
       Locale.fromSubtags(languageCode: 'ru'),
     ];
   }

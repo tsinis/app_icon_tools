@@ -11,7 +11,7 @@ const Iterable<LocalizationsDelegate<dynamic>> localizationDelgates = [
 
 List<Locale> supportedLocales = S.delegate.supportedLocales;
 
-// Use the two-letter code if there is one.
+// Please, use the two-letter code if there is one.
 // http://cldr.unicode.org/index/cldr-spec/picking-the-right-language-code#TOC-Choosing-the-Base-Language-Code
 Map<Locale, String> languageNames = {
   const Locale('en'): 'English',
