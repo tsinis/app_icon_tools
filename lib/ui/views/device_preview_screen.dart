@@ -86,11 +86,11 @@ class DeviceScreen extends StatelessWidget {
 }
 
 class _SVG extends StatelessWidget {
-  const _SVG(this.selectedPlatform, {Key key}) : super(key: key);
+  const _SVG(this._selectedPlatform, {Key key}) : super(key: key);
 
-  final int selectedPlatform;
+  final int _selectedPlatform;
 
-  String get _platformName => platformList[selectedPlatform].name;
+  String get _platformName => platformList[_selectedPlatform].name;
 
   String get _svgPath => 'svg/$_platformName.svg'.replaceAll(' ', '');
 

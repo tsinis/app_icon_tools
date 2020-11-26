@@ -10,7 +10,7 @@ class AdaptiveButton extends StatelessWidget {
     @required this.text,
     @required this.onPressed,
     this.color,
-    this.destructive = false,
+    this.isDestructive = false,
     this.isDisabled = false,
     Key key,
   }) : super(key: key);
@@ -18,13 +18,13 @@ class AdaptiveButton extends StatelessWidget {
   final String text;
   final Function() onPressed;
   final Color color;
-  final bool destructive, isDisabled;
+  final bool isDestructive, isDisabled;
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: destructive ? const EdgeInsets.all(0) : const EdgeInsets.all(8.5),
+        padding: isDestructive ? const EdgeInsets.all(0) : const EdgeInsets.all(8.5),
         child: UserInterface.isCupertino
-            ? destructive
+            ? isDestructive
                 ? Tooltip(
                     message: S.of(context).longPress,
                     child: GestureDetector(
@@ -44,7 +44,7 @@ class AdaptiveButton extends StatelessWidget {
                             color: (CupertinoTheme.of(context).brightness == Brightness.dark)
                                 ? CupertinoColors.white
                                 : CupertinoColors.black)))
-            : destructive
+            : isDestructive
                 ? Tooltip(
                     message: S.of(context).longPress,
                     child: TextButton(

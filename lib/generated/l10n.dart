@@ -634,6 +634,46 @@ class S {
       args: [],
     );
   }
+
+  /// `This is the PWA version, but there is also a native version of this app for your OS.`
+  String get pwaVersion {
+    return Intl.message(
+      'This is the PWA version, but there is also a native version of this app for your OS.',
+      name: 'pwaVersion',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please rate the repository if you liked this app:`
+  String get pleaseRate {
+    return Intl.message(
+      'Please rate the repository if you liked this app:',
+      name: 'pleaseRate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Click here for more information from the official documentation.`
+  String get officialDocs {
+    return Intl.message(
+      'Click here for more information from the official documentation.',
+      name: 'officialDocs',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This multiplatform app was created for simple and intuitive preview and generation of (launcher/desktop) app icons, for the most popular operating systems. It doesn't contain tracking or any advertising and is available for free as an open-source. PRs, suggestions, translations, etc. – are welcome!`
+  String get legalese {
+    return Intl.message(
+      'This multiplatform app was created for simple and intuitive preview and generation of (launcher/desktop) app icons, for the most popular operating systems. It doesn\'t contain tracking or any advertising and is available for free as an open-source. PRs, suggestions, translations, etc. – are welcome!',
+      name: 'legalese',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

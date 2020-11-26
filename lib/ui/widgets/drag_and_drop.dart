@@ -18,15 +18,14 @@ class DragAndDrop extends StatelessWidget {
 
   final bool background, foreground;
   // static DropzoneViewController _controller;
+  bool get _isAdaptive => background || foreground;
+  static const int _minIconSize = FilesProperties.minIconSize, _minAdaptiveSize = FilesProperties.minAdaptiveSize;
 
   @override
   Widget build(BuildContext context) {
-    final bool isAdaptive = background || foreground;
     final bool isValidFile = context.select((UploadFile upload) => upload.isValidFile) ?? true;
     final bool isLoading = context.select((UploadFile upload) => upload.loading) ?? false;
     final bool isDone = context.select((UploadFile upload) => upload.done) ?? false;
-    const int minIconSize = FilesProperties.minIconSize;
-    const int minAdaptiveSize = FilesProperties.minAdaptiveSize;
 
     return DottedBorder(
       borderType: BorderType.RRect,
@@ -38,7 +37,7 @@ class DragAndDrop extends StatelessWidget {
         width: UserInterface.previewIconSize,
         height: UserInterface.previewIconSize,
         decoration: BoxDecoration(color: const Color(0x11888888), borderRadius: BorderRadius.circular(20)),
-        child: (isDone && !isAdaptive)
+        child: (isDone && !_isAdaptive)
             ? const SuccessAnimatedIcon()
             : isLoading
                 ? Column(mainAxisAlignment: MainAxisAlignment.center, mainAxisSize: MainAxisSize.min, children: [
@@ -133,16 +132,16 @@ class DragAndDrop extends StatelessWidget {
                                       ]),
                                   DataRow(
                                       onSelectChanged: (_) async =>
-                                          await context.read<UserInterface>().showGuidelines(isAdaptive: isAdaptive),
+                                          await context.read<UserInterface>().showGuidelines(isAdaptive: _isAdaptive),
                                       cells: <DataCell>[
                                         DataCell(_InfoCellText(S.of(context).imageSize)),
                                         DataCell(Tooltip(
-                                            message: (isAdaptive ? 'Google Play ' : 'App Store ') +
+                                            message: (_isAdaptive ? 'Google Play ' : 'App Store ') +
                                                 S.of(context).storeRequirement,
                                             child: Text(
-                                                isAdaptive
-                                                    ? '$minAdaptiveSize×$minAdaptiveSize px'
-                                                    : '$minIconSize×$minIconSize px',
+                                                _isAdaptive
+                                                    ? '$_minAdaptiveSize×$_minAdaptiveSize px'
+                                                    : '$_minIconSize×$_minIconSize px',
                                                 maxLines: 1)))
                                       ])
                                 ],
@@ -154,7 +153,7 @@ class DragAndDrop extends StatelessWidget {
                                 opacity: 0.5,
                                 child: Text.rich(
                                   TextSpan(
-                                      text: isAdaptive ? '' : S.of(context).addBackground,
+                                      text: _isAdaptive ? '' : S.of(context).addBackground,
                                       children: [TextSpan(text: '\nPPI ⩾ 72, ${S.of(context).noInterlacing}')]),
                                   textAlign: TextAlign.center,
                                   maxLines: 2,

@@ -5,8 +5,6 @@ class PreviewLayout extends StatelessWidget {
 
   final List<Widget> children;
   final bool portraitOrientation;
-  //TODO Add links to download. assets and articles.
-
   @override
   Widget build(BuildContext context) {
     final bool needsScroll = MediaQuery.of(context).size.height <= 760;

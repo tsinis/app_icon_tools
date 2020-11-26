@@ -58,5 +58,9 @@
     "search":"Hledat",
     "findLang":"Najděte svůj jazyk zde…",
     "downloadsFolder":"Hotovo! Ikony ZIP jsou ve složce Stažené soubory.",
-    "share":"Hotovo! Své ikony můžete sdílet se světem."
+    "share":"Hotovo! Své ikony můžete sdílet se světem.",
+    "pwaVersion": "Toto je PWA, ale pro váš OS existuje nativní verze této aplikace.",
+    "pleaseRate": "Ohodnoťte prosím repozitář, pokud se vám tato aplikace líbila:",
+    "officialDocs": "Kliknutím zobrazíte další informace z oficiální dokumentace.",
+    "legalese": "Tato multiplatformní aplikace byla vytvořena za účelem jednoduchého a intuitivního nahlížení a generování ikon aplikací pro nejpopulárnější OS. Neobsahuje sledování ani žádnou reklamu a je k dispozici zdarma jako open-source. PR, návrhy, překlady atd. - jsou vítány!"
 }

@@ -5,7 +5,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/locales.dart';
 import '../constants/themes.dart';
-import '../locator_dependency_injection.dart';
+import '../generated/l10n.dart';
+import '../locator_di.dart';
 import '../services/navigation_service.dart';
 import '../services/url_opener.dart';
 
@@ -25,12 +26,16 @@ class UserInterface extends ChangeNotifier {
   Future showGuidelines({bool fromGoogle = false, bool isAdaptive = false}) async =>
       await openGuidelinesURL(_locale, fromGoogle: fromGoogle, isAdaptive: isAdaptive);
 
+  Future showDocs(String _url) async => await openDocsURL(currentLocale: _locale, url: _url);
+
+  Future showRepository() async => await openRepositoryURL();
+
   String get locale => _locale;
 
-  void setLocale(String newLocale) {
+  Future<void> setLocale(String newLocale) async {
     final int colon = newLocale.indexOf(':');
     _locale = newLocale.substring(0, colon).toLowerCase();
-    notifyListeners();
+    await S.load(Locale(_locale)).whenComplete(notifyListeners); //TODO! Fix localizations in Issues Info.
   }
 
   void changeMode({@required bool isDark}) {

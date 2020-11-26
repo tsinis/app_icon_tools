@@ -10,7 +10,7 @@ import 'package:universal_html/prefer_universal/html.dart';
 import '../constants/default_non_null_values.dart';
 import '../constants/files_properties.dart';
 import '../generated/l10n.dart';
-import '../locator_dependency_injection.dart';
+import '../locator_di.dart';
 import '../services/files_services/file_converter.dart';
 import '../services/files_services/file_extension_checker.dart';
 import '../services/navigation_service.dart';
@@ -121,7 +121,9 @@ class UploadFile extends ChangeNotifier {
       } else {
         _backgroundIssues.clear();
         _foregroundIssues.clear();
-        _iconIssues.addAll(_issuesMap.keys.where((key) => _issuesMap[key] ?? false).toSet());
+        _iconIssues
+          ..clear()
+          ..addAll(_issuesMap.keys.where((key) => _issuesMap[key] ?? false).toSet());
       }
       return true;
       // ignore: avoid_catches_without_on_clauses

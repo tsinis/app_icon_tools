@@ -1,8 +1,10 @@
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:platform_info/platform_info.dart';
 import 'package:provider/provider.dart';
 
+import '../../constants/platforms/platforms_list.dart';
 import '../../models/setup_icon.dart';
 import '../../models/user_interface.dart';
 
@@ -57,12 +59,26 @@ class _IssuesInfo extends State<IssuesInfo> with SingleTickerProviderStateMixin 
             message: '$issues\n',
             child: FadeTransition(
               opacity: animation,
-              child: Icon(
+              child: _DesktopIconButton(Icon(
                   UserInterface.isCupertino
                       ? CupertinoIcons.exclamationmark_triangle
                       : CommunityMaterialIcons.alert_outline,
-                  color: HSLColor.fromAHSL(1, hue, 1, 0.45).toColor()),
+                  color: HSLColor.fromAHSL(1, hue, 1, 0.45).toColor())),
             ),
           );
+  }
+}
+
+class _DesktopIconButton extends StatelessWidget {
+  const _DesktopIconButton(this._icon, {Key key}) : super(key: key);
+  final Icon _icon;
+  @override
+  Widget build(BuildContext context) {
+    final int selectedPlatform = context.select((SetupIcon icon) => icon.platformID);
+    return (platform.isMobile)
+        ? _icon
+        : IconButton(
+            icon: _icon,
+            onPressed: () async => await context.read<UserInterface>().showDocs(platformList[selectedPlatform].docs));
   }
 }

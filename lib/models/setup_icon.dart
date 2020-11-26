@@ -9,30 +9,20 @@ import 'package:image_resizer/image_resizer.dart';
 import 'package:platform_info/platform_info.dart';
 
 import '../constants/default_non_null_values.dart';
+import '../constants/platforms/platforms_names.dart';
 import '../extensions/image_resizer_extensions/android_adaptive.dart';
 import '../extensions/image_resizer_extensions/constants/android_regular.dart';
 import '../extensions/image_resizer_extensions/constants/web.dart';
 import '../extensions/image_resizer_extensions/pwa.dart';
 import '../extensions/image_resizer_extensions/windows.dart';
 import '../generated/l10n.dart';
-import '../locator_dependency_injection.dart';
+import '../locator_di.dart';
 import '../services/files_services/file_saver.dart';
 import '../services/navigation_service.dart';
 import '../services/router.dart';
 
 class SetupIcon extends ChangeNotifier {
   // ! Consts section !
-
-  static const String _androidReg = 'Android',
-      _androidAdapt = 'Android 8+',
-      _ios = 'Apple iOS',
-      _web = 'Web (PWA)',
-      _windows = 'MS Windows',
-      _macOS = 'Apple macOS',
-      // ignore: unused_field
-      _linux = 'Linux',
-      // ignore: unused_field
-      _fuchsiaOS = 'Fuchsia OS';
 
   static const String _foreground = 'foreground', _background = 'background';
   static final String _info = S.current.isTransparent;
@@ -46,6 +36,7 @@ class SetupIcon extends ChangeNotifier {
   void goBack() => _navigationService.goBack();
 
 // ! Platforms section !
+
   int _platformID = 0;
   int get platformID => _platformID;
   void setPlatform(int selectedPlatform) {
@@ -58,14 +49,14 @@ class SetupIcon extends ChangeNotifier {
   }
 
   final Map<String, bool> _platforms = {
-    _androidReg: true,
-    _androidAdapt: true,
-    _ios: true,
-    _web: true,
-    _windows: true,
-    _macOS: true,
-    // _linux: true,
-    // _fuchsiaOS: true,
+    PlatformName.androidOld: true,
+    PlatformName.androidNew: true,
+    PlatformName.iOS: true,
+    PlatformName.pwa: true,
+    PlatformName.windows: true,
+    PlatformName.macOS: true,
+    // PlatformName.linux: true,
+    // PlatformName.fuchsia: true,
   };
 
   Map<String, bool> get platforms => _platforms;
@@ -271,6 +262,9 @@ class SetupIcon extends ChangeNotifier {
           break;
         }
     }
+    if (platform.isDesktop) {
+      textInMemory..write('\n\n')..write(S.current.officialDocs);
+    }
     return textInMemory.toString();
   }
 
@@ -375,37 +369,37 @@ class SetupIcon extends ChangeNotifier {
 
 // ! Icons Generate section !
 
-  bool get exportIOS => _platforms[_ios] ?? true;
+  bool get exportIOS => _platforms[PlatformName.iOS] ?? true;
 
-  bool get exportWeb => _platforms[_web] ?? true;
+  bool get exportWeb => _platforms[PlatformName.pwa] ?? true;
 
-  bool get exportAdaptive => _platforms[_androidAdapt] ?? true;
+  bool get exportAdaptive => _platforms[PlatformName.androidNew] ?? true;
 
   Future _resizeIcons() async {
     if (_regularIconFiles.isEmpty) {
-      // if (_platforms[_linux] ?? true) {
+      // if (_platforms[PlatformName.linux] ?? true) {
       //   _exportedDoneCount = _exportedDoneCount + 1;
       //   notifyListeners();
       //   await _generatePngIcons('linux', WebIconsFolder());
       // }
-      // if (_platforms[_fuchsiaOS] ?? true) {
+      // if (_platforms[PlatformName.fuchsia] ?? true) {
       //   await _generatePngIcons('fos', WebIconsFolder());
       //   _exportedDoneCount = _exportedDoneCount + 1;
       //   notifyListeners();
       // }
-      if (_platforms[_web] ?? true) {
+      if (_platforms[PlatformName.pwa] ?? true) {
         await _generatePngIcons('web', WebIconsFolder(path: 'web', icons: webIcons));
       }
-      if (_platforms[_ios] ?? true) {
+      if (_platforms[PlatformName.iOS] ?? true) {
         await _generatePngIcons('iOS', IosIconsFolder());
       }
-      if (_platforms[_macOS] ?? true) {
+      if (_platforms[PlatformName.macOS] ?? true) {
         await _generatePngIcons('macOS', MacOSIconsFolder());
       }
-      if (_platforms[_windows] ?? true) {
+      if (_platforms[PlatformName.windows] ?? true) {
         await _generateIcoIcon(WindowsIconsFolder());
       }
-      if (_platforms[_androidReg] ?? true) {
+      if (_platforms[PlatformName.androidOld] ?? true) {
         await _generatePngIcons('droid', AndroidIconsFolder(icons: androidRegular));
       }
     } else {

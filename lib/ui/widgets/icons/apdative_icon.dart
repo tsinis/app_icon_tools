@@ -45,7 +45,7 @@ class AdaptiveIcon extends StatefulWidget {
     } on TickerCanceled catch (error) {
       // ignore: avoid_print
       print(
-          '$error.\nMost likely because the user has switched to another\nIcon Preview or tapped on button twp times.');
+          'Most likely because the user has switched to another\nIcon Preview or tapped on button twp times.\n$error');
     } on Exception catch (_exception) {
       // ignore: avoid_print
       print('User most likely has switched to another screen.\n$_exception');
@@ -76,7 +76,7 @@ class _AdaptiveIconState extends State<AdaptiveIcon> with SingleTickerProviderSt
   void initState() {
     super.initState();
     AdaptiveIcon.controller = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 800), reverseDuration: const Duration(milliseconds: 1000));
+        vsync: this, duration: const Duration(milliseconds: 800), reverseDuration: const Duration(seconds: 1));
     AdaptiveIcon.animation =
         Tween<Offset>(begin: Offset.zero, end: const Offset(0, 0.1)).animate(AdaptiveIcon.controller);
   }

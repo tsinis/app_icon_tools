@@ -58,5 +58,9 @@
     "search": "Search",
     "findLang": "Find your language here…",
     "downloadsFolder": "Done! Icons ZIP is in the Downloads folder.",
-    "share": "Done! You can share your icons with the world."
+    "share": "Done! You can share your icons with the world.",
+    "pwaVersion": "This is the PWA version, but there is also a native version of this app for your OS.",
+    "pleaseRate": "Please rate the repository if you liked this app:",
+    "officialDocs": "Click here for more information from the official documentation.",
+    "legalese": "This multiplatform app was created for simple and intuitive preview and generation of (launcher/desktop) app icons, for the most popular operating systems. It doesn't contain tracking or any advertising and is available for free as an open-source. PRs, suggestions, translations, etc. – are welcome!"
 }

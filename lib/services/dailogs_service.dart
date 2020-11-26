@@ -1,4 +1,6 @@
+import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -10,8 +12,40 @@ import '../ui/widgets/adaptive/buttons/switch_button.dart';
 import '../ui/widgets/adaptive/divider.dart';
 import '../ui/widgets/adaptive/textfield.dart';
 
-//TODO? Add version check.
-void showAbout(BuildContext context) => showAboutDialog(context: context, applicationName: S.of(context).appName);
+void showAbout(BuildContext context) => showAboutDialog(
+        context: context,
+        applicationName: S.of(context).appName,
+        applicationLegalese: S.of(context).legalese,
+        children: [
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: Text(S.of(context).pleaseRate,
+                      style: const TextStyle(fontSize: 14), textAlign: TextAlign.center)),
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: SizedBox(
+                  width: 180,
+                  child: TextButton.icon(
+                    icon: const Icon(CommunityMaterialIcons.github),
+                    label: const Padding(padding: EdgeInsets.all(10), child: Text('GitHub')),
+                    onPressed: () async => await context.read<UserInterface>().showRepository(),
+                  ),
+                ),
+              ),
+              if (kIsWeb)
+                Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: Opacity(
+                      opacity: 0.7,
+                      child: Text(S.of(context).pwaVersion,
+                          style: const TextStyle(fontSize: 11), textAlign: TextAlign.center)),
+                )
+            ],
+          ),
+        ]);
 
 Future showSettingsDialog(BuildContext _) {
   UserInterface.loadLocales();
