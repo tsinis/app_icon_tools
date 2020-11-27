@@ -4,15 +4,14 @@ import 'dart:typed_data' show Uint8List;
 import 'package:file_picker_cross/file_picker_cross.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/widgets.dart';
-import 'package:image/image.dart' as img;
 import 'package:universal_html/prefer_universal/html.dart';
 
 import '../constants/default_non_null_values.dart';
 import '../constants/files_properties.dart';
-import '../generated/l10n.dart';
 import '../locator_di.dart';
 import '../services/files_services/file_converter.dart';
 import '../services/files_services/file_extension_checker.dart';
+import '../services/files_services/file_issue_checker.dart';
 import '../services/navigation_service.dart';
 import '../services/router.dart';
 
@@ -113,7 +112,7 @@ class UploadFile extends ChangeNotifier {
   bool _findIssues(Uint8List uploadedFile, {@required bool foreground, @required bool background}) {
     try {
       final Map<String, bool> _issuesMap =
-          _checkedIssues(fileToCheck: uploadedFile, isAdaptive: foreground || background);
+          checkedIssues(fileToCheck: uploadedFile, isAdaptive: foreground || background);
       if (foreground) {
         _foregroundIssues.addAll(_issuesMap.keys.where((key) => _issuesMap[key] ?? false).toSet());
       } else if (background) {
@@ -132,22 +131,6 @@ class UploadFile extends ChangeNotifier {
       print('Looks like the file is not an PNG, for example, it may be a renamed JPG.\nError: $error');
       return false;
     }
-  }
-
-  Map<String, bool> _checkedIssues({@required Uint8List fileToCheck, @required bool isAdaptive}) {
-    final bool tooHeavy = fileToCheck.buffer.lengthInBytes / 1000 > FilesProperties.maxFileSizeKB;
-    final img.Image imageFile = img.decodePng(fileToCheck);
-    final bool notSquare = imageFile.width != imageFile.height;
-    final bool tooSmall =
-        (imageFile.width < (isAdaptive ? FilesProperties.minAdaptiveSize : FilesProperties.minIconSize)) ||
-            (imageFile.height < (isAdaptive ? FilesProperties.minAdaptiveSize : FilesProperties.minIconSize));
-    final bool isTransparent = imageFile.channels == img.Channels.rgba;
-    return {
-      S.current.tooSmall: tooSmall,
-      S.current.tooHeavy: tooHeavy,
-      S.current.notSqaure: notSquare,
-      S.current.isTransparent: isTransparent
-    };
   }
 
   Set<String> get detectedFgIssues => _foregroundIssues;

@@ -49,14 +49,14 @@ class _IssuesInfo extends State<IssuesInfo> with SingleTickerProviderStateMixin 
     return (issues.isEmpty)
         ? const SizedBox(width: 28)
         : Tooltip(
-            showDuration: Duration(seconds: 2 * ('\n'.allMatches(issues).length + 3)),
+            showDuration: Duration(seconds: 2 * ('\n'.allMatches(issues).length)),
             decoration: BoxDecoration(
                 color: (CupertinoTheme.of(context).barBackgroundColor ?? Theme.of(context).bottomAppBarColor)
                     .withOpacity(0.9),
                 borderRadius: const BorderRadius.all(Radius.circular(10))),
             textStyle: CupertinoTheme.of(context).textTheme.textStyle ?? Theme.of(context).textTheme.button,
             padding: const EdgeInsets.fromLTRB(24, 0, 24, 12),
-            message: '$issues\n',
+            message: issues,
             child: FadeTransition(
               opacity: animation,
               child: _DesktopIconButton(Icon(

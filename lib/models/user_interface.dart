@@ -12,7 +12,6 @@ import '../services/url_opener.dart';
 
 class UserInterface extends ChangeNotifier {
   static const double previewIconSize = 300;
-  static int _currentTime = 12;
   static bool _isCupertinoDesign = false, _isDark = true;
   static final List<String> _langList = [], _langFilterList = [];
   static String _locale = 'en';
@@ -32,10 +31,10 @@ class UserInterface extends ChangeNotifier {
 
   String get locale => _locale;
 
-  Future<void> setLocale(String newLocale) async {
+  void setLocale(String newLocale) {
     final int colon = newLocale.indexOf(':');
     _locale = newLocale.substring(0, colon).toLowerCase();
-    await S.load(Locale(_locale)).whenComplete(notifyListeners); //TODO! Fix localizations in Issues Info.
+    S.load(Locale(_locale)).whenComplete(notifyListeners);
   }
 
   void changeMode({@required bool isDark}) {
@@ -68,7 +67,6 @@ class UserInterface extends ChangeNotifier {
   }
 
   static void setupUI() {
-    _currentTime = DateTime.now().hour;
     loadSettings(isInitialization: true);
     loadLocales();
   }
@@ -76,7 +74,7 @@ class UserInterface extends ChangeNotifier {
   static Future loadSettings({bool isInitialization = false}) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     _locale = prefs.getString(_storedLocale) ?? platform.locale;
-    _isDark = prefs.getBool(_storedTheme) ?? (_currentTime > 18 || _currentTime < 6);
+    _isDark = prefs.getBool(_storedTheme) ?? (DateTime.now().hour > 18 || DateTime.now().hour < 6);
     if (isInitialization) {
       _isCupertinoDesign = _selectedCupertino = prefs.getBool(_storedDesign) ?? platform.isCupertino;
     }
@@ -88,7 +86,6 @@ class UserInterface extends ChangeNotifier {
     await prefs.setString(_storedLocale, _locale);
     await prefs.setBool(_storedTheme, _isDark);
     await prefs.setBool(_storedDesign, selectedCupertino);
-    // print('Saved Settings!');
   }
 
   static void _resetFilter() => _langFilterList

@@ -535,40 +535,40 @@ class S {
     );
   }
 
-  /// `!!! The image is smaller than required, the result Icon can be pixelized during upscaling.`
+  /// `The image is smaller than required, the result Icon can be pixelized during upscaling.`
   String get tooSmall {
     return Intl.message(
-      '!!! The image is smaller than required, the result Icon can be pixelized during upscaling.',
+      'The image is smaller than required, the result Icon can be pixelized during upscaling.',
       name: 'tooSmall',
       desc: '',
       args: [],
     );
   }
 
-  /// `!! The file size is bigger than the limit. You may have trouble publishing it to app stores.`
+  /// `The file size is bigger than the limit. You may have trouble publishing it to app stores.`
   String get tooHeavy {
     return Intl.message(
-      '!! The file size is bigger than the limit. You may have trouble publishing it to app stores.',
+      'The file size is bigger than the limit. You may have trouble publishing it to app stores.',
       name: 'tooHeavy',
       desc: '',
       args: [],
     );
   }
 
-  /// `!The image is not square. The icon can be deformed, or the edges of the trim can be visible.`
+  /// `The image is not square. The icon can be deformed, or the edges of the trim can be visible.`
   String get notSqaure {
     return Intl.message(
-      '!The image is not square. The icon can be deformed, or the edges of the trim can be visible.',
+      'The image is not square. The icon can be deformed, or the edges of the trim can be visible.',
       name: 'notSqaure',
       desc: '',
       args: [],
     );
   }
 
-  /// `ℹ️  The image has an Alpha Channel (transparency).`
+  /// `The image has an Alpha Channel (transparency).`
   String get isTransparent {
     return Intl.message(
-      'ℹ️  The image has an Alpha Channel (transparency).',
+      'The image has an Alpha Channel (transparency).',
       name: 'isTransparent',
       desc: '',
       args: [],
@@ -585,10 +585,10 @@ class S {
     );
   }
 
-  /// `ℹ️  The Foreground has no Alpha Channel (transparency). In this case, the background image will not be visible at all.`
+  /// `*The Foreground has no Alpha Channel (transparency). In this case, the background image will not be visible at all.`
   String get transparencyAdaptive {
     return Intl.message(
-      'ℹ️  The Foreground has no Alpha Channel (transparency). In this case, the background image will not be visible at all.',
+      '*The Foreground has no Alpha Channel (transparency). In this case, the background image will not be visible at all.',
       name: 'transparencyAdaptive',
       desc: '',
       args: [],
@@ -655,11 +655,21 @@ class S {
     );
   }
 
-  /// `Click here for more information from the official documentation.`
+  /// `Click once for more information from the official documentation.`
   String get officialDocs {
     return Intl.message(
-      'Click here for more information from the official documentation.',
+      'Click once for more information from the official documentation.',
       name: 'officialDocs',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Long press to save all issues to the clipboard.`
+  String get issuesToClipboard {
+    return Intl.message(
+      'Long press to save all issues to the clipboard.',
+      name: 'issuesToClipboard',
       desc: '',
       args: [],
     );

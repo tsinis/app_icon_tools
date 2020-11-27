@@ -9,6 +9,7 @@ import 'package:image_resizer/image_resizer.dart';
 import 'package:platform_info/platform_info.dart';
 
 import '../constants/default_non_null_values.dart';
+import '../constants/issues_levels.dart';
 import '../constants/platforms/platforms_names.dart';
 import '../extensions/image_resizer_extensions/android_adaptive.dart';
 import '../extensions/image_resizer_extensions/constants/android_regular.dart';
@@ -24,8 +25,7 @@ import '../services/router.dart';
 class SetupIcon extends ChangeNotifier {
   // ! Consts section !
 
-  static const String _foreground = 'foreground', _background = 'background';
-  static final String _info = S.current.isTransparent;
+  static const String _foreground = 'foreground', _background = 'background', _info = IssueLevel.info;
 
   // ! Navigation section !
 
@@ -215,7 +215,9 @@ class SetupIcon extends ChangeNotifier {
   final Set<String> _fgIssues = {}, _bgIssues = {}, _regIconIssues = {};
 
   String get issues {
-    String regularIssuesText = '', foregroundIssuesText = '', backgroundIssuesText = '';
+    StringBuffer regularIssuesText = StringBuffer(),
+        foregroundIssuesText = StringBuffer(),
+        backgroundIssuesText = StringBuffer();
     if (_regIconIssues.isNotEmpty) {
       regularIssuesText = _stringIssues();
     }
@@ -225,17 +227,24 @@ class SetupIcon extends ChangeNotifier {
     if (_bgIssues.isNotEmpty) {
       backgroundIssuesText = _stringIssues(where: _background);
     }
-    return regularIssuesText + foregroundIssuesText + backgroundIssuesText;
+    final StringBuffer _issues = regularIssuesText..write(foregroundIssuesText)..write(backgroundIssuesText);
+    if (_issues.isNotEmpty) {
+      _issues..write('\n\n')..write(S.current.issuesToClipboard)..write('\n');
+      if (platform.isDesktop) {
+        _issues..write(S.current.officialDocs)..write('\n');
+      }
+    }
+    return _issues.toString();
   }
 
-  String _stringIssues({String where = 'regularIcon'}) {
+  StringBuffer _stringIssues({String where = 'regularIcon'}) {
     final StringBuffer textInMemory = StringBuffer();
     switch (where) {
       case _background:
         {
           textInMemory..write('\n\n')..write(S.current.adaptiveBackground);
           for (final String issue in _bgIssues) {
-            textInMemory..write('\n')..write(issue);
+            textInMemory..write('\n')..write('$issue ')..write(_translated(issue));
           }
           break;
         }
@@ -243,7 +252,7 @@ class SetupIcon extends ChangeNotifier {
         {
           textInMemory..write('\n\n')..write(S.current.adaptiveForeground);
           for (final String issue in _fgIssues) {
-            textInMemory..write('\n')..write(issue);
+            textInMemory..write('\n')..write('$issue ')..write(_translated(issue));
           }
           if (!_fgIssues.contains(_info) && exportAdaptive) {
             textInMemory..write('\n')..write(S.current.transparencyAdaptive);
@@ -254,7 +263,7 @@ class SetupIcon extends ChangeNotifier {
         {
           textInMemory..write('\n\n')..write(S.current.regularIcon);
           for (final String issue in _regIconIssues) {
-            textInMemory..write('\n')..write(issue);
+            textInMemory..write('\n')..write('$issue ')..write(_translated(issue));
           }
           if (_regIconIssues.contains(_info) && (exportIOS || exportWeb)) {
             textInMemory..write('\n')..write(S.current.transparencyIOS);
@@ -262,10 +271,30 @@ class SetupIcon extends ChangeNotifier {
           break;
         }
     }
-    if (platform.isDesktop) {
-      textInMemory..write('\n\n')..write(S.current.officialDocs);
+    return textInMemory;
+  }
+
+  String _translated(String issue) {
+    switch (issue) {
+      case IssueLevel.alert:
+        {
+          return S.current.tooSmall;
+        }
+      case IssueLevel.danger:
+        {
+          return S.current.tooHeavy;
+        }
+      case IssueLevel.warning:
+        {
+          return S.current.notSqaure;
+        }
+      case IssueLevel.info:
+        {
+          return S.current.isTransparent;
+        }
+      default:
+        return '';
     }
-    return textInMemory.toString();
   }
 
   double get hue {
@@ -275,7 +304,7 @@ class SetupIcon extends ChangeNotifier {
     return max(0, 70 - (17.5 * iconIssuesCount) - (17.5 * fgIssuesCount) - (17.5 * bgIssuesCount));
   }
 
-// ! Icon Shape section !
+  // ! Icon Shape section !
 
   double _iconShapeRadius = 25;
   double get cornerRadius => _iconShapeRadius;
@@ -367,7 +396,7 @@ class SetupIcon extends ChangeNotifier {
     notifyListeners();
   }
 
-// ! Icons Generate section !
+  // ! Icons Generate section !
 
   bool get exportIOS => _platforms[PlatformName.iOS] ?? true;
 
