@@ -10,6 +10,7 @@ import '../../widgets/adaptive/scaffold_and_app_bar.dart';
 import '../../widgets/layout.dart';
 import 'sections/preview_section.dart';
 import 'sections/setup_section.dart';
+// TODO Replace Text with a SelectableText.
 
 class SetupScreen extends StatelessWidget {
   const SetupScreen({Key key}) : super(key: key);

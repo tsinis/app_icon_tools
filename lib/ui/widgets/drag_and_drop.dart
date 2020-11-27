@@ -44,7 +44,7 @@ class DragAndDrop extends StatelessWidget {
                     Padding(
                         // ignore: avoid_redundant_argument_values
                         padding: const EdgeInsets.only(top: !kIsWeb ? 20 : 0),
-                        child: Text(S.of(context).verifying)),
+                        child: SelectableText(S.of(context).verifying)),
                     if (!kIsWeb)
                       Padding(
                           padding: const EdgeInsets.only(top: 20),
@@ -76,7 +76,7 @@ class DragAndDrop extends StatelessWidget {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
+                            SelectableText(
                                 isValidFile
                                     ? (kIsWeb ? S.of(context).dragAndDropHere : S.of(context).select)
                                     : S.of(context).wrongFile,
@@ -88,7 +88,8 @@ class DragAndDrop extends StatelessWidget {
                                     .checkSelected(background: background, foreground: foreground)),
                             Opacity(
                                 opacity: 0.66,
-                                child: Text(S.of(context).iconAttributes, style: const TextStyle(fontSize: 14))),
+                                child:
+                                    SelectableText(S.of(context).iconAttributes, style: const TextStyle(fontSize: 14))),
                             _DataThemeWorkaround(
                               DataTable(
                                 sortAscending: false,
@@ -96,12 +97,9 @@ class DragAndDrop extends StatelessWidget {
                                 headingRowHeight: 0,
                                 dataRowHeight: 22,
                                 dividerThickness: 0.5,
-                                horizontalMargin: 48,
-                                columnSpacing: 40,
-                                columns: const [
-                                  DataColumn(label: SizedBox.shrink()),
-                                  DataColumn(label: SizedBox.shrink())
-                                ],
+                                horizontalMargin: 50,
+                                columnSpacing: 30,
+                                columns: const [DataColumn(label: SizedBox()), DataColumn(label: SizedBox())],
                                 rows: <DataRow>[
                                   DataRow(
                                     // onSelectChanged: (_) async =>
@@ -109,7 +107,7 @@ class DragAndDrop extends StatelessWidget {
                                     cells: <DataCell>[
                                       DataCell(_InfoCellText(S.of(context).fileFormat, bold: true)),
                                       DataCell(
-                                        Text(FilesProperties.expectedFileExtension.toUpperCase(),
+                                        SelectableText(FilesProperties.expectedFileExtension.toUpperCase(),
                                             style: const TextStyle(fontWeight: FontWeight.bold)),
                                       )
                                     ],
@@ -119,7 +117,7 @@ class DragAndDrop extends StatelessWidget {
                                       //     await context.read<UserInterface>().showGuidelines(),
                                       cells: <DataCell>[
                                         DataCell(_InfoCellText(S.of(context).colorProfile)),
-                                        const DataCell(Text('sRGB'))
+                                        const DataCell(SelectableText('sRGB'))
                                       ]),
                                   DataRow(
                                       onSelectChanged: (_) async =>
@@ -128,7 +126,7 @@ class DragAndDrop extends StatelessWidget {
                                         DataCell(_InfoCellText(S.of(context).maxKB)),
                                         DataCell(Tooltip(
                                             message: 'Google Play ${S.of(context).storeRequirement}',
-                                            child: const Text('${FilesProperties.maxFileSizeKB}KB')))
+                                            child: const SelectableText('${FilesProperties.maxFileSizeKB}KB')))
                                       ]),
                                   DataRow(
                                       onSelectChanged: (_) async =>
@@ -138,7 +136,7 @@ class DragAndDrop extends StatelessWidget {
                                         DataCell(Tooltip(
                                             message: (_isAdaptive ? 'Google Play ' : 'App Store ') +
                                                 S.of(context).storeRequirement,
-                                            child: Text(
+                                            child: SelectableText(
                                                 _isAdaptive
                                                     ? '$_minAdaptiveSize×$_minAdaptiveSize px'
                                                     : '$_minIconSize×$_minIconSize px',
@@ -180,7 +178,8 @@ class _InfoCellText extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Opacity(
       opacity: 0.6,
-      child: Text(_text, maxLines: 1, style: TextStyle(fontWeight: bold ? FontWeight.bold : FontWeight.w300)));
+      child:
+          SelectableText(_text, maxLines: 1, style: TextStyle(fontWeight: bold ? FontWeight.bold : FontWeight.w300)));
 }
 
 //TODO Check when https://github.com/flutter/flutter/issues/19228 is closed.

@@ -44,7 +44,7 @@ class _IssuesInfo extends State<IssuesInfo> with SingleTickerProviderStateMixin 
   @override
   Widget build(BuildContext context) {
     final double hue = context.select((SetupIcon icon) => icon.hue);
-    final String issues = context.select((SetupIcon icon) => icon.issues);
+    final String issues = context.select((SetupIcon icon) => icon.issues());
 
     return (issues.isEmpty)
         ? const SizedBox(width: 28)
@@ -59,26 +59,35 @@ class _IssuesInfo extends State<IssuesInfo> with SingleTickerProviderStateMixin 
             message: issues,
             child: FadeTransition(
               opacity: animation,
-              child: _DesktopIconButton(Icon(
-                  UserInterface.isCupertino
-                      ? CupertinoIcons.exclamationmark_triangle
-                      : CommunityMaterialIcons.alert_outline,
-                  color: HSLColor.fromAHSL(1, hue, 1, 0.45).toColor())),
+              child: _DesktopIconButton(
+                  Icon(
+                      UserInterface.isCupertino
+                          ? CupertinoIcons.exclamationmark_triangle
+                          : CommunityMaterialIcons.alert_outline,
+                      color: HSLColor.fromAHSL(1, hue, 1, 0.45).toColor()),
+                  onLongPress: () => context.read<SetupIcon>().issuesToClipboard()),
             ),
           );
   }
 }
 
 class _DesktopIconButton extends StatelessWidget {
-  const _DesktopIconButton(this._icon, {Key key}) : super(key: key);
+  const _DesktopIconButton(this._icon, {@required this.onLongPress, Key key}) : super(key: key);
   final Icon _icon;
+  final void Function() onLongPress;
   @override
   Widget build(BuildContext context) {
     final int selectedPlatform = context.select((SetupIcon icon) => icon.platformID);
-    return (platform.isMobile)
-        ? _icon
-        : IconButton(
-            icon: _icon,
-            onPressed: () async => await context.read<UserInterface>().showDocs(platformList[selectedPlatform].docs));
+    return Material(
+      shape: const CircleBorder(),
+      type: MaterialType.transparency,
+      child: (platform.isMobile)
+          ? InkWell(onLongPress: onLongPress, child: _icon)
+          : InkWell(
+              borderRadius: BorderRadius.circular(20),
+              onLongPress: onLongPress,
+              onTap: () async => await context.read<UserInterface>().showDocs(platformList[selectedPlatform].docs),
+              child: _icon),
+    );
   }
 }

@@ -3,6 +3,7 @@ import 'dart:math' show max;
 import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart' show Clipboard, ClipboardData;
 import 'package:flutter/widgets.dart';
 import 'package:image/image.dart' as img;
 import 'package:image_resizer/image_resizer.dart';
@@ -10,7 +11,6 @@ import 'package:platform_info/platform_info.dart';
 
 import '../constants/default_non_null_values.dart';
 import '../constants/issues_levels.dart';
-import '../constants/platforms/platforms_names.dart';
 import '../extensions/image_resizer_extensions/android_adaptive.dart';
 import '../extensions/image_resizer_extensions/constants/android_regular.dart';
 import '../extensions/image_resizer_extensions/constants/web.dart';
@@ -21,14 +21,15 @@ import '../locator_di.dart';
 import '../services/files_services/file_saver.dart';
 import '../services/navigation_service.dart';
 import '../services/router.dart';
+import 'helpers/export_platforms.dart';
 
+// TODO Add archive generation to Helepers folder.
 class SetupIcon extends ChangeNotifier {
-  // ! Consts section !
-
+  // ! Utils section !
   static const String _foreground = 'foreground', _background = 'background', _info = IssueLevel.info;
+  void issuesToClipboard() => Clipboard.setData(ClipboardData(text: issues(toClipboard: true)));
 
   // ! Navigation section !
-
   final NavigationService _navigationService = locator<NavigationService>();
   void devicePreview() => _navigationService.navigateTo(UiRouter.deviceScreen);
   void initialScreen() => _navigationService.navigateTo(UiRouter.initialScreen);
@@ -36,7 +37,6 @@ class SetupIcon extends ChangeNotifier {
   void goBack() => _navigationService.goBack();
 
 // ! Platforms section !
-
   int _platformID = 0;
   int get platformID => _platformID;
   void setPlatform(int selectedPlatform) {
@@ -48,27 +48,14 @@ class SetupIcon extends ChangeNotifier {
     }
   }
 
-  final Map<String, bool> _platforms = {
-    PlatformName.androidOld: true,
-    PlatformName.androidNew: true,
-    PlatformName.iOS: true,
-    PlatformName.pwa: true,
-    PlatformName.windows: true,
-    PlatformName.macOS: true,
-    // PlatformName.linux: true,
-    // PlatformName.fuchsia: true,
-  };
-
-  Map<String, bool> get platforms => _platforms;
-
+  Map<String, bool> get platforms => ExportPlatform.mapEvery;
   void switchPlatform({@required String platformNameKey, @required bool isExported}) {
     _regularIconFiles.clear();
-    _platforms[platformNameKey] = isExported;
+    ExportPlatform.setPlatformToExport(platformNameKey, isExported: isExported);
     notifyListeners();
   }
 
   // ! Regular (Non-Adaptive-Android) Icon section !
-
   // Regular (Non-Adaptive-Android) Icon Background Color:
   Color get backgroundColor => _regularBgColor;
   void setBackgroundColor(Color newColor) {
@@ -109,7 +96,6 @@ class SetupIcon extends ChangeNotifier {
   }
 
   Set<String> get iconIssues => _regIconIssues;
-
   set iconIssues(Set<String> detectedIssues) {
     if (_regIconIssues != detectedIssues) {
       _regIconIssues
@@ -124,7 +110,6 @@ class SetupIcon extends ChangeNotifier {
       _adaptiveForeground = NullSafeValues.zeroBytes;
 
 // ! Android 8+ Icon section !
-
 // Android 8+ Adaptive Icon Background COLOR:
   Color get adaptiveColor => _adaptiveBgColor;
   void setAdaptiveColor(Color newColor) {
@@ -167,9 +152,8 @@ class SetupIcon extends ChangeNotifier {
     notifyListeners();
   }
 
-  Uint8List get adaptiveForeground => _adaptiveForeground;
-
 // Android 8+ Adaptive Icon Foreground (always as image):
+  Uint8List get adaptiveForeground => _adaptiveForeground;
   set adaptiveForeground(Uint8List uploadedPNG) {
     if (uploadedPNG != _adaptiveForeground && uploadedPNG != NullSafeValues.zeroBytes) {
       _adaptiveForeground = uploadedPNG;
@@ -187,11 +171,10 @@ class SetupIcon extends ChangeNotifier {
 
 // Other Android 8+ Adaptive icon setups:
   bool get _exportingAdaptiveFiles =>
-      exportAdaptive &&
+      ExportPlatform.androidNew &&
       (haveAdaptiveForeground && ((haveAdaptiveBackground && !preferColorBg) || (haveAdaptiveColor && preferColorBg)));
 
   Set<String> get foregroundIssues => _fgIssues;
-
   set foregroundIssues(Set<String> detectedIssues) {
     if (_fgIssues != detectedIssues) {
       _fgIssues
@@ -201,7 +184,6 @@ class SetupIcon extends ChangeNotifier {
   }
 
   Set<String> get backgroundIssues => _bgIssues;
-
   set backgroundIssues(Set<String> detectedIssues) {
     if (_bgIssues != detectedIssues) {
       _bgIssues
@@ -211,10 +193,9 @@ class SetupIcon extends ChangeNotifier {
   }
 
   // ! All Issues Section !
-
   final Set<String> _fgIssues = {}, _bgIssues = {}, _regIconIssues = {};
 
-  String get issues {
+  String issues({bool toClipboard = false}) {
     StringBuffer regularIssuesText = StringBuffer(),
         foregroundIssuesText = StringBuffer(),
         backgroundIssuesText = StringBuffer();
@@ -228,7 +209,7 @@ class SetupIcon extends ChangeNotifier {
       backgroundIssuesText = _stringIssues(where: _background);
     }
     final StringBuffer _issues = regularIssuesText..write(foregroundIssuesText)..write(backgroundIssuesText);
-    if (_issues.isNotEmpty) {
+    if (_issues.isNotEmpty && !toClipboard) {
       _issues..write('\n\n')..write(S.current.issuesToClipboard)..write('\n');
       if (platform.isDesktop) {
         _issues..write(S.current.officialDocs)..write('\n');
@@ -244,7 +225,7 @@ class SetupIcon extends ChangeNotifier {
         {
           textInMemory..write('\n\n')..write(S.current.adaptiveBackground);
           for (final String issue in _bgIssues) {
-            textInMemory..write('\n')..write('$issue ')..write(_translated(issue));
+            textInMemory..write('\n')..write('$issue ')..write(_translate(issue));
           }
           break;
         }
@@ -252,9 +233,9 @@ class SetupIcon extends ChangeNotifier {
         {
           textInMemory..write('\n\n')..write(S.current.adaptiveForeground);
           for (final String issue in _fgIssues) {
-            textInMemory..write('\n')..write('$issue ')..write(_translated(issue));
+            textInMemory..write('\n')..write('$issue ')..write(_translate(issue));
           }
-          if (!_fgIssues.contains(_info) && exportAdaptive) {
+          if (!_fgIssues.contains(_info) && ExportPlatform.androidNew) {
             textInMemory..write('\n')..write(S.current.transparencyAdaptive);
           }
           break;
@@ -263,9 +244,9 @@ class SetupIcon extends ChangeNotifier {
         {
           textInMemory..write('\n\n')..write(S.current.regularIcon);
           for (final String issue in _regIconIssues) {
-            textInMemory..write('\n')..write('$issue ')..write(_translated(issue));
+            textInMemory..write('\n')..write('$issue ')..write(_translate(issue));
           }
-          if (_regIconIssues.contains(_info) && (exportIOS || exportWeb)) {
+          if (_regIconIssues.contains(_info) && (ExportPlatform.iOS || ExportPlatform.pwa)) {
             textInMemory..write('\n')..write(S.current.transparencyIOS);
           }
           break;
@@ -274,7 +255,7 @@ class SetupIcon extends ChangeNotifier {
     return textInMemory;
   }
 
-  String _translated(String issue) {
+  String _translate(String issue) {
     switch (issue) {
       case IssueLevel.alert:
         {
@@ -305,7 +286,6 @@ class SetupIcon extends ChangeNotifier {
   }
 
   // ! Icon Shape section !
-
   double _iconShapeRadius = 25;
   double get cornerRadius => _iconShapeRadius;
   void setRadius(double newRadius) {
@@ -316,7 +296,6 @@ class SetupIcon extends ChangeNotifier {
   }
 
   // ! Icons Export and Archive section !
-
   final Map<String, List<FileData>> _regularIconFiles = {}, _adaptiveIconFiles = {}, _xmlConfigs = {}, _pwaConfigs = {};
 
   Future archive() async {
@@ -347,7 +326,7 @@ class SetupIcon extends ChangeNotifier {
                 }
               }
 
-              if (exportWeb) {
+              if (ExportPlatform.pwa) {
                 _generatePwaConfigs();
                 for (final String key in _pwaConfigs.keys) {
                   final List<FileData> txtFolder = _pwaConfigs[key];
@@ -384,8 +363,7 @@ class SetupIcon extends ChangeNotifier {
     });
   }
 
-  int get _toExportCount =>
-      (_exportingAdaptiveFiles ? 2 : 1) + _platforms.values.where((_willBeExported) => true).length;
+  int get _toExportCount => (_exportingAdaptiveFiles ? 2 : 1) + ExportPlatform.count;
 
   num get exportProgress => 100 * (_exportedDoneCount / _toExportCount).clamp(0, 1);
 
@@ -397,38 +375,21 @@ class SetupIcon extends ChangeNotifier {
   }
 
   // ! Icons Generate section !
-
-  bool get exportIOS => _platforms[PlatformName.iOS] ?? true;
-
-  bool get exportWeb => _platforms[PlatformName.pwa] ?? true;
-
-  bool get exportAdaptive => _platforms[PlatformName.androidNew] ?? true;
-
   Future _resizeIcons() async {
     if (_regularIconFiles.isEmpty) {
-      // if (_platforms[PlatformName.linux] ?? true) {
-      //   _exportedDoneCount = _exportedDoneCount + 1;
-      //   notifyListeners();
-      //   await _generatePngIcons('linux', WebIconsFolder());
-      // }
-      // if (_platforms[PlatformName.fuchsia] ?? true) {
-      //   await _generatePngIcons('fos', WebIconsFolder());
-      //   _exportedDoneCount = _exportedDoneCount + 1;
-      //   notifyListeners();
-      // }
-      if (_platforms[PlatformName.pwa] ?? true) {
+      if (ExportPlatform.pwa) {
         await _generatePngIcons('web', WebIconsFolder(path: 'web', icons: webIcons));
       }
-      if (_platforms[PlatformName.iOS] ?? true) {
+      if (ExportPlatform.iOS) {
         await _generatePngIcons('iOS', IosIconsFolder());
       }
-      if (_platforms[PlatformName.macOS] ?? true) {
+      if (ExportPlatform.macOS) {
         await _generatePngIcons('macOS', MacOSIconsFolder());
       }
-      if (_platforms[PlatformName.windows] ?? true) {
+      if (ExportPlatform.windows) {
         await _generateIcoIcon(WindowsIconsFolder());
       }
-      if (_platforms[PlatformName.androidOld] ?? true) {
+      if (ExportPlatform.androidOld) {
         await _generatePngIcons('droid', AndroidIconsFolder(icons: androidRegular));
       }
     } else {

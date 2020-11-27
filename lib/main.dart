@@ -8,7 +8,7 @@ import 'models/user_interface.dart';
 import 'services/desktop_window_sizer.dart';
 import 'ui/app_appearance.dart';
 
-//TODO? Release to Stores?.
+//TODO? Release to Stores?
 //TODO Migrate to null-safety when it's become stable and packages are ready.
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
