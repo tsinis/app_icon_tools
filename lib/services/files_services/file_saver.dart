@@ -38,9 +38,9 @@ Future<bool> saveFile(List<int> binaryData, {bool silentErrors = false}) async {
       });
       // ignore: avoid_catches_without_on_clauses
     } catch (error) {
-      if (!silentErrors) {
-        throw Exception('Error Creating File Data on Device: $error');
-      }
+      // if (!silentErrors) {
+      //   throw Exception('File icons.zip is probably already used/opened by user: $error');
+      // }
       return false;
     }
   }

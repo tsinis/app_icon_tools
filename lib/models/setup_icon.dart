@@ -14,6 +14,7 @@ import '../constants/issues_levels.dart';
 import '../extensions/image_resizer_extensions/android_adaptive.dart';
 import '../extensions/image_resizer_extensions/constants/android_regular.dart';
 import '../extensions/image_resizer_extensions/constants/web.dart';
+import '../extensions/image_resizer_extensions/ios.dart';
 import '../extensions/image_resizer_extensions/pwa.dart';
 import '../extensions/image_resizer_extensions/windows.dart';
 import '../generated/l10n.dart';
@@ -307,7 +308,7 @@ class SetupIcon extends ChangeNotifier {
 
     Future<void>.delayed(
         //TODO Check when https://github.com/flutter/flutter/issues/33577 is closed.
-        const Duration(milliseconds: kIsWeb ? 300 : 0),
+        const Duration(milliseconds: kIsWeb ? 300 : 60),
         () async => await _resizeIcons().whenComplete(() async {
               for (final String key in _regularIconFiles.keys) {
                 final List<FileData> folderWithIcons = _regularIconFiles[key];
@@ -336,10 +337,12 @@ class SetupIcon extends ChangeNotifier {
 
               final List<int> archiveFileData = genertator.generateArchive(filesList);
               await saveFile(archiveFileData).then((correctlyExported) {
+                _countdown = _exportedDoneCount = 0;
+                _loading = false;
                 if (correctlyExported) {
-                  _countdown = 0;
-                  _loading = false;
-                  _showSnackInfo();
+                  _showSnackInfo(); // TODO? Show error if archive is used by another proces?
+                } else {
+                  notifyListeners();
                 }
               });
             }));
@@ -351,7 +354,6 @@ class SetupIcon extends ChangeNotifier {
   int get countdown => _countdown;
 
   void _showSnackInfo() {
-    _exportedDoneCount = 0;
     Timer.periodic(const Duration(milliseconds: 50), (timer) {
       if (_countdown > 99) {
         _countdown = 0;
@@ -381,7 +383,7 @@ class SetupIcon extends ChangeNotifier {
         await _generatePngIcons('web', WebIconsFolder(path: 'web', icons: webIcons));
       }
       if (ExportPlatform.iOS) {
-        await _generatePngIcons('iOS', IosIconsFolder());
+        await _generatePngIcons('iOS', IosIconsFolder(icons: iOsIcons));
       }
       if (ExportPlatform.macOS) {
         await _generatePngIcons('macOS', MacOSIconsFolder());
@@ -437,7 +439,7 @@ class SetupIcon extends ChangeNotifier {
     final img.Image uploadedPNG = img.decodePng(_icon);
     final IconGenerator genertator = IconGenerator();
     final List<FileData> regularIconsList =
-        await genertator.generateIcons(uploadedPNG, folder, writeToDiskIO: !kIsWeb && platform.isDesktop);
+        await genertator.generateIcons(uploadedPNG, folder, writeToDiskIO: !kIsWeb && platform.isMacOS);
     _regularIconFiles[key] = regularIconsList;
     _exportedDoneCount = _exportedDoneCount + 1;
     notifyListeners();
@@ -449,7 +451,7 @@ class SetupIcon extends ChangeNotifier {
     final img.Image uploadedAdaptivePNG = img.decodePng(background ? _adaptiveBackground : _adaptiveForeground);
     final IconGenerator genertator = IconGenerator();
     final List<FileData> adaptiveIconsList =
-        await genertator.generateIcons(uploadedAdaptivePNG, folder, writeToDiskIO: !kIsWeb && platform.isDesktop);
+        await genertator.generateIcons(uploadedAdaptivePNG, folder, writeToDiskIO: !kIsWeb && platform.isMacOS);
     _adaptiveIconFiles[key] = adaptiveIconsList;
     _exportedDoneCount = _exportedDoneCount + 1;
     notifyListeners();
@@ -458,7 +460,7 @@ class SetupIcon extends ChangeNotifier {
   Future _generateIcoIcon(ImageFolder folder, {String key = 'win'}) async {
     final img.Image uploadedPNG = img.decodePng(_icon);
     final List<FileData> icoList =
-        await WindowsIcon.generate(uploadedPNG, folder, writeToDiskIO: !kIsWeb && platform.isDesktop);
+        await WindowsIcon.generate(uploadedPNG, folder, writeToDiskIO: !kIsWeb && platform.isMacOS);
     _regularIconFiles[key] = icoList;
     _exportedDoneCount = _exportedDoneCount + 1;
     notifyListeners();

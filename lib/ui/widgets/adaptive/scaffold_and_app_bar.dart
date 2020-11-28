@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
+import 'package:platform_info/platform_info.dart';
 import 'package:provider/provider.dart';
 
 import '../../../generated/l10n.dart';
@@ -54,7 +55,9 @@ class AdaptiveScaffold extends StatelessWidget {
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
                                               Text(
-                                                kIsWeb ? S.of(context).wait : '${S.of(context).wait} $exportProgress%',
+                                                (kIsWeb || platform.isWindows)
+                                                    ? S.of(context).wait
+                                                    : '${S.of(context).wait} $exportProgress%',
                                                 // style: const TextStyle(color: CupertinoColors.black)
                                               ),
                                               if (!kIsWeb)
@@ -133,7 +136,7 @@ class AdaptiveScaffold extends StatelessWidget {
                                                 mainAxisAlignment: MainAxisAlignment.center,
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
-                                                    Text(kIsWeb
+                                                    Text((kIsWeb || platform.isWindows)
                                                         ? S.of(context).wait.toUpperCase()
                                                         : '${S.of(context).wait.toUpperCase()} $exportProgress%'),
                                                     if (!kIsWeb)

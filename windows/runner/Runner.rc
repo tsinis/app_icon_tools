@@ -90,7 +90,7 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "tools.icon" "\0"
-            VALUE "FileDescription", "A new Flutter project." "\0"
+            VALUE "FileDescription", "App Icon Tools" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "icon_tools" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2020 Roman Cinis. All rights reserved." "\0"

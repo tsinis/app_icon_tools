@@ -39,7 +39,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "dark" : MessageLookupByLibrary.simpleMessage("Темный режим"),
     "devicePreview" : MessageLookupByLibrary.simpleMessage("На устройстве"),
     "done" : MessageLookupByLibrary.simpleMessage("Готово"),
-    "downloadsFolder" : MessageLookupByLibrary.simpleMessage("Готово! Архив icons.ZIP находятся в папке Загрузок."),
+    "downloadsFolder" : MessageLookupByLibrary.simpleMessage("Готово! Архив icons.ZIP находится в папке Загрузки."),
     "dragAndDropHere" : MessageLookupByLibrary.simpleMessage("Перетащите иконку сюда или"),
     "export" : MessageLookupByLibrary.simpleMessage("Экспорт иконок"),
     "exportPlatforms" : MessageLookupByLibrary.simpleMessage("Платформы на экспорт"),
