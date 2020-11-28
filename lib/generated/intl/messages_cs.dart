@@ -39,7 +39,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "dark" : MessageLookupByLibrary.simpleMessage("Temný režim"),
     "devicePreview" : MessageLookupByLibrary.simpleMessage("Náhled na zařízení"),
     "done" : MessageLookupByLibrary.simpleMessage("Hotovo"),
-    "downloadsFolder" : MessageLookupByLibrary.simpleMessage("Hotovo! Ikony ZIP jsou ve složce Stažené soubory."),
+    "downloadsFolder" : MessageLookupByLibrary.simpleMessage("Hotovo! Archiv icons.ZIP je ve složce Stažené soubory."),
     "dragAndDropHere" : MessageLookupByLibrary.simpleMessage("Sem přetáhněte obrázek nebo"),
     "export" : MessageLookupByLibrary.simpleMessage("Exportovat ikony"),
     "exportPlatforms" : MessageLookupByLibrary.simpleMessage("Platformy k exportu"),

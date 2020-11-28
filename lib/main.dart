@@ -13,21 +13,21 @@ import 'ui/app_appearance.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   DesktopWindow.setupSize();
-  UserInterface.setupUI();
   Locators.setupLocator();
-
-  runApp(MultiProvider(providers: [
-    ChangeNotifierProvider<UserInterface>(create: (_) => UserInterface()),
-    ChangeNotifierProvider<UploadFile>(create: (_) => UploadFile()),
-    ChangeNotifierProxyProvider<UploadFile, SetupIcon>(
-      create: (_) => SetupIcon(),
-      update: (_, file, icon) => icon
-        ..foregroundIssues = file.detectedFgIssues
-        ..backgroundIssues = file.detectedBgIssues
-        ..iconIssues = file.detectedIconIssues
-        ..adaptiveForeground = file.recivedForeground
-        ..adaptiveBackground = file.recivedBackground
-        ..regularIcon = file.recivedIcon,
-    ),
-  ], child: const MyApp()));
+  UserInterface.setupUI().whenComplete(
+    () => runApp(MultiProvider(providers: [
+      ChangeNotifierProvider<UserInterface>(create: (_) => UserInterface()),
+      ChangeNotifierProvider<UploadFile>(create: (_) => UploadFile()),
+      ChangeNotifierProxyProvider<UploadFile, SetupIcon>(
+        create: (_) => SetupIcon(),
+        update: (_, file, icon) => icon
+          ..foregroundIssues = file.detectedFgIssues
+          ..backgroundIssues = file.detectedBgIssues
+          ..iconIssues = file.detectedIconIssues
+          ..adaptiveForeground = file.recivedForeground
+          ..adaptiveBackground = file.recivedBackground
+          ..regularIcon = file.recivedIcon,
+      ),
+    ], child: const MyApp())),
+  );
 }

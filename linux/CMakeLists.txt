@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
 project(runner LANGUAGES CXX)
 
-set(BINARY_NAME "launcher_icons_preview")
-set(APPLICATION_ID "is.tsin.launcher_icons_preview.launcher_icons_preview")
+set(BINARY_NAME "icon_tools")
+set(APPLICATION_ID "tools.icon.icon_tools")
 
 cmake_policy(SET CMP0063 NEW)
 
@@ -45,6 +45,14 @@ apply_standard_settings(${BINARY_NAME})
 target_link_libraries(${BINARY_NAME} PRIVATE flutter)
 target_link_libraries(${BINARY_NAME} PRIVATE PkgConfig::GTK)
 add_dependencies(${BINARY_NAME} flutter_assemble)
+# Only the install-generated bundle's copy of the executable will launch
+# correctly, since the resources must in the right relative locations. To avoid
+# people trying to run the unbundled copy, put it in a subdirectory instead of
+# the default top-level location.
+set_target_properties(${BINARY_NAME}
+  PROPERTIES
+  RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/intermediates_do_not_run"
+)
 
 # Generated plugin build rules, which manage building the plugins and adding
 # them to the application.

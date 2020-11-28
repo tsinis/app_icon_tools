@@ -52,7 +52,7 @@ class SetupSection extends StatelessWidget {
                     top: (preferColorBg && !_isPortrait)
                         ? (UserInterface.isCupertino ? 62 : 72)
                         : (UserInterface.isCupertino ? (_haveAdaptiveBg ? 36 : 10) : 4)),
-                child: Text(S.of(context).uploadAdaptiveBg)),
+                child: SelectableText(S.of(context).uploadAdaptiveBg)),
             if (preferColorBg)
               ColorPicker(
                   // labelTextStyle: materialTheme.sliderTheme.valueIndicatorTextStyle,
@@ -80,7 +80,7 @@ class SetupSection extends StatelessWidget {
           ] else ...[
             Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20),
-                child: Text(_pwaIcon ? S.of(context).pwaColor : S.of(context).iconBgColor)),
+                child: SelectableText(_pwaIcon ? S.of(context).pwaColor : S.of(context).iconBgColor)),
             ColorPicker(
                 // labelTextStyle: materialTheme.chipTheme.labelStyle,
                 pickerAreaHeightPercent: 0.84,

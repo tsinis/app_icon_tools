@@ -44,7 +44,7 @@ class DragAndDrop extends StatelessWidget {
                     Padding(
                         // ignore: avoid_redundant_argument_values
                         padding: const EdgeInsets.only(top: !kIsWeb ? 20 : 0),
-                        child: SelectableText(S.of(context).verifying)),
+                        child: SelectableText(S.of(context).verifying, textAlign: TextAlign.center)),
                     if (!kIsWeb)
                       Padding(
                           padding: const EdgeInsets.only(top: 20),
@@ -149,7 +149,7 @@ class DragAndDrop extends StatelessWidget {
                               message: S.of(context).transparencyIOS,
                               child: Opacity(
                                 opacity: 0.5,
-                                child: Text.rich(
+                                child: SelectableText.rich(
                                   TextSpan(
                                       text: _isAdaptive ? '' : S.of(context).addBackground,
                                       children: [TextSpan(text: '\nPPI ⩾ 72, ${S.of(context).noInterlacing}')]),

@@ -23,7 +23,7 @@ import '../services/navigation_service.dart';
 import '../services/router.dart';
 import 'helpers/export_platforms.dart';
 
-// TODO Add archive generation to Helepers folder.
+// TODO Reduce this model size.
 class SetupIcon extends ChangeNotifier {
   // ! Utils section !
   static const String _foreground = 'foreground', _background = 'background', _info = IssueLevel.info;
@@ -429,12 +429,13 @@ class SetupIcon extends ChangeNotifier {
     final PwaConfigGenerator genertator = PwaConfigGenerator(color: _colorForConfigs());
     final List<FileData> configsList = genertator.generatePwaConfigs();
     _pwaConfigs[key] = configsList;
+    _exportedDoneCount = _exportedDoneCount + 1;
+    notifyListeners();
   }
 
   Future _generatePngIcons(String key, ImageFolder folder) async {
     final img.Image uploadedPNG = img.decodePng(_icon);
     final IconGenerator genertator = IconGenerator();
-    // final String pathToTempDir = await _tempDirectory;
     final List<FileData> regularIconsList =
         await genertator.generateIcons(uploadedPNG, folder, writeToDiskIO: !kIsWeb && platform.isDesktop);
     _regularIconFiles[key] = regularIconsList;
@@ -447,7 +448,6 @@ class SetupIcon extends ChangeNotifier {
     final String key = background ? 'bg' : 'fg';
     final img.Image uploadedAdaptivePNG = img.decodePng(background ? _adaptiveBackground : _adaptiveForeground);
     final IconGenerator genertator = IconGenerator();
-    // final String pathToTempDir = await _tempDirectory;
     final List<FileData> adaptiveIconsList =
         await genertator.generateIcons(uploadedAdaptivePNG, folder, writeToDiskIO: !kIsWeb && platform.isDesktop);
     _adaptiveIconFiles[key] = adaptiveIconsList;

@@ -46,11 +46,10 @@ class PreviewSection extends StatelessWidget {
       height: 560,
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        // mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Padding(
               padding: const EdgeInsets.symmetric(vertical: 20),
-              child: Text(_canChangeShape
+              child: SelectableText(_canChangeShape
                   ? (_isAdaptive
                       ? S.of(context).uploadAdaptiveFg
                       : (_pwaIcon ? S.of(context).maskable : S.of(context).previewShapes))

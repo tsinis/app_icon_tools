@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.15)
-project(launcher_icons_preview LANGUAGES CXX)
+project(icon_tools LANGUAGES CXX)
 
-set(BINARY_NAME "launcher_icons_preview")
+set(BINARY_NAME "icon_tools")
 
 cmake_policy(SET CMP0063 NEW)
 

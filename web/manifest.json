@@ -1,6 +1,6 @@
 {
-    "name": "launcher_icons_preview",
-    "short_name": "launcher_icons_preview",
+    "name": "Icon Tools",
+    "short_name": "Icon Tools",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

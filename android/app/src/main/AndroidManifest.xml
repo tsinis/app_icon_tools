@@ -1,17 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="is.tsin.launcher_icons_preview.launcher_icons_preview">
-    <!-- io.flutter.app.FlutterApplication is an android.app.Application that
-         calls FlutterMain.startInitialization(this); in its onCreate method.
-         In most cases you can leave this as-is, but you if you want to provide
-         additional functionality it is fine to subclass or reimplement
-         FlutterApplication and put your custom class here. -->
-
-    <!-- Permissions options for the `storage` group -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <application
-        android:name="io.flutter.app.FlutterApplication"
-        android:label="launcher_icons_preview"
+    package="tools.icon.icon_tools">
+   <!-- Permissions options for the `storage` group -->
+   <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+   <!-- <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> -->
+   <application
+        android:label="icon_tools"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

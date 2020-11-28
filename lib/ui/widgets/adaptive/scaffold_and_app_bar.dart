@@ -32,7 +32,7 @@ class AdaptiveScaffold extends StatelessWidget {
               navigationBar: CupertinoNavigationBar(
                 actionsForegroundColor: CupertinoTheme.of(context).textTheme.textStyle.color?.withOpacity(0.7),
                 middle: uploadScreen
-                    ? Text(S.of(context).appName)
+                    ? SelectableText(S.of(context).appName)
                     : ButtonBar(
                         buttonPadding: const EdgeInsets.symmetric(horizontal: 11),
                         alignment: MainAxisAlignment.center,
@@ -111,7 +111,7 @@ class AdaptiveScaffold extends StatelessWidget {
               appBar: AppBar(
                   centerTitle: true,
                   title: uploadScreen
-                      ? Text(S.of(context).appName)
+                      ? SelectableText(S.of(context).appName)
                       : ButtonBar(
                           buttonPadding: const EdgeInsets.symmetric(horizontal: 7),
                           alignment: MainAxisAlignment.center,

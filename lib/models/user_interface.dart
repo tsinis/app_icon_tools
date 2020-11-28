@@ -66,18 +66,18 @@ class UserInterface extends ChangeNotifier {
     _resetFilter();
   }
 
-  static void setupUI() {
-    loadSettings(isInitialization: true);
+  static Future<void> setupUI() async {
+    await loadSettings(isInitialization: true);
     loadLocales();
   }
 
   static Future loadSettings({bool isInitialization = false}) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    _locale = prefs.getString(_storedLocale) ?? platform.locale;
-    _isDark = prefs.getBool(_storedTheme) ?? (DateTime.now().hour > 18 || DateTime.now().hour < 6);
     if (isInitialization) {
       _isCupertinoDesign = _selectedCupertino = prefs.getBool(_storedDesign) ?? platform.isCupertino;
     }
+    _locale = prefs.getString(_storedLocale) ?? platform.locale;
+    _isDark = prefs.getBool(_storedTheme) ?? (DateTime.now().hour > 18 || DateTime.now().hour < 6);
   }
 
   Future saveSettings() async {
