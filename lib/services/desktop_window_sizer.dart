@@ -5,7 +5,7 @@ import 'package:window_size/window_size.dart';
 class DesktopWindow {
   static void setupSize() {
     if (!platform.isWeb && platform.isDesktop) {
-      setWindowMinSize(const Size(320, 840));
+      setWindowMinSize(const Size(320, 800));
       setWindowTitle('Icon Tools');
     }
   }

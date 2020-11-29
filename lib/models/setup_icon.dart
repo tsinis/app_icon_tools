@@ -340,7 +340,7 @@ class SetupIcon extends ChangeNotifier {
                 _countdown = _exportedDoneCount = 0;
                 _loading = false;
                 if (correctlyExported) {
-                  _showSnackInfo(); // TODO? Show error if archive is used by another proces?
+                  _showSnackInfo(); // TODO? Show error if archive is used by another process?
                 } else {
                   notifyListeners();
                 }

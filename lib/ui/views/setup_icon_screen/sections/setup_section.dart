@@ -40,7 +40,7 @@ class SetupSection extends StatelessWidget {
 
     return SizedBox(
       width: UserInterface.previewIconSize,
-      height: UserInterface.isCupertino ? 560 : 572,
+      height: UserInterface.isCupertino ? 510 : 571,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: _isPortrait ? MainAxisAlignment.start : MainAxisAlignment.center,
@@ -50,8 +50,8 @@ class SetupSection extends StatelessWidget {
                 padding: EdgeInsets.only(
                     bottom: 20,
                     top: (preferColorBg && !_isPortrait)
-                        ? (UserInterface.isCupertino ? 62 : 72)
-                        : (UserInterface.isCupertino ? (_haveAdaptiveBg ? 36 : 10) : 4)),
+                        ? (UserInterface.isCupertino ? 52 : 68)
+                        : (UserInterface.isCupertino ? (_haveAdaptiveBg ? 30 : 0) : 0)),
                 child: SelectableText(S.of(context).uploadAdaptiveBg)),
             if (preferColorBg)
               ColorPicker(
@@ -79,7 +79,7 @@ class SetupSection extends StatelessWidget {
                 onChanged: (preferColor) => context.read<SetupIcon>().switchBgColorPreference(preferColor: preferColor))
           ] else ...[
             Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20),
+                padding: EdgeInsets.only(bottom: 20, top: UserInterface.isCupertino ? 14 : 20),
                 child: SelectableText(_pwaIcon ? S.of(context).pwaColor : S.of(context).iconBgColor)),
             ColorPicker(
                 // labelTextStyle: materialTheme.chipTheme.labelStyle,
@@ -98,7 +98,7 @@ class SetupSection extends StatelessWidget {
                 // color: regularBgColor,
                 onPressed: () => context.read<SetupIcon>().removeColor())
           else if (colorIsEmpty && !_isAdaptive)
-            const SizedBox(height: 27),
+            const SizedBox(height: 30),
           if (!preferColorBg && _isAdaptive && _haveAdaptiveBg)
             Padding(
               padding: EdgeInsets.only(top: UserInterface.isCupertino ? 0 : 6),

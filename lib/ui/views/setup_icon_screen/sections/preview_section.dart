@@ -43,12 +43,12 @@ class PreviewSection extends StatelessWidget {
 
     return SizedBox(
       width: _previewSize,
-      height: 560,
+      height: 550,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20),
+              padding: const EdgeInsets.only(bottom: 20),
               child: SelectableText(_canChangeShape
                   ? (_isAdaptive
                       ? S.of(context).uploadAdaptiveFg
