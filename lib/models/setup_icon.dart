@@ -312,18 +312,24 @@ class SetupIcon extends ChangeNotifier {
         () async => await _resizeIcons().whenComplete(() async {
               for (final String key in _regularIconFiles.keys) {
                 final List<FileData> folderWithIcons = _regularIconFiles[key];
-                filesList.addAll(folderWithIcons.toList());
+                if (folderWithIcons != null) {
+                  filesList.addAll(folderWithIcons.toList());
+                }
               }
 
               if (_exportingAdaptiveFiles && _adaptiveIconFiles.isNotEmpty) {
                 for (final String key in _adaptiveIconFiles.keys) {
-                  final List<FileData> _adaptiveFolder = _adaptiveIconFiles[key];
-                  filesList.addAll(_adaptiveFolder.toList());
+                  final List<FileData> adaptiveFolder = _adaptiveIconFiles[key];
+                  if (adaptiveFolder != null) {
+                    filesList.addAll(adaptiveFolder.toList());
+                  }
                 }
                 _generateXmlConfigs();
                 for (final String key in _xmlConfigs.keys) {
                   final List<FileData> txtFolder = _xmlConfigs[key];
-                  filesList.addAll(txtFolder.toList());
+                  if (txtFolder != null) {
+                    filesList.addAll(txtFolder.toList());
+                  }
                 }
               }
 
@@ -331,7 +337,9 @@ class SetupIcon extends ChangeNotifier {
                 _generatePwaConfigs();
                 for (final String key in _pwaConfigs.keys) {
                   final List<FileData> txtFolder = _pwaConfigs[key];
-                  filesList.addAll(txtFolder.toList());
+                  if (txtFolder != null) {
+                    filesList.addAll(txtFolder.toList());
+                  }
                 }
               }
 

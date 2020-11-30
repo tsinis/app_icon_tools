@@ -8,8 +8,8 @@ import 'models/user_interface.dart';
 import 'services/desktop_window_sizer.dart';
 import 'ui/app_appearance.dart';
 
-//TODO? Release to Stores?
-//TODO Migrate to null-safety when it's become stable and packages are ready.
+//TODO Migrate to null-safety when it's become stable and packages are ready,
+// https://github.com/dart-lang/intl_translation/issues/118 is critical to close.
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   DesktopWindow.setupSize();

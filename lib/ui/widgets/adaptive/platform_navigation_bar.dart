@@ -30,9 +30,11 @@ class AdaptiveNavgationBar extends StatelessWidget {
               ? _DoneInfo(countdown)
               : UserInterface.isCupertino
                   ? CupertinoSlidingSegmentedControl<int>(
-                      onValueChanged: (int selectedPlatform) => context.read<SetupIcon>().setPlatform(selectedPlatform),
+                      onValueChanged: (int selectedPlatform) =>
+                          context.read<SetupIcon>().setPlatform(selectedPlatform ?? 0),
                       groupValue: selectedPlatform,
-                      backgroundColor: CupertinoTheme.of(context).textTheme.textStyle.color.withOpacity(0.04),
+                      backgroundColor: CupertinoTheme.of(context).textTheme.textStyle.color?.withOpacity(0.04) ??
+                          CupertinoColors.systemGrey,
                       padding: const EdgeInsets.all(5),
                       children: {
                         for (PlatformIcon platform in platformList)
