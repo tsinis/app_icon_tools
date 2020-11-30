@@ -16,6 +16,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_colorpicker:
+# Waitng for my PR publish.
     git:
       url: git://github.com/mchome/flutter_colorpicker.git
   flutter_dropzone: ^1.0.9
@@ -23,6 +24,7 @@ dependencies:
     sdk: flutter
   get_it:
   google_nav_bar:
+# Waitng for my PR reviewed.
     git:
       url: git://github.com/tsinis/google_nav_bar.git
   image_resizer:

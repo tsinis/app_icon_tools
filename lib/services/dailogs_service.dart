@@ -159,7 +159,7 @@ Future showPlatformsDialog(BuildContext _) => showDialog<void>(
     );
 
 class _ScrollBar extends StatelessWidget {
-  const _ScrollBar(this._child, {Key key}) : super(key: key);
+  const _ScrollBar(this._child);
 
   final Widget _child;
 

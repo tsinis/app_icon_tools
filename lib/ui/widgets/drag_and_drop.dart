@@ -14,7 +14,10 @@ import 'success_animated_icon.dart';
 
 // TODO Check when https://github.com/flutter/flutter/issues/30719 is closed.
 class DragAndDrop extends StatelessWidget {
-  const DragAndDrop({this.background = false, this.foreground = false, Key key}) : super(key: key);
+  const DragAndDrop({
+    this.background = false,
+    this.foreground = false,
+  });
 
   final bool background, foreground;
   // static DropzoneViewController _controller;
@@ -170,7 +173,7 @@ class DragAndDrop extends StatelessWidget {
 }
 
 class _InfoCellText extends StatelessWidget {
-  const _InfoCellText(this._text, {Key key, this.bold = false}) : super(key: key);
+  const _InfoCellText(this._text, {this.bold = false});
 
   final bool bold;
   final String _text;
@@ -184,7 +187,7 @@ class _InfoCellText extends StatelessWidget {
 
 //TODO Check when https://github.com/flutter/flutter/issues/19228 is closed.
 class _DataThemeWorkaround extends StatelessWidget {
-  const _DataThemeWorkaround(this._child, {Key key}) : super(key: key);
+  const _DataThemeWorkaround(this._child);
 
   final Widget _child;
 

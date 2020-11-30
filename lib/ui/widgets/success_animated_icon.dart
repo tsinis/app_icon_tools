@@ -3,7 +3,10 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 
 class SuccessAnimatedIcon extends StatefulWidget {
-  const SuccessAnimatedIcon({this.color = Colors.greenAccent, this.halfSize = 80, Key key}) : super(key: key);
+  const SuccessAnimatedIcon({
+    this.color = Colors.greenAccent,
+    this.halfSize = 80,
+  });
 
   final Color color;
   final double halfSize;

@@ -6,7 +6,7 @@ import '../widgets/adaptive/scaffold_and_app_bar.dart';
 import '../widgets/drag_and_drop.dart';
 
 class InitialUploadScreen extends StatelessWidget {
-  const InitialUploadScreen({Key key}) : super(key: key);
+  const InitialUploadScreen();
 
   @override
   Widget build(BuildContext context) => const AdaptiveScaffold(
@@ -15,7 +15,9 @@ class InitialUploadScreen extends StatelessWidget {
 
 //TODO: Check when https://github.com/flutter/flutter/issues/36220 is closed.
 class _HeroWorkaround extends StatelessWidget {
-  const _HeroWorkaround({@required this.child, Key key}) : super(key: key);
+  const _HeroWorkaround({
+    @required this.child,
+  });
 
   final Widget child;
 

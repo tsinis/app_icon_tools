@@ -9,8 +9,7 @@ class AdaptiveSwitch extends StatelessWidget {
     @required this.onChanged,
     @required this.value,
     this.toRestart = false,
-    Key key,
-  }) : super(key: key);
+  });
 
   final String title;
   final bool value, toRestart;

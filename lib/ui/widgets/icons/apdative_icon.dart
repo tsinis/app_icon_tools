@@ -8,7 +8,7 @@ import '../../../models/setup_icon.dart';
 import '../transparency_grid.dart';
 
 class AdaptiveIcon extends StatefulWidget {
-  const AdaptiveIcon({Key key, this.onDevice = false}) : super(key: key);
+  const AdaptiveIcon({this.onDevice = false});
 
   static Animation<Offset> animation;
   static AnimationController controller;

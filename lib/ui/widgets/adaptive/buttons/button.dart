@@ -12,8 +12,7 @@ class AdaptiveButton extends StatelessWidget {
     this.color,
     this.isDestructive = false,
     this.isDisabled = false,
-    Key key,
-  }) : super(key: key);
+  });
 
   final String text;
   final Function() onPressed;

@@ -10,8 +10,7 @@ class AdaptiveTextField extends StatelessWidget {
     @required this.hint,
     @required this.label,
     @required this.autofillHints,
-    Key key,
-  }) : super(key: key);
+  });
 
   final List<String> autofillHints;
   final String hint, label;

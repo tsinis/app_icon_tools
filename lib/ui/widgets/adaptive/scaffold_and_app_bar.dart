@@ -11,8 +11,11 @@ import '../../../services/dailogs_service.dart';
 import '../issues_info.dart';
 
 class AdaptiveScaffold extends StatelessWidget {
-  const AdaptiveScaffold({@required this.child, this.uploadScreen = false, this.deviceScreen = false, Key key})
-      : super(key: key);
+  const AdaptiveScaffold({
+    @required this.child,
+    this.uploadScreen = false,
+    this.deviceScreen = false,
+  });
 
   final Widget child;
   final bool uploadScreen, deviceScreen;

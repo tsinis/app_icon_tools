@@ -6,7 +6,7 @@ import '../../../../models/user_interface.dart';
 import '../../icons/apdative_icon.dart';
 
 class AdaptiveIconButtons extends StatelessWidget {
-  const AdaptiveIconButtons({Key key, this.withAdaptives = false}) : super(key: key);
+  const AdaptiveIconButtons({this.withAdaptives = false});
 
   final bool withAdaptives;
 
@@ -54,8 +54,11 @@ void _onPressed({@required String direction}) => AdaptiveIcon.preview(direction)
 // }
 
 class _CupertinoIconButton extends StatelessWidget {
-  const _CupertinoIconButton({@required this.withAdaptives, @required this.direction, @required this.icon, Key key})
-      : super(key: key);
+  const _CupertinoIconButton({
+    @required this.withAdaptives,
+    @required this.direction,
+    @required this.icon,
+  });
 
   final String direction;
   final IconData icon;

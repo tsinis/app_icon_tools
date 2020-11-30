@@ -12,7 +12,7 @@ import '../../../models/setup_icon.dart';
 import '../../../models/user_interface.dart';
 
 class AdaptiveNavgationBar extends StatelessWidget {
-  const AdaptiveNavgationBar({Key key}) : super(key: key);
+  const AdaptiveNavgationBar();
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +74,7 @@ class AdaptiveNavgationBar extends StatelessWidget {
 }
 
 class _DoneInfo extends StatelessWidget {
-  const _DoneInfo(this.countdown, {Key key}) : super(key: key);
+  const _DoneInfo(this.countdown);
 
   final int countdown;
 

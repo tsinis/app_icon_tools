@@ -6,7 +6,10 @@ import '../../../models/setup_icon.dart';
 import '../transparency_grid.dart';
 
 class RegularIcon extends StatelessWidget {
-  const RegularIcon({@required this.supportTransparency, @required this.cornerRadius, Key key}) : super(key: key);
+  const RegularIcon({
+    @required this.supportTransparency,
+    @required this.cornerRadius,
+  });
 
   final double cornerRadius;
   final bool supportTransparency;

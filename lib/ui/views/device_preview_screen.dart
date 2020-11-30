@@ -15,7 +15,7 @@ import '../widgets/icons/apdative_icon.dart';
 import '../widgets/icons/regular_icon.dart';
 
 class DeviceScreen extends StatelessWidget {
-  const DeviceScreen({Key key}) : super(key: key);
+  const DeviceScreen();
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +86,7 @@ class DeviceScreen extends StatelessWidget {
 }
 
 class _SVG extends StatelessWidget {
-  const _SVG(this._selectedPlatform, {Key key}) : super(key: key);
+  const _SVG(this._selectedPlatform);
 
   final int _selectedPlatform;
 

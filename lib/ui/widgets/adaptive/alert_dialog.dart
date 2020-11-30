@@ -4,15 +4,14 @@ import '../../../generated/l10n.dart';
 import '../../../models/user_interface.dart';
 
 class AdaptiveDialog extends StatelessWidget {
-  const AdaptiveDialog(
-      {@required this.content,
-      @required this.title,
-      @required this.onPressedMain,
-      this.secondaryButtonTitle = '',
-      this.mainButtonTitle = '',
-      this.onPressedSecondary,
-      Key key})
-      : super(key: key);
+  const AdaptiveDialog({
+    @required this.content,
+    @required this.title,
+    @required this.onPressedMain,
+    this.secondaryButtonTitle = '',
+    this.mainButtonTitle = '',
+    this.onPressedSecondary,
+  });
 
   final Widget content;
   final String secondaryButtonTitle, mainButtonTitle;

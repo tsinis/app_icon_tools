@@ -9,7 +9,7 @@ import '../../models/setup_icon.dart';
 import '../../models/user_interface.dart';
 
 class IssuesInfo extends StatefulWidget {
-  const IssuesInfo({Key key}) : super(key: key);
+  const IssuesInfo();
 
   @override
   _IssuesInfo createState() => _IssuesInfo();
@@ -72,7 +72,10 @@ class _IssuesInfo extends State<IssuesInfo> with SingleTickerProviderStateMixin 
 }
 
 class _DesktopIconButton extends StatelessWidget {
-  const _DesktopIconButton(this._icon, {@required this.onLongPress, Key key}) : super(key: key);
+  const _DesktopIconButton(
+    this._icon, {
+    @required this.onLongPress,
+  });
   final Icon _icon;
   final void Function() onLongPress;
   @override

@@ -9,7 +9,7 @@ import '../services/navigation_service.dart';
 import '../services/router.dart';
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key key}) : super(key: key);
+  const MyApp();
 
   @override
   Widget build(BuildContext context) {

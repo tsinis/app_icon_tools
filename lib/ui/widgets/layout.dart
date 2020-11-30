@@ -3,7 +3,10 @@ import 'dart:math' show min;
 import 'package:flutter/widgets.dart';
 
 class PreviewLayout extends StatelessWidget {
-  const PreviewLayout({@required this.children, @required this.portraitOrientation, Key key}) : super(key: key);
+  const PreviewLayout({
+    @required this.children,
+    @required this.portraitOrientation,
+  });
   final List<Widget> children;
   final bool portraitOrientation;
 
@@ -17,7 +20,7 @@ class PreviewLayout extends StatelessWidget {
     return FractionallySizedBox(
       widthFactor: portraitOrientation ? 0.94 : 0.9,
       heightFactor:
-          (portraitOrientation || needsScroll) ? 1 : min(1, 2 - (height / _heightLimit)).clamp(0.6, 1).toDouble(),
+          (portraitOrientation || needsScroll) ? 1 : min(1, 2 - (height / _heightLimit)).clamp(0.7, 1).toDouble(),
       child: _ScrollChild(
         scroll: needsScroll || portraitOrientation,
         child: portraitOrientation
@@ -36,7 +39,10 @@ class PreviewLayout extends StatelessWidget {
 }
 
 class _ScrollChild extends StatelessWidget {
-  const _ScrollChild({@required this.scroll, @required this.child, Key key}) : super(key: key);
+  const _ScrollChild({
+    @required this.scroll,
+    @required this.child,
+  });
 
   final Widget child;
   final bool scroll;

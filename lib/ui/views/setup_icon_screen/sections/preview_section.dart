@@ -22,14 +22,12 @@ class PreviewSection extends StatelessWidget {
     @required bool haveAdaptiveBg,
     @required bool pwaIcon,
     @required double staticCornerRadius,
-    Key key,
   })  : _staticCornerRadius = staticCornerRadius,
         _haveAdaptiveBg = haveAdaptiveBg,
         _supportTransparency = supportTransparency,
         _isAdaptive = isAdaptive,
         _canChangeShape = canChangeShape,
-        _pwaIcon = pwaIcon,
-        super(key: key);
+        _pwaIcon = pwaIcon;
 
   final bool _canChangeShape, _isAdaptive, _supportTransparency, _haveAdaptiveBg, _pwaIcon;
   final double _staticCornerRadius;

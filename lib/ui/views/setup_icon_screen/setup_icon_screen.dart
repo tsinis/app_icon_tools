@@ -12,7 +12,7 @@ import 'sections/preview_section.dart';
 import 'sections/setup_section.dart';
 
 class SetupScreen extends StatelessWidget {
-  const SetupScreen({Key key}) : super(key: key);
+  const SetupScreen();
 
   @override
   Widget build(BuildContext context) {

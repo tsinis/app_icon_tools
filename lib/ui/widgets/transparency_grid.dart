@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class TransparencyGrid extends StatelessWidget {
-  const TransparencyGrid({Key key}) : super(key: key);
+  const TransparencyGrid();
   static const int _gridsCount = 8;
   @override
   Widget build(BuildContext context) => GridView.builder(

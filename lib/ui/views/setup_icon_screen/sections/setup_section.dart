@@ -11,17 +11,15 @@ import '../../../widgets/adaptive/buttons/switch_button.dart';
 import '../../../widgets/drag_and_drop.dart';
 
 class SetupSection extends StatelessWidget {
-  const SetupSection(
-      {@required bool isAdaptive,
-      @required bool isPortrait,
-      @required bool pwaIcon,
-      @required bool haveAdaptiveBg,
-      Key key})
-      : _isAdaptive = isAdaptive,
+  const SetupSection({
+    @required bool isAdaptive,
+    @required bool isPortrait,
+    @required bool pwaIcon,
+    @required bool haveAdaptiveBg,
+  })  : _isAdaptive = isAdaptive,
         _haveAdaptiveBg = haveAdaptiveBg,
         _isPortrait = isPortrait,
-        _pwaIcon = pwaIcon,
-        super(key: key);
+        _pwaIcon = pwaIcon;
 
   final bool _isAdaptive, _isPortrait, _pwaIcon, _haveAdaptiveBg;
 

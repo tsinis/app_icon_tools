@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 import '../../../models/user_interface.dart';
 
 class AdaptiveSlider extends StatelessWidget {
-  const AdaptiveSlider({@required this.radius, @required this.onChanged, Key key}) : super(key: key);
+  const AdaptiveSlider({
+    @required this.radius,
+    @required this.onChanged,
+  });
 
   // final String label;
   final double radius;
