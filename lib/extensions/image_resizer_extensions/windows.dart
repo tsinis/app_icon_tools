@@ -17,7 +17,7 @@ class WindowsIconsFolder extends ImageFolder {
 }
 
 class WindowsIcon extends IconTemplate {
-  const WindowsIcon({int size = 256, this.name = 'appicon', this.ext = 'ico'}) : super(size);
+  const WindowsIcon({int size = 256, this.name = 'app_icon', this.ext = 'ico'}) : super(size);
 
   final String ext, name;
 

@@ -6,8 +6,8 @@ String pwaHtml(String color) => '''
 <head>
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <!-- TODO Don't forget to change your app name here! Use search and replace for CHANGE_TO_YOUR_APP_NAME -->
-  <meta name="description" content="$_name>
+  <!-- TODO Don't forget to change your app description here! Use search and replace for CHANGE_TO_YOUR_APP_NAME -->
+  <meta name="description" content="$_name">
 
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -30,7 +30,7 @@ String pwaHtml(String color) => '''
   <link rel="icon" type="image/png" sizes="16x16" href="icons/Icon-16.png">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="icons/favicon.png"/>
+  <link rel="icon" type="image/png" href="favicon.png"/>
 
   <!-- TODO Don't forget to change your app name here! Use search and replace for CHANGE_TO_YOUR_APP_NAME -->
   <title>$_name</title>
@@ -50,7 +50,7 @@ String pwaHtml(String color) => '''
        https://developers.google.com/web/fundamentals/primers/service-workers -->
   <script>
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', function () {
+      window.addEventListener('flutter-first-frame', function () {
         navigator.serviceWorker.register('flutter_service_worker.js');
       });
     }
@@ -64,7 +64,7 @@ String pwaHtml(String color) => '''
 String pwaManifest(String color) => '''
 {
     "name": "$_name",
-    "short_name": "${_name.toLowerCase()}",
+    "short_name": "$_name",
     "start_url": ".",
     "display": "standalone",
     "background_color": "$color",
