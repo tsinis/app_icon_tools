@@ -8,8 +8,11 @@ import 'models/user_interface.dart';
 import 'services/desktop_window_sizer.dart';
 import 'ui/app_appearance.dart';
 
-//TODO Migrate to null-safety when it's become stable and packages are ready,
-// https://github.com/dart-lang/intl_translation/issues/118 is critical to close.
+// Packages are not ready for null-safety yet. Run as:
+// flutter run --no-sound-null-safety
+
+//TODO! Investigate why the PWA online can't display SVGs, while locally everything works correctly.
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   DesktopWindow.setupSize();
@@ -31,3 +34,6 @@ void main() {
     ], child: const MyApp())),
   );
 }
+
+//TODO Migrate to null-safety when it's become stable and packages are ready,
+// https://github.com/dart-lang/intl_translation/issues/118 is critical to close.

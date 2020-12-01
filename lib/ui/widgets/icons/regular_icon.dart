@@ -38,7 +38,7 @@ class RegularIcon extends StatelessWidget {
                           ? Colors.transparent
                           : Colors.black
                       : backgroundColor),
-              child: Transform.scale(scale: webSafeZone ? 1.24 : 1, child: iconImage))
+              child: Transform.scale(scale: webSafeZone ? (_onDevice ? 0.7 : 1.24) : 1, child: iconImage))
         ],
       ),
     );
