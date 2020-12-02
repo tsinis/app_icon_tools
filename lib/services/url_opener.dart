@@ -35,7 +35,7 @@ Future<void> openDocsURL({@required String currentLocale, @required String url})
 }
 
 Future<void> openRepositoryURL() async {
-  const String repositoryUrl = 'https://github.com/tsinis/';
+  const String repositoryUrl = 'https://github.com/tsinis/icon_tools';
   if (await canLaunch(repositoryUrl)) {
     await launch(repositoryUrl);
   } else {

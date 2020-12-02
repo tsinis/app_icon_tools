@@ -8,10 +8,11 @@ import 'models/user_interface.dart';
 import 'services/desktop_window_sizer.dart';
 import 'ui/app_appearance.dart';
 
-// Packages are not ready for null-safety yet. Run as:
-// flutter run --no-sound-null-safety
-
-//TODO! Investigate why the PWA online can't display SVGs, while locally everything works correctly.
+/* Not all packages are ready for null-safety yet. Run as:
+ flutter run --no-sound-null-safety
+ Web version should also have a SKIA flag enabled:
+ flutter run --no-sound-null-safety --dart-define=FLUTTER_WEB_USE_SKIA=true
+ */
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

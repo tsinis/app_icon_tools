@@ -21,6 +21,7 @@ dependencies:
   flutter_dropzone: ^1.0.9
   flutter_localizations:
     sdk: flutter
+  flutter_svg:
   get_it:
   google_nav_bar:
 # Waitng for my PR reviewed.
@@ -35,7 +36,7 @@ dependencies:
   shared_preferences: ^0.5.12+4
   universal_html:
   url_launcher:
-  websafe_svg: ^1.1.4
+  # websafe_svg: ^1.1.4
   window_size:
     git:
       url: git://github.com/google/flutter-desktop-embedding.git

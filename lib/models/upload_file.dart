@@ -141,8 +141,8 @@ class UploadFile extends ChangeNotifier {
   bool get loading => _loading;
 
   void _setLoading({@required bool isLoading, bool isValidFile = false}) {
-    _loading = isLoading;
     _isValidFile = isValidFile;
+    _loading = isLoading;
     notifyListeners();
   }
 

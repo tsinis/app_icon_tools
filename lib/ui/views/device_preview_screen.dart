@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:local_hero/local_hero.dart';
 import 'package:provider/provider.dart';
-import 'package:websafe_svg/websafe_svg.dart';
+// import 'package:websafe_svg/websafe_svg.dart';
 
 import '../../constants/platforms/platforms_list.dart';
 import '../../generated/l10n.dart';
@@ -99,5 +99,7 @@ class _SVG extends StatelessWidget {
       waitDuration: const Duration(seconds: 2),
       showDuration: const Duration(seconds: 2),
       message: S.of(context).lookOnDevice(_platformName),
-      child: kIsWeb ? WebsafeSvg.asset(_svgPath, height: 640) : SvgPicture.asset('assets/$_svgPath', height: 640));
+      child:
+          // kIsWeb ? WebsafeSvg.asset(_svgPath, height: 640) :
+          SvgPicture.asset('assets/$_svgPath', height: 640));
 }
