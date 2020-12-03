@@ -115,8 +115,7 @@
 		33CC10EE2044A3C60003C045 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				33CC10ED2044A3C60003C045 /* Icon Tools.app */,
-				33CC10ED2044A3C60003C045 /* app_icon_tools.app */,
+				33CC10ED2044A3C60003C045 /* App Icon Tools.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -185,8 +184,7 @@
 			);
 			name = Runner;
 			productName = Runner;
-			productReference = 33CC10ED2044A3C60003C045 /* Icon Tools.app */;
-			productReference = 33CC10ED2044A3C60003C045 /* app_icon_tools.app */;
+			productReference = 33CC10ED2044A3C60003C045 /* App Icon Tools.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
