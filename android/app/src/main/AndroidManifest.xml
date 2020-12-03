@@ -1,10 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="tools.icon.icon_tools">
+    package="tools.appicon.app_icon_tools">
    <!-- Permissions options for the `storage` group -->
    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
    <!-- <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> -->
    <application
-        android:label="icon_tools"
+        android:label="App Icon Tools"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

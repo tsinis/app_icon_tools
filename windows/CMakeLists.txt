@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.15)
-project(icon_tools LANGUAGES CXX)
+project(app_icon_tools LANGUAGES CXX)
 
-set(BINARY_NAME "icon_tools")
+set(BINARY_NAME "app_icon_tools")
 
 cmake_policy(SET CMP0063 NEW)
 

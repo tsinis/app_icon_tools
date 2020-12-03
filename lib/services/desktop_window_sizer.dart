@@ -6,7 +6,7 @@ class DesktopWindow {
   static void setupSize() {
     if (!platform.isWeb && platform.isDesktop) {
       setWindowMinSize(const Size(320, 800));
-      setWindowTitle('Icon Tools');
+      setWindowTitle('App Icon Tools');
     }
   }
 }

@@ -205,8 +205,8 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: f3ea33fe6acdfb17293ad2d0d137f914e04bb19f
-      url: "git://github.com/tsinis/google_nav_bar.git"
+      resolved-ref: b2902e9b330cdf57efb21b32e43ee79c7887e6e4
+      url: "git://github.com/sooxt98/google_nav_bar.git"
     source: git
     version: "3.1.0"
   html:

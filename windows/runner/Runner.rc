@@ -89,13 +89,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "tools.icon" "\0"
+            VALUE "CompanyName", "tools.app-icon" "\0"
             VALUE "FileDescription", "App Icon Tools" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "icon_tools" "\0"
+            VALUE "InternalName", "app_icon_tools" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2020 Roman Cinis. All rights reserved." "\0"
-            VALUE "OriginalFilename", "icon_tools.exe" "\0"
-            VALUE "ProductName", "Icon Tools" "\0"
+            VALUE "OriginalFilename", "app_icon_tools.exe" "\0"
+            VALUE "ProductName", "App Icon Tools" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

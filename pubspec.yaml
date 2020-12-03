@@ -1,4 +1,4 @@
-name: launcher_icons_preview
+name: app_icon_tools
 description: Simple GUI for launcher/desktop app icons generation and preview.
 
 version: 1.0.0+1
@@ -24,9 +24,9 @@ dependencies:
   flutter_svg:
   get_it:
   google_nav_bar:
-# Waitng for my PR reviewed.
+# Waitng for my PR publish.
     git:
-      url: git://github.com/tsinis/google_nav_bar.git
+      url: git://github.com/sooxt98/google_nav_bar.git
   image_resizer:
   local_hero: ^0.1.0
   path_provider: ^1.6.24

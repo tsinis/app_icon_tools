@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
 project(runner LANGUAGES CXX)
 
-set(BINARY_NAME "icon_tools")
-set(APPLICATION_ID "tools.icon.icon_tools")
+set(BINARY_NAME "app_icon_tools")
+set(APPLICATION_ID "tools.appicon.app_icon_tools")
 
 cmake_policy(SET CMP0063 NEW)
 
