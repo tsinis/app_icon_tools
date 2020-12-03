@@ -81,16 +81,16 @@ class _DesktopIconButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final int selectedPlatform = context.select((SetupIcon icon) => icon.platformID);
-    return Material(
-      shape: const CircleBorder(),
-      type: MaterialType.transparency,
-      child: (platform.isMobile)
-          ? InkWell(onLongPress: onLongPress, child: _icon)
-          : InkWell(
-              borderRadius: BorderRadius.circular(20),
-              onLongPress: onLongPress,
-              onTap: () async => await context.read<UserInterface>().showDocs(platformList[selectedPlatform].docs),
-              child: _icon),
-    );
+    return (platform.isMobile)
+        ? _icon
+        : Material(
+            shape: const CircleBorder(),
+            type: MaterialType.transparency,
+            child: InkWell(
+                borderRadius: BorderRadius.circular(20),
+                onLongPress: onLongPress,
+                onTap: () async => await context.read<UserInterface>().showDocs(platformList[selectedPlatform].docs),
+                child: _icon),
+          );
   }
 }

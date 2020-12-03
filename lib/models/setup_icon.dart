@@ -211,9 +211,14 @@ class SetupIcon extends ChangeNotifier {
     }
     final StringBuffer _issues = regularIssuesText..write(foregroundIssuesText)..write(backgroundIssuesText);
     if (_issues.isNotEmpty && !toClipboard) {
-      _issues..write('\n\n')..write(S.current.issuesToClipboard)..write('\n');
+      _issues.write('\n');
       if (platform.isDesktop) {
-        _issues..write(S.current.officialDocs)..write('\n');
+        _issues
+          ..write('\n')
+          ..write(S.current.issuesToClipboard)
+          ..write('\n')
+          ..write(S.current.officialDocs)
+          ..write('\n');
       }
     }
     return _issues.toString();
