@@ -36,7 +36,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "colorAsBg" : MessageLookupByLibrary.simpleMessage("Фон в виде цвета"),
     "colorProfile" : MessageLookupByLibrary.simpleMessage("Профиль:"),
     "cupertino" : MessageLookupByLibrary.simpleMessage("UI в стиле iOS"),
-    "dark" : MessageLookupByLibrary.simpleMessage("Темный режим"),
+    "dark" : MessageLookupByLibrary.simpleMessage("Тёмный режим"),
     "devicePreview" : MessageLookupByLibrary.simpleMessage("На устройстве"),
     "done" : MessageLookupByLibrary.simpleMessage("Готово"),
     "downloadsFolder" : MessageLookupByLibrary.simpleMessage("Готово! Архив icons.ZIP находится в папке Загрузки."),

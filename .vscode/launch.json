@@ -9,7 +9,7 @@
             "flutterMode": "debug",
             "args": [
                 "--dart-define=FLUTTER_WEB_USE_SKIA=true",
-                // "--dart-define=FLUTTER_WEB_USE_EXPERIMENTAL_CANVAS_TEXT=false"
+                "--no-sound-null-safety"
             ]
         },
         {
@@ -19,7 +19,7 @@
             "flutterMode": "release",
             "args": [
                 "--dart-define=FLUTTER_WEB_USE_SKIA=true",
-                // "--dart-define=FLUTTER_WEB_USE_EXPERIMENTAL_CANVAS_TEXT=false"
+                "--no-sound-null-safety"
             ]
         }
     ]
