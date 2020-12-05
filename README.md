@@ -34,9 +34,9 @@ Here are some of the unique features of this application:
 
 This project in form of PWA **will only run on most recent browsers, with Chromium (Chrome, Edge, etc.) engine v83 or Firefox v77 and newer**. Don't even try to run it on Safari, Internet Explorer and so on — they can't handle it!
 
-Thanks to [Codemagic](https://codemagic.io), you can just follow this link and run it in your modern browser:
+Just follow this link and run it in your modern browser:
 
-[https://icon-tools.codemagic.app](https://icon-tools.codemagic.app)
+[app-icon.tools](https://app-icon.tools)
 
 ## Releases
 
