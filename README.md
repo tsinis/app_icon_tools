@@ -10,6 +10,13 @@
 
 ![Screenshot](preview.png)
 
+[![Website app-icon.tools](https://img.shields.io/website?down_color=red&down_message=offline&up_color=success&up_message=online&url=https%3A%2F%2Fapp-icon.tools)](https://app-icon.tools)
+[![Codemagic build status](https://api.codemagic.io/apps/5fc3a2a2f7698e4473b866bf/5fc3a2a2f7698e4473b866be/status_badge.svg)](https://codemagic.io/apps/5fc3a2a2f7698e4473b866bf/5fc3a2a2f7698e4473b866be/latest_build)
+[![License: AGPL v3](https://img.shields.io/badge/license-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
+[![pedantic on pub.dev](https://img.shields.io/badge/style-pedantic-blue)](https://pub.dev/packages/pedantic)
+[![pedantic on pub.dev](https://img.shields.io/github/v/release/tsinis/app_icon_tools)](https://github.com/tsinis/app_icon_tools/releases)
+[![GitHub stars](https://img.shields.io/github/stars/tsinis/app_icon_tools?style=social)](https://github.com/tsinis/app_icon_tools/stargazers/)
+
 ## Description
 
 This multiplatform app is **powered by Flutter** and was created for simple and intuitive preview and generation of (launcher/desktop) app icons, for the most popular operating systems. It doesn't contain tracking or any advertising and is available for free as an open-source. PRs, suggestions, translations, etc. – are welcome!

@@ -1,0 +1,66 @@
+workflows:
+  default-workflow:
+    name: Default Workflow
+    max_build_duration: 60
+    environment:
+      flutter: master
+      xcode: latest
+      cocoapods: default
+    scripts:
+      - |
+        # set up debug keystore
+        rm -f ~/.android/debug.keystore
+        keytool -genkeypair \
+          -alias androiddebugkey \
+          -keypass android \
+          -keystore ~/.android/debug.keystore \
+          -storepass android \
+          -dname 'CN=Android Debug,O=Android,C=US' \
+          -keyalg 'RSA' \
+          -keysize 2048 \
+          -validity 10000
+      - |
+        # set up local properties
+        echo "flutter.sdk=$HOME/programs/flutter" > "$FCI_BUILD_DIR/android/local.properties"
+      - cd . && flutter packages pub get
+      - cd . && flutter config --enable-web
+      - cd . && flutter config --enable-macos-desktop
+      - cd . && flutter analyze
+      - find . -name "Podfile" -execdir pod install \;
+      # - docker run -v /Users/builder/clone:/opt/clone -w /opt/clone/. -i nevercode/flutter-linux-desktop bash -c flutter pub get && flutter build linux --release
+      - |
+        # build ios
+        cd .
+        flutter build ios --release --no-sound-null-safety --no-codesign
+        cd build/ios/iphoneos
+        7z a -mx=9 -r ../app-ios-release.zip *.app
+      - |
+        # build macos
+        cd .
+        flutter build macos --release --no-sound-null-safety
+        cd build/macos/Build/Products/Release
+        7z a -mx=9 -r ../app-macos-release.zip *.app
+      - |
+        # build web
+        cd .
+        flutter build web --release --no-sound-null-safety --dart-define=FLUTTER_WEB_USE_SKIA=true
+        cd build/web
+        7z a -mx=9 -r ../app-web-pwa-release.zip ./*
+      - |
+        # build android aio
+        cd .
+        flutter build apk --release --no-sound-null-safety
+        cd build/app/outputs/flutter-apk
+        mv app-release.apk app-aio-release.apk
+      - |
+        # build android separate
+        cd .
+        flutter build apk --release --no-sound-null-safety --split-per-abi
+        cd build/app/outputs/flutter-apk
+        mv app.apk app-armeabi-v7a-release.apk
+    artifacts:
+      - build/**/outputs/**/*.apk
+      - build/ios/ipa/*.ipa
+      - build/app-web-pwa-release.zip
+      - build/macos/**/**/**/app-macos-release.zip
+      - build/ios/**/app-ios-release.zip
