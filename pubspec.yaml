@@ -8,9 +8,9 @@ environment:
   flutter: ">=1.22.0"
 
 dependencies:
-  community_material_icon:
+  community_material_icon: ^5.4.55
   cupertino_icons: ^1.0.1+1
-  dotted_border:
+  dotted_border: ^1.0.7
   file_picker_cross: ^4.2.6
   flutter:
     sdk: flutter
@@ -21,35 +21,37 @@ dependencies:
   flutter_dropzone: ^1.0.9
   flutter_localizations:
     sdk: flutter
-  flutter_svg:
-  get_it:
+  flutter_svg: ^0.19.2+1
+  flutter_web_plugins:
+    sdk: flutter
+  get_it: ^5.0.1
   google_nav_bar:
 # Waitng for my PR publish.
     git:
       url: git://github.com/sooxt98/google_nav_bar.git
-  image_resizer:
+  image_resizer: ^1.0.2
   local_hero: ^0.1.0
   path_provider: ^1.6.24
   # permission_handler:
   platform_info: ^2.2.0
-  provider:
+  provider: ^4.3.2+2
   shared_preferences: ^0.5.12+4
-  universal_html:
-  url_launcher:
+  universal_html: ^1.2.3
+  url_launcher: ^5.7.10
   # websafe_svg: ^1.1.4
   window_size:
     git:
       url: git://github.com/google/flutter-desktop-embedding.git
       path: plugins/window_size
 
-dependency_overrides:
-  file_picker:
-  flutter_dropzone_web:
-  image:
-  package_info:
+# dependency_overrides:
+#   file_picker:
+#   flutter_dropzone_web:
+#   image:
+#   package_info:
 
 dev_dependencies:
-  pedantic:
+  pedantic: ^1.9.2
 
 flutter_intl:
   enabled: true

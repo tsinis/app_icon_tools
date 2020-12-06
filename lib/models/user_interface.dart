@@ -9,6 +9,7 @@ import '../generated/l10n.dart';
 import '../locator_di.dart';
 import '../services/navigation_service.dart';
 import '../services/url_opener.dart';
+import 'helpers/configure_nonweb.dart' if (dart.library.html) 'helpers/configure_web.dart';
 
 class UserInterface extends ChangeNotifier {
   static const double previewIconSize = 300;
@@ -67,6 +68,7 @@ class UserInterface extends ChangeNotifier {
   }
 
   static Future<void> setupUI() async {
+    configureWebApp(); // https://github.com/flutter/flutter/issues/33245#issuecomment-705095853
     await loadSettings(isInitialization: true);
     loadLocales();
   }

@@ -50,8 +50,8 @@ class UploadFile extends ChangeNotifier {
     if (!_loading) {
       _recivedBackground = _recivedForeground = NullSafeValues.zeroBytes;
       _setLoading(isLoading: true, isValidFile: true);
-      //TODO Check when https://github.com/flutter/flutter/issues/33577 is closed.
-      Future.delayed(const Duration(milliseconds: kIsWeb ? 600 : 0), () async {
+      //TODO Move to Isolate, when https://github.com/flutter/flutter/issues/33577 is closed.
+      Future.delayed(const Duration(milliseconds: kIsWeb ? 800 : 0), () async {
         Uint8List rawBytes = NullSafeValues.zeroBytes;
         try {
           if (uploadedFile is File) {

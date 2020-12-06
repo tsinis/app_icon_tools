@@ -121,7 +121,7 @@ packages:
     source: hosted
     version: "0.1.6"
   file_picker:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
       name: file_picker
       url: "https://pub.dartlang.org"
@@ -163,7 +163,7 @@ packages:
     source: hosted
     version: "1.0.3"
   flutter_dropzone_web:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
       name: flutter_dropzone_web
       url: "https://pub.dartlang.org"
@@ -189,7 +189,7 @@ packages:
     source: hosted
     version: "0.19.2+1"
   flutter_web_plugins:
-    dependency: transitive
+    dependency: "direct main"
     description: flutter
     source: sdk
     version: "0.0.0"
@@ -231,7 +231,7 @@ packages:
     source: hosted
     version: "3.1.4"
   image:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
       name: image
       url: "https://pub.dartlang.org"
@@ -287,7 +287,7 @@ packages:
     source: hosted
     version: "0.0.4"
   package_info:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
       name: package_info
       url: "https://pub.dartlang.org"

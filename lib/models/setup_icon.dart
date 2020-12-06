@@ -312,7 +312,7 @@ class SetupIcon extends ChangeNotifier {
     final List<FileData> filesList = [];
 
     Future<void>.delayed(
-        //TODO Check when https://github.com/flutter/flutter/issues/33577 is closed.
+        //TODO Move to Isolate, when https://github.com/flutter/flutter/issues/33577 is closed.
         const Duration(milliseconds: kIsWeb ? 300 : 60),
         () async => await _resizeIcons().whenComplete(() async {
               for (final String key in _regularIconFiles.keys) {
