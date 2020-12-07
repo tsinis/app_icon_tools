@@ -25,7 +25,7 @@ workflows:
       - cd . && flutter packages pub get
       - cd . && flutter config --enable-web
       - cd . && flutter config --enable-macos-desktop
-      - cd . && flutter analyze
+      # - cd . && flutter analyze
       - find . -name "Podfile" -execdir pod install \;
       # - docker run -v /Users/builder/clone:/opt/clone -w /opt/clone/. -i nevercode/flutter-linux-desktop bash -c flutter pub get && flutter build linux --release
       - |
