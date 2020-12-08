@@ -39,7 +39,7 @@ Here are some of the unique features of this application:
 
 ## Try it online
 
-This project in form of PWA **will only run on most recent browsers, with Chromium (Chrome, Edge, etc.) engine v83 or Firefox v77 and newer**. Don't even try to run it on Safari, Internet Explorer and so on — they can't handle it!
+This project in form of PWA **will only run on most recent browsers, with Chromium (Chrome, Edge, etc.) engine v83 or Firefox v77 and newer**. However, I would not recommend a Firefox now, since drag and drop don't work there yet. Don't even try to run it on Safari, Internet Explorer and so on — they can't handle it!
 
 Just follow this link and run it in your modern browser:
 
