@@ -5,7 +5,7 @@ version: 1.0.1
 
 environment:
   sdk: ">=2.10.0 <=2.12.0"
-  flutter: ">=1.22.0"
+  flutter: ">=1.24.0"
 
 dependencies:
   community_material_icon: ^5.4.55
@@ -24,12 +24,12 @@ dependencies:
   flutter_svg: ^0.19.2+1
   flutter_web_plugins:
     sdk: flutter
-  get_it: ^5.0.1
+  get_it: ^5.0.3
   google_nav_bar:
 # Waitng for my PR publish.
     git:
-      url: git://github.com/tsinis/google_nav_bar.git
-      ref: patch-1
+      url: git://github.com/sooxt98/google_nav_bar.git
+      # ref: patch-1
   image_resizer: ^1.0.2
   local_hero: ^0.1.0
   path_provider: ^1.6.24

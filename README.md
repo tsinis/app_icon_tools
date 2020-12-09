@@ -6,7 +6,7 @@
 * [Key Features](#Key-Features)
 * [Try it online](#Try-it-online)
 * [Releases](#Releases)
-* [More Info](#More0Info)
+* [More Info](#More-Info)
 
 ![Screenshot](preview.png)
 

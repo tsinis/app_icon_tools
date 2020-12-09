@@ -14,10 +14,7 @@ import 'success_animated_icon.dart';
 
 // TODO Check when https://github.com/flutter/flutter/issues/30719 is closed.
 class DragAndDrop extends StatelessWidget {
-  const DragAndDrop({
-    this.background = false,
-    this.foreground = false,
-  });
+  const DragAndDrop({this.background = false, this.foreground = false});
 
   final bool background, foreground;
   // static DropzoneViewController _controller;
@@ -42,7 +39,7 @@ class DragAndDrop extends StatelessWidget {
         decoration: BoxDecoration(color: const Color(0x11888888), borderRadius: BorderRadius.circular(20)),
         child: (isDone && !_isAdaptive)
             ? const SuccessAnimatedIcon()
-            : isLoading
+            : (isLoading && (!kIsWeb || _isAdaptive))
                 ? Column(mainAxisAlignment: MainAxisAlignment.center, mainAxisSize: MainAxisSize.min, children: [
                     Padding(
                         // ignore: avoid_redundant_argument_values
@@ -80,10 +77,14 @@ class DragAndDrop extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             SelectableText(
-                                isValidFile
-                                    ? (kIsWeb ? S.of(context).dragAndDropHere : S.of(context).select)
-                                    : S.of(context).wrongFile,
-                                maxLines: 1),
+                                isLoading
+                                    ? S.of(context).verifying
+                                    : isValidFile
+                                        ? (kIsWeb ? S.of(context).dragAndDropHere : S.of(context).select)
+                                        : S.of(context).wrongFile,
+                                maxLines: 1,
+                                style: TextStyle(fontWeight: isLoading ? FontWeight.bold : FontWeight.normal),
+                                textAlign: TextAlign.center),
                             AdaptiveButton(
                                 text: S.of(context).browse,
                                 onPressed: () async => await context

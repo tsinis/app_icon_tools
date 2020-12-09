@@ -53,7 +53,7 @@ class AdaptiveNavgationBar extends StatelessWidget {
                       child: GNav(
                           onTabChange: (int selectedPlatform) =>
                               context.read<SetupIcon>().setPlatform(selectedPlatform),
-                          gap: 0,
+                          gap: 8,
                           activeColor: Theme.of(context).sliderTheme.thumbColor,
                           iconSize: 24,
                           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),

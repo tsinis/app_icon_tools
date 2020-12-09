@@ -80,6 +80,9 @@ class UserInterface extends ChangeNotifier {
     }
     _locale = prefs.getString(_storedLocale) ?? platform.locale;
     _isDark = prefs.getBool(_storedTheme) ?? (DateTime.now().hour > 18 || DateTime.now().hour < 6);
+    if (!isInitialization) {
+      await S.load(Locale(_locale));
+    }
   }
 
   Future saveSettings() async {
