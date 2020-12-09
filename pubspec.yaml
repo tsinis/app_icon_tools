@@ -1,7 +1,7 @@
 name: app_icon_tools
 description: Simple GUI for launcher/desktop app icons generation and preview.
 
-version: 1.0.1
+version: 1.0.2
 
 environment:
   sdk: ">=2.10.0 <=2.12.0"
