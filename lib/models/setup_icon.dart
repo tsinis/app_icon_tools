@@ -13,6 +13,7 @@ import '../constants/default_non_null_values.dart';
 import '../constants/issues_levels.dart';
 import '../extensions/image_resizer_extensions/android_adaptive.dart';
 import '../extensions/image_resizer_extensions/constants/android_regular.dart';
+import '../extensions/image_resizer_extensions/constants/macos.dart';
 import '../extensions/image_resizer_extensions/constants/web.dart';
 import '../extensions/image_resizer_extensions/ios.dart';
 import '../extensions/image_resizer_extensions/pwa.dart';
@@ -399,7 +400,7 @@ class SetupIcon extends ChangeNotifier {
         await _generatePngIcons('iOS', IosIconsFolder(icons: iOsIcons));
       }
       if (ExportPlatform.macOS) {
-        await _generatePngIcons('macOS', MacOSIconsFolder());
+        await _generatePngIcons('macOS', MacOSIconsFolder(icons: macos));
       }
       if (ExportPlatform.windows) {
         await _generateIcoIcon(WindowsIconsFolder());
