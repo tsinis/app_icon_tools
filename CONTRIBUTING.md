@@ -20,7 +20,7 @@ All Dart code is linted with [Pedantic](https://pub.dev/packages/pedantic). All 
 
 * Ensure the PR description clearly describes the problem and solution. Include the relevant issue number if applicable.
 
-### **Did you localized/transated this project?**
+### **Did you localized/translated this project?**
 
 * Open a new GitHub pull request with the translation.
 
@@ -28,7 +28,7 @@ All Dart code is linted with [Pedantic](https://pub.dev/packages/pedantic). All 
 
 ``&template=pull_request_template.md``
 
-to the end of your PR URL in browser's adress bar, for example:
+to the end of your PR URL in the browser's address bar, for example:
 
 ``https://github.com/tsinis/app_icon_tools/compare/master...your_username:your_branch_name?expand=1&template=pull_request_template.md``
 
@@ -44,7 +44,7 @@ Changes that are cosmetic in nature and do not add anything substantial to the s
 
 ### **Do you have questions about this project?**
 
-* Take a look at project's [Wiki](https://github.com/tsinis/app_icon_tools/wiki) or ask any question about this project at [Discussions](https://github.com/tsinis/app_icon_tools/discussions).
+* Take a look at the project's [Wiki](https://github.com/tsinis/app_icon_tools/wiki) or ask any question about this project at [Discussions](https://github.com/tsinis/app_icon_tools/discussions).
 
 Thanks! 💙 💙 💙
 
