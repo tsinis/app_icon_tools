@@ -27,7 +27,6 @@ workflows:
       - cd . && flutter config --enable-macos-desktop
       # - cd . && flutter analyze
       - find . -name "Podfile" -execdir pod install \;
-      # - docker run -v /Users/builder/clone:/opt/clone -w /opt/clone/. -i nevercode/flutter-linux-desktop bash -c flutter pub get && flutter build linux --release
       - |
         # build ios
         cd .
@@ -58,9 +57,16 @@ workflows:
         flutter build apk --release --no-sound-null-safety --split-per-abi
         cd build/app/outputs/flutter-apk
         mv app.apk app-armeabi-v7a-release.apk
+        # build linux
+      - docker run -v /Users/builder/clone:/opt/clone -w /opt/clone/. -i nevercode/flutter-linux-desktop bash -c flutter pub get && flutter build linux --release
+      - |
+        cd .
+        cd build/linux/release/bundle
+        7z a -mx=9 -r ../app-linux-release.zip ./*
     artifacts:
       - build/**/outputs/**/*.apk
       - build/ios/ipa/*.ipa
       - build/app-web-pwa-release.zip
       - build/macos/**/**/**/app-macos-release.zip
       - build/ios/**/app-ios-release.zip
+      - build/linux/**/**/app-linux-release.zip

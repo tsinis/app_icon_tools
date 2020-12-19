@@ -16,6 +16,7 @@ import '../extensions/image_resizer_extensions/constants/android_regular.dart';
 import '../extensions/image_resizer_extensions/constants/macos.dart';
 import '../extensions/image_resizer_extensions/constants/web.dart';
 import '../extensions/image_resizer_extensions/ios.dart';
+import '../extensions/image_resizer_extensions/linux/linux_folder.dart';
 import '../extensions/image_resizer_extensions/pwa.dart';
 import '../extensions/image_resizer_extensions/windows.dart';
 import '../generated/l10n.dart';
@@ -407,6 +408,9 @@ class SetupIcon extends ChangeNotifier {
       }
       if (ExportPlatform.androidOld) {
         await _generatePngIcons('droid', AndroidIconsFolder(icons: androidRegular));
+      }
+      if (ExportPlatform.linux) {
+        await _generatePngIcons('linux', LinuxIconsFolder());
       }
     } else {
       _exportedDoneCount = _toExportCount - (_exportingAdaptiveFiles ? 3 : 2);

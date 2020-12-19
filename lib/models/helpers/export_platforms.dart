@@ -22,12 +22,12 @@ class ExportPlatform {
 
   static Map<String, bool> get mapEvery => _platforms;
 
-  static bool get androidOld => _platforms[PlatformName.androidOld] ?? true;
-  static bool get androidNew => _platforms[PlatformName.androidNew] ?? true;
-  static bool get iOS => _platforms[PlatformName.iOS] ?? true;
-  static bool get pwa => _platforms[PlatformName.pwa] ?? true;
-  static bool get windows => _platforms[PlatformName.windows] ?? true;
-  static bool get macOS => _platforms[PlatformName.macOS] ?? true;
-  static bool get linux => _platforms[PlatformName.linux] ?? true;
-  static bool get fuchsia => _platforms[PlatformName.fuchsia] ?? true;
+  static bool get androidOld => _platforms[PlatformName.androidOld] ?? false;
+  static bool get androidNew => _platforms[PlatformName.androidNew] ?? false;
+  static bool get iOS => _platforms[PlatformName.iOS] ?? false;
+  static bool get pwa => _platforms[PlatformName.pwa] ?? false;
+  static bool get windows => _platforms[PlatformName.windows] ?? false;
+  static bool get macOS => _platforms[PlatformName.macOS] ?? false;
+  static bool get linux => _platforms[PlatformName.linux] ?? false;
+  static bool get fuchsia => _platforms[PlatformName.fuchsia] ?? false;
 }
