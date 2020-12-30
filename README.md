@@ -25,11 +25,11 @@ This multiplatform app is **powered by Flutter** and was created for simple and 
 
 Here are some of the unique features of this application:
 
-* It creates icons not only for Android and iOS but for **all platforms that Flutter supports** (at the moment, the Linux platform from Flutter not have app icon, but once the Flutter team fixes [this issue](https://github.com/flutter/flutter/issues/53229), everything is ready).
+* It creates icons not only for Android and iOS but for **all platforms that Flutter supports** (at the moment, the Linux platform from Flutter does not have an app icon, but once the Flutter team fixes [this issue](https://github.com/flutter/flutter/issues/53229), everything is ready).
 * It **works locally** (even in PWA form) on your device and **does not send your files to any servers**.
 * It will **find and show you the issues that can cause you problems** with displaying or app Stores refusal.
 * It can **show icons in different shapes** and **safety zone** masks.
-* It can exclusively **preview the parallax animation of adaptive Android icons**, since [adapticon.tooo.io](https://adapticon.tooo.io) is gone.
+* It can exclusively **preview the parallax animation of adaptive Android icons** since the website for their testing [adapticon.tooo.io](https://adapticon.tooo.io) is gone.
 * It **shows the icons as they would look on real devices**, and all devices here are not just photos, but vector images — ready for 16K.
 * It **generates icons not destructive way** — all you get is an archive, the contents of which you can check before you overwrite your files.
 * For additional information, it will **forward you to a website with official documentation** for each platform.
@@ -39,7 +39,7 @@ Here are some of the unique features of this application:
 
 ## Try it online
 
-This project in form of PWA **will only run on most recent browsers, with Chromium (Chrome, Edge, etc.) engine v83 or Firefox v77 and newer**. However, I would not recommend a Firefox now, since drag and drop don't work there yet. Don't even try to run it on Safari, Internet Explorer and so on — they can't handle it!
+This project in form of PWA **will only run on the most recent browsers, with Chromium (Chrome, Edge, etc.) engine v83 or Firefox v77 and newer**. However, I would not recommend a Firefox now, since drag and drop don't work there yet. Don't even try to run it on Safari, Internet Explorer and so on — they can't handle it!
 
 Just follow this link and run it in your modern browser:
 
@@ -47,7 +47,7 @@ Just follow this link and run it in your modern browser:
 
 ## Releases
 
-You can find binaries for **Windows, Linux, macOS, Android, iOS and PWA** in [Releases](https://github.com/tsinis/app_icon_tools/releases) section of this GitHub repository.
+You can find binaries for **Windows, Linux, macOS, Android, iOS, and PWA** in the [Releases](https://github.com/tsinis/app_icon_tools/releases) section of this GitHub repository.
 
 ## More Info
 

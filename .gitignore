@@ -52,6 +52,7 @@ $RECYCLE.BIN/
 
 # Flutter/Dart Tests related
 /test/
+/integration_test/
 
 # Web related
 lib/generated_plugin_registrant.dart

@@ -84,8 +84,8 @@ class AdaptiveScaffold extends StatelessWidget {
                               onTap: () => showPlatformsDialog(context),
                               child: Tooltip(
                                   message: S.of(context).choosePlatforms,
-                                  child: const Icon(CupertinoIcons.ellipses_bubble_fill))), //BUG
-                          // child: const Icon(CupertinoIcons.ellipsis_circle))), //BUG
+                                  // child: const Icon(CupertinoIcons.ellipses_bubble_fill))), //BUG
+                                  child: const Icon(CupertinoIcons.ellipsis_circle))),
                         ],
                       ),
                 trailing: ButtonBar(

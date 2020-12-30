@@ -62,8 +62,8 @@ class _IssuesInfo extends State<IssuesInfo> with SingleTickerProviderStateMixin 
               child: _DesktopIconButton(
                   Icon(
                       UserInterface.isCupertino
-                          // ? CupertinoIcons.exclamationmark_triangle //BUG
-                          ? CupertinoIcons.exclamationmark_square_fill
+                          ? CupertinoIcons.exclamationmark_triangle
+                          // ? CupertinoIcons.exclamationmark_square_fill //BUG
                           : CommunityMaterialIcons.alert_outline,
                       color: HSLColor.fromAHSL(1, hue, 1, 0.45).toColor()),
                   onLongPress: () => context.read<SetupIcon>().issuesToClipboard()),
