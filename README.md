@@ -1,20 +1,20 @@
 # App Icon Tools 🛠️
 
+> The project is currently abandoned. Features that are already present should work without a problem, in downloadable releases, but no further support or development will be made here. I haven't updated the website hosting either.
+
 ## Table of content
 
 * [Description](#Description)
 * [Key Features](#Key-Features)
-* [Try it online](#Try-it-online)
 * [Releases](#Releases)
 * [More Info](#More-Info)
 
 ![Screenshot](preview.png)
 
-[![Website app-icon.tools](https://img.shields.io/website?down_color=red&down_message=offline&up_color=success&up_message=online&url=https%3A%2F%2Fapp-icon.tools)](https://app-icon.tools)
 [![Codemagic build status](https://api.codemagic.io/apps/5fc3a2a2f7698e4473b866bf/5fc3a2a2f7698e4473b866be/status_badge.svg)](https://codemagic.io/apps/5fc3a2a2f7698e4473b866bf/5fc3a2a2f7698e4473b866be/latest_build)
 [![License: AGPL v3](https://img.shields.io/badge/license-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 [![pedantic on pub.dev](https://img.shields.io/badge/style-pedantic-blue)](https://pub.dev/packages/pedantic)
-[![pedantic on pub.dev](https://img.shields.io/github/v/release/tsinis/app_icon_tools)](https://github.com/tsinis/app_icon_tools/releases)
+[![Releaases](https://img.shields.io/github/v/release/tsinis/app_icon_tools)](https://github.com/tsinis/app_icon_tools/releases)
 [![GitHub stars](https://img.shields.io/github/stars/tsinis/app_icon_tools?style=social)](https://github.com/tsinis/app_icon_tools/stargazers/)
 
 ## Description
@@ -37,13 +37,6 @@ Here are some of the unique features of this application:
 * The project **supports multiple languages**, and you can easily add your own.
 * This app is made for both developers and designers, and in the end, the generated icons can be used not only for Flutter applications. Just give it a try!
 
-## Try it online
-
-This project in form of PWA **will only run on the most recent browsers, with Chromium (Chrome, Edge, etc.) engine v83 or Firefox v77 and newer**. However, I would not recommend a Firefox now, since drag and drop don't work there yet. Don't even try to run it on Safari, Internet Explorer and so on — they can't handle it!
-
-Just follow this link and run it in your modern browser:
-
-[app-icon.tools](https://app-icon.tools)
 
 ## Releases
 
